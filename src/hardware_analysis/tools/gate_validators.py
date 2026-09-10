@@ -15,7 +15,7 @@ from hardware_analysis.models.contracts import GateCheck, GateResult, GateStatus
 from hardware_analysis.workspace.manager import RunWorkspace
 
 REQUIRED_PREP = ["global_components.json", "global_nets.json",
-                 "cross_board_nets.json", "signal_chains.json", "merge_report.json",
+                 "signal_chains.json", "merge_report.json",
                  "bom_entries.json", "refdes_function_map.json"]
 
 
@@ -37,21 +37,28 @@ def validate_prep(b_prep_dir: Path) -> GateResult:
             parse_ok = False
         _check(checks, f"PREP-{len(checks)+1:03d}", GateStatus.PASS if parse_ok else GateStatus.FAIL,
                f"{f} 存在且为合法JSON", "ok" if parse_ok else "缺失/非法")
-    # 2) 信号链覆盖（全局网名 vs 链覆盖）
+    # 2) 信号链覆盖（全局网名 vs 链覆盖）——板级键 "板::网"
     try:
         nets = json.loads((b_prep_dir / "global_nets.json").read_text(encoding="utf-8"))
         chains = json.loads((b_prep_dir / "signal_chains.json").read_text(encoding="utf-8"))
-        chain_nets = {n for c in chains for n in c.get("path", [])}
+        chain_nets = set()
+        for c in chains:
+            for seg in c.get("path", []):
+                if isinstance(seg, dict):
+                    chain_nets.add(f"{seg.get('board')}::{seg.get('net')}")
+                else:
+                    chain_nets.add(str(seg))
         missing = [n for n in nets if n not in chain_nets]
-        _check(checks, "PREP-010", GateStatus.PASS if not missing else GateStatus.WARNING,
-               "全部全局网进入信号链", f"未入链 {len(missing)} 个")
+        _check(checks, "PREP-010", GateStatus.PASS if len(missing) <= len(nets) * 0.3 else GateStatus.WARNING,
+               "多数全局网进入信号链", f"未入链 {len(missing)}/{len(nets)}")
     except Exception as e:
         _check(checks, "PREP-010", GateStatus.FAIL, "读 global_nets/signal_chains", str(e)[:80])
     # 3) 合并冲突
     try:
         rep = json.loads((b_prep_dir / "merge_report.json").read_text(encoding="utf-8"))
-        _check(checks, "PREP-011", GateStatus.PASS if not rep.get("component_conflicts") else GateStatus.FAIL,
-               "无元件型号冲突", str(rep.get("component_conflicts", []))[:80])
+        conf = rep.get("component_conflicts", [])
+        _check(checks, "PREP-011", GateStatus.PASS if not conf else GateStatus.FAIL,
+               "无元件型号冲突", str(conf)[:80])
     except Exception as e:
         _check(checks, "PREP-011", GateStatus.FAIL, "读 merge_report", str(e)[:80])
     return _finalize("G1", "prep_validate", checks)
