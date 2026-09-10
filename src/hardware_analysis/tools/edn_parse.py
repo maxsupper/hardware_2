@@ -107,10 +107,10 @@ def extract(file_text: str) -> dict:
         # (instance REFDES (viewRef NetlistView (cellType generic))
         #           (cellRef NAME (libraryRef LIB)))
         refdes = _first_leaf(inst[1]) if len(inst) > 1 else ""
-        name = ""
-        for sub in inst[2:]:
-            if isinstance(sub, list) and _first_field(sub) == "cellRef" and len(sub) > 1:
-                name = _first_leaf(sub[1])
+        # cellRef 嵌在 viewRef 内（instance→viewRef→cellRef），必须递归查找
+        found = []
+        walk(inst, "cellRef", found)
+        name = _first_leaf(found[0][1]) if (found and len(found[0]) > 1) else ""
         comps[refdes] = {"refdes": refdes, "model": name, "cell": ""}
 
     net_list = []

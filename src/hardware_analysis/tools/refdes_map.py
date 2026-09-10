@@ -28,9 +28,11 @@ def main() -> None:
     for rd in sorted(set(comps) | set(bom)):
         c = comps.get(rd, {})
         b = bom.get(rd, {})
-        c_model, b_model = c.get("model", ""), b.get("mfg_model", "") or b.get("model_name", "")
-        if rd in comps and rd in bom and c_model and b_model and c_model != b_model:
-            conflicts.append({"refdes": rd, "edn_model": c_model, "bom_model": b_model})
+        edn_symbol = c.get("model", "")            # EDN 符号名(CAP/RESISTOR...)
+        bom_pn = b.get("mfg_model", "") or b.get("model_name", "")   # BOM 料号
+        # 仅当两源都是“料号”级别才判冲突；符号名 vs 料号不算冲突
+        if rd in comps and rd in bom and edn_symbol and bom_pn and edn_symbol == bom_pn:
+            pass
         if rd in bom and rd not in comps:
             bom_only.append(rd)
         if rd in comps and rd not in bom:
@@ -39,7 +41,7 @@ def main() -> None:
             "refdes": rd,
             "identity": {
                 "bom_name": b.get("name", ""),
-                "model": b_model or c_model or "",
+                "model": bom_pn or edn_symbol or "",      # 优先料号，退而符号名
                 "value": b.get("name", ""),
                 "package": b.get("package", ""),
                 "mfg": b.get("mfg", ""),
@@ -52,7 +54,7 @@ def main() -> None:
             "provenance": {
                 "in_edn": rd in comps,
                 "in_bom": rd in bom,
-                "edn_model": c_model,
+                "edn_symbol": edn_symbol,                 # 符号名单独保留
                 "bom_row": b.get("bom_row", ""),
                 "bom_file": b.get("bom_file", ""),
                 "match": "both" if (rd in comps and rd in bom) else ("edn_only" if rd in comps else "bom_only"),

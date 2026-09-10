@@ -90,6 +90,9 @@ def parse_bom(path: Path) -> dict:
         refdes_cell = get("refdes")
         if not refdes_cell.strip():
             continue
+        # 跳过重复表头行（多页 BOM 拼接会出现）
+        if refdes_cell.strip() in ("位号", "序号") or get("name").strip() in ("公司规格型号", "规格型号"):
+            continue
         qty = get("qty")
         for rd in [x.strip() for x in refdes_cell.replace("，", ",").split(",") if x.strip()]:
             entries[rd] = {
