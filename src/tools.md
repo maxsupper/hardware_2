@@ -11,6 +11,29 @@
 - 已验证 : FL-26-E-MR203-A(606元件/462net/2773连) B(346/340/1364)
 - 副作用 : 只写 out；幂等
 
+## [T-TRACER] tracer
+- 模块   : src/hardware_analysis/tools/tracer.py
+- 功能   : 端到端信号追踪（透明器件跨过/终端终止/OPEN_END检测）+ 终止清单 trace_inventory.json
+- 输入   : B_prep 目录(global_nets.json)；--limit 起始网上限
+- 输出   : trace_inventory.json（traces+inventory 终点分布）
+- 已验证 : 真实数据 400 条 → 395 TERMINAL / 2 OPEN_END / 3 ACROSS
+- 备注   : 桥接异常(GND→VCC)列为自检金标校准项
+
+## [T-GATE] gate_validators
+- 模块   : src/hardware_analysis/tools/gate_validators.py
+- 功能   : 确定性门禁 G1(prep/信号链闭合) G3(数据完整性) G4(evidence/summary契约/≤5KB) G5(report三字段/无截断)
+- 输入   : gate(G1|G3|G4|G5) + 产品工作区路径；--out gates/G<n>.json
+- 输出   : gates/G<n>.json（GateResult 契约）；stdout 逐条 check
+- 已验证 : G1(真实数据 PASS) / G4、G5(空目录负向 FAIL 成立)
+- 副作用 : 写 gates/*.json；幂等
+
+## [T-BUDGET] budget_validator
+- 模块   : src/hardware_analysis/tools/budget_validator.py
+- 功能   : 上下文预算强制（规则束≤40K / 输入≤400K / 总上下文≤512K硬顶，不可破）
+- 输入   : --rules 规则束文本；--input 输入文本(可多个)
+- 输出   : budget_check dict（status/estimates/caps/checks）
+- 已验证 : 512K 硬顶钳制生效
+
 ## [T-CFG] config.load
 - 模块   : src/hardware_analysis/config.py::Config
 - 功能   : 读取 config.json（LLM/预算/网络/路径），环境变量覆盖 LLM_API_KEY/TAVILY_API_KEY

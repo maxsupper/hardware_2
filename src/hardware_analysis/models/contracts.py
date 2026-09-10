@@ -98,6 +98,7 @@ class GateResult(BaseDoc):
     kind: str = "gate_result"
     gate: str = ""
     checked_at: str = ""
+    status: GateStatus = GateStatus.PASS
     checks: list[GateCheck] = Field(default_factory=list)
     summary: dict[str, int] = Field(default_factory=dict)
 
