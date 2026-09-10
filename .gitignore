@@ -28,3 +28,4 @@ venv/
 
 # ---- 杂项 ----
 .DS_Store
+.bak/

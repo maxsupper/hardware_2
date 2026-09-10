@@ -4,7 +4,7 @@
 用法: python -m hardware_analysis.tools.refbook_search <model> [--root storge/refbook] [--top 5]
 """
 from __future__ import annotations
-import argparse, difflib, json, sys
+import argparse, difflib, json, re, sys
 from pathlib import Path
 
 if __package__ in (None, ""):
@@ -17,21 +17,38 @@ def norm(s: str) -> str:
     return "".join(ch for ch in str(s).upper() if ch.isalnum())
 
 
+def variants(model: str) -> list[str]:
+    """型号变体：全量 / 去尾缀(-2, -0001, _Vxx) / 去封装尾数。长→短。"""
+    m = str(model or "").upper().strip()
+    out = {norm(m)}
+    m2 = re.split(r"[-_/\s]", m)[0]
+    out.add(norm(m2))
+    out.add(norm(re.sub(r"(\d+)$", "", m2)))
+    return sorted((v for v in out if len(v) >= 3), key=len, reverse=True)
+
+
+def _tokens(s: str) -> set:
+    return set(re.findall(r"[A-Z0-9]+", str(s).upper()))
+
+
 def score_filename(model: str, path: Path) -> tuple:
-    nm = norm(model)
+    """型号 vs 文件名：词元命中 > 子串 > 重叠。返回 (score, -len)。"""
     fn = norm(path.name)
-    if not nm:
-        return 0, 0
-    if fn == nm:
-        return 100, 0
-    if nm in fn:
-        return 80 + min(len(nm) / max(len(fn), 1) * 15, 15), len(fn)
-    if fn in nm:
-        return 60, len(fn)
-    # token 重叠
-    mtoks, ftoks = set(nm[:6]), set(fn[:6])
-    overlap = len(mtoks & ftoks) / max(len(mtoks), 1)
-    return overlap * 50, len(fn)
+    toks = _tokens(path.name)
+    best = 0.0
+    for v in variants(model):
+        if fn == v:
+            best = max(best, 100)
+        elif v in toks:
+            best = max(best, 90 + min(len(v) / max(len(fn), 1) * 8, 8))   # 词元命中
+        elif v in fn:
+            best = max(best, 58 + min(len(v) / max(len(fn), 1) * 12, 12))   # 子串命中(偏弱)
+        else:
+            ov = len(set(v[:6]) & set(fn[:6])) / max(len(set(v[:6])), 1)
+            best = max(best, ov * 30)                                       # 纯字符重叠 ≤30（不入阈）
+    if best >= 58 and any(k in fn for k in ("DATASHEET", "TRM", "MANUAL", "SPEC", "DS", "数据手册", "规格书")):
+        best = min(best + 8, 100)                                           # 手册/TRM 优先
+    return best, -len(fn)
 
 
 def search(model: str, root: str | Path = "storge/refbook", top: int = 5,

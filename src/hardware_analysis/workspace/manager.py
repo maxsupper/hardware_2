@@ -49,6 +49,34 @@ class RunWorkspace:
         (self.dir / ".run" / "run.state.json").write_text(
             json.dumps(state, ensure_ascii=False, indent=1), encoding="utf-8")
 
+    # ---------- 中间过程文件清理（即用即清 + 最终清理） ----------
+    @property
+    def temp(self) -> Path:
+        return self.dir / ".run" / "temp"
+
+    def clean_temp(self, patterns: tuple = ("*"), keep_dir: bool = True) -> int:
+        """删除 .run/temp 下（匹配 patterns 的）中间文件；返回删除数。"""
+        n = 0
+        if not self.temp.exists():
+            return 0
+        for pat in patterns:
+            for p in self.temp.glob(pat):
+                if p.is_file():
+                    p.unlink()
+                    n += 1
+        if not keep_dir and self.temp.exists() and not any(self.temp.iterdir()):
+            self.temp.rmdir()
+        return n
+
+    def cleanup(self, keep_log: bool = True) -> dict:
+        """收尾清理：删 temp 中间文件；默认保留 run.log.jsonl/run.state.json。"""
+        n = self.clean_temp(("*",), keep_dir=False)
+        removed = []
+        for p in self.dir.glob("**/*.tmp"):
+            p.unlink(missing_ok=True)
+            removed.append(str(p))
+        return {"temp_removed": n, "tmp_removed": len(removed)}
+
 
 def create_run(product: str, root: str | Path = "storge/project") -> dict:
     return RunWorkspace(root, product).create()

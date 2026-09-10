@@ -102,9 +102,12 @@ def walk(net2pins, dev_pins, board, start_net, origin_ref):
     return path, (active or conns or ends), end_type
 
 
-def trace(global_nets: dict) -> dict:
+def trace(global_nets: dict, only_connectors: list | None = None) -> dict:
     net2pins, pin2net, dev_pins = build_index(global_nets)
     connectors = [(b, rd) for (b, rd) in dev_pins if _is_conn(rd)]
+    if only_connectors is not None:
+        keep = set(only_connectors)
+        connectors = [c for c in connectors if c in keep]
     results = []
     for b, conn in connectors:
         for pin, start_net in dev_pins[(b, conn)].items():

@@ -71,3 +71,40 @@ config.json    （不入 git；有 config.example.json）
 - 三层：L1 单元 / L2 流程冒烟(fixture) / L3 实弹(FL-26-E-MR203 A/B EDN+BOM)。
 - 清单项：多EDN跨板、BOM解析、手册检索(含Tavily路径)、证据契约、报告+G5二轮、人机点、web、故障注入(负面)、可复现、预算、溯源。
 - 充分性证据：覆盖率(阶段8/8 门禁7/7 角色6+1 工具100%注册)、负向命中、金标人工抽验≥20条、两跑diff、反向校验、预算记录；产出 selfcheck_report.md 提交复核。
+
+---
+
+## 12. v2 修订（2026-09-11，已与用户确认）——阶段换位 + netlist_graph + 回环
+
+### 12.1 新阶段序（PH-2/PH-3 与旧 PH-1 换位；门禁按新序重排）
+| 新PH | 工作 | 角色 | 门禁 | 输入 | 产物 |
+|---|---|---|---|---|---|
+| PH-0 | 输入准备(Step0a) | human+flow | — | EDN/BOM | step_0a |
+| **PH-1 手册检索** | BOM(**Word/Excel**)→唯一IC型号→refbook+Tavily→**manual_index.json**(位号→手册路径)+**LLM判 ic_type** | hw_search | **G1** | BOM | manual_index.json |
+| **PH-2 数据预检** | Wave0 确定性 | flow | **G2** | BOM | 预检报告 |
+| **PH-3 网表解析** | EDN解析→合并→位号映射(**冲突以BOM为准**)→**tracer(按接插件数委派子agent)→合并 netlist_graph.json** | hw_prep(+子agent) | **G3** | EDN+manual_index | **netlist_graph.json** |
+| PH-4 深度分析 | LLM 芯片级并行≤5，**只读 netlist_graph.json**+复核 tracer 判定+回环 | hw_analyze | G4 | netlist_graph | E_analyze/*.json |
+| PH-5 报告合成 | report.json + .md | hw_write | G5 | E_analyze | report |
+| PH-6 审计复核 | SA-1..8+证据链 | hw_auditor | G6 | — | audit.json |
+| PH-7 闭环交付 | 定版 | flow | G7 | — | final |
+
+> 门禁语义重排：**G1=手册门，G2=预检门，G3=网表门，G4=深度分析门，G5=报告门，G6=审计门，G7=交付门**。
+
+### 12.2 netlist_graph.json（v2.2 数据结构）
+- 顶层：`meta / devices[] / nets[] / paths[] / cross_board_links[]`。
+- `devices[]` 每 (板,位号) 一条：`id(板::位号), board, refdes, model(BOM为准), kind(IC|CONNECTOR|PASSIVE|POWER|MECH|TESTPOINT), source{in_bom,in_edn,populated}, ic{manual_path,ic_type(SINK|PASS_THRU|POWER_SRC|UNVERIFIED),channels[]}, pins{脚→网 全量}, links[](上级/下级邻接，按脚拆条), depop[](不装占位)`。
+- `links` 每条：`net,pin,side(down|up|thru|bi|pwr),upstream[],downstream[],via[](该支路独立中间件),cross_board{peer},trace{id,end_type,bidirectional},status(OK|STUB|OPEN_END|FANOUT|UNVERIFIED)`。
+- 多连接组织：一器件多网→多条 link；同网多对端→数组多元素+FANOUT；差分→两条 link；串联件→进 via 不占 link；跨板→仅经 cross_board_links（配对连接器）。
+- **完整性强制（G3）**：pins 全量；links 覆盖每个非串联器件脚；纯芯片间网 side=bi（方向交 PH-4）；电源环路 side=pwr；0Ω 两端 alias_group；diff_pairs 分组。
+
+### 12.3 PH-3 子 agent 分发与合并
+- 按**接插件数**把接口信号分组委派子 agent 追踪（同 schema 局部 json），主 agent 机械合并为一个 netlist_graph.json（加 board 字段）。
+- 多板亦最终汇总为单一 JSON（cross_board_links 由连接器配对 D1 建立：按"脚→网"定义一致性匹配 A↔B 连接器）。
+
+### 12.4 PH-3↔PH-4 回环协议（有界≤3轮，计数独立）
+- PH-4 **只读 netlist_graph.json，不再读原始文件**；不清晰处 → LLM 辅助 → 写 `request.jsonl`（自含 scope+假设+期望证据）→ PH-3 **只重读源文件该局部**定向复查 → 写 `resolution.jsonl`（CONFIRMED/CORRECTED+delta）。
+- 触发判据：status∈{STUB,OPEN_END}、bidirectional=MISMATCH、ic_type 与 tracer 判定冲突、邻居缺失。
+- 3 轮未决 → link 标 UNVERIFIED 进报告"待核清单"，不阻塞。
+
+### 12.5 待用户批准的 rules.json 变更（实施已就绪，规则内容不改）
+- process 换位、gates G1..G7 语义重排、agents 职责/工具更新；新增规则条目：PH-1 manual_index 必填、PH-3 netlist_graph 完备性、回环协议。详见 `docs/rules_change_request.md`。

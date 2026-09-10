@@ -81,7 +81,7 @@ def validate_data(b_prep_dir: Path) -> GateResult:
 # ---------------- G4 g2x_validate（evidence 契约） ----------------
 def validate_evidence(e_dir: Path) -> GateResult:
     checks = []
-    evs = sorted(e_dir.glob("*.evidence.json")) if e_dir.exists() else []
+    evs = sorted(set(e_dir.glob("*.evidence.json")) | set(e_dir.glob("*_evidence.json"))) if e_dir.exists() else []
     sues = sorted(e_dir.glob("*_summary.json"))
     _check(checks, "G2X-001", GateStatus.PASS if evs else GateStatus.FAIL,
            "存在 evidence 文件", f"{len(evs)} 个")
@@ -126,6 +126,84 @@ def validate_report(f_dir: Path) -> GateResult:
     return _finalize("G5", "report_gate(结构层)", checks)
 
 
+# ---------------- v2: G1 manual_validate（PH-1 手册索引） ----------------
+def validate_manual_index(b_prep_dir: Path) -> GateResult:
+    checks = []
+    p = b_prep_dir / "manual_index.json"
+    ok = p.exists() and p.stat().st_size > 0
+    _check(checks, "MI-000", GateStatus.PASS if ok else GateStatus.FAIL,
+           "manual_index.json 存在且非空", "ok" if ok else "缺失/空")
+    if ok:
+        d = json.loads(p.read_text(encoding="utf-8"))
+        entries = d.get("entries", {})
+        bp = b_prep_dir / "bom_entries.json"
+        boms = json.loads(bp.read_text(encoding="utf-8")).get("entries", {}) if bp.exists() else {}
+        u_keys = [k for k, v in boms.items() if str(v.get("refdes", "")).upper().startswith("U")]
+        missing = [k for k in u_keys if k not in entries]
+        _check(checks, "MI-001", GateStatus.PASS if not missing else GateStatus.WARNING,
+               "manual_index 覆盖 BOM 全部 U*", f"缺 {len(missing)}/{len(u_keys)}")
+        bad = [k for k, e in entries.items()
+               if not e.get("manual_path") and e.get("status") not in ("MISSING", "TRULY_MISSING", "UNVERIFIED")]
+        _check(checks, "MI-002", GateStatus.PASS if not bad else GateStatus.FAIL,
+               "无手册者须显式 MISSING/TRULY_MISSING/UNVERIFIED", f"违规 {len(bad)}")
+        bad2 = [k for k, e in entries.items()
+                if e.get("ic_type") not in ("SINK", "PASS_THRU", "POWER_SRC", "UNKNOWN", "UNVERIFIED")]
+        _check(checks, "MI-003", GateStatus.PASS if not bad2 else GateStatus.FAIL,
+               "ic_type ∈ {SINK,PASS_THRU,POWER_SRC,UNKNOWN,UNVERIFIED}", f"违规 {len(bad2)}")
+    return _finalize("G1", "manual_validate", checks)
+
+
+# ---------------- v2: G2 bom_validate（PH-2 数据预检/Wave0） ----------------
+def validate_bom(b_prep_dir: Path) -> GateResult:
+    checks = []
+    p = b_prep_dir / "bom_entries.json"
+    ok = p.exists() and p.stat().st_size > 0
+    _check(checks, "BOM-000", GateStatus.PASS if ok else GateStatus.FAIL,
+           "bom_entries.json 存在", "ok" if ok else "缺失")
+    if ok:
+        d = json.loads(p.read_text(encoding="utf-8"))
+        entries, errs = d.get("entries", {}), d.get("errors", [])
+        _check(checks, "BOM-001", GateStatus.PASS if not errs else GateStatus.FAIL,
+               "BOM 解析无错误", f"errors={len(errs)}")
+        _check(checks, "BOM-002", GateStatus.PASS if entries else GateStatus.FAIL,
+               "BOM 条目非空", f"entries={len(entries)}")
+        boards = sorted({v.get("board", "X") for v in entries.values()})
+        _check(checks, "BOM-003", GateStatus.PASS if len(boards) >= 1 else GateStatus.FAIL,
+               "板号可识别", f"boards={boards}")
+    return _finalize("G2", "bom_validate", checks)
+
+
+# ---------------- v2: G3 netlist_validate（PH-3 netlist_graph 完备性） ----------------
+def validate_netlist(b_prep_dir: Path) -> GateResult:
+    checks = []
+    p = b_prep_dir / "netlist_graph.json"
+    ok = p.exists() and p.stat().st_size > 0
+    _check(checks, "NG-000", GateStatus.PASS if ok else GateStatus.FAIL,
+           "netlist_graph.json 存在", "ok" if ok else "缺失")
+    if ok:
+        d = json.loads(p.read_text(encoding="utf-8"))
+        meta = d.get("meta", {})
+        v = meta.get("validation", {})
+        _check(checks, "NG-001", GateStatus.PASS if v.get("dangling_joins", 1) == 0 else GateStatus.FAIL,
+               "dangling_joins=0（join 位号均在 devices）", f"dangling={v.get('dangling_joins')}")
+        _check(checks, "NG-002", GateStatus.PASS if v.get("uncovered_pins", 1) == 0 else GateStatus.FAIL,
+               "uncovered_pins=0（links 覆盖每脚）", f"uncovered={v.get('uncovered_pins')}")
+        gc = b_prep_dir / "global_components.json"
+        if gc.exists():
+            n_gc = len(json.loads(gc.read_text(encoding="utf-8")))
+            n_dev = len(d.get("devices", []))
+            _check(checks, "NG-003", GateStatus.PASS if n_dev == n_gc else GateStatus.FAIL,
+                   "devices 覆盖全部 (板,位号)", f"devices={n_dev} global={n_gc}")
+        boards = meta.get("boards", [])
+        _check(checks, "NG-004", GateStatus.PASS if len(boards) >= 1 else GateStatus.FAIL,
+               "至少一板存在", f"boards={boards}")
+        if len(boards) >= 2:
+            xl = len(d.get("cross_board_links", []))
+            _check(checks, "NG-005", GateStatus.PASS if xl > 0 else GateStatus.WARNING,
+                   "多板时跨板连续已建立", f"cross_board_links={xl}")
+    return _finalize("G3", "netlist_validate", checks)
+
+
 def _finalize(gate, name, checks) -> GateResult:
     passed = sum(1 for c in checks if c.status == GateStatus.PASS)
     failed = sum(1 for c in checks if c.status == GateStatus.FAIL)
@@ -140,24 +218,30 @@ def _finalize(gate, name, checks) -> GateResult:
 
 def main_gate_cli(ws_dir, gate):
     ws = Path(ws_dir)
-    fns = {"G1": ("B_prep", validate_prep), "G3": ("B_prep", validate_data),
-           "G4": ("E_analyze", validate_evidence), "G5": ("F_report", validate_report)}
+    fns = _GATE_FNS()
     subdir, fn = fns[gate]
     r = fn(ws / subdir)
     (ws / "gates" / f"{gate}.json").write_text(r.model_dump_json(indent=1), encoding="utf-8")
     return r.status.value
 
 
+def _GATE_FNS() -> dict:
+    """v2 门禁映射：G1=手册 G2=预检 G3=网表 G4=分析 G5=报告。"""
+    return {"G1": ("B_prep", validate_manual_index),
+            "G2": ("B_prep", validate_bom),
+            "G3": ("B_prep", validate_netlist),
+            "G4": ("E_analyze", validate_evidence),
+            "G5": ("F_report", validate_report)}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("gate", choices=["G1", "G3", "G4", "G5"])
+    ap.add_argument("gate", choices=["G1", "G2", "G3", "G4", "G5"])
     ap.add_argument("workspace_dir", help="产品工作区（其下 B_prep/E_analyze/F_report）")
     ap.add_argument("--out", default=None, help="写 gates/G<n>.json")
     args = ap.parse_args()
     ws = Path(args.workspace_dir)
-    fns = {"G1": ("B_prep", validate_prep), "G3": ("B_prep", validate_data),
-           "G4": ("E_analyze", validate_evidence), "G5": ("F_report", validate_report)}
-    subdir, fn = fns[args.gate]
+    subdir, fn = _GATE_FNS()[args.gate]
     r = fn(ws / subdir)
     out = Path(args.out) if args.out else ws / "gates" / f"{args.gate}.json"
     out.parent.mkdir(parents=True, exist_ok=True)

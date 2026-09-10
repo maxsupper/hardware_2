@@ -99,3 +99,26 @@
 - 已验证 : 776 位号 / 双源一致 305 / 型号冲突 0
 
 新增工具登记：在此追加 [T-xxx] 块（功能/输入/输出/副作用）。
+
+## [T-MANUAL-INDEX] manual_index
+- 模块   : src/hardware_analysis/tools/manual_index.py
+- 功能   : PH-1 产物——BOM 唯一 IC 型号 → 手册存放路径表格（manual_index.json）；本地 refbook 检索
+- 输入   : bom_entries.json；--out；--refbook(默认 storge/refbook)；--product
+- 输出   : manual_index.json（entries 键="板::位号"；model/ic_type/manual_path/status/attempted_sources）
+- 已验证 : FL-25-E-MR203 → IC=37 唯型号=22 FOUND=10 PARTIAL=1 MISSING=11（RK860-2→RK860 Datasheet 命中）
+- 备注   : ic_type(SINK/PASS_THRU/POWER_SRC) 由 PH-1 LLM 回填，本工具先置 UNKNOWN
+
+## [T-NETLIST-GRAPH] netlist_graph
+- 模块   : src/hardware_analysis/tools/netlist_graph.py
+- 功能   : PH-3 产物——网表 json 化（v2.2）：devices/nets/paths/cross_board_links；子 agent 按接插件分组追踪后合并；连接器配对(D1)
+- 输入   : B_prep 目录（global_components/global_nets/trace_inventory/refdes_function_map/manual_index）；--groups N；--product
+- 输出   : netlist_graph.json + netlist_graph.validate.json（dangling/uncovered 完整性）
+- 已验证 : FL-25-E-MR203 → 952 器件/802 网/472 路径/跨板144(信号109)/配对 J19↔J8=144脚；校验 dangling=0 uncovered=0
+- 备注   : links 按脚拆条（side/upstream/downstream/via/cross_board）；0Ω→alias_group；差分对→diff_pairs
+
+## v2 变更说明（2026-09-11 阶段换位/板级隔离）
+- edn_global_merge：**板级隔离**（身份="板::位号"，网="板::网"）；不再输出 cross_board_nets.json；新增 merge_report(board_stats)
+- bom_parse：支持 **Word(.docx)+Excel**；键改为 **"板::位号"**；新增 model 字段；剔除重复表头/签名行
+- refdes_map：**按板配对**（A_EDN↔A_BOM）；DNP=EDN有BOM无（不装）；edn_symbol 与 BOM 料号不判冲突
+- tracer：**接口优先**（起点=接插件脚）；只跨"真串联无源件"（两端非电源/地）；双向验证；终点 CHIP/POWER/TO_CONNECTOR/STUB/OPEN_END；--only_connectors 支持子 agent 分发
+- refbook_search：型号**变体匹配**（RK860-2→RK860）+ 词元命中 + 手册/TRM 加权；纯字节重叠不入阈

@@ -142,6 +142,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="EDIF 2.0.0 网表解析（每个文件产出 components.json/nets.json）")
     ap.add_argument("edn", help="EDN 文件路径")
     ap.add_argument("--out", default=None, help="输出目录（默认同文件目录）")
+    ap.add_argument("--stamp", default=None, help="中间文件时间戳（默认 UTC 当前时间）")
     args = ap.parse_args()
 
     text = Path(args.edn).read_bytes().decode("utf-8", errors="replace")
@@ -149,10 +150,14 @@ def main() -> None:
     outdir = Path(args.out) if args.out else Path(args.edn).parent
     outdir.mkdir(parents=True, exist_ok=True)
     stem = Path(args.edn).stem
-    (outdir / f"{stem}.components.json").write_text(json.dumps(r["components"], ensure_ascii=False, indent=1), encoding="utf-8")
-    (outdir / f"{stem}.nets.json").write_text(json.dumps(r["nets"], ensure_ascii=False, indent=1), encoding="utf-8")
+    from datetime import datetime, timezone
+    stamp = args.stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    comp_p = outdir / f"{stem}.{stamp}.components.json"
+    nets_p = outdir / f"{stem}.{stamp}.nets.json"
+    comp_p.write_text(json.dumps(r["components"], ensure_ascii=False, indent=1), encoding="utf-8")
+    nets_p.write_text(json.dumps(r["nets"], ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{Path(args.edn).name}: 元件={r['stats']['components']} net={r['stats']['nets']} 引脚连接={r['stats']['net_joins']}")
-    print(f"写出: {outdir}/{stem}.{{components,nets}}.json")
+    print(f"写出: {comp_p.name} / {nets_p.name} (stamp={stamp})")
 
 
 if __name__ == "__main__":

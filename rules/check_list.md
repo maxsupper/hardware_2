@@ -8,25 +8,25 @@
 | 阶段 | 名称 | 负责人 | 门禁 | 规则束 | 批次暂停 |
 |---|---|---|---|---|---|
 | PH-0 | 输入准备 | human+flow | - | - |  |
-| PH-1 | 网表解析(多EDN全局合并+信号链) | hw_prep | G1 | PREP-*、W0-* |  |
-| PH-2 | 手册检索 | hw_search | G2 | G0-*、RG0-* | ✔ |
-| PH-3 | 数据预检(Wave0) | flow(确定性) | G3 | W0-*、RW1-* |  |
-| PH-4 | 深度分析(芯片级并行<=5) | hw_analyze | G4 | IC-*、PO-*、CN-*、DR-*、PE-*、LS-*、PB-*、IF-* | ✔ |
+| PH-1 | 手册检索(由BOM清单) | hw_search | G1 | G0-*、RG0-*、MI-* | ✔ |
+| PH-2 | 数据预检(Wave0) | flow | G2 | W0-*、RW1-* |  |
+| PH-3 | 网表解析(netlist_graph+子agent分发) | hw_prep | G3 | PREP-*、NG-* |  |
+| PH-4 | 深度分析(芯片级并行<=5,只读netlist_graph+复核+回环) | hw_analyze | G4 | IC-*、PO-*、CN-*、DR-*、PE-*、LS-*、PB-*、IF-*、CL-* | ✔ |
 | PH-5 | 报告合成(report.json+渲染.md) | hw_write | G5 | RF-*、CT-* |  |
 | PH-6 | 审计复核 | hw_auditor | G6 | SA-*、Q-* | ✔ |
-| PH-7 | 闭环交付 | human+flow | G7 | - | ✔ |
+| PH-7 | 闭环交付 | flow | G7 | - |  |
 
 ## 门禁
 
-- **G1**（prep_validate）@ PH-1：prep JSON schema + 信号链端到端闭合(确定性)
-- **G2**（手册缺失确认）@ PH-2：人机 A/B/C；缺失→补/跳过(UNVERIFIED)/排除
-- **G3**（数据完整性）@ PH-3：Wave0关键总线单连接/链路闭合(确定性)
-- **G4**（g2x_validate）@ PH-4：evidence契约/填充率>=80%/接口覆盖(确定性)
+- **G1**（manual_validate）@ PH-1：manual_index 覆盖全部U*；无手册者显式MISSING/UNVERIFIED；ic_type合法
+- **G2**（bom_validate）@ PH-2：BOM解析无错误/条目非空/板号可识别（Wave0确定性预检）
+- **G3**（netlist_validate）@ PH-3：netlist_graph完备性：dangling=0/uncovered=0/devices全覆盖/跨板连续
+- **G4**（g2x_validate）@ PH-4：evidence契约/填充率>=80%/接口覆盖(确定性)+复核回环<=3轮(计数独立)
 - **G5**（报告审核门）@ PH-5：确定性结构校验 + LLM内容审核(规则+要求+内容,有界2轮)
 - **G6**（审计门）@ PH-6：SA-1..8自审 + 证据链三方对照(确定性+审计输出)
 - **G7**（闭环交付门）@ PH-7：未决项清空/定版/final+渲染.md
 
-## 规则编目（按规范 ID，由 raw 清册迭代生成，共 218 条）
+## 规则编目（按规范 ID，由 raw 清册迭代生成，共 228 条）
 
 | ID | 标题 | 源位置 | 行 |
 |---|---|---|---|
@@ -36,6 +36,8 @@
 | BLOCK-004 | ? 阻断条件 | raw_roles/hardware-reviewer.md::L406 | 406 |
 | BLOCK-005 | ? 阻断条件 | raw_roles/hardware-reviewer.md::L432 | 432 |
 | BLOCK-006 | ? 阻断条件 | raw_roles/hardware-reviewer.md::L466 | 466 |
+| CL-001 | PH-4↔PH-3 回环 request/resolution 为 JSON、有 | v2_design::PH-4::G4 | 0 |
+| CL-002 | PH-4 不得读原始 EDN/xlsx，仅读 netlist_graph.jso | v2_design::PH-4::G4 | 0 |
 | CT-001 | §4 数据契约 | raw_roles/hardware-reviewer.md::L584 | 584 |
 | CT-002 | §4.0 上下级数据交接总览 | raw_roles/hardware-reviewer.md::L588 | 588 |
 | CT-003 | §4.0a 统一命名规范（合并自 pipeline_rules 规则7） | raw_roles/hardware-reviewer.md::L607 | 607 |
@@ -178,6 +180,14 @@
 | LS-019 | 对每个信号执行 | raw_rules/引脚电平检查方案.md::L192 | 192 |
 | LS-020 | 高风险信号优先检查 | raw_rules/引脚电平检查方案.md::L203 | 203 |
 | LS-021 | 八、批量检查方案（可用脚本实现） | raw_rules/引脚电平检查方案.md::L214 | 214 |
+| MI-001 | manual_index 覆盖 BOM 全部 U* 位号，无手册者须显式 MIS | v2_design::PH-1::G1 | 0 |
+| MI-002 | ic_type ∈ {SINK,PASS_THRU,POWER_SRC,UNVE | v2_design::PH-1::G1 | 0 |
+| MI-003 | 手册检索链：refbook 本地优先 → 未中 Tavily≥2 策略 → 合计 | v2_design::PH-1::G1 | 0 |
+| NG-001 | netlist_graph：devices 覆盖全部 (板,位号)，pins 为 | v2_design::PH-3::G3 | 0 |
+| NG-002 | links 覆盖每个非串联器件引脚（uncovered=0）；纯芯片间网 sid | v2_design::PH-3::G3 | 0 |
+| NG-003 | 跨板仅经 cross_board_links（连接器按脚号一一配对，禁 GND  | v2_design::PH-3::G3 | 0 |
+| NG-004 | 0Ω 两端归 alias_group；差分对 _P/_N 归 diff_pair | v2_design::PH-3::G3 | 0 |
+| NG-005 | dangling_joins=0（每个 join 的位号存在于 devices） | v2_design::PH-3::G3 | 0 |
 | PART-001 | §0 快速导航 (人类阅读) | raw_roles/hardware-reviewer.md::L3 | 3 |
 | PART-002 | §1 角色定义与架构 | raw_roles/hardware-reviewer.md::L14 | 14 |
 | PART-003 | §2 审核流程 | raw_roles/hardware-reviewer.md::L218 | 218 |

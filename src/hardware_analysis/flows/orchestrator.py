@@ -1,13 +1,13 @@
-"""Flow 编排器 — 阶段4（PH-0..7 状态机 + Gate 断点/批次暂停 + checkpoint 人机 + run.log/state）.
+"""Flow 编排器 — 阶段4（v2：新阶段序 PH-0..7 + Gate 断点/批次暂停 + 人机 checkpoint + 中间文件清理）.
 
-硬件_review=确定性 Flow（裁判）：
-  阶段推进 → 跑阶段(s)→ Gate 校验 → PASS 放行 / FAIL 阻断(带原因) / 批次边界暂停等人工。
-分层通过 Act 扩展点接入现场:
-  act_ph1_prep(树)等为确定性现成实现；act_ph2_search/act_ph4_analyze/act_ph5_write/
-  act_ph6_audit 默认 stub(阶段5 注入 agent)，未注入则以 .run 状态记录"待注入"。
+硬件_review=确定性 Flow（裁判）。v2 阶段序（已确认）：
+  PH-0 输入准备 → PH-1 手册检索(由BOM, G1) → PH-2 数据预检Wave0(G2) →
+  PH-3 网表解析/ netlist_graph + 子agent分发(G3) → PH-4 深度分析(只读netlist_graph+复核+回环,G4) →
+  PH-5 报告合成(G5) → PH-6 审计复核(G6) → PH-7 闭环交付(G7)
+中间文件（.run/temp 下带时间戳）即用即清，收尾 cleanup。
 """
 from __future__ import annotations
-import json, subprocess, sys, traceback
+import json, subprocess, sys
 from pathlib import Path
 
 if __package__ in (None, ""):
@@ -17,7 +17,9 @@ from hardware_analysis.config import Config
 from hardware_analysis.workspace.manager import RunWorkspace
 from hardware_analysis.flows.rule_loader import load_stage_bundle
 
-BATCH_BOUNDARY = {"PH-2": "G2", "PH-4": "G4", "PH-6": "G6"}
+# v2：批次暂停点 = 手册缺失确认(PH-1) / 分析批次(PH-4) / 审计(PH-6)
+BATCH_BOUNDARY = {"PH-1": "G1", "PH-4": "G4", "PH-6": "G6"}
+TEMP_PATTERNS = ("*.components.json", "*.nets.json")   # edn_parse 中间产物（带时间戳）
 
 
 class Orchestrator:
@@ -32,6 +34,7 @@ class Orchestrator:
                       "phases": {f"PH-{i}": "PENDING" for i in range(8)},
                       "gates": {f"G{i}": "PENDING" for i in range(1, 8)},
                       "errors": [], "paused": False, "pause_reason": ""}
+        self.auto_pass = False
 
     # ---------- 日志 ----------
     def _log(self, type_, **kw):
@@ -45,113 +48,161 @@ class Orchestrator:
         self.state["gates"][gate] = status
         self.ws.write_state(self.state)
 
-    # ---------- 确定性阶段(现成实现) ----------
-    def _act_ph0(self):
-        w = self.ws.dir
-        step = w / "step_0a.json"
-        if not step.exists():                       # 无手工配置 → 落默认确认文件
-            if self.auto_pass:
-                step.write_text(json.dumps({
-                    "schema_version": "1.0", "kind": "step_0a", "status": "PASS",
-                    "product": self.product, "manual_dir": "storge/refbook",
-                    "extra_checks": [], "raw_user_response": "auto"},
-                    ensure_ascii=False, indent=1), encoding="utf-8")
-            else:
-                step.write_text(json.dumps({
-                    "schema_version": "1.0", "kind": "step_0a", "status": "BLOCKED",
-                    "product": self.product, "manual_dir": "storge/refbook",
-                    "extra_checks": [], "raw_user_response": ""}, ensure_ascii=False, indent=1), encoding="utf-8")
-                self._pause(f"等待人工确认 step_0a（manual_dir/extra_checks）")
+    def _b(self, *parts) -> Path:
+        return self.ws.dir / "B_prep" / Path(*parts)
 
+    # ---------- PH-0 输入准备 ----------
+    def _act_ph0(self):
+        step = self.ws.dir / "step_0a.json"
+        if step.exists():
+            return
+        status = "PASS" if self.auto_pass else "BLOCKED"
+        step.write_text(json.dumps({
+            "schema_version": "1.0", "kind": "step_0a", "status": status,
+            "product": self.product, "manual_dir": "storge/refbook",
+            "extra_checks": [], "raw_user_response": "auto" if self.auto_pass else ""},
+            ensure_ascii=False, indent=1), encoding="utf-8")
+        if not self.auto_pass:
+            self._pause("等待人工确认 step_0a（manual_dir/extra_checks）")
+
+    # ---------- PH-1 手册检索（由 BOM 清单） ----------
     def _act_ph1(self):
-        """PH-1 网表解析: 逐 EDN → 全局合并 → 信号链 → BOM → 位号映射。"""
+        boms = (sorted(self.input_dir.glob("*.xlsx")) + sorted(self.input_dir.glob("*.XLSX"))
+                + sorted(self.input_dir.glob("*.docx")) + sorted(self.input_dir.glob("*.DOCX"))
+                + sorted(self.input_dir.glob("*.xls")) + sorted(self.input_dir.glob("*.doc")))
+        if not boms:
+            raise RuntimeError(f"project/{self.product} 下无 BOM 输入（xlsx/docx）")
+        self._r(f"bom_parse {' '.join(map(str, boms))} --out {self._b('bom_entries.json')}")
+        self._r(f"manual_index {self._b('bom_entries.json')} --out {self._b('manual_index.json')} "
+                f"--refbook storge/refbook --product {self.product}")
+        self._log("ph1_done", boms=[b.name for b in boms])
+        self._ic_type_llm()      # LLM 判定 ic_type 并回写 manual_index.json（mock 走 SINK）
+
+    def _ic_type_llm(self):
+        """对 manual_index 中每颗唯一 IC 判定 ic_type（SINK/PASS_THRU/POWER_SRC）。"""
+        from hardware_analysis.agents.direct import llm_json
+        from hardware_analysis.models.contracts import GateResult
+        p = self._b("manual_index.json")
+        if not p.exists():
+            return
+        mi = json.loads(p.read_text(encoding="utf-8"))
+        seen = set()
+        for key, e in mi.get("entries", {}).items():
+            if e.get("ic_type", "UNKNOWN") != "UNKNOWN" or e["model"] in seen:
+                continue
+            seen.add(e["model"])
+            try:
+                obj, errs, sec = llm_json("hw_search",
+                    f"判定 IC 型号 {e['model']} 的类型：SINK(信号落点)/PASS_THRU(电平转换/收发器,需给出通道)"
+                    f"/POWER_SRC(电源源)。手册路径={e.get('manual_path')}。"
+                    f"只输出 ic_type 与 channels。", GateResult)
+                t = "SINK"
+                if obj and getattr(obj, "gate", ""):
+                    t = obj.gate if obj.gate in ("SINK", "PASS_THRU", "POWER_SRC") else t
+            except Exception:
+                t = "SINK"
+            self._log("ic_type", model=e["model"], ic_type=t)
+        # 回写（同一型号统一）
+        by_model = {}
+        for key, e in mi.get("entries", {}).items():
+            by_model.setdefault(e["model"], "SINK")
+        for key, e in mi.get("entries", {}).items():
+            if e.get("ic_type", "UNKNOWN") == "UNKNOWN":
+                e["ic_type"] = by_model.get(e["model"], "SINK")
+        p.write_text(json.dumps(mi, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    # ---------- PH-2 数据预检（Wave0，确定性；门禁 G2 在 run 中校验） ----------
+    def _act_ph2(self):
+        self._log("ph2_done", note="Wave0 确定性预检，见 gates/G2.json")
+
+    # ---------- PH-3 网表解析（netlist_graph + 子 agent 分发） ----------
+    def _act_ph3(self):
         edns = sorted(self.input_dir.glob("*.EDN")) + sorted(self.input_dir.glob("*.edn"))
         if not edns:
             raise RuntimeError(f"project/{self.product} 下无 EDN 输入")
-        temp = self.ws.dir / ".run" / "temp"
+        temp = self.ws.temp
         temp.mkdir(parents=True, exist_ok=True)
         for e in edns:
             self._r(f"edn_parse {e} --out {temp}")
             self._log("edn_parsed", file=e.name)
         self._r(f"edn_global_merge {temp} {self.ws.dir / 'B_prep'}")
-        boms = sorted(self.input_dir.glob("*.xlsx")) + sorted(self.input_dir.glob("*.XLSX"))
-        if boms:
-            self._r(f"bom_parse {' '.join(map(str, boms))} --out {self.ws.dir / 'B_prep' / 'bom_entries.json'}")
+        self.cleanup_temp()                       # 即用即清：合并后删中间文件
         self._r(f"refdes_map {self.ws.dir / 'B_prep'}")
         self._r(f"tracer {self.ws.dir / 'B_prep'}")
-        self._log("ph1_done", edns=[e.name for e in edns])
+        self._r(f"netlist_graph {self.ws.dir / 'B_prep'} --groups 3 --product {self.product}")
+        self._log("ph3_done", edns=[e.name for e in edns])
 
-    def _act_ph3(self):
-        """PH-3 数据预检(确定性)。"""
-        self._r(f"gate_validators G3 {self.ws.dir}")
-        self._log("ph3_done")
-
-    # ---------- agent 阶段（direct.llm_json 短 prompt；HARDWARE_MOCK=1 可快速验证） ----------
-    def _act_ph2(self):
-        from hardware_analysis.agents.direct import llm_json
-        from hardware_analysis.models.contracts import G0Sources
-        b = self.ws.dir / "B_prep" / "refdes_function_map.json"
-        ics = []
-        if b.exists():
-            d = json.loads(b.read_text(encoding="utf-8"))
-            ics = [c for c in d["components"] if c.get("identity", {}).get("model")
-                   and c["refdes"][:1] == "U"][:4]
-        for c in ics:
-            rd, mdl = c["refdes"], c["identity"]["model"]
-            prompt = f"为 IC {rd}({mdl}) 检索手册：本地 refbook 模糊匹配优先，未命中→Tavily≥2 策略，命中存档 storge/datasheet。输出 g0_sources，ics 键={rd}，字段 model/ic_type/manual_path(无则null)/status(FOUND/FOUND_PARTIAL/TRULY_MISSING/MISSING/UNVERIFIED)/attempted_sources[2]"
-            obj, errs, sec = llm_json("hw_search", prompt, G0Sources)
-            self._log("icon_ok" if obj else "icon_err", refdes=rd, sec=sec,
-                      err=("；".join(errs)[:120] if not obj else ""),
-                      brief=str(obj.ics) if obj else "")
-
+    # ---------- PH-4 深度分析（只读 netlist_graph.json + 复核 + 回环） ----------
     def _act_ph4(self):
         from hardware_analysis.agents.direct import llm_json
-        from hardware_analysis.models.contracts import SummaryDoc
-        b = self.ws.dir / "B_prep" / "refdes_function_map.json"
-        comps = []
-        if b.exists():
-            comps = json.loads(b.read_text(encoding="utf-8"))["components"][:2]
+        from hardware_analysis.models.contracts import SummaryDoc, EvidenceDoc, Finding
+        g = self._b("netlist_graph.json")
+        if not g.exists():
+            raise RuntimeError("PH-4 需要 netlist_graph.json（PH-3 未产出）")
+        doc = json.loads(g.read_text(encoding="utf-8"))
+        ics = [d for d in doc["devices"] if d["kind"] == "IC" and d["source"].get("populated")]
         e = self.ws.dir / "E_analyze"; e.mkdir(exist_ok=True)
-        for c in comps:
-            rd = c["refdes"]
-            prompt = (f"分析 {rd}({c['identity']['model'] or '?'}): 引脚/VCCIO/供电/外围各维独立结论，"
-                      f"五级判定(CRITICAL/WARNING/OK/INFERRED/UNVERIFIED)，证据带 EDN 行号/手册页码；"
-                      f"输出 summary(§4.3): section/scope/checks_count/findings[](check,status,detail≤80字)/"
-                      f"tables[]/narrative{{}}/critical/warning/unverified+items")
-            obj, errs, sec = llm_json("hw_analyze", prompt, SummaryDoc)
+        notes = self.ws.dir / "E_analyze" / "clarify_requests.jsonl"
+        for d in ics:
+            # slice：本 IC + 相关 nets/paths + 手册前置
+            slice_ = {"task": "analyze_ic", "device": d,
+                      "paths": [p for p in doc["paths"] if any(d["refdes"] in ep for ep in p["endpoint_pins"])][:20],
+                      "manual": d.get("ic", {}).get("manual_path")}
+            obj, errs, sec = llm_json("hw_analyze",
+                f"分析 IC {d['id']}({d['model']})：引脚/VCCIO/供电/外围；并**复核** tracer 判定 "
+                f"ic_type={d['ic'].get('ic_type')} 是否正确；输出 summary(§4.3)。输入切片:"
+                + json.dumps(slice_, ensure_ascii=False)[:2000], SummaryDoc)
             if obj:
-                (e / f"{rd}_summary.json").write_text(
+                (e / f"{d['refdes']}_summary.json").write_text(
                     json.dumps(obj.model_dump(), ensure_ascii=False, indent=1), encoding="utf-8")
-            self._log("icon_ok" if obj else "icon_err", refdes=rd, kind="analyze", sec=sec,
-                      err=("；".join(errs)[:120] if not obj else ""))
+                # evidence 契约（§4.2）：findings + coverage
+                n_pin = len(d.get("pins", {}))
+                ev = EvidenceDoc(
+                    kind="evidence", evidence_type="ic_analysis",
+                    producer={"agent": "hw_analyze", "task_id": d["id"]},
+                    coverage={"target": d["id"], "items_expected": n_pin,
+                              "items_checked": min(len(obj.findings), n_pin),
+                              "fill_rate": round(min(len(obj.findings), n_pin) / max(n_pin, 1), 3)},
+                    findings=[Finding(severity=f.status, object=d["id"], result=f.detail,
+                                      source_refs=[f"netlist_graph::{d['id']}"])
+                              for f in obj.findings])
+                (e / f"{d['refdes']}_evidence.json").write_text(
+                    ev.model_dump_json(exclude_none=True, indent=1), encoding="utf-8")
+            self._log("icon_ok" if obj else "icon_err", refdes=d["refdes"], kind="analyze", sec=sec,
+                      err=("" if obj else "；".join(errs)[:100]))
 
+    # ---------- PH-5 报告合成 ----------
     def _act_ph5(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import ReportDoc
         e = self.ws.dir / "E_analyze"
-        sums = {p.stem: json.loads(p.read_text(encoding="utf-8"))
-                for p in e.glob("*_summary.json")}
+        sums = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in e.glob("*_summary.json")}
         obj, errs, sec = llm_json("hw_write",
-            "汇总 summary 为 report：findings[](check,status,detail)/tables[](title,columns,rows完整不截断)/narrative{}" + (
-            "；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"), ReportDoc)
+            "汇总 summary 为 report：findings[](check,status,detail)/tables[](title,columns,rows完整不截断)"
+            "/narrative{}" + ("；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"),
+            ReportDoc)
         f = self.ws.dir / "F_report"; f.mkdir(exist_ok=True)
         (f / "report.json").write_text(json.dumps(
             obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
             ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("write_done", sec=sec, ok=obj is not None)
 
+    # ---------- PH-6 审计 ----------
     def _act_ph6(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import GateResult
         obj, errs, sec = llm_json("hw_auditor",
-            "对 evidence/report 执行 SA-1..8 自审+证据链核对，只审不改。输出 GateResult(gate=G6,status,PASS/FAIL,checks[])", GateResult)
+            "对 evidence/report 执行 SA-1..8 自审+证据链核对，只审不改。输出 GateResult(gate=G6,status,checks[])",
+            GateResult)
         f = self.ws.dir / "F_audit"; f.mkdir(exist_ok=True)
         (f / "audit.json").write_text(json.dumps(
             obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
             ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("audit_done", sec=sec, ok=obj is not None)
 
-    def _act_ph7(self):  self._log("ph7_done")
+    # ---------- PH-7 闭环交付 ----------
+    def _act_ph7(self):
+        self._log("ph7_done")
 
     # ---------- 基础设施 ----------
     def _r(self, cmd: str):
@@ -163,17 +214,18 @@ class Orchestrator:
             raise RuntimeError(f"tool {cmd} exit={p.returncode}: {p.stderr[-200:]}")
         self._log("tool_ok", cmd=cmd)
 
+    def cleanup_temp(self) -> int:
+        return self.ws.clean_temp(TEMP_PATTERNS, keep_dir=True)
+
     def _pause(self, reason: str):
         self._set("paused", True); self._set("pause_reason", reason)
         self._log("human_block", reason=reason)
 
     def _gate(self, gate: str, fn):
         r = fn()
-        (self.ws.dir / "gates" / f"{gate}.json").write_text(
-            r.model_dump_json(indent=1), encoding="utf-8")
+        (self.ws.dir / "gates" / f"{gate}.json").write_text(r.model_dump_json(indent=1), encoding="utf-8")
         self._set_gate(gate, r.status.value)
-        self._log(f"gate_{'passed' if r.status.value == 'PASS' else 'failed'}", gate=gate,
-                  summary=r.summary)
+        self._log(f"gate_{'passed' if r.status.value == 'PASS' else 'failed'}", gate=gate, summary=r.summary)
         if r.status.value != "PASS":
             self._set("errors", self.state["errors"] + [f"{gate} FAIL"])
             return False
@@ -182,20 +234,18 @@ class Orchestrator:
     # ---------- 主流程 ----------
     def run(self, auto_pass_gates=False):
         self.auto_pass = auto_pass_gates
+        from hardware_analysis.tools import gate_validators as gv
         try:
             self.ws.create()
             self._set("current", "PH-0"); self.state["phases"]["PH-0"] = "RUNNING"
             self._act_ph0()
-            if not self._resume_or_pause("PH-1"):
-                return self.state
             self.state["phases"]["PH-0"] = "DONE"
             for ph, act, gate, gatefn in [
-                ("PH-1", self._act_ph1, "G1", lambda: __import__(
-                    "hardware_analysis.tools.gate_validators", fromlist=["x"]).validate_prep(self.ws.dir / "B_prep")),
-                ("PH-2", self._act_ph2, None, None),
-                ("PH-3", self._act_ph3, None, None),
-                ("PH-4", self._act_ph4, None, None),
-                ("PH-5", self._act_ph5, None, None),
+                ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_index(self._b())),
+                ("PH-2", self._act_ph2, "G2", lambda: gv.validate_bom(self._b())),
+                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_netlist(self._b())),
+                ("PH-4", self._act_ph4, "G4", lambda: gv.validate_evidence(self.ws.dir / "E_analyze")),
+                ("PH-5", self._act_ph5, "G5", lambda: gv.validate_report(self.ws.dir / "F_report")),
                 ("PH-6", self._act_ph6, None, None),
                 ("PH-7", self._act_ph7, None, None),
             ]:
@@ -214,14 +264,16 @@ class Orchestrator:
             self._set("current", f"ERROR:{type(e).__name__}")
             self.state["errors"].append(str(e))
             self._log("error", msg=str(e))
+        finally:
+            self.cleanup_temp()                   # 最终也清理中间文件
             self._set("errors", self.state["errors"])
         return self.state
 
     def _resume_or_pause(self, nxt):
-        if getattr(self, "auto_pass", False):
+        if self.auto_pass:
             self._log("batch_auto_continue", at=self.state["current"])
             return True
-        self._set("paused", True); self._set("pause_reason", f"批次边界，等待人工确认继续")
+        self._set("paused", True); self._set("pause_reason", "批次边界，等待人工确认继续")
         self._log("batch_pause", at=self.state["current"])
         return False
 

@@ -25,7 +25,8 @@ def main() -> None:
 
     # 按板拆 BOM
     bom_by_board: dict[str, dict] = {}
-    for rd, b in bom.items():
+    for _k, b in bom.items():
+        rd = b.get("refdes") or _k.split("::")[-1]
         bom_by_board.setdefault(b.get("board", "X"), {})[rd] = b
 
     components, dnp_list, bom_only_list = [], [], []
