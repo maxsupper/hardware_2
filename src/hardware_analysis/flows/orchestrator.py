@@ -86,11 +86,71 @@ class Orchestrator:
         self._r(f"gate_validators G3 {self.ws.dir}")
         self._log("ph3_done")
 
-    # ---------- 阶段5 注入点(默认 stub) ----------
-    def _act_ph2(self):  self._log("ph2_stub", note="hw_search agent 待阶段5注入")
-    def _act_ph4(self):  self._log("ph4_stub", note="hw_analyze agent 待阶段5注入")
-    def _act_ph5(self):  self._log("ph5_stub", note="hw_write agent 待阶段5注入")
-    def _act_ph6(self):  self._log("ph6_stub", note="hw_auditor agent 待阶段5注入")
+    # ---------- agent 阶段（direct.llm_json 短 prompt；HARDWARE_MOCK=1 可快速验证） ----------
+    def _act_ph2(self):
+        from hardware_analysis.agents.direct import llm_json
+        from hardware_analysis.models.contracts import G0Sources
+        b = self.ws.dir / "B_prep" / "refdes_function_map.json"
+        ics = []
+        if b.exists():
+            d = json.loads(b.read_text(encoding="utf-8"))
+            ics = [c for c in d["components"] if c.get("identity", {}).get("model")
+                   and c["refdes"][:1] == "U"][:4]
+        for c in ics:
+            rd, mdl = c["refdes"], c["identity"]["model"]
+            prompt = f"为 IC {rd}({mdl}) 检索手册：本地 refbook 模糊匹配优先，未命中→Tavily≥2 策略，命中存档 storge/datasheet。输出 g0_sources，ics 键={rd}，字段 model/ic_type/manual_path(无则null)/status(FOUND/FOUND_PARTIAL/TRULY_MISSING/MISSING/UNVERIFIED)/attempted_sources[2]"
+            obj, errs, sec = llm_json("hw_search", prompt, G0Sources)
+            self._log("icon_ok" if obj else "icon_err", refdes=rd, sec=sec,
+                      err=("；".join(errs)[:120] if not obj else ""),
+                      brief=str(obj.ics) if obj else "")
+
+    def _act_ph4(self):
+        from hardware_analysis.agents.direct import llm_json
+        from hardware_analysis.models.contracts import SummaryDoc
+        b = self.ws.dir / "B_prep" / "refdes_function_map.json"
+        comps = []
+        if b.exists():
+            comps = json.loads(b.read_text(encoding="utf-8"))["components"][:2]
+        e = self.ws.dir / "E_analyze"; e.mkdir(exist_ok=True)
+        for c in comps:
+            rd = c["refdes"]
+            prompt = (f"分析 {rd}({c['identity']['model'] or '?'}): 引脚/VCCIO/供电/外围各维独立结论，"
+                      f"五级判定(CRITICAL/WARNING/OK/INFERRED/UNVERIFIED)，证据带 EDN 行号/手册页码；"
+                      f"输出 summary(§4.3): section/scope/checks_count/findings[](check,status,detail≤80字)/"
+                      f"tables[]/narrative{{}}/critical/warning/unverified+items")
+            obj, errs, sec = llm_json("hw_analyze", prompt, SummaryDoc)
+            if obj:
+                (e / f"{rd}_summary.json").write_text(
+                    json.dumps(obj.model_dump(), ensure_ascii=False, indent=1), encoding="utf-8")
+            self._log("icon_ok" if obj else "icon_err", refdes=rd, kind="analyze", sec=sec,
+                      err=("；".join(errs)[:120] if not obj else ""))
+
+    def _act_ph5(self):
+        from hardware_analysis.agents.direct import llm_json
+        from hardware_analysis.models.contracts import ReportDoc
+        e = self.ws.dir / "E_analyze"
+        sums = {p.stem: json.loads(p.read_text(encoding="utf-8"))
+                for p in e.glob("*_summary.json")}
+        obj, errs, sec = llm_json("hw_write",
+            "汇总 summary 为 report：findings[](check,status,detail)/tables[](title,columns,rows完整不截断)/narrative{}" + (
+            "；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"), ReportDoc)
+        f = self.ws.dir / "F_report"; f.mkdir(exist_ok=True)
+        (f / "report.json").write_text(json.dumps(
+            obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
+            ensure_ascii=False, indent=1), encoding="utf-8")
+        self._log("write_done", sec=sec, ok=obj is not None)
+
+    def _act_ph6(self):
+        from hardware_analysis.agents.direct import llm_json
+        from hardware_analysis.models.contracts import GateResult
+        obj, errs, sec = llm_json("hw_auditor",
+            "对 evidence/report 执行 SA-1..8 自审+证据链核对，只审不改。输出 GateResult(gate=G6,status,PASS/FAIL,checks[])", GateResult)
+        f = self.ws.dir / "F_audit"; f.mkdir(exist_ok=True)
+        (f / "audit.json").write_text(json.dumps(
+            obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
+            ensure_ascii=False, indent=1), encoding="utf-8")
+        self._log("audit_done", sec=sec, ok=obj is not None)
+
     def _act_ph7(self):  self._log("ph7_done")
 
     # ---------- 基础设施 ----------

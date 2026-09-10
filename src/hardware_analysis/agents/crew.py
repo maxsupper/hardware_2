@@ -1,12 +1,10 @@
-"""CrewAI Agent/任务 接线 — 阶段5.
+"""CrewAI Agent/任务 接线 — 阶段5（v2：自身归一化 + 契约校验，绕开慢速修复循环）.
 
-角色从 roles/*.yaml 生成 Agent（模型=config spark-dsv4）；
-任务携带 assembled prompt（规则束+输入+契约），输出用 output_pydantic 强制 JSON；
-task_callback/step_callback 写入 run.log.jsonl（供 web SSE 与 agent 计数）。
+流程: 角色/任务组装 → Crew kickoff 得原始文本 → normalize_output 确定性归一
+      (JSON提取/枚举对齐/空值规范) → Pydantic 契约校验 → 产物 JSON。
 """
 from __future__ import annotations
-import json, sys
-from datetime import datetime, timezone
+import json, re, sys
 from pathlib import Path
 
 if __package__ in (None, ""):
@@ -24,50 +22,95 @@ CONTRACT_MODEL = {
     "hw_write": ReportDoc, "hw_auditor": GateResult,
 }
 
+# 枚举宽容映射（模型偶尔用 raw 原词变小写/带空格）
+ENUM_RESOLVE = {"found_partial": "FOUND_PARTIAL", "truly_missing": "TRULY_MISSING",
+                "warning": "WARNING", "critical": "CRITICAL", "unverified": "UNVERIFIED",
+                "inferred": "INFERRED", "definite": "DEFINITE", "likely": "LIKELY",
+                "uncertain": "UNCERTAIN", "unknown": "UNKNOWN"}
+
+
+def _extract_json(text: str):
+    """从模型输出提取首个完整 JSON 对象（容忍 markdown 围栏/前后噪音）。"""
+    t = text.strip()
+    t = re.sub(r"^```(?:json)?\s*|```\s*$", "", t, flags=re.M)
+    st, en, depth, in_str = -1, -1, 0, False
+    for i, c in enumerate(t):
+        if c == '"' and (i == 0 or t[i-1] != "\\"):
+            in_str = not in_str
+        if in_str:
+            continue
+        if c == "{":
+            if depth == 0:
+                st = i
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                en = i
+                break
+    if st < 0 or en <= st:
+        raise ValueError("未找到 JSON 对象")
+    return json.loads(t[st:en+1])
+
+
+def _norm(v):
+    if isinstance(v, dict):
+        return {k: _norm(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_norm(x) for x in v]
+    if isinstance(v, str):
+        s = v.strip()
+        low = s.lower().replace("-", "_").replace(" ", "_")
+        if low in ENUM_RESOLVE:
+            return ENUM_RESOLVE[low]
+        if low in ("", "null", "none", "n_a", "na"):
+            return None
+        return s
+    if v is None:
+        return None
+    return v
+
+
+def normalize_output(model_cls, raw_text: str):
+    """归一化并契约化校验；返回 (pydantic_obj, errors) 。"""
+    obj = _extract_json(raw_text)
+    obj = _norm(obj)
+    try:
+        return model_cls.model_validate(obj), []
+    except Exception as e:
+        return None, [str(e)[:200]]
+
 
 def make_agent(name: str, cfg: Config | None = None):
     cfg = cfg or Config()
     role = yaml.safe_load((Path("roles") / f"{name}.yaml").read_text(encoding="utf-8"))
-    llm = __import__("crewai", fromlist=["LLM"]).LLM(
-        model=f"openai/{cfg.llm['models'].get(role.get('model','flash'))}",
-        base_url=cfg.llm["baseUrl"], api_key=cfg.llm_api_key, temperature=0, timeout=180)
-    return __import__("crewai", fromlist=["Agent"]).Agent(
-        role=role["role"], goal=role["goal"], backstory=role["backstory"],
-        llm=llm, allow_delegation=False, verbose=False)
+    crewai = __import__("crewai", fromlist=["LLM"])
+    llm = crewai.LLM(model=f"openai/{cfg.llm['models'].get(role.get('model', 'flash'))}",
+                     base_url=cfg.llm["baseUrl"], api_key=cfg.llm_api_key,
+                     temperature=0, timeout=120)
+    return crewai.Agent(role=role["role"], goal=role["goal"], backstory=role["backstory"],
+                        llm=llm, allow_delegation=False, verbose=False)
 
 
-def make_task(agent_name: str, stage: str, inputs: list[str], ws, on_event=None,
-              output_model=None, cfg: Config | None = None, tools=None):
+def make_task(agent_name: str, stage: str, inputs: list[str], ws, cfg: Config | None = None, tools=None):
+    """任务：description=组装提示词；输出为原始文本（不用内置 pydantic 以免慢修复）。"""
     cfg = cfg or Config()
     p = assembler(agent_name, stage, inputs, cfg=cfg)
     agent = make_agent(agent_name, cfg)
     crewai = __import__("crewai", fromlist=["Task"])
-
-    def cb(task_output):
-        ev = {"type": "task_completed", "phase": stage, "agent": agent_name,
-              "status": getattr(task_output, "output_format", "json") if hasattr(task_output, "output_format") else "done",
-              "token": str(getattr(getattr(task_output, "token_usage", None), "total_tokens", ""))}
-        ws.log(ev)
-        if on_event:
-            on_event(ev)
-
-    return crewai.Task(
-        description=p["prompt"],
-        expected_output=CONTRACT_DESC.get(agent_name, "JSON"),
-        agent=agent,
-        output_pydantic=output_model or CONTRACT_MODEL.get(agent_name),
-        callback=cb,
-        max_retry_limit=2,
-        tools=tools or [],
-    )
+    return crewai.Task(description=p["prompt"], expected_output=CONTRACT_DESC.get(agent_name, "JSON"),
+                       agent=agent, max_retry_limit=1, tools=tools or [])
 
 
-def run_crew(tasks, ws, cfg: Config | None = None, budget_tokens: int | None = None):
-    """顺序跑一组任务，全部呼到 Crew.kickoff()；返回各任务输出。"""
-    crewai = __import__("crewai", fromlist=["Crew"])
+def run_crew(tasks, ws, cfg: Config | None = None):
+    """顺序跑 Crew，返回各任务 (输出字符串)。不克隆内置契约校验。"""
+    crewai = __import__("crewai", fromlist=["Crew", "Process"])
     crew = crewai.Crew(agents=[t.agent for t in tasks], tasks=tasks,
-                       process=__import__("crewai", fromlist=["Process"]).Process.sequential,
-                       output_log_file=str(ws.dir / ".run" / "crew_log.json"),
-                       verbose=False)
+                       process=crewai.Process.sequential, verbose=False)
     res = crew.kickoff()
-    return res
+    outs = [o.raw if hasattr(o, "raw") else str(o) for o in res.tasks_output]
+    # 记录事件（web）
+    ev = {"type": "task_completed", "phase": getattr(tasks[0], "_phase", "PH"),
+          "agent": tasks[0].agent.role, "status": "done", "n_tasks": len(tasks)}
+    ws.log(ev)
+    return outs

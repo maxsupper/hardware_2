@@ -35,8 +35,10 @@ class GateStatus(str, Enum):
 
 class ManualStatus(str, Enum):
     FOUND = "FOUND"
-    PARTIAL = "PARTIAL"
+    PARTIAL = "PARTIAL"             # 兼容
+    FOUND_PARTIAL = "FOUND_PARTIAL"  # raw §2.4 词表
     MISSING = "MISSING"
+    TRULY_MISSING = "TRULY_MISSING"  # raw §2.4 词表
     UNVERIFIED = "UNVERIFIED"
 
 
@@ -76,7 +78,7 @@ class IcEntry(BaseModel):
     refdes: str = ""          # 冗余字段：dict 键即 refdes，可缺省
     model: str
     ic_type: str = ""
-    manual_path: str = ""
+    manual_path: Optional[str] = None
     status: ManualStatus = ManualStatus.MISSING
     attempted_sources: list[str] = Field(default_factory=list)
 
