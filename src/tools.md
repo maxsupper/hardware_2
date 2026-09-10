@@ -40,4 +40,25 @@
 - 副作用 : 写 .run/run.log.jsonl 与 .run/run.state.json；幂等追问追加
 
 ---
+## [T-EDN-MERGE] edn_global_merge
+- 模块   : src/hardware_analysis/tools/edn_global_merge.py
+- 功能   : 多 EDN per-file 全局合并（元件按refdes、网络按网名）+ 跨板检测 + 信号链（沿透明器件）
+- 输入   : input_dir(per-file *.components/nets.json)；out_dir
+- 输出   : global_components.json / global_nets.json / cross_board_nets.json / signal_chains.json / merge_report.json
+- 已验证 : FL-25-E-MR203 A+B → 716 元件 / 692 net / 110 跨板 / 472 链
+
+## [T-BOM-PARSE] bom_parse
+- 模块   : src/hardware_analysis/tools/bom_parse.py
+- 功能   : BOM(xlsx) 解析（自动选表跳过变更单、表头模糊映射、位号逗号展开）
+- 输入   : bom.xlsx...(一或多个)；--out 输出路径
+- 输出   : bom_entries.json（refdes→{name,mfg_model,mfg,package,qty,grade,note,bom_row}）
+- 已验证 : 双 xlsx → 365 位号（A板U6=EG4X20BG256I8 等真实数据）
+
+## [T-REFDES-MAP] refdes_map
+- 模块   : src/hardware_analysis/tools/refdes_map.py
+- 功能   : 位号↔BOM↔功能映射（EDN×BOM 按 refdes 合并；function/manual 留待 E 阶段渐进填充）
+- 输入   : B_prep 目录（global_components.json + bom_entries.json）
+- 输出   : refdes_function_map.json（identity/provenance/index/stats/conflicts）
+- 已验证 : 776 位号 / 双源一致 305 / 型号冲突 0
+
 新增工具登记：在此追加 [T-xxx] 块（功能/输入/输出/副作用）。

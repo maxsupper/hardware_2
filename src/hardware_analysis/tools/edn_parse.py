@@ -82,6 +82,18 @@ def walk(trees: list, name: str, acc: list):
             walk(t[1:], name, acc)
 
 
+def _first_leaf(node) -> str:
+    """取嵌套结构里第一个字符串叶子（处理如 ['PWRCTRL3'] 的列表引脚名）。"""
+    if isinstance(node, str):
+        return node
+    if isinstance(node, list):
+        for it in node:
+            v = _first_leaf(it)
+            if v:
+                return v
+    return ""
+
+
 def extract(file_text: str) -> dict:
     toks = sexpr_tokenize(file_text)
     tree = parse_tree(toks)
@@ -94,27 +106,27 @@ def extract(file_text: str) -> dict:
     for inst in instances:
         # (instance REFDES (viewRef NetlistView (cellType generic))
         #           (cellRef NAME (libraryRef LIB)))
-        refdes = inst[1] if len(inst) > 1 else ""
+        refdes = _first_leaf(inst[1]) if len(inst) > 1 else ""
         name = ""
         for sub in inst[2:]:
             if isinstance(sub, list) and _first_field(sub) == "cellRef" and len(sub) > 1:
-                name = sub[1]
+                name = _first_leaf(sub[1])
         comps[refdes] = {"refdes": refdes, "model": name, "cell": ""}
 
     net_list = []
     for net in nets:
         # (net NAME (joined (portRef PIN (instanceRef REFDES)) ...))
-        netname = net[1] if len(net) > 1 else ""
+        netname = _first_leaf(net[1]) if len(net) > 1 else ""
         joined = []
         for sub in net[2:]:
             if isinstance(sub, list) and _first_field(sub) == "joined":
                 for pr in sub[1:]:
                     if isinstance(pr, list) and _first_field(pr) == "portRef":
-                        pin = pr[1] if len(pr) > 1 else ""
+                        pin = _first_leaf(pr[1]) if len(pr) > 1 else ""
                         refdes = ""
                         for j in pr[2:]:
                             if isinstance(j, list) and _first_field(j) == "instanceRef" and len(j) > 1:
-                                refdes = j[1]
+                                refdes = _first_leaf(j[1])
                         joined.append({"refdes": refdes, "pin": pin})
         net_list.append({"net": netname, "joins": joined})
 
