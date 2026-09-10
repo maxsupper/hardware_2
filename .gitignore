@@ -1,0 +1,30 @@
+# ---- 密钥 / 本地配置 ----
+config.json
+.env
+*.key
+.credentials
+
+# ---- 用户资料库 / 下载存档（不入库）----
+storge/refbook/
+storge/datasheet/
+storge/problem/
+
+# ---- 运行期生成产物 ----
+storge/project/
+.run/
+*.log
+
+# ---- 输入工程文件（真实 EDN/BOM，量大且可能涉密，不入库）----
+project/*.EDN
+project/*.edn
+project/*.xlsx
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# ---- 杂项 ----
+.DS_Store
