@@ -1,0 +1,130 @@
+"""FastAPI web 后端 — 阶段7.
+
+功能: 上传 EDN/BOM → 启动审查(子进程) → 状态/日志实时 → 门禁可见 → 人工回执。
+前端: web/html|css|src 静态托管；数据: 读 run.log.jsonl/run.state.json/产物。
+"""
+from __future__ import annotations
+import json, os, re, subprocess, sys, uuid, time
+from pathlib import Path
+
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+
+BASEDIR = Path(__file__).resolve().parents[1]
+PROJECT_DIR = BASEDIR / "project"
+PRODUCTS_DIR = BASEDIR / "storge" / "project"
+WEB = BASEDIR / "web"
+
+app = FastAPI(title="硬件审查台")
+app.mount("/css", StaticFiles(directory=WEB / "css"), name="css")
+app.mount("/src", StaticFiles(directory=WEB / "src"), name="src")
+app.mount("/html", StaticFiles(directory=WEB / "html"), name="html")
+
+RUNS: dict[str, dict] = {}  # run_id -> {product, state} 进程跟踪
+
+
+def _safe_name(name: str) -> str:
+    return re.sub(r"[^0-9A-Za-z_\-\.]", "_", name)
+
+
+@app.get("/", response_class=HTMLResponse)
+def index():
+    return (WEB / "html" / "index.html").read_text(encoding="utf-8")
+
+
+@app.get("/api/runs")
+def list_runs():
+    runs = []
+    for p in sorted(PRODUCTS_DIR.glob("*")):
+        if not p.is_dir():
+            continue
+        st = p / ".run" / "run.state.json"
+        state = json.loads(st.read_text(encoding="utf-8")) if st.exists() else {}
+        runs.append({"product": p.name, "current": state.get("current", "IDLE"),
+                     "paused": state.get("paused", False), "pause_reason": state.get("pause_reason", "")})
+    return runs
+
+
+@app.post("/api/upload")
+async def upload(product: str = Form(...), files: list[UploadFile] = File(...)):
+    name = _safe_name(product)
+    d = PROJECT_DIR / name
+    d.mkdir(parents=True, exist_ok=True)
+    saved = []
+    for f in files:
+        p = d / f.filename
+        p.write_bytes(await f.read())
+        saved.append(f.filename)
+    return {"product": name, "saved": saved}
+
+
+@app.post("/api/start")
+def start(product: str = Form(...), auto_pass: bool = Form(False)):
+    name = _safe_name(product)
+    src = "src"
+    env = os.environ.copy()
+    env["PYTHONPATH"] = src
+    cmd = [sys.executable, "-m", "hardware_analysis.cli", "run", "--product", name]
+    if auto_pass:
+        cmd.append("--auto-pass")
+    run_id = uuid.uuid4().hex[:8]
+    # 后台子进程
+    logf = open(PRODUCTS_DIR / name / ".run" / "run.log.jsonl", "a", encoding="utf-8")
+    proc = subprocess.Popen(cmd, cwd=BASEDIR, env=env, stdout=logf, stderr=subprocess.STDOUT,
+                            start_new_session=True)
+    RUNS[run_id] = {"product": name, "pid": proc.pid}
+    return {"run_id": run_id, "pid": proc.pid, "product": name}
+
+
+@app.get("/api/state/{product}")
+def state(product: str):
+    name = _safe_name(product)
+    st = PRODUCTS_DIR / name / ".run" / "run.state.json"
+    if not st.exists():
+        return {"product": name, "current": "IDLE"}
+    return json.loads(st.read_text(encoding="utf-8"))
+
+
+@app.get("/api/logs/{product}")
+def logs(product: str, after: int = 0, n: int = 200):
+    name = _safe_name(product)
+    p = PRODUCTS_DIR / name / ".run" / "run.log.jsonl"
+    if not p.exists():
+        return {"events": [], "next": 0}
+    lines = p.read_text(encoding="utf-8", errors="replace").splitlines()
+    ev = [json.loads(l) for l in lines[after:after + n] if l.strip()]
+    return {"events": ev, "next": after + len(ev), "total": len(lines)}
+
+
+@app.get("/api/gates/{product}")
+def gates(product: str):
+    name = _safe_name(product)
+    gd = PRODUCTS_DIR / name / "gates"
+    out = {}
+    for f in sorted(gd.glob("G*.json")):
+        try:
+            out[f.stem] = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return out
+
+
+@app.post("/api/human/confirm")
+def human_confirm(payload: dict):
+    """人工回执：写 g2_confirm.json / 批次继续信号，供 Flow checkpoint 恢复。"""
+    product = _safe_name(payload.get("product", ""))
+    kind = payload.get("kind", "batch")   # step0a | g2 | batch | g6
+    answer = payload.get("answer", "continue")
+    d = PRODUCTS_DIR / product / "gates"
+    d.mkdir(exist_ok=True)
+    (d / "human_{}.json".format(kind)).write_text(
+        json.dumps({"kind": kind, "answer": answer, "ts": time.time()}, ensure_ascii=False), encoding="utf-8")
+    return {"ok": True, "written": f"human_{kind}.json"}
+
+
+@app.get("/api/problem/{product}")
+def problem_dir(product: str):
+    """故障分析产物(一期预留)。"""
+    d = BASEDIR / "storge" / "problem" / _safe_name(product)
+    return {"exists": d.exists(), "path": str(d)}

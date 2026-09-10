@@ -1,0 +1,66 @@
+/* 硬件审查台 — 工程深墨面板 + 丝网白 + 焊盘绿/铜琥珀 + 五级判定色 */
+:root{
+  --bg:#12151B; --panel:#1A1F27; --panel2:#20262f; --ink:#E8E6E1; --dim:#8A8F98;
+  --green:#3FA968; --amber:#C99A4E; --red:#E5484D; --cyan:#4FA3C9;
+  --mono:"JetBrains Mono","SF Mono",Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;font-size:14px;min-height:100vh}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:1px solid #2a2f39;background:linear-gradient(180deg,#181d26,var(--bg))}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:34px;height:34px;border-radius:6px;background:var(--green);color:#0b0f14;font-weight:800;display:grid;place-items:center;font-family:var(--mono)}
+h1{font-size:18px;letter-spacing:.02em}
+.sub{font-size:12px;color:var(--dim);margin-left:10px}
+.pill{font-family:var(--mono);font-size:12px;border:1px solid #39414f;padding:3px 10px;border-radius:20px;color:var(--dim)}
+.pill.warn{color:#0b0f14;background:var(--amber);border-color:var(--amber)}
+.hidden{display:none!important}
+
+.upload{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 22px;background:var(--panel);border-bottom:1px solid #2a2f39}
+.upload label{display:flex;align-items:center;gap:8px;color:var(--dim)}
+.upload input[type=text],.upload input:not([type=checkbox]){background:#11151b;border:1px solid #39414f;color:var(--ink);padding:6px 10px;border-radius:6px;font-family:var(--mono)}
+.btn{background:#252b35;color:var(--ink);border:1px solid #3a4250;padding:7px 16px;border-radius:6px;cursor:pointer}
+.btn:hover{border-color:var(--green)}
+.btn.primary{background:var(--green);color:#0b0f14;font-weight:700}
+.btn.primary:disabled{opacity:.4;cursor:not-allowed}
+.btn.mini{padding:3px 10px;font-size:12px}
+
+.bench{display:flex;gap:0;height:calc(100vh - 132px)}
+.rail{width:300px;min-width:280px;background:var(--panel2);border-right:1px solid #2a2f39;padding:14px;overflow:auto}
+.rail-title{color:var(--dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.phase{display:flex;align-items:center;gap:8px;padding:7px 9px;border-left:3px solid #313846;margin-bottom:4px;border-radius:0 6px 6px 0;background:#1d222c}
+.phase .st{width:9px;height:9px;border-radius:50%;background:#3a4250}
+.phase.current .st{background:var(--amber);animation:pulse 1.2s infinite}
+.phase.done .st{background:var(--green)}
+.phase.fail .st{background:var(--red)}
+.phase .nm{flex:1}
+.phase .gt{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.gate-tag{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:10px;background:#2a303b;color:var(--dim)}
+.gate-tag.PASS{background:rgba(63,169,104,.18);color:var(--green)}
+.gate-tag.FAIL{background:rgba(229,72,77,.2);color:var(--red)}
+.gate-tag.RUNNING{background:rgba(201,154,78,.18);color:var(--amber)}
+@keyframes pulse{50%{opacity:.25}}
+
+.console{flex:1;display:flex;flex-direction:column;min-width:0}
+.agents{padding:12px 18px;border-bottom:1px solid #2a2f39}
+.agent-card{display:inline-block;margin:0 8px 8px 0;padding:6px 12px;background:var(--panel);border:1px solid #333b47;border-radius:8px;font-family:var(--mono);font-size:12px}
+.agent-card .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#3a4250}
+.agent-card.running .dot{background:var(--amber)}
+.agent-card.done .dot{background:var(--green)}
+
+.log-shell{flex:1;display:flex;flex-direction:column;min-height:0}
+.log-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 18px;border-bottom:1px solid #2a2f39}
+.log-tools{display:flex;gap:6px}
+.log{flex:1;overflow:auto;padding:14px 18px;font-family:var(--mono);font-size:12.5px;line-height:1.55;white-space:pre-wrap;word-break:break-all}
+.log .t-info{color:var(--dim)}
+.log .t-ok{color:var(--green)}
+.log .t-warn{color:var(--amber)}
+.log .t-err{color:var(--red)}
+.log .t-gate_pass{color:var(--green);font-weight:700}
+.log .t-gate_fail{color:var(--red);font-weight:700}
+.log .t-human{color:var(--amber);font-weight:700}
+
+.modal{position:fixed;inset:0;background:rgba(8,10,14,.7);display:grid;place-items:center;z-index:50}
+.modal-box{background:var(--panel2);border:1px solid #39414f;border-radius:12px;padding:22px;max-width:520px;width:90%}
+.modal-box h3{color:var(--amber);margin-bottom:12px}
+#m-body{color:var(--ink);margin-bottom:14px;line-height:1.6}
+.m-actions{display:flex;gap:10px;flex-wrap:wrap}

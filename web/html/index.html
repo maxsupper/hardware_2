@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>硬件审查台</title>
+<link rel="stylesheet" href="/css/base.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark">HC</span>
+    <h1>硬件审查台<span class="sub">Hardware Review Console</span></h1>
+  </div>
+  <div class="top-right">
+    <span id="conn" class="pill">--</span>
+    <span id="todo" class="pill warn hidden">待你处理</span>
+  </div>
+</header>
+
+<section class="upload" id="upload-panel">
+  <div class="upload-title">① 送检</div>
+  <label>产品名 <input id="product" placeholder="如 FL-25-E-MR203"></label>
+  <label class="file">
+    <input type="file" id="files" multiple accept=".EDN,.edn,.xlsx,.csv">
+    选择 EDN / BOM（可多选）
+  </label>
+  <ul id="filelist"></ul>
+  <button id="btn-upload" class="btn">上传文件</button>
+  <button id="btn-start" class="btn primary" disabled>开始审查 ▶</button>
+  <label class="chk"><input type="checkbox" id="autopass"> 自动过批次（无人值守）</label>
+</section>
+
+<section class="bench">
+  <aside class="rail" id="rail">
+    <div class="rail-title">② 进程轨 / PH-0..7 · G1..G7</div>
+  </aside>
+
+  <main class="console" id="console-main">
+    <div class="agents" id="agents">
+      <div class="rail-title">③ 当前环节 agent 活动</div>
+    </div>
+    <div class="log-shell">
+      <div class="log-bar">
+        <span class="rail-title">④ 日志</span>
+        <span class="log-tools">
+          <button id="btn-follow" class="btn mini">跟随</button>
+          <button id="btn-clear" class="btn mini">清屏</button>
+          <button id="btn-dl" class="btn mini">下载</button>
+        </span>
+      </div>
+      <pre id="log" class="log"></pre>
+    </div>
+  </main>
+</section>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <h3 id="m-title">待人工处理</h3>
+    <div id="m-body"></div>
+    <div id="m-actions" class="m-actions"></div>
+  </div>
+</div>
+
+<script src="/src/main.js"></script>
+</body>
+</html>
