@@ -29,7 +29,7 @@ def pick_sheet(wb):
             vals = [str(v) if v is not None else "" for v in row]
             if not any("位号" in v for v in vals):
                 continue
-            if any(k in v for k in ("生产更改", "通知单")) for v in vals:
+            if any(k in v for _ in [0] for v in vals for k in ("生产更改", "通知单")):
                 continue
             if any("公司规格型号" in v or "规格型号" in v for v in vals):
                 return ws, {i: str(v) for i, v in enumerate(vals)}
