@@ -1,0 +1,1991 @@
+{
+ "schema_version": "1.0",
+ "kind": "numbering_mapping",
+ "raw_to_canonical": {
+  "raw_roles/hardware-reviewer.md::L1": "DOC-001",
+  "raw_roles/hardware-reviewer.md::L3": "PART-001",
+  "raw_roles/hardware-reviewer.md::L14": "PART-002",
+  "raw_roles/hardware-reviewer.md::L16": "ROLE-001",
+  "raw_roles/hardware-reviewer.md::L21": "ROLE-002",
+  "raw_roles/hardware-reviewer.md::L24": "ROLE-003",
+  "raw_roles/hardware-reviewer.md::L34": "ROLE-004",
+  "raw_roles/hardware-reviewer.md::L77": "ROLE-005",
+  "raw_roles/hardware-reviewer.md::L100": "ROLE-006",
+  "raw_roles/hardware-reviewer.md::L122": "ROLE-007",
+  "raw_roles/hardware-reviewer.md::L158": "ROLE-008",
+  "raw_roles/hardware-reviewer.md::L180": "ROLE-009",
+  "raw_roles/hardware-reviewer.md::L203": "ROLE-010",
+  "raw_roles/hardware-reviewer.md::L218": "PART-003",
+  "raw_roles/hardware-reviewer.md::L222": "GATE-001",
+  "raw_roles/hardware-reviewer.md::L292": "GATE-002",
+  "raw_roles/hardware-reviewer.md::L300": "BLOCK-001",
+  "raw_roles/hardware-reviewer.md::L308": "GATE-003",
+  "raw_roles/hardware-reviewer.md::L317": "GATE-004",
+  "raw_roles/hardware-reviewer.md::L325": "BLOCK-002",
+  "raw_roles/hardware-reviewer.md::L334": "GATE-005",
+  "raw_roles/hardware-reviewer.md::L344": "GATE-006",
+  "raw_roles/hardware-reviewer.md::L352": "GATE-007",
+  "raw_roles/hardware-reviewer.md::L367": "GATE-008",
+  "raw_roles/hardware-reviewer.md::L378": "BLOCK-003",
+  "raw_roles/hardware-reviewer.md::L387": "GATE-009",
+  "raw_roles/hardware-reviewer.md::L398": "GATE-010",
+  "raw_roles/hardware-reviewer.md::L406": "BLOCK-004",
+  "raw_roles/hardware-reviewer.md::L414": "GATE-011",
+  "raw_roles/hardware-reviewer.md::L424": "GATE-012",
+  "raw_roles/hardware-reviewer.md::L432": "BLOCK-005",
+  "raw_roles/hardware-reviewer.md::L443": "GATE-013",
+  "raw_roles/hardware-reviewer.md::L458": "GATE-014",
+  "raw_roles/hardware-reviewer.md::L466": "BLOCK-006",
+  "raw_roles/hardware-reviewer.md::L477": "GATE-015",
+  "raw_roles/hardware-reviewer.md::L494": "LEARN-001",
+  "raw_roles/hardware-reviewer.md::L523": "LEARN-002",
+  "raw_roles/hardware-reviewer.md::L535": "LEARN-003",
+  "raw_roles/hardware-reviewer.md::L558": "LEARN-004",
+  "raw_roles/hardware-reviewer.md::L571": "LEARN-005",
+  "raw_roles/hardware-reviewer.md::L584": "CT-001",
+  "raw_roles/hardware-reviewer.md::L588": "CT-002",
+  "raw_roles/hardware-reviewer.md::L607": "CT-003",
+  "raw_roles/hardware-reviewer.md::L627": "CT-004",
+  "raw_roles/hardware-reviewer.md::L642": "CT-005",
+  "raw_roles/hardware-reviewer.md::L657": "CT-006",
+  "raw_roles/hardware-reviewer.md::L674": "CT-007",
+  "raw_roles/hardware-reviewer.md::L694": "CT-008",
+  "raw_roles/hardware-reviewer.md::L724": "CT-009",
+  "raw_roles/hardware-reviewer.md::L747": "CT-010",
+  "raw_roles/hardware-reviewer.md::L804": "CT-011",
+  "raw_roles/hardware-reviewer.md::L822": "CT-012",
+  "raw_roles/hardware-reviewer.md::L842": "CT-013",
+  "raw_roles/hardware-reviewer.md::L849": "CT-014",
+  "raw_roles/hardware-reviewer.md::L876": "PART-004",
+  "raw_roles/hardware-reviewer.md::L882": "DP-001",
+  "raw_roles/hardware-reviewer.md::L920": "DP-002",
+  "raw_roles/hardware-reviewer.md::L972": "DP-003",
+  "raw_roles/hardware-reviewer.md::L986": "PART-005",
+  "raw_roles/hardware-reviewer.md::L990": "Q-001",
+  "raw_roles/hardware-reviewer.md::L1005": "SA-001",
+  "raw_roles/hardware-reviewer.md::L1023": "Q-002",
+  "raw_roles/hardware-reviewer.md::L1060": "Q-003",
+  "raw_rules/引脚核对规则.md::L1": "IC-001",
+  "raw_rules/引脚核对规则.md::L7": "IC-002",
+  "raw_rules/引脚核对规则.md::L22": "IC-003",
+  "raw_rules/引脚核对规则.md::L30": "IC-004",
+  "raw_rules/引脚核对规则.md::L32": "IC-005",
+  "raw_rules/引脚核对规则.md::L68": "IC-006",
+  "raw_rules/引脚核对规则.md::L87": "IC-007",
+  "raw_rules/引脚核对规则.md::L101": "IC-008",
+  "raw_rules/引脚核对规则.md::L112": "IC-009",
+  "raw_rules/引脚核对规则.md::L125": "IC-010",
+  "raw_rules/引脚核对规则.md::L142": "IC-011",
+  "raw_rules/引脚核对规则.md::L146": "IC-012",
+  "raw_rules/引脚核对规则.md::L168": "IC-013",
+  "raw_rules/引脚核对规则.md::L181": "IC-014",
+  "raw_rules/引脚核对规则.md::L201": "IC-015",
+  "raw_rules/引脚核对规则.md::L203": "IC-016",
+  "raw_rules/引脚核对规则.md::L208": "IC-017",
+  "raw_rules/引脚核对规则.md::L210": "IC-018",
+  "raw_rules/引脚核对规则.md::L212": "IC-019",
+  "raw_rules/引脚核对规则.md::L218": "IC-020",
+  "raw_rules/引脚核对规则.md::L232": "IC-021",
+  "raw_rules/引脚核对规则.md::L242": "IC-022",
+  "raw_rules/引脚核对规则.md::L244": "IC-023",
+  "raw_rules/引脚核对规则.md::L247": "IC-024",
+  "raw_rules/引脚核对规则.md::L258": "IC-025",
+  "raw_rules/引脚核对规则.md::L274": "IC-026",
+  "raw_rules/引脚核对规则.md::L276": "IC-027",
+  "raw_rules/引脚核对规则.md::L280": "IC-028",
+  "raw_rules/引脚核对规则.md::L283": "IC-029",
+  "raw_rules/引脚核对规则.md::L287": "IC-030",
+  "raw_rules/引脚核对规则.md::L288": "IC-031",
+  "raw_rules/引脚核对规则.md::L292": "IC-032",
+  "raw_rules/引脚核对规则.md::L304": "IC-033",
+  "raw_rules/引脚核对规则.md::L307": "IC-034",
+  "raw_rules/引脚核对规则.md::L313": "IC-035",
+  "raw_rules/引脚核对规则.md::L319": "IC-036",
+  "raw_rules/引脚核对规则.md::L322": "IC-037",
+  "raw_rules/引脚核对规则.md::L324": "IC-038",
+  "raw_rules/引脚核对规则.md::L325": "IC-039",
+  "raw_rules/引脚核对规则.md::L326": "IC-040",
+  "raw_rules/引脚核对规则.md::L330": "IC-041",
+  "raw_rules/引脚核对规则.md::L331": "IC-042",
+  "raw_rules/引脚核对规则.md::L333": "IC-043",
+  "raw_rules/引脚核对规则.md::L334": "IC-044",
+  "raw_rules/引脚核对规则.md::L336": "IC-045",
+  "raw_rules/引脚核对规则.md::L337": "IC-046",
+  "raw_rules/引脚核对规则.md::L341": "IC-047",
+  "raw_rules/引脚核对规则.md::L345": "IC-048",
+  "raw_rules/引脚核对规则.md::L373": "IC-049",
+  "raw_rules/引脚核对规则.md::L379": "IC-050",
+  "raw_rules/引脚核对规则.md::L392": "IC-051",
+  "raw_rules/引脚核对规则.md::L406": "IC-052",
+  "raw_rules/引脚核对规则.md::L409": "IC-053",
+  "raw_rules/引脚核对规则.md::L413": "IC-054",
+  "raw_rules/引脚核对规则.md::L419": "IC-055",
+  "raw_rules/引脚核对规则.md::L432": "IC-056",
+  "raw_rules/引脚核对规则.md::L436": "IC-057",
+  "raw_rules/引脚核对规则.md::L459": "IC-058",
+  "raw_rules/引脚核对规则.md::L469": "IC-059",
+  "raw_rules/引脚核对规则.md::L475": "IC-060",
+  "raw_rules/引脚核对规则.md::L477": "IC-061",
+  "raw_rules/引脚核对规则.md::L492": "IC-062",
+  "raw_rules/引脚核对规则.md::L503": "IC-063",
+  "raw_rules/引脚核对规则.md::L511": "IC-064",
+  "raw_rules/引脚核对规则.md::L551": "IC-065",
+  "raw_rules/引脚核对规则.md::L559": "IC-066",
+  "raw_rules/引脚复用关系检查规则.md::L1": "IC-067",
+  "raw_rules/引脚复用关系检查规则.md::L18": "IC-068",
+  "raw_rules/引脚复用关系检查规则.md::L26": "IC-069",
+  "raw_rules/引脚复用关系检查规则.md::L44": "IC-070",
+  "raw_rules/引脚复用关系检查规则.md::L56": "IC-071",
+  "raw_rules/引脚复用关系检查规则.md::L62": "IC-072",
+  "raw_rules/引脚复用关系检查规则.md::L64": "IC-073",
+  "raw_rules/引脚复用关系检查规则.md::L82": "IC-074",
+  "raw_rules/引脚复用关系检查规则.md::L93": "IC-075",
+  "raw_rules/引脚复用关系检查规则.md::L95": "IC-076",
+  "raw_rules/引脚复用关系检查规则.md::L106": "IC-077",
+  "raw_rules/引脚复用关系检查规则.md::L117": "IC-078",
+  "raw_rules/引脚复用关系检查规则.md::L132": "IC-079",
+  "raw_rules/引脚复用关系检查规则.md::L136": "IC-080",
+  "raw_rules/引脚复用关系检查规则.md::L149": "IC-081",
+  "raw_rules/引脚复用关系检查规则.md::L160": "IC-082",
+  "raw_rules/引脚复用关系检查规则.md::L170": "IC-083",
+  "raw_rules/引脚电平检查方案.md::L1": "LS-001",
+  "raw_rules/引脚电平检查方案.md::L16": "LS-002",
+  "raw_rules/引脚电平检查方案.md::L32": "LS-003",
+  "raw_rules/引脚电平检查方案.md::L45": "LS-004",
+  "raw_rules/引脚电平检查方案.md::L47": "LS-005",
+  "raw_rules/引脚电平检查方案.md::L61": "LS-006",
+  "raw_rules/引脚电平检查方案.md::L72": "LS-007",
+  "raw_rules/引脚电平检查方案.md::L75": "LS-008",
+  "raw_rules/引脚电平检查方案.md::L89": "LS-009",
+  "raw_rules/引脚电平检查方案.md::L93": "LS-010",
+  "raw_rules/引脚电平检查方案.md::L106": "LS-011",
+  "raw_rules/引脚电平检查方案.md::L112": "LS-012",
+  "raw_rules/引脚电平检查方案.md::L126": "LS-013",
+  "raw_rules/引脚电平检查方案.md::L149": "LS-014",
+  "raw_rules/引脚电平检查方案.md::L158": "LS-015",
+  "raw_rules/引脚电平检查方案.md::L167": "LS-016",
+  "raw_rules/引脚电平检查方案.md::L178": "LS-017",
+  "raw_rules/引脚电平检查方案.md::L190": "LS-018",
+  "raw_rules/引脚电平检查方案.md::L192": "LS-019",
+  "raw_rules/引脚电平检查方案.md::L203": "LS-020",
+  "raw_rules/引脚电平检查方案.md::L214": "LS-021",
+  "raw_rules/接口电路检查规则.md::L26": "PB-001",
+  "raw_rules/接口电路检查规则.md::L28": "PB-002",
+  "raw_rules/接口电路检查规则.md::L40": "PB-003",
+  "raw_rules/接口电路检查规则.md::L46": "PB-004",
+  "raw_rules/接口电路检查规则.md::L50": "PB-005",
+  "raw_rules/接口电路检查规则.md::L54": "PB-006",
+  "raw_rules/接口电路检查规则.md::L76": "PB-007",
+  "raw_rules/接口电路检查规则.md::L98": "PB-008",
+  "raw_rules/接口电路检查规则.md::L146": "PB-009",
+  "raw_rules/接口电路检查规则.md::L164": "PB-010",
+  "raw_rules/电源检查.md::L1": "PO-001",
+  "raw_rules/电源检查.md::L9": "PO-002",
+  "raw_rules/电源检查.md::L13": "PO-003",
+  "raw_rules/电源检查.md::L25": "PO-004",
+  "raw_rules/电源检查.md::L40": "PO-005",
+  "raw_rules/电源检查.md::L49": "PO-006",
+  "raw_rules/电源检查.md::L51": "PO-007",
+  "raw_rules/电源检查.md::L64": "PO-008",
+  "raw_rules/电源检查.md::L77": "PO-009",
+  "raw_rules/电源检查.md::L87": "PO-010",
+  "raw_rules/电源检查.md::L89": "PO-011",
+  "raw_rules/电源检查.md::L107": "PO-012",
+  "raw_rules/电源检查.md::L113": "PO-013",
+  "raw_rules/电源检查.md::L121": "PO-014",
+  "raw_rules/电源检查.md::L123": "PO-015",
+  "raw_rules/电源检查.md::L135": "PO-016",
+  "raw_rules/电源检查.md::L142": "PO-017",
+  "raw_rules/电源检查.md::L150": "PO-018",
+  "raw_rules/电源检查.md::L152": "PO-019",
+  "raw_rules/电源检查.md::L163": "PO-020",
+  "raw_rules/电源检查.md::L172": "PO-021",
+  "raw_rules/电源检查.md::L179": "PO-022",
+  "raw_rules/电源检查.md::L181": "PO-023",
+  "raw_rules/电源检查.md::L189": "PO-024",
+  "raw_rules/电源检查.md::L200": "PO-025",
+  "raw_rules/证据文件Schema规范.md::L1": "SYN-001",
+  "raw_rules/证据文件Schema规范.md::L8": "SYN-002",
+  "raw_rules/证据文件Schema规范.md::L10": "SYN-003",
+  "raw_rules/证据文件Schema规范.md::L36": "SYN-004",
+  "raw_rules/证据文件Schema规范.md::L38": "SYN-005",
+  "raw_rules/证据文件Schema规范.md::L55": "SYN-006",
+  "raw_rules/证据文件Schema规范.md::L100": "SYN-007",
+  "raw_rules/证据文件Schema规范.md::L149": "SYN-008",
+  "raw_rules/证据文件Schema规范.md::L179": "SYN-009",
+  "raw_rules/证据文件Schema规范.md::L222": "SYN-010",
+  "raw_rules/证据文件Schema规范.md::L299": "SYN-011",
+  "raw_rules/证据文件Schema规范.md::L359": "SYN-012",
+  "raw_rules/证据文件Schema规范.md::L398": "SYN-013",
+  "raw_rules/证据文件Schema规范.md::L432": "SYN-014",
+  "raw_rules/证据文件Schema规范.md::L444": "SYN-015",
+  "raw_rules/证据文件Schema规范.md::L456": "SYN-016"
+ },
+ "canonical_to_raw": {
+  "DOC-001": {
+   "source": "raw_roles/hardware-reviewer.md::L1",
+   "title": "硬件原理图设计验证专家 — Agent 规则 (v4.0)",
+   "line": 1,
+   "end_line": 2,
+   "body_chars": 32,
+   "suggest_prefix": "DOC"
+  },
+  "PART-001": {
+   "source": "raw_roles/hardware-reviewer.md::L3",
+   "title": "§0 快速导航 (人类阅读)",
+   "line": 3,
+   "end_line": 13,
+   "body_chars": 304,
+   "suggest_prefix": "PART"
+  },
+  "PART-002": {
+   "source": "raw_roles/hardware-reviewer.md::L14",
+   "title": "§1 角色定义与架构",
+   "line": 14,
+   "end_line": 15,
+   "body_chars": 14,
+   "suggest_prefix": "PART"
+  },
+  "ROLE-001": {
+   "source": "raw_roles/hardware-reviewer.md::L16",
+   "title": "1.1 角色定义",
+   "line": 16,
+   "end_line": 20,
+   "body_chars": 126,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-002": {
+   "source": "raw_roles/hardware-reviewer.md::L21",
+   "title": "1.2 Purpose",
+   "line": 21,
+   "end_line": 23,
+   "body_chars": 126,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-003": {
+   "source": "raw_roles/hardware-reviewer.md::L24",
+   "title": "1.2 多 Agent 委派架构",
+   "line": 24,
+   "end_line": 33,
+   "body_chars": 386,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-004": {
+   "source": "raw_roles/hardware-reviewer.md::L34",
+   "title": "1.3 hardware_review — 流程编排器（裁判）",
+   "line": 34,
+   "end_line": 76,
+   "body_chars": 1884,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-005": {
+   "source": "raw_roles/hardware-reviewer.md::L77",
+   "title": "1.4 hw_search — 手册检索（运动员）",
+   "line": 77,
+   "end_line": 99,
+   "body_chars": 494,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-006": {
+   "source": "raw_roles/hardware-reviewer.md::L100",
+   "title": "1.5 hw_prep — 网表解析（运动员）",
+   "line": 100,
+   "end_line": 121,
+   "body_chars": 468,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-007": {
+   "source": "raw_roles/hardware-reviewer.md::L122",
+   "title": "1.6 hw_analyze — 深度分析（运动员）",
+   "line": 122,
+   "end_line": 157,
+   "body_chars": 1272,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-008": {
+   "source": "raw_roles/hardware-reviewer.md::L158",
+   "title": "1.7 hw_auditor — 复核审计（运动员）",
+   "line": 158,
+   "end_line": 179,
+   "body_chars": 574,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-009": {
+   "source": "raw_roles/hardware-reviewer.md::L180",
+   "title": "1.8 hw_write — 报告编写（运动员）",
+   "line": 180,
+   "end_line": 202,
+   "body_chars": 658,
+   "suggest_prefix": "ROLE"
+  },
+  "ROLE-010": {
+   "source": "raw_roles/hardware-reviewer.md::L203",
+   "title": "1.9 全流程 Gate 顺序",
+   "line": 203,
+   "end_line": 217,
+   "body_chars": 516,
+   "suggest_prefix": "ROLE"
+  },
+  "PART-003": {
+   "source": "raw_roles/hardware-reviewer.md::L218",
+   "title": "§2 审核流程",
+   "line": 218,
+   "end_line": 221,
+   "body_chars": 116,
+   "suggest_prefix": "PART"
+  },
+  "GATE-001": {
+   "source": "raw_roles/hardware-reviewer.md::L222",
+   "title": "§2.1 全流程概览",
+   "line": 222,
+   "end_line": 291,
+   "body_chars": 3134,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-002": {
+   "source": "raw_roles/hardware-reviewer.md::L292",
+   "title": "§2.2 Step 0a — 人工配置门禁",
+   "line": 292,
+   "end_line": 299,
+   "body_chars": 172,
+   "suggest_prefix": "GATE"
+  },
+  "BLOCK-001": {
+   "source": "raw_roles/hardware-reviewer.md::L300",
+   "title": "? 阻断条件",
+   "line": 300,
+   "end_line": 307,
+   "body_chars": 316,
+   "suggest_prefix": "BLOCK"
+  },
+  "GATE-003": {
+   "source": "raw_roles/hardware-reviewer.md::L308",
+   "title": "?? 适用规则",
+   "line": 308,
+   "end_line": 316,
+   "body_chars": 258,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-004": {
+   "source": "raw_roles/hardware-reviewer.md::L317",
+   "title": "§2.3 G0 — 手册搜索",
+   "line": 317,
+   "end_line": 324,
+   "body_chars": 234,
+   "suggest_prefix": "GATE"
+  },
+  "BLOCK-002": {
+   "source": "raw_roles/hardware-reviewer.md::L325",
+   "title": "? 阻断条件",
+   "line": 325,
+   "end_line": 333,
+   "body_chars": 575,
+   "suggest_prefix": "BLOCK"
+  },
+  "GATE-005": {
+   "source": "raw_roles/hardware-reviewer.md::L334",
+   "title": "?? 适用规则",
+   "line": 334,
+   "end_line": 343,
+   "body_chars": 289,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-006": {
+   "source": "raw_roles/hardware-reviewer.md::L344",
+   "title": "§2.4 G0.5 — 手册缺失确认",
+   "line": 344,
+   "end_line": 351,
+   "body_chars": 184,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-007": {
+   "source": "raw_roles/hardware-reviewer.md::L352",
+   "title": "? 无缺失自动 PASS",
+   "line": 352,
+   "end_line": 366,
+   "body_chars": 295,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-008": {
+   "source": "raw_roles/hardware-reviewer.md::L367",
+   "title": "??? Question 弹窗配置",
+   "line": 367,
+   "end_line": 377,
+   "body_chars": 378,
+   "suggest_prefix": "GATE"
+  },
+  "BLOCK-003": {
+   "source": "raw_roles/hardware-reviewer.md::L378",
+   "title": "? 阻断条件",
+   "line": 378,
+   "end_line": 386,
+   "body_chars": 495,
+   "suggest_prefix": "BLOCK"
+  },
+  "GATE-009": {
+   "source": "raw_roles/hardware-reviewer.md::L387",
+   "title": "?? 适用规则",
+   "line": 387,
+   "end_line": 397,
+   "body_chars": 390,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-010": {
+   "source": "raw_roles/hardware-reviewer.md::L398",
+   "title": "§2.5 Wave 1 — hw_prep 网表解析",
+   "line": 398,
+   "end_line": 405,
+   "body_chars": 258,
+   "suggest_prefix": "GATE"
+  },
+  "BLOCK-004": {
+   "source": "raw_roles/hardware-reviewer.md::L406",
+   "title": "? 阻断条件",
+   "line": 406,
+   "end_line": 413,
+   "body_chars": 374,
+   "suggest_prefix": "BLOCK"
+  },
+  "GATE-011": {
+   "source": "raw_roles/hardware-reviewer.md::L414",
+   "title": "?? 适用规则",
+   "line": 414,
+   "end_line": 423,
+   "body_chars": 319,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-012": {
+   "source": "raw_roles/hardware-reviewer.md::L424",
+   "title": "§2.6 Wave 2 — hw_analyze 深度分析",
+   "line": 424,
+   "end_line": 431,
+   "body_chars": 238,
+   "suggest_prefix": "GATE"
+  },
+  "BLOCK-005": {
+   "source": "raw_roles/hardware-reviewer.md::L432",
+   "title": "? 阻断条件",
+   "line": 432,
+   "end_line": 442,
+   "body_chars": 1006,
+   "suggest_prefix": "BLOCK"
+  },
+  "GATE-013": {
+   "source": "raw_roles/hardware-reviewer.md::L443",
+   "title": "?? 适用规则",
+   "line": 443,
+   "end_line": 457,
+   "body_chars": 500,
+   "suggest_prefix": "GATE"
+  },
+  "GATE-014": {
+   "source": "raw_roles/hardware-reviewer.md::L458",
+   "title": "§2.7 Wave FINAL — 报告 + 审计 + G6 闭环",
+   "line": 458,
+   "end_line": 465,
+   "body_chars": 255,
+   "suggest_prefix": "GATE"
+  },
+  "BLOCK-006": {
+   "source": "raw_roles/hardware-reviewer.md::L466",
+   "title": "? 阻断条件",
+   "line": 466,
+   "end_line": 476,
+   "body_chars": 842,
+   "suggest_prefix": "BLOCK"
+  },
+  "GATE-015": {
+   "source": "raw_roles/hardware-reviewer.md::L477",
+   "title": "?? 适用规则",
+   "line": 477,
+   "end_line": 493,
+   "body_chars": 554,
+   "suggest_prefix": "GATE"
+  },
+  "LEARN-001": {
+   "source": "raw_roles/hardware-reviewer.md::L494",
+   "title": "G6 后：自学习回写",
+   "line": 494,
+   "end_line": 522,
+   "body_chars": 862,
+   "suggest_prefix": "LEARN"
+  },
+  "LEARN-002": {
+   "source": "raw_roles/hardware-reviewer.md::L523",
+   "title": "会话结束：升级建议询问",
+   "line": 523,
+   "end_line": 534,
+   "body_chars": 220,
+   "suggest_prefix": "LEARN"
+  },
+  "LEARN-003": {
+   "source": "raw_roles/hardware-reviewer.md::L535",
+   "title": "? SUG-XXX: {条目标题}",
+   "line": 535,
+   "end_line": 557,
+   "body_chars": 443,
+   "suggest_prefix": "LEARN"
+  },
+  "LEARN-004": {
+   "source": "raw_roles/hardware-reviewer.md::L558",
+   "title": "G6 通过标准",
+   "line": 558,
+   "end_line": 570,
+   "body_chars": 360,
+   "suggest_prefix": "LEARN"
+  },
+  "LEARN-005": {
+   "source": "raw_roles/hardware-reviewer.md::L571",
+   "title": "G6 自审清单",
+   "line": 571,
+   "end_line": 583,
+   "body_chars": 334,
+   "suggest_prefix": "LEARN"
+  },
+  "CT-001": {
+   "source": "raw_roles/hardware-reviewer.md::L584",
+   "title": "§4 数据契约",
+   "line": 584,
+   "end_line": 587,
+   "body_chars": 82,
+   "suggest_prefix": "CT"
+  },
+  "CT-002": {
+   "source": "raw_roles/hardware-reviewer.md::L588",
+   "title": "§4.0 上下级数据交接总览",
+   "line": 588,
+   "end_line": 606,
+   "body_chars": 1191,
+   "suggest_prefix": "CT"
+  },
+  "CT-003": {
+   "source": "raw_roles/hardware-reviewer.md::L607",
+   "title": "§4.0a 统一命名规范（合并自 pipeline_rules 规则7）",
+   "line": 607,
+   "end_line": 626,
+   "body_chars": 629,
+   "suggest_prefix": "CT"
+  },
+  "CT-004": {
+   "source": "raw_roles/hardware-reviewer.md::L627",
+   "title": "路径约定",
+   "line": 627,
+   "end_line": 641,
+   "body_chars": 608,
+   "suggest_prefix": "CT"
+  },
+  "CT-005": {
+   "source": "raw_roles/hardware-reviewer.md::L642",
+   "title": "§4.1 临时文件 Schema",
+   "line": 642,
+   "end_line": 656,
+   "body_chars": 421,
+   "suggest_prefix": "CT"
+  },
+  "CT-006": {
+   "source": "raw_roles/hardware-reviewer.md::L657",
+   "title": "`g0_ic.msg` — IC 清单（G0 产出）",
+   "line": 657,
+   "end_line": 673,
+   "body_chars": 580,
+   "suggest_prefix": "CT"
+  },
+  "CT-007": {
+   "source": "raw_roles/hardware-reviewer.md::L674",
+   "title": "`vccio.msg` — VCCIO 域→电压映射（引脚核对产出）",
+   "line": 674,
+   "end_line": 693,
+   "body_chars": 553,
+   "suggest_prefix": "CT"
+  },
+  "CT-008": {
+   "source": "raw_roles/hardware-reviewer.md::L694",
+   "title": "`power.msg` — 供电拓扑（电源检查产出）",
+   "line": 694,
+   "end_line": 723,
+   "body_chars": 1026,
+   "suggest_prefix": "CT"
+  },
+  "CT-009": {
+   "source": "raw_roles/hardware-reviewer.md::L724",
+   "title": "§4.2 Evidence 统一格式",
+   "line": 724,
+   "end_line": 746,
+   "body_chars": 707,
+   "suggest_prefix": "CT"
+  },
+  "CT-010": {
+   "source": "raw_roles/hardware-reviewer.md::L747",
+   "title": "§4.3 Evidence 摘要格式",
+   "line": 747,
+   "end_line": 803,
+   "body_chars": 2222,
+   "suggest_prefix": "CT"
+  },
+  "CT-011": {
+   "source": "raw_roles/hardware-reviewer.md::L804",
+   "title": "§4.4 Gate 结果统一格式",
+   "line": 804,
+   "end_line": 821,
+   "body_chars": 437,
+   "suggest_prefix": "CT"
+  },
+  "CT-012": {
+   "source": "raw_roles/hardware-reviewer.md::L822",
+   "title": "§4.5 JSON 通用顶层字段",
+   "line": 822,
+   "end_line": 841,
+   "body_chars": 380,
+   "suggest_prefix": "CT"
+  },
+  "CT-013": {
+   "source": "raw_roles/hardware-reviewer.md::L842",
+   "title": "§4.6 项目无关 Schema 原则",
+   "line": 842,
+   "end_line": 848,
+   "body_chars": 191,
+   "suggest_prefix": "CT"
+  },
+  "CT-014": {
+   "source": "raw_roles/hardware-reviewer.md::L849",
+   "title": "§4.7 稳定编号索引",
+   "line": 849,
+   "end_line": 875,
+   "body_chars": 512,
+   "suggest_prefix": "CT"
+  },
+  "PART-004": {
+   "source": "raw_roles/hardware-reviewer.md::L876",
+   "title": "§5 委派规范",
+   "line": 876,
+   "end_line": 881,
+   "body_chars": 134,
+   "suggest_prefix": "PART"
+  },
+  "DP-001": {
+   "source": "raw_roles/hardware-reviewer.md::L882",
+   "title": "§5.1 委派 Prompt 模板",
+   "line": 882,
+   "end_line": 919,
+   "body_chars": 1228,
+   "suggest_prefix": "DP"
+  },
+  "DP-002": {
+   "source": "raw_roles/hardware-reviewer.md::L920",
+   "title": "§5.2 并行任务分解约束（P1-P7）",
+   "line": 920,
+   "end_line": 971,
+   "body_chars": 1452,
+   "suggest_prefix": "DP"
+  },
+  "DP-003": {
+   "source": "raw_roles/hardware-reviewer.md::L972",
+   "title": "§5.3 CLI 基础设施约束",
+   "line": 972,
+   "end_line": 985,
+   "body_chars": 418,
+   "suggest_prefix": "DP"
+  },
+  "PART-005": {
+   "source": "raw_roles/hardware-reviewer.md::L986",
+   "title": "§6 交付与质量",
+   "line": 986,
+   "end_line": 989,
+   "body_chars": 76,
+   "suggest_prefix": "PART"
+  },
+  "Q-001": {
+   "source": "raw_roles/hardware-reviewer.md::L990",
+   "title": "§6.1 交付质量标准（Q1-Q9）",
+   "line": 990,
+   "end_line": 1004,
+   "body_chars": 697,
+   "suggest_prefix": "Q"
+  },
+  "SA-001": {
+   "source": "raw_roles/hardware-reviewer.md::L1005",
+   "title": "§6.2 Self-Audit Gates（G0-G7）",
+   "line": 1005,
+   "end_line": 1022,
+   "body_chars": 661,
+   "suggest_prefix": "SA"
+  },
+  "Q-002": {
+   "source": "raw_roles/hardware-reviewer.md::L1023",
+   "title": "§6.3 复查不合格闭环",
+   "line": 1023,
+   "end_line": 1059,
+   "body_chars": 941,
+   "suggest_prefix": "Q"
+  },
+  "Q-003": {
+   "source": "raw_roles/hardware-reviewer.md::L1060",
+   "title": "§6.4 缺项闭环",
+   "line": 1060,
+   "end_line": 1097,
+   "body_chars": 976,
+   "suggest_prefix": "Q"
+  },
+  "IC-001": {
+   "source": "raw_rules/引脚核对规则.md::L1",
+   "title": "引脚核对规则",
+   "line": 1,
+   "end_line": 6,
+   "body_chars": 43,
+   "suggest_prefix": "IC-"
+  },
+  "IC-002": {
+   "source": "raw_rules/引脚核对规则.md::L7",
+   "title": "定位：引脚检查的综述文件",
+   "line": 7,
+   "end_line": 21,
+   "body_chars": 400,
+   "suggest_prefix": "IC-"
+  },
+  "IC-003": {
+   "source": "raw_rules/引脚核对规则.md::L22",
+   "title": "核心原则",
+   "line": 22,
+   "end_line": 29,
+   "body_chars": 105,
+   "suggest_prefix": "IC-"
+  },
+  "IC-004": {
+   "source": "raw_rules/引脚核对规则.md::L30",
+   "title": "正确流程",
+   "line": 30,
+   "end_line": 31,
+   "body_chars": 8,
+   "suggest_prefix": "IC-"
+  },
+  "IC-005": {
+   "source": "raw_rules/引脚核对规则.md::L32",
+   "title": "第一步：追踪物理连接",
+   "line": 32,
+   "end_line": 67,
+   "body_chars": 685,
+   "suggest_prefix": "IC-"
+  },
+  "IC-006": {
+   "source": "raw_rules/引脚核对规则.md::L68",
+   "title": "连接器引脚输出格式",
+   "line": 68,
+   "end_line": 86,
+   "body_chars": 712,
+   "suggest_prefix": "IC-"
+  },
+  "IC-007": {
+   "source": "raw_rules/引脚核对规则.md::L87",
+   "title": "第二步：确认芯片引脚功能",
+   "line": 87,
+   "end_line": 100,
+   "body_chars": 153,
+   "suggest_prefix": "IC-"
+  },
+  "IC-008": {
+   "source": "raw_rules/引脚核对规则.md::L101",
+   "title": "第三步：确认 VCCIO 域电压",
+   "line": 101,
+   "end_line": 111,
+   "body_chars": 152,
+   "suggest_prefix": "IC-"
+  },
+  "IC-009": {
+   "source": "raw_rules/引脚核对规则.md::L112",
+   "title": "第四步：反向验证标签",
+   "line": 112,
+   "end_line": 124,
+   "body_chars": 240,
+   "suggest_prefix": "IC-"
+  },
+  "IC-010": {
+   "source": "raw_rules/引脚核对规则.md::L125",
+   "title": "禁止事项",
+   "line": 125,
+   "end_line": 141,
+   "body_chars": 535,
+   "suggest_prefix": "IC-"
+  },
+  "IC-011": {
+   "source": "raw_rules/引脚核对规则.md::L142",
+   "title": "实战案例",
+   "line": 142,
+   "end_line": 145,
+   "body_chars": 80,
+   "suggest_prefix": "IC-"
+  },
+  "IC-012": {
+   "source": "raw_rules/引脚核对规则.md::L146",
+   "title": "案例：接口 \"GPIO1-3V3\" 的核实",
+   "line": 146,
+   "end_line": 167,
+   "body_chars": 403,
+   "suggest_prefix": "IC-"
+  },
+  "IC-013": {
+   "source": "raw_rules/引脚核对规则.md::L168",
+   "title": "案例：J3.9 \"GPIO0-1V8\" 的核实",
+   "line": 168,
+   "end_line": 180,
+   "body_chars": 278,
+   "suggest_prefix": "IC-"
+  },
+  "IC-014": {
+   "source": "raw_rules/引脚核对规则.md::L181",
+   "title": "案例：DVP VI0_DATA0/1 CIF 编号互换",
+   "line": 181,
+   "end_line": 200,
+   "body_chars": 479,
+   "suggest_prefix": "IC-"
+  },
+  "IC-015": {
+   "source": "raw_rules/引脚核对规则.md::L201",
+   "title": "精确值校验规则（No-Shortcut Rule）",
+   "line": 201,
+   "end_line": 202,
+   "body_chars": 29,
+   "suggest_prefix": "IC-"
+  },
+  "IC-016": {
+   "source": "raw_rules/引脚核对规则.md::L203",
+   "title": "问题根源",
+   "line": 203,
+   "end_line": 207,
+   "body_chars": 70,
+   "suggest_prefix": "IC-"
+  },
+  "IC-017": {
+   "source": "raw_rules/引脚核对规则.md::L208",
+   "title": "❌ 浅层检查 — 仅验证类别存在",
+   "line": 208,
+   "end_line": 209,
+   "body_chars": 45,
+   "suggest_prefix": "IC-"
+  },
+  "IC-018": {
+   "source": "raw_rules/引脚核对规则.md::L210",
+   "title": "遗漏了: CIF_D1 vs 标号 DATA0 不一致",
+   "line": 210,
+   "end_line": 211,
+   "body_chars": 30,
+   "suggest_prefix": "IC-"
+  },
+  "IC-019": {
+   "source": "raw_rules/引脚核对规则.md::L212",
+   "title": "✅ 深层检查 — 验证编号精确匹配",
+   "line": 212,
+   "end_line": 217,
+   "body_chars": 165,
+   "suggest_prefix": "IC-"
+  },
+  "IC-020": {
+   "source": "raw_rules/引脚核对规则.md::L218",
+   "title": "适用场景",
+   "line": 218,
+   "end_line": 231,
+   "body_chars": 405,
+   "suggest_prefix": "IC-"
+  },
+  "IC-021": {
+   "source": "raw_rules/引脚核对规则.md::L232",
+   "title": "禁止事项（补充）",
+   "line": 232,
+   "end_line": 241,
+   "body_chars": 174,
+   "suggest_prefix": "IC-"
+  },
+  "IC-022": {
+   "source": "raw_rules/引脚核对规则.md::L242",
+   "title": "网表解析技巧",
+   "line": 242,
+   "end_line": 243,
+   "body_chars": 10,
+   "suggest_prefix": "IC-"
+  },
+  "IC-023": {
+   "source": "raw_rules/引脚核对规则.md::L244",
+   "title": "EDIF 格式 portRef 提取",
+   "line": 244,
+   "end_line": 246,
+   "body_chars": 33,
+   "suggest_prefix": "IC-"
+  },
+  "IC-024": {
+   "source": "raw_rules/引脚核对规则.md::L247",
+   "title": "提取网络中所有连接",
+   "line": 247,
+   "end_line": 257,
+   "body_chars": 299,
+   "suggest_prefix": "IC-"
+  },
+  "IC-025": {
+   "source": "raw_rules/引脚核对规则.md::L258",
+   "title": "GPIO 域后缀与 VCCIO 映射",
+   "line": 258,
+   "end_line": 273,
+   "body_chars": 421,
+   "suggest_prefix": "IC-"
+  },
+  "IC-026": {
+   "source": "raw_rules/引脚核对规则.md::L274",
+   "title": "自动化脚本自我审查规则（Script Self-Audit）",
+   "line": 274,
+   "end_line": 275,
+   "body_chars": 34,
+   "suggest_prefix": "IC-"
+  },
+  "IC-027": {
+   "source": "raw_rules/引脚核对规则.md::L276",
+   "title": "问题根源",
+   "line": 276,
+   "end_line": 279,
+   "body_chars": 42,
+   "suggest_prefix": "IC-"
+  },
+  "IC-028": {
+   "source": "raw_rules/引脚核对规则.md::L280",
+   "title": "案例 1：`net_body` 行数截断 → I2C2 上拉漏检",
+   "line": 280,
+   "end_line": 282,
+   "body_chars": 47,
+   "suggest_prefix": "IC-"
+  },
+  "IC-029": {
+   "source": "raw_rules/引脚核对规则.md::L283",
+   "title": "❌ 有截断风险的写法",
+   "line": 283,
+   "end_line": 286,
+   "body_chars": 99,
+   "suggest_prefix": "IC-"
+  },
+  "IC-030": {
+   "source": "raw_rules/引脚核对规则.md::L287",
+   "title": "网络较长 → U1000 portRef 在第 55 行 → 被截断 → has_u1000=False",
+   "line": 287,
+   "end_line": 287,
+   "body_chars": 54,
+   "suggest_prefix": "IC-"
+  },
+  "IC-031": {
+   "source": "raw_rules/引脚核对规则.md::L288",
+   "title": "→ 误判为 \"no U1000, assumed external\" → 跳过上拉检查 !!",
+   "line": 288,
+   "end_line": 291,
+   "body_chars": 63,
+   "suggest_prefix": "IC-"
+  },
+  "IC-032": {
+   "source": "raw_rules/引脚核对规则.md::L292",
+   "title": "✅ 正确的写法 — 扫描到网络结束符",
+   "line": 292,
+   "end_line": 303,
+   "body_chars": 266,
+   "suggest_prefix": "IC-"
+  },
+  "IC-033": {
+   "source": "raw_rules/引脚核对规则.md::L304",
+   "title": "案例 2：仅验证功能类别 → DVP D0/D1 编号漏检",
+   "line": 304,
+   "end_line": 306,
+   "body_chars": 44,
+   "suggest_prefix": "IC-"
+  },
+  "IC-034": {
+   "source": "raw_rules/引脚核对规则.md::L307",
+   "title": "❌ 浅层检查",
+   "line": 307,
+   "end_line": 312,
+   "body_chars": 101,
+   "suggest_prefix": "IC-"
+  },
+  "IC-035": {
+   "source": "raw_rules/引脚核对规则.md::L313",
+   "title": "✅ 深层检查",
+   "line": 313,
+   "end_line": 318,
+   "body_chars": 138,
+   "suggest_prefix": "IC-"
+  },
+  "IC-036": {
+   "source": "raw_rules/引脚核对规则.md::L319",
+   "title": "案例 3：只搜 portRef 已连接引脚 → U3200 ZQ 悬空漏检",
+   "line": 319,
+   "end_line": 321,
+   "body_chars": 52,
+   "suggest_prefix": "IC-"
+  },
+  "IC-037": {
+   "source": "raw_rules/引脚核对规则.md::L322",
+   "title": "❌ 只搜 portRef（网络连接的引脚）",
+   "line": 322,
+   "end_line": 323,
+   "body_chars": 95,
+   "suggest_prefix": "IC-"
+  },
+  "IC-038": {
+   "source": "raw_rules/引脚核对规则.md::L324",
+   "title": "→ 结果: VSS/ZQ_U(DDP) 等已连接引脚",
+   "line": 324,
+   "end_line": 324,
+   "body_chars": 28,
+   "suggest_prefix": "IC-"
+  },
+  "IC-039": {
+   "source": "raw_rules/引脚核对规则.md::L325",
+   "title": "→ ZQ 引脚悬空 → 没有 portRef → 永远搜不到！",
+   "line": 325,
+   "end_line": 325,
+   "body_chars": 33,
+   "suggest_prefix": "IC-"
+  },
+  "IC-040": {
+   "source": "raw_rules/引脚核对规则.md::L326",
+   "title": "→ 搜到 VSS/ZQ_U 含 \"ZQ\" 子串 → 误判为 ZQ → 停止",
+   "line": 326,
+   "end_line": 329,
+   "body_chars": 54,
+   "suggest_prefix": "IC-"
+  },
+  "IC-041": {
+   "source": "raw_rules/引脚核对规则.md::L330",
+   "title": "✅ 对比 portInstance（符号定义） vs portRef（网络连接）",
+   "line": 330,
+   "end_line": 330,
+   "body_chars": 42,
+   "suggest_prefix": "IC-"
+  },
+  "IC-042": {
+   "source": "raw_rules/引脚核对规则.md::L331",
+   "title": "1. 从 instance 定义提取全部引脚",
+   "line": 331,
+   "end_line": 332,
+   "body_chars": 87,
+   "suggest_prefix": "IC-"
+  },
+  "IC-043": {
+   "source": "raw_rules/引脚核对规则.md::L333",
+   "title": "→ ['DML_n', 'DQSL_P', ..., 'ZQ', ..., 'VSS/ZQ_U(DDP)']",
+   "line": 333,
+   "end_line": 333,
+   "body_chars": 56,
+   "suggest_prefix": "IC-"
+  },
+  "IC-044": {
+   "source": "raw_rules/引脚核对规则.md::L334",
+   "title": "2. 从网络提取已连接的引脚",
+   "line": 334,
+   "end_line": 335,
+   "body_chars": 93,
+   "suggest_prefix": "IC-"
+  },
+  "IC-045": {
+   "source": "raw_rules/引脚核对规则.md::L336",
+   "title": "→ ['DML_n/DBIL_n', ..., 'VSS/ZQ_U(DDP)']  # 没有 ZQ！",
+   "line": 336,
+   "end_line": 336,
+   "body_chars": 52,
+   "suggest_prefix": "IC-"
+  },
+  "IC-046": {
+   "source": "raw_rules/引脚核对规则.md::L337",
+   "title": "3. 对比 → ZQ 在 inst_pins 但不在 wired_pins → 悬空！",
+   "line": 337,
+   "end_line": 340,
+   "body_chars": 84,
+   "suggest_prefix": "IC-"
+  },
+  "IC-047": {
+   "source": "raw_rules/引脚核对规则.md::L341",
+   "title": "悬空引脚检测规则",
+   "line": 341,
+   "end_line": 344,
+   "body_chars": 128,
+   "suggest_prefix": "IC-"
+  },
+  "IC-048": {
+   "source": "raw_rules/引脚核对规则.md::L345",
+   "title": "芯片范围规则（新增，不可跳过）",
+   "line": 345,
+   "end_line": 372,
+   "body_chars": 804,
+   "suggest_prefix": "IC-"
+  },
+  "IC-049": {
+   "source": "raw_rules/引脚核对规则.md::L373",
+   "title": "实战教训",
+   "line": 373,
+   "end_line": 378,
+   "body_chars": 236,
+   "suggest_prefix": "IC-"
+  },
+  "IC-050": {
+   "source": "raw_rules/引脚核对规则.md::L379",
+   "title": "原规则（保留，按引脚功能分类）",
+   "line": 379,
+   "end_line": 391,
+   "body_chars": 380,
+   "suggest_prefix": "IC-"
+  },
+  "IC-051": {
+   "source": "raw_rules/引脚核对规则.md::L392",
+   "title": "脚本自审清单",
+   "line": 392,
+   "end_line": 405,
+   "body_chars": 460,
+   "suggest_prefix": "IC-"
+  },
+  "IC-052": {
+   "source": "raw_rules/引脚核对规则.md::L406",
+   "title": "错误处理规则",
+   "line": 406,
+   "end_line": 408,
+   "body_chars": 21,
+   "suggest_prefix": "IC-"
+  },
+  "IC-053": {
+   "source": "raw_rules/引脚核对规则.md::L409",
+   "title": "❌ 沉默跳过",
+   "line": 409,
+   "end_line": 412,
+   "body_chars": 48,
+   "suggest_prefix": "IC-"
+  },
+  "IC-054": {
+   "source": "raw_rules/引脚核对规则.md::L413",
+   "title": "✅ 显式上报",
+   "line": 413,
+   "end_line": 418,
+   "body_chars": 116,
+   "suggest_prefix": "IC-"
+  },
+  "IC-055": {
+   "source": "raw_rules/引脚核对规则.md::L419",
+   "title": "验证策略层级",
+   "line": 419,
+   "end_line": 431,
+   "body_chars": 231,
+   "suggest_prefix": "IC-"
+  },
+  "IC-056": {
+   "source": "raw_rules/引脚核对规则.md::L432",
+   "title": "检查员自审清单（Inspector Self-Audit）",
+   "line": 432,
+   "end_line": 435,
+   "body_chars": 82,
+   "suggest_prefix": "IC-"
+  },
+  "IC-057": {
+   "source": "raw_rules/引脚核对规则.md::L436",
+   "title": "一、枚举先行原则（Enumerate Before Evaluate）",
+   "line": 436,
+   "end_line": 458,
+   "body_chars": 562,
+   "suggest_prefix": "IC-"
+  },
+  "IC-058": {
+   "source": "raw_rules/引脚核对规则.md::L459",
+   "title": "二、逐 net body 硬读（Hard-Read Net Body）",
+   "line": 459,
+   "end_line": 468,
+   "body_chars": 229,
+   "suggest_prefix": "IC-"
+  },
+  "IC-059": {
+   "source": "raw_rules/引脚核对规则.md::L469",
+   "title": "三、自审门禁（Go/No-Go Gates）",
+   "line": 469,
+   "end_line": 474,
+   "body_chars": 257,
+   "suggest_prefix": "IC-"
+  },
+  "IC-060": {
+   "source": "raw_rules/引脚核对规则.md::L475",
+   "title": "四、经典漏检模式速查",
+   "line": 475,
+   "end_line": 476,
+   "body_chars": 15,
+   "suggest_prefix": "IC-"
+  },
+  "IC-061": {
+   "source": "raw_rules/引脚核对规则.md::L477",
+   "title": "四、经典漏检模式速查",
+   "line": 477,
+   "end_line": 491,
+   "body_chars": 676,
+   "suggest_prefix": "IC-"
+  },
+  "IC-062": {
+   "source": "raw_rules/引脚核对规则.md::L492",
+   "title": "五、纠正措施",
+   "line": 492,
+   "end_line": 502,
+   "body_chars": 143,
+   "suggest_prefix": "IC-"
+  },
+  "IC-063": {
+   "source": "raw_rules/引脚核对规则.md::L503",
+   "title": "输出要求：VCCIO 域→电压映射表（数据交接）",
+   "line": 503,
+   "end_line": 510,
+   "body_chars": 313,
+   "suggest_prefix": "IC-"
+  },
+  "IC-064": {
+   "source": "raw_rules/引脚核对规则.md::L511",
+   "title": "JSON Schema",
+   "line": 511,
+   "end_line": 550,
+   "body_chars": 846,
+   "suggest_prefix": "IC-"
+  },
+  "IC-065": {
+   "source": "raw_rules/引脚核对规则.md::L551",
+   "title": "输出步骤",
+   "line": 551,
+   "end_line": 558,
+   "body_chars": 243,
+   "suggest_prefix": "IC-"
+  },
+  "IC-066": {
+   "source": "raw_rules/引脚核对规则.md::L559",
+   "title": "验证",
+   "line": 559,
+   "end_line": 563,
+   "body_chars": 135,
+   "suggest_prefix": "IC-"
+  },
+  "IC-067": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L1",
+   "title": "引脚复用关系检查规则",
+   "line": 1,
+   "end_line": 17,
+   "body_chars": 554,
+   "suggest_prefix": "IC-"
+  },
+  "IC-068": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L18",
+   "title": "核心原则",
+   "line": 18,
+   "end_line": 25,
+   "body_chars": 131,
+   "suggest_prefix": "IC-"
+  },
+  "IC-069": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L26",
+   "title": "数据来源",
+   "line": 26,
+   "end_line": 43,
+   "body_chars": 418,
+   "suggest_prefix": "IC-"
+  },
+  "IC-070": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L44",
+   "title": "GPIO 标识解读",
+   "line": 44,
+   "end_line": 55,
+   "body_chars": 161,
+   "suggest_prefix": "IC-"
+  },
+  "IC-071": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L56",
+   "title": "IO 域后缀与电压",
+   "line": 56,
+   "end_line": 61,
+   "body_chars": 132,
+   "suggest_prefix": "IC-"
+  },
+  "IC-072": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L62",
+   "title": "检查流程",
+   "line": 62,
+   "end_line": 63,
+   "body_chars": 8,
+   "suggest_prefix": "IC-"
+  },
+  "IC-073": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L64",
+   "title": "第一步：提取端口复用表",
+   "line": 64,
+   "end_line": 81,
+   "body_chars": 467,
+   "suggest_prefix": "IC-"
+  },
+  "IC-074": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L82",
+   "title": "第二步：逐接口信号核对",
+   "line": 82,
+   "end_line": 92,
+   "body_chars": 154,
+   "suggest_prefix": "IC-"
+  },
+  "IC-075": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L93",
+   "title": "第三步：检查三种冲突",
+   "line": 93,
+   "end_line": 94,
+   "body_chars": 15,
+   "suggest_prefix": "IC-"
+  },
+  "IC-076": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L95",
+   "title": "冲突类型一：专用功能与 GPIO 互斥",
+   "line": 95,
+   "end_line": 105,
+   "body_chars": 159,
+   "suggest_prefix": "IC-"
+  },
+  "IC-077": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L106",
+   "title": "冲突类型二：同引脚多功能",
+   "line": 106,
+   "end_line": 116,
+   "body_chars": 159,
+   "suggest_prefix": "IC-"
+  },
+  "IC-078": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L117",
+   "title": "冲突类型三：同功能跨域 Mux",
+   "line": 117,
+   "end_line": 131,
+   "body_chars": 233,
+   "suggest_prefix": "IC-"
+  },
+  "IC-079": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L132",
+   "title": "接口引脚复用关系速查（模板）",
+   "line": 132,
+   "end_line": 135,
+   "body_chars": 97,
+   "suggest_prefix": "IC-"
+  },
+  "IC-080": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L136",
+   "title": "J3（示例：DF56C-26S 调试接口）",
+   "line": 136,
+   "end_line": 148,
+   "body_chars": 708,
+   "suggest_prefix": "IC-"
+  },
+  "IC-081": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L149",
+   "title": "J5（DF56C-26S DVP 摄像头接口）",
+   "line": 149,
+   "end_line": 159,
+   "body_chars": 459,
+   "suggest_prefix": "IC-"
+  },
+  "IC-082": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L160",
+   "title": "J8（USL00-30L RGMII 以太网）",
+   "line": 160,
+   "end_line": 169,
+   "body_chars": 210,
+   "suggest_prefix": "IC-"
+  },
+  "IC-083": {
+   "source": "raw_rules/引脚复用关系检查规则.md::L170",
+   "title": "最终交付检查清单",
+   "line": 170,
+   "end_line": 179,
+   "body_chars": 231,
+   "suggest_prefix": "IC-"
+  },
+  "LS-001": {
+   "source": "raw_rules/引脚电平检查方案.md::L1",
+   "title": "引脚电平检查方案",
+   "line": 1,
+   "end_line": 15,
+   "body_chars": 375,
+   "suggest_prefix": "LS-"
+  },
+  "LS-002": {
+   "source": "raw_rules/引脚电平检查方案.md::L16",
+   "title": "一、核心流程",
+   "line": 16,
+   "end_line": 31,
+   "body_chars": 196,
+   "suggest_prefix": "LS-"
+  },
+  "LS-003": {
+   "source": "raw_rules/引脚电平检查方案.md::L32",
+   "title": "二、Step 1 — 确定信号路径",
+   "line": 32,
+   "end_line": 44,
+   "body_chars": 215,
+   "suggest_prefix": "LS-"
+  },
+  "LS-004": {
+   "source": "raw_rules/引脚电平检查方案.md::L45",
+   "title": "三、Step 2 — 查芯片 VCCIO 域",
+   "line": 45,
+   "end_line": 46,
+   "body_chars": 26,
+   "suggest_prefix": "LS-"
+  },
+  "LS-005": {
+   "source": "raw_rules/引脚电平检查方案.md::L47",
+   "title": "从芯片引脚名提取域后缀",
+   "line": 47,
+   "end_line": 60,
+   "body_chars": 288,
+   "suggest_prefix": "LS-"
+  },
+  "LS-006": {
+   "source": "raw_rules/引脚电平检查方案.md::L61",
+   "title": "四、Step 3 — 追踪供电网络",
+   "line": 61,
+   "end_line": 71,
+   "body_chars": 133,
+   "suggest_prefix": "LS-"
+  },
+  "LS-007": {
+   "source": "raw_rules/引脚电平检查方案.md::L72",
+   "title": "EDN 查询方法",
+   "line": 72,
+   "end_line": 74,
+   "body_chars": 23,
+   "suggest_prefix": "LS-"
+  },
+  "LS-008": {
+   "source": "raw_rules/引脚电平检查方案.md::L75",
+   "title": "伪代码",
+   "line": 75,
+   "end_line": 88,
+   "body_chars": 336,
+   "suggest_prefix": "LS-"
+  },
+  "LS-009": {
+   "source": "raw_rules/引脚电平检查方案.md::L89",
+   "title": "五、Step 4 — 检查中间芯片",
+   "line": 89,
+   "end_line": 92,
+   "body_chars": 282,
+   "suggest_prefix": "LS-"
+  },
+  "LS-010": {
+   "source": "raw_rules/引脚电平检查方案.md::L93",
+   "title": "5.1 确认路径上的所有中间芯片",
+   "line": 93,
+   "end_line": 105,
+   "body_chars": 246,
+   "suggest_prefix": "LS-"
+  },
+  "LS-011": {
+   "source": "raw_rules/引脚电平检查方案.md::L106",
+   "title": "追踪时发现信号经过了芯片 Ux 而非直连",
+   "line": 106,
+   "end_line": 111,
+   "body_chars": 172,
+   "suggest_prefix": "LS-"
+  },
+  "LS-012": {
+   "source": "raw_rules/引脚电平检查方案.md::L112",
+   "title": "5.2 对每颗中间芯片，要求提供数据手册",
+   "line": 112,
+   "end_line": 125,
+   "body_chars": 443,
+   "suggest_prefix": "LS-"
+  },
+  "LS-013": {
+   "source": "raw_rules/引脚电平检查方案.md::L126",
+   "title": "5.3 核对手册与实际电路",
+   "line": 126,
+   "end_line": 148,
+   "body_chars": 569,
+   "suggest_prefix": "LS-"
+  },
+  "LS-014": {
+   "source": "raw_rules/引脚电平检查方案.md::L149",
+   "title": "5.4 核对信号方向与芯片能力",
+   "line": 149,
+   "end_line": 157,
+   "body_chars": 159,
+   "suggest_prefix": "LS-"
+  },
+  "LS-015": {
+   "source": "raw_rules/引脚电平检查方案.md::L158",
+   "title": "5.5 核对 Footprint 一致性",
+   "line": 158,
+   "end_line": 166,
+   "body_chars": 134,
+   "suggest_prefix": "LS-"
+  },
+  "LS-016": {
+   "source": "raw_rules/引脚电平检查方案.md::L167",
+   "title": "5.6 信号直连（无中间芯片）",
+   "line": 167,
+   "end_line": 177,
+   "body_chars": 114,
+   "suggest_prefix": "LS-"
+  },
+  "LS-017": {
+   "source": "raw_rules/引脚电平检查方案.md::L178",
+   "title": "六、Step 5 — 对比标注 vs 实际",
+   "line": 178,
+   "end_line": 189,
+   "body_chars": 206,
+   "suggest_prefix": "LS-"
+  },
+  "LS-018": {
+   "source": "raw_rules/引脚电平检查方案.md::L190",
+   "title": "七、完整检查清单",
+   "line": 190,
+   "end_line": 191,
+   "body_chars": 12,
+   "suggest_prefix": "LS-"
+  },
+  "LS-019": {
+   "source": "raw_rules/引脚电平检查方案.md::L192",
+   "title": "对每个信号执行",
+   "line": 192,
+   "end_line": 202,
+   "body_chars": 222,
+   "suggest_prefix": "LS-"
+  },
+  "LS-020": {
+   "source": "raw_rules/引脚电平检查方案.md::L203",
+   "title": "高风险信号优先检查",
+   "line": 203,
+   "end_line": 213,
+   "body_chars": 207,
+   "suggest_prefix": "LS-"
+  },
+  "LS-021": {
+   "source": "raw_rules/引脚电平检查方案.md::L214",
+   "title": "八、批量检查方案（可用脚本实现）",
+   "line": 214,
+   "end_line": 224,
+   "body_chars": 259,
+   "suggest_prefix": "LS-"
+  },
+  "PB-001": {
+   "source": "raw_rules/接口电路检查规则.md::L26",
+   "title": "第二部分：动态电路与隐性风险检查 (Dynamic & Integrity Checks)",
+   "line": 26,
+   "end_line": 27,
+   "body_chars": 46,
+   "suggest_prefix": "PB-"
+  },
+  "PB-002": {
+   "source": "raw_rules/接口电路检查规则.md::L28",
+   "title": "2.1 电平转换芯片（Level Shifter）判定树",
+   "line": 28,
+   "end_line": 39,
+   "body_chars": 337,
+   "suggest_prefix": "PB-"
+  },
+  "PB-003": {
+   "source": "raw_rules/接口电路检查规则.md::L40",
+   "title": "2.2 默认电平与单点多驱检查",
+   "line": 40,
+   "end_line": 45,
+   "body_chars": 161,
+   "suggest_prefix": "PB-"
+  },
+  "PB-004": {
+   "source": "raw_rules/接口电路检查规则.md::L46",
+   "title": "2.3 电源域耦合与上电时序",
+   "line": 46,
+   "end_line": 49,
+   "body_chars": 112,
+   "suggest_prefix": "PB-"
+  },
+  "PB-005": {
+   "source": "raw_rules/接口电路检查规则.md::L50",
+   "title": "第三部分：常见外设标准电路检查规则 (Peripheral Standard Rules)",
+   "line": 50,
+   "end_line": 53,
+   "body_chars": 81,
+   "suggest_prefix": "PB-"
+  },
+  "PB-006": {
+   "source": "raw_rules/接口电路检查规则.md::L54",
+   "title": "3.1 低速串行总线 (I2C / UART)",
+   "line": 54,
+   "end_line": 75,
+   "body_chars": 632,
+   "suggest_prefix": "PB-"
+  },
+  "PB-007": {
+   "source": "raw_rules/接口电路检查规则.md::L76",
+   "title": "3.2 工业接口转换 (RS232 / RS485 / RS422)",
+   "line": 76,
+   "end_line": 97,
+   "body_chars": 514,
+   "suggest_prefix": "PB-"
+  },
+  "PB-008": {
+   "source": "raw_rules/接口电路检查规则.md::L98",
+   "title": "3.3 高速内存总线 (DDR3 / DDR4 / LPDDR4 / LPDDR5)",
+   "line": 98,
+   "end_line": 145,
+   "body_chars": 1429,
+   "suggest_prefix": "PB-"
+  },
+  "PB-009": {
+   "source": "raw_rules/接口电路检查规则.md::L146",
+   "title": "3.4 视频与高速接口 (MIPI / DVP)",
+   "line": 146,
+   "end_line": 163,
+   "body_chars": 610,
+   "suggest_prefix": "PB-"
+  },
+  "PB-010": {
+   "source": "raw_rules/接口电路检查规则.md::L164",
+   "title": "第四部分：最终交付与异常判定逻辑输出",
+   "line": 164,
+   "end_line": 178,
+   "body_chars": 267,
+   "suggest_prefix": "PB-"
+  },
+  "PO-001": {
+   "source": "raw_rules/电源检查.md::L1",
+   "title": "电源检查规则",
+   "line": 1,
+   "end_line": 8,
+   "body_chars": 240,
+   "suggest_prefix": "PO-"
+  },
+  "PO-002": {
+   "source": "raw_rules/电源检查.md::L9",
+   "title": "一、上电时序检查",
+   "line": 9,
+   "end_line": 12,
+   "body_chars": 169,
+   "suggest_prefix": "PO-"
+  },
+  "PO-003": {
+   "source": "raw_rules/电源检查.md::L13",
+   "title": "1.1 时序约束来源",
+   "line": 13,
+   "end_line": 24,
+   "body_chars": 316,
+   "suggest_prefix": "PO-"
+  },
+  "PO-004": {
+   "source": "raw_rules/电源检查.md::L25",
+   "title": "1.2 多轨启动顺序验证",
+   "line": 25,
+   "end_line": 39,
+   "body_chars": 346,
+   "suggest_prefix": "PO-"
+  },
+  "PO-005": {
+   "source": "raw_rules/电源检查.md::L40",
+   "title": "1.3 tON / tOFF / tRAMP 参数核对",
+   "line": 40,
+   "end_line": 48,
+   "body_chars": 156,
+   "suggest_prefix": "PO-"
+  },
+  "PO-006": {
+   "source": "raw_rules/电源检查.md::L49",
+   "title": "二、电源启动流程",
+   "line": 49,
+   "end_line": 50,
+   "body_chars": 12,
+   "suggest_prefix": "PO-"
+  },
+  "PO-007": {
+   "source": "raw_rules/电源检查.md::L51",
+   "title": "2.1 EN 链追踪",
+   "line": 51,
+   "end_line": 63,
+   "body_chars": 236,
+   "suggest_prefix": "PO-"
+  },
+  "PO-008": {
+   "source": "raw_rules/电源检查.md::L64",
+   "title": "2.2 PG 级联验证",
+   "line": 64,
+   "end_line": 76,
+   "body_chars": 201,
+   "suggest_prefix": "PO-"
+  },
+  "PO-009": {
+   "source": "raw_rules/电源检查.md::L77",
+   "title": "2.3 保护机制确认",
+   "line": 77,
+   "end_line": 86,
+   "body_chars": 220,
+   "suggest_prefix": "PO-"
+  },
+  "PO-010": {
+   "source": "raw_rules/电源检查.md::L87",
+   "title": "三、PMIC 配置验证",
+   "line": 87,
+   "end_line": 88,
+   "body_chars": 15,
+   "suggest_prefix": "PO-"
+  },
+  "PO-011": {
+   "source": "raw_rules/电源检查.md::L89",
+   "title": "3.1 分压电阻计算",
+   "line": 89,
+   "end_line": 106,
+   "body_chars": 245,
+   "suggest_prefix": "PO-"
+  },
+  "PO-012": {
+   "source": "raw_rules/电源检查.md::L107",
+   "title": "3.2 FB 网络一致性",
+   "line": 107,
+   "end_line": 112,
+   "body_chars": 117,
+   "suggest_prefix": "PO-"
+  },
+  "PO-013": {
+   "source": "raw_rules/电源检查.md::L113",
+   "title": "3.3 可编程寄存器默认值",
+   "line": 113,
+   "end_line": 120,
+   "body_chars": 143,
+   "suggest_prefix": "PO-"
+  },
+  "PO-014": {
+   "source": "raw_rules/电源检查.md::L121",
+   "title": "四、上下拉模型",
+   "line": 121,
+   "end_line": 122,
+   "body_chars": 11,
+   "suggest_prefix": "PO-"
+  },
+  "PO-015": {
+   "source": "raw_rules/电源检查.md::L123",
+   "title": "4.1 EN 引脚默认态与外部配合",
+   "line": 123,
+   "end_line": 134,
+   "body_chars": 286,
+   "suggest_prefix": "PO-"
+  },
+  "PO-016": {
+   "source": "raw_rules/电源检查.md::L135",
+   "title": "4.2 开漏输出的上拉要求",
+   "line": 135,
+   "end_line": 141,
+   "body_chars": 136,
+   "suggest_prefix": "PO-"
+  },
+  "PO-017": {
+   "source": "raw_rules/电源检查.md::L142",
+   "title": "4.3 MODE/SYNC 配置引脚",
+   "line": 142,
+   "end_line": 149,
+   "body_chars": 124,
+   "suggest_prefix": "PO-"
+  },
+  "PO-018": {
+   "source": "raw_rules/电源检查.md::L150",
+   "title": "五、电容配置",
+   "line": 150,
+   "end_line": 151,
+   "body_chars": 10,
+   "suggest_prefix": "PO-"
+  },
+  "PO-019": {
+   "source": "raw_rules/电源检查.md::L152",
+   "title": "5.1 输入/输出电容手册要求",
+   "line": 152,
+   "end_line": 162,
+   "body_chars": 282,
+   "suggest_prefix": "PO-"
+  },
+  "PO-020": {
+   "source": "raw_rules/电源检查.md::L163",
+   "title": "5.2 去耦密度检查",
+   "line": 163,
+   "end_line": 171,
+   "body_chars": 202,
+   "suggest_prefix": "PO-"
+  },
+  "PO-021": {
+   "source": "raw_rules/电源检查.md::L172",
+   "title": "5.3 耐压与介质类型",
+   "line": 172,
+   "end_line": 178,
+   "body_chars": 134,
+   "suggest_prefix": "PO-"
+  },
+  "PO-022": {
+   "source": "raw_rules/电源检查.md::L179",
+   "title": "六、电阻配置",
+   "line": 179,
+   "end_line": 180,
+   "body_chars": 10,
+   "suggest_prefix": "PO-"
+  },
+  "PO-023": {
+   "source": "raw_rules/电源检查.md::L181",
+   "title": "6.1 限流/频率设定电阻",
+   "line": 181,
+   "end_line": 188,
+   "body_chars": 229,
+   "suggest_prefix": "PO-"
+  },
+  "PO-024": {
+   "source": "raw_rules/电源检查.md::L189",
+   "title": "6.2 电流采样电阻（Shunt）",
+   "line": 189,
+   "end_line": 199,
+   "body_chars": 264,
+   "suggest_prefix": "PO-"
+  },
+  "PO-025": {
+   "source": "raw_rules/电源检查.md::L200",
+   "title": "七、交付检查清单",
+   "line": 200,
+   "end_line": 212,
+   "body_chars": 465,
+   "suggest_prefix": "PO-"
+  },
+  "SYN-001": {
+   "source": "raw_rules/证据文件Schema规范.md::L1",
+   "title": "证据文件 JSON Schema 规范",
+   "line": 1,
+   "end_line": 7,
+   "body_chars": 95,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-002": {
+   "source": "raw_rules/证据文件Schema规范.md::L8",
+   "title": "一、通用要求",
+   "line": 8,
+   "end_line": 9,
+   "body_chars": 10,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-003": {
+   "source": "raw_rules/证据文件Schema规范.md::L10",
+   "title": "1.1 根节点元信息",
+   "line": 10,
+   "end_line": 35,
+   "body_chars": 529,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-004": {
+   "source": "raw_rules/证据文件Schema规范.md::L36",
+   "title": "二、任务输出 Schema",
+   "line": 36,
+   "end_line": 37,
+   "body_chars": 17,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-005": {
+   "source": "raw_rules/证据文件Schema规范.md::L38",
+   "title": "T1: IC 清单 — `v10_ic_inventory.csv`",
+   "line": 38,
+   "end_line": 54,
+   "body_chars": 537,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-006": {
+   "source": "raw_rules/证据文件Schema规范.md::L55",
+   "title": "T1 附加: RK3576 参数 — `v10_rk3576_params.json`",
+   "line": 55,
+   "end_line": 99,
+   "body_chars": 937,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-007": {
+   "source": "raw_rules/证据文件Schema规范.md::L100",
+   "title": "T4: VCCIO 域映射 — `v10_vccio_map.json`",
+   "line": 100,
+   "end_line": 148,
+   "body_chars": 1309,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-008": {
+   "source": "raw_rules/证据文件Schema规范.md::L149",
+   "title": "T5: 供电网络 — `v10_power_rails.json`",
+   "line": 149,
+   "end_line": 178,
+   "body_chars": 669,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-009": {
+   "source": "raw_rules/证据文件Schema规范.md::L179",
+   "title": "T6: 连接器 — `v10_connector_pinout.json`",
+   "line": 179,
+   "end_line": 221,
+   "body_chars": 1069,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-010": {
+   "source": "raw_rules/证据文件Schema规范.md::L222",
+   "title": "T7: DDR — `v10_ddr_check.json`",
+   "line": 222,
+   "end_line": 298,
+   "body_chars": 2032,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-011": {
+   "source": "raw_rules/证据文件Schema规范.md::L299",
+   "title": "T8: 外设 — `v10_peripheral_check.json`",
+   "line": 299,
+   "end_line": 358,
+   "body_chars": 1236,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-012": {
+   "source": "raw_rules/证据文件Schema规范.md::L359",
+   "title": "T9: 悬空引脚 — `v10_floating_pins.json`",
+   "line": 359,
+   "end_line": 397,
+   "body_chars": 861,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-013": {
+   "source": "raw_rules/证据文件Schema规范.md::L398",
+   "title": "T10: 芯片专属 — `v10_rk3576_specific.json`",
+   "line": 398,
+   "end_line": 431,
+   "body_chars": 735,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-014": {
+   "source": "raw_rules/证据文件Schema规范.md::L432",
+   "title": "三、枚举值定义",
+   "line": 432,
+   "end_line": 443,
+   "body_chars": 401,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-015": {
+   "source": "raw_rules/证据文件Schema规范.md::L444",
+   "title": "四、F2 报告代理的使用规范",
+   "line": 444,
+   "end_line": 455,
+   "body_chars": 271,
+   "suggest_prefix": "SYN-"
+  },
+  "SYN-016": {
+   "source": "raw_rules/证据文件Schema规范.md::L456",
+   "title": "五、版本历史",
+   "line": 456,
+   "end_line": 461,
+   "body_chars": 164,
+   "suggest_prefix": "SYN-"
+  }
+ },
+ "raw_sections_total": 218,
+ "mapped": 218,
+ "unclassified": 0,
+ "duplicate_raw_sections": [],
+ "counters": {
+  "DOC": 1,
+  "PART": 5,
+  "ROLE": 10,
+  "GATE": 15,
+  "BLOCK": 6,
+  "LEARN": 5,
+  "CT": 14,
+  "DP": 3,
+  "Q": 3,
+  "SA": 1,
+  "IC-": 83,
+  "LS-": 21,
+  "PB-": 10,
+  "PO-": 25,
+  "SYN-": 16
+ }
+}

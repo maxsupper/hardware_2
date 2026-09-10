@@ -1,0 +1,24 @@
+{
+ "schema_version": "1.0",
+ "kind": "reverse_check",
+ "checks": {
+  "无遗留(missing)": {
+   "count": 0,
+   "items": []
+  },
+  "无重复来源(dup_source)": {
+   "count": 0,
+   "items": []
+  },
+  "无错位(misplace)": {
+   "count": 0,
+   "items": []
+  }
+ },
+ "stats": {
+  "raw_sections": 218,
+  "mapped": 218,
+  "r2c_keys": 218
+ },
+ "pass": true
+}

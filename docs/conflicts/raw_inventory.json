@@ -1,0 +1,1806 @@
+{
+ "schema_version": "1.0",
+ "kind": "raw_inventory",
+ "files": {
+  "raw_roles/hardware-reviewer.md": {
+   "file": "raw_roles/hardware-reviewer.md",
+   "chars": 36441,
+   "sections": [
+    {
+     "title": "硬件原理图设计验证专家 — Agent 规则 (v4.0)",
+     "line": 1,
+     "end_line": 2,
+     "raw_head": "# 硬件原理图设计验证专家 — Agent 规则 (v4.0)",
+     "body_chars": 32,
+     "body_head": "# 硬件原理图设计验证专家 — Agent 规则 (v4.0)\n"
+    },
+    {
+     "title": "§0 快速导航 (人类阅读)",
+     "line": 3,
+     "end_line": 13,
+     "raw_head": "## §0 快速导航 (人类阅读)",
+     "body_chars": 304,
+     "body_head": "## §0 快速导航 (人类阅读)\n| 章节 | 核心内容 | 主要适用 |\n|------|---------|---------|\n| §1 | 6 Agent 定义 + Gate 骨架 | 全员 |\n| §2 | 端到端流程 + 13"
+    },
+    {
+     "title": "§1 角色定义与架构",
+     "line": 14,
+     "end_line": 15,
+     "raw_head": "## §1 角色定义与架构",
+     "body_chars": 14,
+     "body_head": "## §1 角色定义与架构\n"
+    },
+    {
+     "title": "1.1 角色定义",
+     "line": 16,
+     "end_line": 20,
+     "raw_head": "### 1.1 角色定义",
+     "body_chars": 126,
+     "body_head": "### 1.1 角色定义\n你是一名硬件原理图设计验证专家，专注于 PCB 原理图自动化审查。\n\n核心原则：网名是标签而非物理事实，必须先追踪物理连接再做判断。所有检查输出需遵循分级格式：?? CRITICAL / ?? WARNING / "
+    },
+    {
+     "title": "1.2 Purpose",
+     "line": 21,
+     "end_line": 23,
+     "raw_head": "### 1.2 Purpose",
+     "body_chars": 126,
+     "body_head": "### 1.2 Purpose\n硬件原理图设计验证规则文档集合，覆盖芯片引脚复用配置、VCCIO 电源域电平匹配、信号完整性、外设标准电路完整性、上电时序及动态电路行为的自动化/人工检查方法。适用于 AI Agent 与人工审查员协同执行原"
+    },
+    {
+     "title": "1.2 多 Agent 委派架构",
+     "line": 24,
+     "end_line": 33,
+     "raw_head": "### 1.2 多 Agent 委派架构",
+     "body_chars": 386,
+     "body_head": "### 1.2 多 Agent 委派架构\n| Agent | 阶段 | 角色 | 职责 |\n|-------|------|------|------|\n| hardware_review | 全流程 | 编排器（裁判） | 调度、验证 G"
+    },
+    {
+     "title": "1.3 hardware_review — 流程编排器（裁判）",
+     "line": 34,
+     "end_line": 76,
+     "raw_head": "### 1.3 hardware_review — 流程编排器（裁判）",
+     "body_chars": 1884,
+     "body_head": "### 1.3 hardware_review — 流程编排器（裁判）\n\n| 属性 | 值 |\n|------|-----|\n| 模型 | deepseek-v4-pro |\n| 阶段 | 全流程（Step -2 → G6） |\n\n**任务"
+    },
+    {
+     "title": "1.4 hw_search — 手册检索（运动员）",
+     "line": 77,
+     "end_line": 99,
+     "raw_head": "### 1.4 hw_search — 手册检索（运动员）",
+     "body_chars": 494,
+     "body_head": "### 1.4 hw_search — 手册检索（运动员）\n\n| 属性 | 值 |\n|------|-----|\n| 模型 | deepseek-v4-flash |\n| 阶段 | G0 |\n\n**任务**：从本地和在线来源检索芯片数据手册"
+    },
+    {
+     "title": "1.5 hw_prep — 网表解析（运动员）",
+     "line": 100,
+     "end_line": 121,
+     "raw_head": "### 1.5 hw_prep — 网表解析（运动员）",
+     "body_chars": 468,
+     "body_head": "### 1.5 hw_prep — 网表解析（运动员）\n\n| 属性 | 值 |\n|------|-----|\n| 模型 | deepseek-v4-flash |\n| 阶段 | Wave 1 |\n\n**任务**：EDN/EDIF 网表解析 "
+    },
+    {
+     "title": "1.6 hw_analyze — 深度分析（运动员）",
+     "line": 122,
+     "end_line": 157,
+     "raw_head": "### 1.6 hw_analyze — 深度分析（运动员）",
+     "body_chars": 1272,
+     "body_head": "### 1.6 hw_analyze — 深度分析（运动员）\n\n| 属性 | 值 |\n|------|-----|\n| 模型 | deepseek-v4-pro |\n| 阶段 | Wave 2 |\n\n**任务**：引脚核对、VCCIO 电平"
+    },
+    {
+     "title": "1.7 hw_auditor — 复核审计（运动员）",
+     "line": 158,
+     "end_line": 179,
+     "raw_head": "### 1.7 hw_auditor — 复核审计（运动员）",
+     "body_chars": 574,
+     "body_head": "### 1.7 hw_auditor — 复核审计（运动员）\n\n| 属性 | 值 |\n|------|-----|\n| 模型 | deepseek-v4-pro |\n| 阶段 | Wave FINAL |\n\n**任务**：G0-G7 门禁逐"
+    },
+    {
+     "title": "1.8 hw_write — 报告编写（运动员）",
+     "line": 180,
+     "end_line": 202,
+     "raw_head": "### 1.8 hw_write — 报告编写（运动员）",
+     "body_chars": 658,
+     "body_head": "### 1.8 hw_write — 报告编写（运动员）\n\n| 属性 | 值 |\n|------|-----|\n| 模型 | deepseek-v4-flash |\n| 阶段 | Wave FINAL |\n\n**任务**：从摘要 JSON "
+    },
+    {
+     "title": "1.9 全流程 Gate 顺序",
+     "line": 203,
+     "end_line": 217,
+     "raw_head": "### 1.9 全流程 Gate 顺序",
+     "body_chars": 516,
+     "body_head": "### 1.9 全流程 Gate 顺序\n```\nStep -2 Clean-room → Step -1 加载 learn/ → Step 0a 人机交互\n→ Wave 1 (hw_prep) → G0 手册搜索 (hw_search) →"
+    },
+    {
+     "title": "§2 审核流程",
+     "line": 218,
+     "end_line": 221,
+     "raw_head": "## §2 审核流程",
+     "body_chars": 116,
+     "body_head": "## §2 审核流程\n\n> **核心理念**：hardware_review 是纯裁判（编排器），不自己做分析。每个 Gate 委派 subagent 执行任务 → 读 Gate JSON → 验证 status → 放行/阻断。\n"
+    },
+    {
+     "title": "§2.1 全流程概览",
+     "line": 222,
+     "end_line": 291,
+     "raw_head": "### §2.1 全流程概览",
+     "body_chars": 3134,
+     "body_head": "### §2.1 全流程概览\n\n```\nStep -2 Clean-room → run_manifest.start.json\n       │\n       ▼\nStep -1 加载 learn/ → learn/knowledge.m"
+    },
+    {
+     "title": "§2.2 Step 0a — 人工配置门禁",
+     "line": 292,
+     "end_line": 299,
+     "raw_head": "### §2.2 Step 0a — 人工配置门禁",
+     "body_chars": 172,
+     "body_head": "### §2.2 Step 0a — 人工配置门禁\n\n| 项目 | 内容 |\n|------|------|\n| 目的 | 收集人工输入：manual_dir（手册目录）+ extra_checks（附加检查项） |\n| 输入 | 用户键盘"
+    },
+    {
+     "title": "? 阻断条件",
+     "line": 300,
+     "end_line": 307,
+     "raw_head": "#### ? 阻断条件",
+     "body_chars": 316,
+     "body_head": "#### ? 阻断条件\n\n| # | 跳跃点 | 阻断条件 | 强制验证 | ?? 恢复动作 |\n|---|--------|---------|---------|-----------|\n| 1 | Agent 跳过交互自推断 | `s"
+    },
+    {
+     "title": "?? 适用规则",
+     "line": 308,
+     "end_line": 316,
+     "raw_head": "#### ?? 适用规则",
+     "body_chars": 258,
+     "body_head": "#### ?? 适用规则\n\n| 规则编号 | 规则内容 | 来源章节 |\n|---------|---------|---------|\n| R0a-01 | Question 弹窗必须前台执行，禁止 background | §6 委派规"
+    },
+    {
+     "title": "§2.3 G0 — 手册搜索",
+     "line": 317,
+     "end_line": 324,
+     "raw_head": "### §2.3 G0 — 手册搜索",
+     "body_chars": 234,
+     "body_head": "### §2.3 G0 — 手册搜索\n\n| 项目 | 内容 |\n|------|------|\n| 目的 | 递归搜索所有格式文档（md/pdf/txt/xlsx 等）→ IC 型号匹配 → 在线检索 ≥3 来源 → 手册参数提取 |\n| "
+    },
+    {
+     "title": "? 阻断条件",
+     "line": 325,
+     "end_line": 333,
+     "raw_head": "#### ? 阻断条件",
+     "body_chars": 575,
+     "body_head": "#### ? 阻断条件\n\n| # | 跳跃点 | 阻断条件 | 强制验证 | ?? 恢复动作 |\n|---|--------|---------|---------|-----------|\n| 3 | 跳过递归搜索 | `g0_sourc"
+    },
+    {
+     "title": "?? 适用规则",
+     "line": 334,
+     "end_line": 343,
+     "raw_head": "#### ?? 适用规则",
+     "body_chars": 289,
+     "body_head": "#### ?? 适用规则\n\n| 规则编号 | 规则内容 | 来源章节 |\n|---------|---------|---------|\n| RG0-01 | 递归搜索（非平铺） | §4 各环节规则 |\n| RG0-02 | ≥3 来源检"
+    },
+    {
+     "title": "§2.4 G0.5 — 手册缺失确认",
+     "line": 344,
+     "end_line": 351,
+     "raw_head": "### §2.4 G0.5 — 手册缺失确认",
+     "body_chars": 184,
+     "body_head": "### §2.4 G0.5 — 手册缺失确认\n\n| 项目 | 内容 |\n|------|------|\n| 目的 | 对 TRULY_MISSING/PARTIAL IC 进行人机交互确认，决定处理方式 |\n| 输入 | `g0_sourc"
+    },
+    {
+     "title": "? 无缺失自动 PASS",
+     "line": 352,
+     "end_line": 366,
+     "raw_head": "#### ? 无缺失自动 PASS",
+     "body_chars": 295,
+     "body_head": "#### ? 无缺失自动 PASS\n\n若 `g0_sources.json` 中所有功能 IC 的 `status == FOUND`（无 FOUND_PARTIAL / TRULY_MISSING），则无需弹窗交互，直接写入 `{run_"
+    },
+    {
+     "title": "??? Question 弹窗配置",
+     "line": 367,
+     "end_line": 377,
+     "raw_head": "#### ??? Question 弹窗配置",
+     "body_chars": 378,
+     "body_head": "#### ??? Question 弹窗配置\n\n若有缺失（FOUND_PARTIAL 或 TRULY_MISSING），调用 `question()` 弹窗：\n\n| 参数 | 值 |\n|------|-----|\n| header | \"手"
+    },
+    {
+     "title": "? 阻断条件",
+     "line": 378,
+     "end_line": 386,
+     "raw_head": "#### ? 阻断条件",
+     "body_chars": 495,
+     "body_head": "#### ? 阻断条件\n\n| # | 跳跃点 | 阻断条件 | 强制验证 | ?? 恢复动作 |\n|---|--------|---------|---------|-----------|\n| 2 | g0.5_confirm.json "
+    },
+    {
+     "title": "?? 适用规则",
+     "line": 387,
+     "end_line": 397,
+     "raw_head": "#### ?? 适用规则",
+     "body_chars": 390,
+     "body_head": "#### ?? 适用规则\n\n| 规则编号 | 规则内容 | 来源章节 |\n|---------|---------|---------|\n| RG05-01 | G0.5 是人机交互阻断点，不可跳过 | §4 各环节规则 |\n| RG05-"
+    },
+    {
+     "title": "§2.5 Wave 1 — hw_prep 网表解析",
+     "line": 398,
+     "end_line": 405,
+     "raw_head": "### §2.5 Wave 1 — hw_prep 网表解析",
+     "body_chars": 258,
+     "body_head": "### §2.5 Wave 1 — hw_prep 网表解析\n\n| 项目 | 内容 |\n|------|------|\n| 目的 | EDN/EDIF 网表解析 → 提取 IC 型号/连接器/net → 产出结构化 JSON |\n| 输入 "
+    },
+    {
+     "title": "? 阻断条件",
+     "line": 406,
+     "end_line": 413,
+     "raw_head": "#### ? 阻断条件",
+     "body_chars": 374,
+     "body_head": "#### ? 阻断条件\n\n| # | 跳跃点 | 阻断条件 | 强制验证 | ?? 恢复动作 |\n|---|--------|---------|---------|-----------|\n| 6 | hw_prep 产出文件缺失或无效 "
+    },
+    {
+     "title": "?? 适用规则",
+     "line": 414,
+     "end_line": 423,
+     "raw_head": "#### ?? 适用规则",
+     "body_chars": 319,
+     "body_head": "#### ?? 适用规则\n\n| 规则编号 | 规则内容 | 来源章节 |\n|---------|---------|---------|\n| RW1-01 | OrCAD/EDIF 陷阱：cellRef_NC/BEAD/TP/Hole | "
+    },
+    {
+     "title": "§2.6 Wave 2 — hw_analyze 深度分析",
+     "line": 424,
+     "end_line": 431,
+     "raw_head": "### §2.6 Wave 2 — hw_analyze 深度分析",
+     "body_chars": 238,
+     "body_head": "### §2.6 Wave 2 — hw_analyze 深度分析\n\n| 项目 | 内容 |\n|------|------|\n| 目的 | 引脚核对、VCCIO 电平匹配、供电网络追踪、DDR/外设/连接器/浮空检测 |\n| 输入 | `p"
+    },
+    {
+     "title": "? 阻断条件",
+     "line": 432,
+     "end_line": 442,
+     "raw_head": "#### ? 阻断条件",
+     "body_chars": 1006,
+     "body_head": "#### ? 阻断条件\n\n| # | 跳跃点 | 阻断条件 | 强制验证 | ?? 恢复动作 |\n|---|--------|---------|---------|-----------|\n| 7 | evidence JSON sche"
+    },
+    {
+     "title": "?? 适用规则",
+     "line": 443,
+     "end_line": 457,
+     "raw_head": "#### ?? 适用规则",
+     "body_chars": 500,
+     "body_head": "#### ?? 适用规则\n\n| 规则编号 | 规则内容 | 来源章节 |\n|---------|---------|---------|\n| RW2-01 | 引用手册原文（页码/表格号），禁止二手描述 | §1.6 |\n| RW2-02 "
+    },
+    {
+     "title": "§2.7 Wave FINAL — 报告 + 审计 + G6 闭环",
+     "line": 458,
+     "end_line": 465,
+     "raw_head": "### §2.7 Wave FINAL — 报告 + 审计 + G6 闭环",
+     "body_chars": 255,
+     "body_head": "### §2.7 Wave FINAL — 报告 + 审计 + G6 闭环\n\n| 项目 | 内容 |\n|------|------|\n| 目的 | 报告合成 → 审计复核 → G6 闭环 → 自学习回写 |\n| 输入 | `evidence"
+    },
+    {
+     "title": "? 阻断条件",
+     "line": 466,
+     "end_line": 476,
+     "raw_head": "#### ? 阻断条件",
+     "body_chars": 842,
+     "body_head": "#### ? 阻断条件\n\n| # | 跳跃点 | 阻断条件 | 强制验证 | ?? 恢复动作 |\n|---|--------|---------|---------|-----------|\n| 9 | 报告节文件缺失 | `report/"
+    },
+    {
+     "title": "?? 适用规则",
+     "line": 477,
+     "end_line": 493,
+     "raw_head": "#### ?? 适用规则",
+     "body_chars": 554,
+     "body_head": "#### ?? 适用规则\n\n| 规则编号 | 规则内容 | 来源章节 |\n|---------|---------|---------|\n| RF-01 | hw_write 每节独立任务，禁止合并多节 | §6 委派规范 |\n| RF-0"
+    },
+    {
+     "title": "G6 后：自学习回写",
+     "line": 494,
+     "end_line": 522,
+     "raw_head": "#### G6 后：自学习回写",
+     "body_chars": 862,
+     "body_head": "#### G6 后：自学习回写\n\nG6 闭环通过后（报告最终版本确定后），执行以下自学习回写：\n\n```\n1. 扫描本次检查中 G1-G5 自审和 G6 闭环的修正记录\n   ├── 本次修正对应已有 [FIX] 条目？\n   │   └─"
+    },
+    {
+     "title": "会话结束：升级建议询问",
+     "line": 523,
+     "end_line": 534,
+     "raw_head": "#### 会话结束：升级建议询问",
+     "body_chars": 220,
+     "body_head": "#### 会话结束：升级建议询问\n\n> ? **每次硬件审查会话结束时，agent 必须检查 learn/suggestions.md 中是否有待审核条目。如有，必须在输出末尾主动显示升级建议并等待用户回复。**\n\n**触发条件**：\n1."
+    },
+    {
+     "title": "? SUG-XXX: {条目标题}",
+     "line": 535,
+     "end_line": 557,
+     "raw_head": "### ? SUG-XXX: {条目标题}",
+     "body_chars": 443,
+     "body_head": "### ? SUG-XXX: {条目标题}\n- **来源**: learn/knowledge.md K-XXXX\n- **理由**: {命中次数}次命中，跨{N}个项目验证有效，成熟度{X}/5\n- **建议**: 升级到 `{目标规则文"
+    },
+    {
+     "title": "G6 通过标准",
+     "line": 558,
+     "end_line": 570,
+     "raw_head": "#### G6 通过标准",
+     "body_chars": 360,
+     "body_head": "#### G6 通过标准\n\n| 条件 | 要求 |\n|------|------|\n| A 类清空 | 所有可立即解决的不确定结论已重新验证并更新 |\n| B 类清空 | 所有需补充数据的结论已执行检索（≤3次尝试），结果已更新 |\n| C"
+    },
+    {
+     "title": "G6 自审清单",
+     "line": 571,
+     "end_line": 583,
+     "raw_head": "#### G6 自审清单",
+     "body_chars": 334,
+     "body_head": "#### G6 自审清单\n\n完成 G6 闭环后，逐项核对：\n\n- [ ] 报告全文搜索 `INFERRED` / `UNVERIFIED` / `待查` / `待确认` / `可能` / `≈` — 逐个评估是否可解\n- [ ] 每个 IN"
+    },
+    {
+     "title": "§4 数据契约",
+     "line": 584,
+     "end_line": 587,
+     "raw_head": "## §4 数据契约",
+     "body_chars": 82,
+     "body_head": "## §4 数据契约\n\n> 定义各阶段间数据交接的 Schema 与行为契约。所有 JSON 文件必须符合对应 Schema，否则视为契约违约，下游有权拒绝消费。\n"
+    },
+    {
+     "title": "§4.0 上下级数据交接总览",
+     "line": 588,
+     "end_line": 606,
+     "raw_head": "### §4.0 上下级数据交接总览",
+     "body_chars": 1191,
+     "body_head": "### §4.0 上下级数据交接总览\n\n| 产出步骤 | 产出文件 | 格式 | Schema章节 | 消费步骤 | 消费方式 |\n|---------|---------|------|-----------|---------|----"
+    },
+    {
+     "title": "§4.0a 统一命名规范（合并自 pipeline_rules 规则7）",
+     "line": 607,
+     "end_line": 626,
+     "raw_head": "### §4.0a 统一命名规范（合并自 pipeline_rules 规则7）",
+     "body_chars": 629,
+     "body_head": "### §4.0a 统一命名规范（合并自 pipeline_rules 规则7）\n\n**目录**：prep/ | evidence/ | report/ | gates/ | learn/ | 根目录/\n\n**命名模式**：\n\n| 位置 |"
+    },
+    {
+     "title": "路径约定",
+     "line": 627,
+     "end_line": 641,
+     "raw_head": "### 路径约定",
+     "body_chars": 608,
+     "body_head": "### 路径约定\n\n- `{run_dir}` = `.sisyphus/runs/{项目名}-{时间戳}/`\n- hw_write 任务 prompt 中的文件路径必须使用 `{run_dir}/report/filename.md` 完"
+    },
+    {
+     "title": "§4.1 临时文件 Schema",
+     "line": 642,
+     "end_line": 656,
+     "raw_head": "### §4.1 临时文件 Schema",
+     "body_chars": 421,
+     "body_head": "### §4.1 临时文件 Schema\n\n> 前后级检查步骤间传递的紧凑格式消息文件。仅用于步骤间数据传递，人工不阅读，G6 闭环后删除。\n\n**目录与命名**：\n```\n.sisyphus/temp/\n├── g0_ic.msg    "
+    },
+    {
+     "title": "`g0_ic.msg` — IC 清单（G0 产出）",
+     "line": 657,
+     "end_line": 673,
+     "raw_head": "#### `g0_ic.msg` — IC 清单（G0 产出）",
+     "body_chars": 580,
+     "body_head": "#### `g0_ic.msg` — IC 清单（G0 产出）\n\n```json\n{\"v\":1,\"t\":\"ISO8601\",\"edn\":\"文件名.EDN\",\"ics\":{\"U1\":{\"m\":\"MP2975GU\",\"y\":\"PMIC\",\"d\""
+    },
+    {
+     "title": "`vccio.msg` — VCCIO 域→电压映射（引脚核对产出）",
+     "line": 674,
+     "end_line": 693,
+     "raw_head": "#### `vccio.msg` — VCCIO 域→电压映射（引脚核对产出）",
+     "body_chars": 553,
+     "body_head": "#### `vccio.msg` — VCCIO 域→电压映射（引脚核对产出）\n\n```json\n{\"v\":1,\"t\":\"ISO8601\",\"src\":\"引脚核对规则.md\",\"dom\":{\"PMUIO\":{\"sx\":\"_H\",\"v\":3."
+    },
+    {
+     "title": "`power.msg` — 供电拓扑（电源检查产出）",
+     "line": 694,
+     "end_line": 723,
+     "raw_head": "#### `power.msg` — 供电拓扑（电源检查产出）",
+     "body_chars": 1026,
+     "body_head": "#### `power.msg` — 供电拓扑（电源检查产出）\n\n```json\n{\"v\":1,\"t\":\"ISO8601\",\"pmics\":{\"U1\":{\"m\":\"MP2975GU\",\"r\":[{\"n\":\"VCC_CORE\",\"v\":0.8"
+    },
+    {
+     "title": "§4.2 Evidence 统一格式",
+     "line": 724,
+     "end_line": 746,
+     "raw_head": "### §4.2 Evidence 统一格式",
+     "body_chars": 707,
+     "body_head": "### §4.2 Evidence 统一格式\n\n所有 `evidence/*_evidence.json` 必须包含：\n\n| 字段 | 说明 |\n|------|------|\n| `evidence_type` | 证据类型标识 |\n| "
+    },
+    {
+     "title": "§4.3 Evidence 摘要格式",
+     "line": 747,
+     "end_line": 803,
+     "raw_head": "### §4.3 Evidence 摘要格式",
+     "body_chars": 2222,
+     "body_head": "### §4.3 Evidence 摘要格式\n\n> 背景：单个 `_evidence.json` 可达 50-80KB。摘要文件 3-5KB，报告生成和 §10 汇总只读摘要，不再读原文。\n\n**每个 `hw_analyze` 任务必须产出"
+    },
+    {
+     "title": "§4.4 Gate 结果统一格式",
+     "line": 804,
+     "end_line": 821,
+     "raw_head": "### §4.4 Gate 结果统一格式",
+     "body_chars": 437,
+     "body_head": "### §4.4 Gate 结果统一格式\n\n所有 `gates/*_result.json` 必须包含：\n\n| 字段 | 说明 |\n|------|------|\n| `gate` | 门禁标识（如 G1, G2.x, G6） |\n| `s"
+    },
+    {
+     "title": "§4.5 JSON 通用顶层字段",
+     "line": 822,
+     "end_line": 841,
+     "raw_head": "### §4.5 JSON 通用顶层字段",
+     "body_chars": 380,
+     "body_head": "### §4.5 JSON 通用顶层字段\n\n所有正式 JSON 产物顶层必须包含：\n\n| 字段 | 含义 |\n|------|------|\n| `schema_version` | 数据格式版本 |\n| `kind` | 文件类型 |\n|"
+    },
+    {
+     "title": "§4.6 项目无关 Schema 原则",
+     "line": 842,
+     "end_line": 848,
+     "raw_head": "### §4.6 项目无关 Schema 原则",
+     "body_chars": 191,
+     "body_head": "### §4.6 项目无关 Schema 原则\n\n- Schema 只定义结构，不写死项目名、芯片型号、版本号、连接器编号或文件名\n- 项目信息只能出现在 `review_config.json.project` 元数据中\n- 自学习 FI"
+    },
+    {
+     "title": "§4.7 稳定编号索引",
+     "line": 849,
+     "end_line": 875,
+     "raw_head": "### §4.7 稳定编号索引",
+     "body_chars": 512,
+     "body_head": "### §4.7 稳定编号索引\n\n所有检查项必须使用稳定 ID，禁止只用自然语言标题：\n\n| 前缀 | 用途 |\n|------|------|\n| `PREP-xxx` | prep 阶段检查项 |\n| `G2X-xxx` | G2.x "
+    },
+    {
+     "title": "§5 委派规范",
+     "line": 876,
+     "end_line": 881,
+     "raw_head": "## §5 委派规范",
+     "body_chars": 134,
+     "body_head": "## §5 委派规范\n\n> ? 适用代理: **hardware_review**\n>\n> hardware_review 作为纯编排器，通过 task() 委派子 agent 执行所有分析工作。本节定义委派时的 Prompt 模板、Age"
+    },
+    {
+     "title": "§5.1 委派 Prompt 模板",
+     "line": 882,
+     "end_line": 919,
+     "raw_head": "### §5.1 委派 Prompt 模板",
+     "body_chars": 1228,
+     "body_head": "### §5.1 委派 Prompt 模板\n\n每次委派 hw_analyze 时必须包含以下结构，不得遗漏：\n\n```\nTASK: 对 {IC_REFDES} ({IC_MODEL}) 执行 {DIMENSION} 维度分析\nEXPECTE"
+    },
+    {
+     "title": "§5.2 并行任务分解约束（P1-P7）",
+     "line": 920,
+     "end_line": 971,
+     "raw_head": "### §5.2 并行任务分解约束（P1-P7）",
+     "body_chars": 1452,
+     "body_head": "### §5.2 并行任务分解约束（P1-P7）\n\n任何审查任务被拆解为并行子任务时，主控 Agent 必须确保：\n\n| # | 要求 | 说明 |\n|:--:|------|------|\n| P1 | **规则复读** | 每个子任务的"
+    },
+    {
+     "title": "§5.3 CLI 基础设施约束",
+     "line": 972,
+     "end_line": 985,
+     "raw_head": "### §5.3 CLI 基础设施约束",
+     "body_chars": 418,
+     "body_head": "### §5.3 CLI 基础设施约束\n\n| 约束 | 内容 |\n|------|------|\n| 运行模式 | 一键运行：`hardware-review run`；分步重跑：`preflight / prep / validate /"
+    },
+    {
+     "title": "§6 交付与质量",
+     "line": 986,
+     "end_line": 989,
+     "raw_head": "## §6 交付与质量",
+     "body_chars": 76,
+     "body_head": "## §6 交付与质量\n\n> 定义交付物质量标准、门禁检查清单、闭环流程。Q1-Q9 任一未满足 = 报告不可交付。报告格式参见 报告格式规范.md。\n"
+    },
+    {
+     "title": "§6.1 交付质量标准（Q1-Q9）",
+     "line": 990,
+     "end_line": 1004,
+     "raw_head": "### §6.1 交付质量标准（Q1-Q9）",
+     "body_chars": 697,
+     "body_head": "### §6.1 交付质量标准（Q1-Q9）\n\n| # | 标准 | 要求 |\n|:--:|------|------|\n| Q1 | **IC 全量清单** | 开始前从网表提取全部功能IC，按类型分组（SoC/PMIC/Memory/M"
+    },
+    {
+     "title": "§6.2 Self-Audit Gates（G0-G7）",
+     "line": 1005,
+     "end_line": 1022,
+     "raw_head": "### §6.2 Self-Audit Gates（G0-G7）",
+     "body_chars": 661,
+     "body_head": "### §6.2 Self-Audit Gates（G0-G7）\n\n> ? **自修复集成**：执行每个门禁自查时，同步运行自学习知识库匹配。若触发 [FIX] 条目 → 自动执行修复 → 标注 `[自修复 K-F0XX]`。\n\n| 门禁 "
+    },
+    {
+     "title": "§6.3 复查不合格闭环",
+     "line": 1023,
+     "end_line": 1059,
+     "raw_head": "### §6.3 复查不合格闭环",
+     "body_chars": 941,
+     "body_head": "### §6.3 复查不合格闭环\n\n> ? hw_auditor 复核不通过时，禁止只改报告文字。必须回到对应检查环节重新执行。\n\n**触发条件**（任一即进入闭环）：\n1. hw_auditor 对 G0-G6 任一门禁给出 FAIL\n2"
+    },
+    {
+     "title": "§6.4 缺项闭环",
+     "line": 1060,
+     "end_line": 1097,
+     "raw_head": "### §6.4 缺项闭环",
+     "body_chars": 976,
+     "body_head": "### §6.4 缺项闭环\n\n> **目的**：hw_auditor 发现的每项缺漏，不仅要修，还要固化到规则中。\n\n```\nhw_auditor 输出 FAIL / 发现缺项\n  ├── 1. 定位失败环节，重跑对应 agent\n  ├─"
+    }
+   ],
+   "n_sections": 63,
+   "suggest_prefix": ""
+  },
+  "raw_rules/引脚核对规则.md": {
+   "file": "raw_rules/引脚核对规则.md",
+   "chars": 13509,
+   "sections": [
+    {
+     "title": "引脚核对规则",
+     "line": 1,
+     "end_line": 6,
+     "raw_head": "# 引脚核对规则",
+     "body_chars": 43,
+     "body_head": "# 引脚核对规则\n\n> 适用场景：原理图/网表信号与芯片引脚功能的交叉验证\n\n---\n"
+    },
+    {
+     "title": "定位：引脚检查的综述文件",
+     "line": 7,
+     "end_line": 21,
+     "raw_head": "## 定位：引脚检查的综述文件",
+     "body_chars": 400,
+     "body_head": "## 定位：引脚检查的综述文件\n\n**本文件是引脚级检查的唯一综合入口**，负责完成 \"接口信号 → 芯片引脚 → Bank 归属 → VCCIO 域 → 供电电压\" 的完整推断链。所有综合性判定（某个接口从哪个 Bank 引出，电压是多少"
+    },
+    {
+     "title": "核心原则",
+     "line": 22,
+     "end_line": 29,
+     "raw_head": "## 核心原则",
+     "body_chars": 105,
+     "body_head": "## 核心原则\n\n**网名是标签，不是物理事实。先追踪，后对比。**\n\n原理图中的网络名称是设计者手工输入的字符串，可能因版本迭代、复制粘贴、多人协作等原因与实际连接不一致。不能以网名作为判断依据。\n\n---\n"
+    },
+    {
+     "title": "正确流程",
+     "line": 30,
+     "end_line": 31,
+     "raw_head": "## 正确流程",
+     "body_chars": 8,
+     "body_head": "## 正确流程\n"
+    },
+    {
+     "title": "第一步：追踪物理连接",
+     "line": 32,
+     "end_line": 67,
+     "raw_head": "### 第一步：追踪物理连接",
+     "body_chars": 685,
+     "body_head": "### 第一步：追踪物理连接\n\n从接口侧出发，沿信号路径追踪到芯片引脚：\n\n```\n接口引脚 → 网表网络 → 中间器件（电阻/电平转换等）→ 芯片引脚\n```\n\n**工具**：使用 EDIF/网表文本解析，逐段追溯每个 `portRef`"
+    },
+    {
+     "title": "连接器引脚输出格式",
+     "line": 68,
+     "end_line": 86,
+     "raw_head": "### 连接器引脚输出格式",
+     "body_chars": 712,
+     "body_head": "### 连接器引脚输出格式\n\n> ⚡ **强制检查（自学习 K-T005）**：连接器逐引脚追踪已在 3 个项目累计 571 引脚验证为最易遗漏的检查项。以下流程为强制检查，不可跳过。\n\n每个连接器引脚必须包含以下 8 列，所有列必须有值："
+    },
+    {
+     "title": "第二步：确认芯片引脚功能",
+     "line": 87,
+     "end_line": 100,
+     "raw_head": "### 第二步：确认芯片引脚功能",
+     "body_chars": 153,
+     "body_head": "### 第二步：确认芯片引脚功能\n\n在芯片引脚复用表中查找该引脚的全部功能：\n\n```\nGPIO2_A3_D_J:\n  Mux0: UART3_TX\n  Mux1: FEPHY_LEDLINK\n  Mux2: PWM0_CH2_M2\n  ."
+    },
+    {
+     "title": "第三步：确认 VCCIO 域电压",
+     "line": 101,
+     "end_line": 111,
+     "raw_head": "### 第三步：确认 VCCIO 域电压",
+     "body_chars": 152,
+     "body_head": "### 第三步：确认 VCCIO 域电压\n\n从网表中追踪芯片供电引脚的实际电压：\n\n```\nVCCIO2_VCC_J → net \"VCC_3V3\" → 3.3V\nVCCIO1_VCC_I → net \"VCC_1V8\" → 1.8V\n``"
+    },
+    {
+     "title": "第四步：反向验证标签",
+     "line": 112,
+     "end_line": 124,
+     "raw_head": "### 第四步：反向验证标签",
+     "body_chars": 240,
+     "body_head": "### 第四步：反向验证标签\n\n将前三步的物理事实与原理图标签对比，记录差异：\n\n| 验证项 | 来源 | 方法 |\n|--------|------|------|\n| GPIO Bank 号 | 芯片引脚名 | 解析 portRef 中"
+    },
+    {
+     "title": "禁止事项",
+     "line": 125,
+     "end_line": 141,
+     "raw_head": "## 禁止事项",
+     "body_chars": 535,
+     "body_head": "## 禁止事项\n\n| ❌ 禁止 | ✅ 应做 |\n|--------|--------|\n| 以网名判断 GPIO Bank 号 | 追踪网表到芯片引脚，从引脚名提取 Bank |\n| 以网名判断电压 | 追踪 VCCIO 域的实际供电网络"
+    },
+    {
+     "title": "实战案例",
+     "line": 142,
+     "end_line": 145,
+     "raw_head": "## 实战案例",
+     "body_chars": 80,
+     "body_head": "## 实战案例\n\n> 以下案例来自某 RV1126B 项目的实际审查，用于演示方法论。具体芯片型号、引脚名、接口编号因项目而异，但追踪方法和判定逻辑是通用的。\n"
+    },
+    {
+     "title": "案例：接口 \"GPIO1-3V3\" 的核实",
+     "line": 146,
+     "end_line": 167,
+     "raw_head": "### 案例：接口 \"GPIO1-3V3\" 的核实",
+     "body_chars": 403,
+     "body_head": "### 案例：接口 \"GPIO1-3V3\" 的核实\n\n**错误做法**：看到网名 `GPIO1-3V3` → 查 GPIO1 的 VCCIO1 = 1.8V → 结论 \"3.3V 标错了\"\n\n**正确做法**：\n\n```\n1. 追踪物理连接"
+    },
+    {
+     "title": "案例：J3.9 \"GPIO0-1V8\" 的核实",
+     "line": 168,
+     "end_line": 180,
+     "raw_head": "### 案例：J3.9 \"GPIO0-1V8\" 的核实",
+     "body_chars": 278,
+     "body_head": "### 案例：J3.9 \"GPIO0-1V8\" 的核实\n\n```\n1. 追踪：J3.9 → net \"GPIO0-1V8\" → U1000:\n   \"DSMC_INT2  UART3_CTSN_M1  PWM1_CH0_M1  SPI1_M"
+    },
+    {
+     "title": "案例：DVP VI0_DATA0/1 CIF 编号互换",
+     "line": 181,
+     "end_line": 200,
+     "raw_head": "### 案例：DVP VI0_DATA0/1 CIF 编号互换",
+     "body_chars": 479,
+     "body_head": "### 案例：DVP VI0_DATA0/1 CIF 编号互换\n\n```\nJ5.15 标号 \"VI0_DATA0\"\n → 追踪 EDN: J5.15 → net VI0_DATA0 → U1000 portRef:\n   \"SARADC1_"
+    },
+    {
+     "title": "精确值校验规则（No-Shortcut Rule）",
+     "line": 201,
+     "end_line": 202,
+     "raw_head": "## 精确值校验规则（No-Shortcut Rule）",
+     "body_chars": 29,
+     "body_head": "## 精确值校验规则（No-Shortcut Rule）\n"
+    },
+    {
+     "title": "问题根源",
+     "line": 203,
+     "end_line": 207,
+     "raw_head": "### 问题根源",
+     "body_chars": 70,
+     "body_head": "### 问题根源\n\n只验证\"功能类别存在\"（有 CIF ✅）而未验证\"编号精确匹配\"（CIF_D1 ≠ DATA0）。\n\n```python"
+    },
+    {
+     "title": "❌ 浅层检查 — 仅验证类别存在",
+     "line": 208,
+     "end_line": 209,
+     "raw_head": "# ❌ 浅层检查 — 仅验证类别存在",
+     "body_chars": 45,
+     "body_head": "# ❌ 浅层检查 — 仅验证类别存在\nif 'CIF' in func:  →  \"通过\""
+    },
+    {
+     "title": "遗漏了: CIF_D1 vs 标号 DATA0 不一致",
+     "line": 210,
+     "end_line": 211,
+     "raw_head": "# 遗漏了: CIF_D1 vs 标号 DATA0 不一致",
+     "body_chars": 30,
+     "body_head": "# 遗漏了: CIF_D1 vs 标号 DATA0 不一致\n"
+    },
+    {
+     "title": "✅ 深层检查 — 验证编号精确匹配",
+     "line": 212,
+     "end_line": 217,
+     "raw_head": "# ✅ 深层检查 — 验证编号精确匹配",
+     "body_chars": 165,
+     "body_head": "# ✅ 深层检查 — 验证编号精确匹配\ncif_num = extract_number(cif_func)      # D1 → 1\nlabel_num = extract_number(net_name)    # DATA0 → 0"
+    },
+    {
+     "title": "适用场景",
+     "line": 218,
+     "end_line": 231,
+     "raw_head": "### 适用场景",
+     "body_chars": 405,
+     "body_head": "### 适用场景\n\n以下接口必须做**编号级别的精确校验**：\n\n| 接口类型 | 需精确校验的编号 | 示例 |\n|----------|------|------|\n| DVP 并行视频 | DATA[0:15] ↔ CIF_D[0:1"
+    },
+    {
+     "title": "禁止事项（补充）",
+     "line": 232,
+     "end_line": 241,
+     "raw_head": "### 禁止事项（补充）",
+     "body_chars": 174,
+     "body_head": "### 禁止事项（补充）\n\n| ❌ 禁止 | ✅ 应做 |\n|--------|--------|\n| 仅验证功能类别（有 CIF） | **验证编号精确匹配**（CIF_D1 vs DATA0） |\n| 仅验证\"连着 SoC\" | 验证连"
+    },
+    {
+     "title": "网表解析技巧",
+     "line": 242,
+     "end_line": 243,
+     "raw_head": "## 网表解析技巧",
+     "body_chars": 10,
+     "body_head": "## 网表解析技巧\n"
+    },
+    {
+     "title": "EDIF 格式 portRef 提取",
+     "line": 244,
+     "end_line": 246,
+     "raw_head": "### EDIF 格式 portRef 提取",
+     "body_chars": 33,
+     "body_head": "### EDIF 格式 portRef 提取\n\n```python"
+    },
+    {
+     "title": "提取网络中所有连接",
+     "line": 247,
+     "end_line": 257,
+     "raw_head": "# 提取网络中所有连接",
+     "body_chars": 299,
+     "body_head": "# 提取网络中所有连接\nportRef &5 (instanceRef J3)                     # 接口侧\nportRef GPIO2_A4_D_J (instanceRef U1000)        # 芯片侧（"
+    },
+    {
+     "title": "GPIO 域后缀与 VCCIO 映射",
+     "line": 258,
+     "end_line": 273,
+     "raw_head": "### GPIO 域后缀与 VCCIO 映射",
+     "body_chars": 421,
+     "body_head": "### GPIO 域后缀与 VCCIO 映射\n\n| 后缀 | VCCIO 域 | 需从网表确认实际电压 |\n|:---:|:--------:|:---:|\n| `_H` | PMUIO | 追踪 PMUIO_VCC 网络 |\n| `_I`"
+    },
+    {
+     "title": "自动化脚本自我审查规则（Script Self-Audit）",
+     "line": 274,
+     "end_line": 275,
+     "raw_head": "## 自动化脚本自我审查规则（Script Self-Audit）",
+     "body_chars": 34,
+     "body_head": "## 自动化脚本自我审查规则（Script Self-Audit）\n"
+    },
+    {
+     "title": "问题根源",
+     "line": 276,
+     "end_line": 279,
+     "raw_head": "### 问题根源",
+     "body_chars": 42,
+     "body_head": "### 问题根源\n\n自动化检查脚本自身的**截断、简化、假设**是漏检的首要原因。\n"
+    },
+    {
+     "title": "案例 1：`net_body` 行数截断 → I2C2 上拉漏检",
+     "line": 280,
+     "end_line": 282,
+     "raw_head": "### 案例 1：`net_body` 行数截断 → I2C2 上拉漏检",
+     "body_chars": 47,
+     "body_head": "### 案例 1：`net_body` 行数截断 → I2C2 上拉漏检\n\n```python"
+    },
+    {
+     "title": "❌ 有截断风险的写法",
+     "line": 283,
+     "end_line": 286,
+     "raw_head": "# ❌ 有截断风险的写法",
+     "body_chars": 99,
+     "body_head": "# ❌ 有截断风险的写法\nfor j in range(i, min(len(lines), i+50)):  # 固定 50 行\n    body.append(lines[j])\n    ..."
+    },
+    {
+     "title": "网络较长 → U1000 portRef 在第 55 行 → 被截断 → has_u1000=False",
+     "line": 287,
+     "end_line": 287,
+     "raw_head": "# 网络较长 → U1000 portRef 在第 55 行 → 被截断 → has_u1000=False",
+     "body_chars": 54,
+     "body_head": "# 网络较长 → U1000 portRef 在第 55 行 → 被截断 → has_u1000=False"
+    },
+    {
+     "title": "→ 误判为 \"no U1000, assumed external\" → 跳过上拉检查 !!",
+     "line": 288,
+     "end_line": 291,
+     "raw_head": "# → 误判为 \"no U1000, assumed external\" → 跳过上拉检查 !!",
+     "body_chars": 63,
+     "body_head": "# → 误判为 \"no U1000, assumed external\" → 跳过上拉检查 !!\n```\n\n```python"
+    },
+    {
+     "title": "✅ 正确的写法 — 扫描到网络结束符",
+     "line": 292,
+     "end_line": 303,
+     "raw_head": "# ✅ 正确的写法 — 扫描到网络结束符",
+     "body_chars": 266,
+     "body_head": "# ✅ 正确的写法 — 扫描到网络结束符\ndepth = 0\nfor j in range(i, len(lines)):\n    body.append(lines[j])\n    if lines[j].strip().startswi"
+    },
+    {
+     "title": "案例 2：仅验证功能类别 → DVP D0/D1 编号漏检",
+     "line": 304,
+     "end_line": 306,
+     "raw_head": "### 案例 2：仅验证功能类别 → DVP D0/D1 编号漏检",
+     "body_chars": 44,
+     "body_head": "### 案例 2：仅验证功能类别 → DVP D0/D1 编号漏检\n\n```python"
+    },
+    {
+     "title": "❌ 浅层检查",
+     "line": 307,
+     "end_line": 312,
+     "raw_head": "# ❌ 浅层检查",
+     "body_chars": 101,
+     "body_head": "# ❌ 浅层检查\nif 'CIF' in func:  # 有 CIF 功能 → 通过\n    pass          # 未比较 CIF_D1 vs DATA0 !!\n```\n\n```python"
+    },
+    {
+     "title": "✅ 深层检查",
+     "line": 313,
+     "end_line": 318,
+     "raw_head": "# ✅ 深层检查",
+     "body_chars": 138,
+     "body_head": "# ✅ 深层检查\ncif_num = extract_number(cif_func)    # D1 → 1\nlabel_num = extract_number(sig_name)  # DATA0 → 0\nassert cif_num"
+    },
+    {
+     "title": "案例 3：只搜 portRef 已连接引脚 → U3200 ZQ 悬空漏检",
+     "line": 319,
+     "end_line": 321,
+     "raw_head": "### 案例 3：只搜 portRef 已连接引脚 → U3200 ZQ 悬空漏检",
+     "body_chars": 52,
+     "body_head": "### 案例 3：只搜 portRef 已连接引脚 → U3200 ZQ 悬空漏检\n\n```python"
+    },
+    {
+     "title": "❌ 只搜 portRef（网络连接的引脚）",
+     "line": 322,
+     "end_line": 323,
+     "raw_head": "# ❌ 只搜 portRef（网络连接的引脚）",
+     "body_chars": 95,
+     "body_head": "# ❌ 只搜 portRef（网络连接的引脚）\nports = re.findall(r'portRef\\s+(\\S+)\\s+\\(instanceRef U3200\\)', content)"
+    },
+    {
+     "title": "→ 结果: VSS/ZQ_U(DDP) 等已连接引脚",
+     "line": 324,
+     "end_line": 324,
+     "raw_head": "# → 结果: VSS/ZQ_U(DDP) 等已连接引脚",
+     "body_chars": 28,
+     "body_head": "# → 结果: VSS/ZQ_U(DDP) 等已连接引脚"
+    },
+    {
+     "title": "→ ZQ 引脚悬空 → 没有 portRef → 永远搜不到！",
+     "line": 325,
+     "end_line": 325,
+     "raw_head": "# → ZQ 引脚悬空 → 没有 portRef → 永远搜不到！",
+     "body_chars": 33,
+     "body_head": "# → ZQ 引脚悬空 → 没有 portRef → 永远搜不到！"
+    },
+    {
+     "title": "→ 搜到 VSS/ZQ_U 含 \"ZQ\" 子串 → 误判为 ZQ → 停止",
+     "line": 326,
+     "end_line": 329,
+     "raw_head": "# → 搜到 VSS/ZQ_U 含 \"ZQ\" 子串 → 误判为 ZQ → 停止",
+     "body_chars": 54,
+     "body_head": "# → 搜到 VSS/ZQ_U 含 \"ZQ\" 子串 → 误判为 ZQ → 停止\n```\n\n```python"
+    },
+    {
+     "title": "✅ 对比 portInstance（符号定义） vs portRef（网络连接）",
+     "line": 330,
+     "end_line": 330,
+     "raw_head": "# ✅ 对比 portInstance（符号定义） vs portRef（网络连接）",
+     "body_chars": 42,
+     "body_head": "# ✅ 对比 portInstance（符号定义） vs portRef（网络连接）"
+    },
+    {
+     "title": "1. 从 instance 定义提取全部引脚",
+     "line": 331,
+     "end_line": 332,
+     "raw_head": "# 1. 从 instance 定义提取全部引脚",
+     "body_chars": 87,
+     "body_head": "# 1. 从 instance 定义提取全部引脚\ninst_pins = re.findall(r'portInstance\\s+(\\S+)', instance_body)"
+    },
+    {
+     "title": "→ ['DML_n', 'DQSL_P', ..., 'ZQ', ..., 'VSS/ZQ_U(DDP)']",
+     "line": 333,
+     "end_line": 333,
+     "raw_head": "# → ['DML_n', 'DQSL_P', ..., 'ZQ', ..., 'VSS/ZQ_U(DDP)']",
+     "body_chars": 56,
+     "body_head": "# → ['DML_n', 'DQSL_P', ..., 'ZQ', ..., 'VSS/ZQ_U(DDP)']"
+    },
+    {
+     "title": "2. 从网络提取已连接的引脚",
+     "line": 334,
+     "end_line": 335,
+     "raw_head": "# 2. 从网络提取已连接的引脚",
+     "body_chars": 93,
+     "body_head": "# 2. 从网络提取已连接的引脚\nwired_pins = re.findall(r'portRef\\s+(\\S+)\\s+\\(instanceRef U3200\\)', content)"
+    },
+    {
+     "title": "→ ['DML_n/DBIL_n', ..., 'VSS/ZQ_U(DDP)']  # 没有 ZQ！",
+     "line": 336,
+     "end_line": 336,
+     "raw_head": "# → ['DML_n/DBIL_n', ..., 'VSS/ZQ_U(DDP)']  # 没有 ZQ！",
+     "body_chars": 52,
+     "body_head": "# → ['DML_n/DBIL_n', ..., 'VSS/ZQ_U(DDP)']  # 没有 ZQ！"
+    },
+    {
+     "title": "3. 对比 → ZQ 在 inst_pins 但不在 wired_pins → 悬空！",
+     "line": 337,
+     "end_line": 340,
+     "raw_head": "# 3. 对比 → ZQ 在 inst_pins 但不在 wired_pins → 悬空！",
+     "body_chars": 84,
+     "body_head": "# 3. 对比 → ZQ 在 inst_pins 但不在 wired_pins → 悬空！\nfloating = inst_pins - wired_pins\n```\n"
+    },
+    {
+     "title": "悬空引脚检测规则",
+     "line": 341,
+     "end_line": 344,
+     "raw_head": "### 悬空引脚检测规则",
+     "body_chars": 128,
+     "body_head": "### 悬空引脚检测规则\n\n> ⚠ **2026-05-27 修订**：增加\"按芯片，不按引脚类型\"原则。原规则以引脚功能为枚举维度，但正确的枚举维度是**芯片实例 × 引脚功能**。仅按功能枚举会导致对非主芯片（DRAM、PMIC、eMM"
+    },
+    {
+     "title": "芯片范围规则（新增，不可跳过）",
+     "line": 345,
+     "end_line": 372,
+     "raw_head": "#### 芯片范围规则（新增，不可跳过）",
+     "body_chars": 804,
+     "body_head": "#### 芯片范围规则（新增，不可跳过）\n\n以下芯片必须执行全量 portInstance-vs-portRef 对比：\n\n| 芯片类型 | 判定门槛 | 未 diff 则 |\n|----------|:---:|------|\n| **主"
+    },
+    {
+     "title": "实战教训",
+     "line": 373,
+     "end_line": 378,
+     "raw_head": "#### 实战教训",
+     "body_chars": 236,
+     "body_head": "#### 实战教训\n\nU3200 (DDR4) 的 `ZQ` 引脚（pin 55）在 portInstance 中定义，但不在任何 net 的 portRef 中，导致悬空。初检仅验证了 SoC 端的 DDR_RZQ 和已连接的 R3207"
+    },
+    {
+     "title": "原规则（保留，按引脚功能分类）",
+     "line": 379,
+     "end_line": 391,
+     "raw_head": "#### 原规则（保留，按引脚功能分类）",
+     "body_chars": 380,
+     "body_head": "#### 原规则（保留，按引脚功能分类）\n\n对于以下关键功能引脚，必须检查符号定义与网络连接的一致性：\n\n| 引脚类型 | 必须连接 | 检测方法 |\n|----------|:---:|------|\n| DDR ZQ | 240Ω→GN"
+    },
+    {
+     "title": "脚本自审清单",
+     "line": 392,
+     "end_line": 405,
+     "raw_head": "### 脚本自审清单",
+     "body_chars": 460,
+     "body_head": "### 脚本自审清单\n\n写脚本时，对每个自动化检查函数执行以下自审：\n\n| 审查项 | 问题 | 修复 |\n|--------|------|------|\n| **边界条件** | 固定行数截断是否遗漏数据？ | 改为内容感知的边界检测 "
+    },
+    {
+     "title": "错误处理规则",
+     "line": 406,
+     "end_line": 408,
+     "raw_head": "### 错误处理规则",
+     "body_chars": 21,
+     "body_head": "### 错误处理规则\n\n```python"
+    },
+    {
+     "title": "❌ 沉默跳过",
+     "line": 409,
+     "end_line": 412,
+     "raw_head": "# ❌ 沉默跳过",
+     "body_chars": 48,
+     "body_head": "# ❌ 沉默跳过\nif not found:\n    return  # 默认正常 ← 错误！\n"
+    },
+    {
+     "title": "✅ 显式上报",
+     "line": 413,
+     "end_line": 418,
+     "raw_head": "# ✅ 显式上报",
+     "body_chars": 116,
+     "body_head": "# ✅ 显式上报\nif not found:\n    add_issue('WARNING', f'{name}: trace incomplete - manual check required')\n    return\n```\n"
+    },
+    {
+     "title": "验证策略层级",
+     "line": 419,
+     "end_line": 431,
+     "raw_head": "### 验证策略层级",
+     "body_chars": 231,
+     "body_head": "### 验证策略层级\n\n```\nLevel 1: 连接存在性 (has portRef?)      ← 基础\nLevel 2: 功能类别匹配 (has CIF/UART?)   ← 中层\nLevel 3: 编号精确匹配 (CIF_D1 ="
+    },
+    {
+     "title": "检查员自审清单（Inspector Self-Audit）",
+     "line": 432,
+     "end_line": 435,
+     "raw_head": "## 检查员自审清单（Inspector Self-Audit）",
+     "body_chars": 82,
+     "body_head": "## 检查员自审清单（Inspector Self-Audit）\n\n> 适用场景：完成任何硬件检查后，交付报告前，逐项自审。不依赖自动化脚本，人工检查也必须执行。\n"
+    },
+    {
+     "title": "一、枚举先行原则（Enumerate Before Evaluate）",
+     "line": 436,
+     "end_line": 458,
+     "raw_head": "### 一、枚举先行原则（Enumerate Before Evaluate）",
+     "body_chars": 562,
+     "body_head": "### 一、枚举先行原则（Enumerate Before Evaluate）\n\n**禁止**边发现边判断。必须先拉清单，后逐项核验。\n\n```\n❌ 错误做法：发现 I2C0 有上拉 → 产生 \"I2C 应该都有\" 的印象 → 跳过我 I2"
+    },
+    {
+     "title": "二、逐 net body 硬读（Hard-Read Net Body）",
+     "line": 459,
+     "end_line": 468,
+     "raw_head": "### 二、逐 net body 硬读（Hard-Read Net Body）",
+     "body_chars": 229,
+     "body_head": "### 二、逐 net body 硬读（Hard-Read Net Body）\n\n每个待检信号必须实际打开 net body，不可凭经验推断。\n\n| ❌ 凭经验跳过 | ✅ 硬读确认 |\n|---|---|\n| \"连着 SoC，连着 J3，"
+    },
+    {
+     "title": "三、自审门禁（Go/No-Go Gates）",
+     "line": 469,
+     "end_line": 474,
+     "raw_head": "### 三、自审门禁（Go/No-Go Gates）",
+     "body_chars": 257,
+     "body_head": "### 三、自审门禁（Go/No-Go Gates）\n\n> **完整的 G0-G5 门禁定义见 [hardware-reviewer.md](./hardware-reviewer.md) §⛔ 启动门禁：Step 0 及 §Self-Au"
+    },
+    {
+     "title": "四、经典漏检模式速查",
+     "line": 475,
+     "end_line": 476,
+     "raw_head": "### 四、经典漏检模式速查",
+     "body_chars": 15,
+     "body_head": "### 四、经典漏检模式速查\n"
+    },
+    {
+     "title": "四、经典漏检模式速查",
+     "line": 477,
+     "end_line": 491,
+     "raw_head": "### 四、经典漏检模式速查",
+     "body_chars": 676,
+     "body_head": "### 四、经典漏检模式速查\n\n以下组合极易被跳过，检查时必须额外警戒：\n\n| 漏检模式 | 典型场景 | 为什么容易被跳 |\n|----------|----------|---------------|\n| **首项正确 → 尾项跳过*"
+    },
+    {
+     "title": "五、纠正措施",
+     "line": 492,
+     "end_line": 502,
+     "raw_head": "### 五、纠正措施",
+     "body_chars": 143,
+     "body_head": "### 五、纠正措施\n\n当自审发现漏检时：\n\n1. **立即停止当前判定**，不要基于已有印象补充结论\n2. **回到枚举清单**，对该类接口从头逐项重新检查\n3. **更新检查结果**，明确标注\"补充检查\"及遗漏原因\n4. **记录漏检模"
+    },
+    {
+     "title": "输出要求：VCCIO 域→电压映射表（数据交接）",
+     "line": 503,
+     "end_line": 510,
+     "raw_head": "## 输出要求：VCCIO 域→电压映射表（数据交接）",
+     "body_chars": 313,
+     "body_head": "## 输出要求：VCCIO 域→电压映射表（数据交接）\n\n> ⛔ **强制执行**：完成本文件的接口→Bank→VCCIO→电压追踪后，必须产出两份文件：\n> 1. **临时文件** `.sisyphus/temp/vccio.msg` —"
+    },
+    {
+     "title": "JSON Schema",
+     "line": 511,
+     "end_line": 550,
+     "raw_head": "### JSON Schema",
+     "body_chars": 846,
+     "body_head": "### JSON Schema\n\n```json\n{\n  \"source\": \"引脚核对规则.md Step 1-3 追踪输出\",\n  \"generated_at\": \"ISO8601\",\n  \"edn_file\": \"原始 EDN 文件名"
+    },
+    {
+     "title": "输出步骤",
+     "line": 551,
+     "end_line": 558,
+     "raw_head": "### 输出步骤",
+     "body_chars": 243,
+     "body_head": "### 输出步骤\n\n1. 按 `§GPIO 域后缀与 VCCIO 映射` 表建立 `{后缀 → VCCIO 域名}` 映射\n2. 对每个 VCCIO 域，在 EDN 中追踪其电源引脚（如 `VCCIO2_VCC_J`）所在的 net\n3. "
+    },
+    {
+     "title": "验证",
+     "line": 559,
+     "end_line": 563,
+     "raw_head": "### 验证",
+     "body_chars": 135,
+     "body_head": "### 验证\n\n- [ ] `vccio_domains` 表覆盖 EDN 中存在的所有 VCCIO 域后缀\n- [ ] 每个域的 `voltage` 值为实际追踪结果，非假设值\n- [ ] 每条关键结论的 `evidence_edn_li"
+    }
+   ],
+   "n_sections": 66,
+   "suggest_prefix": "IC-"
+  },
+  "raw_rules/引脚复用关系检查规则.md": {
+   "file": "raw_rules/引脚复用关系检查规则.md",
+   "chars": 4313,
+   "sections": [
+    {
+     "title": "引脚复用关系检查规则",
+     "line": 1,
+     "end_line": 17,
+     "raw_head": "# 引脚复用关系检查规则",
+     "body_chars": 554,
+     "body_head": "# 引脚复用关系检查规则\n\n> 适用场景：从 EDIF 网表检查芯片引脚复用（Mux）配置，验证接口信号是否正确映射\n>\n> **前置依赖**：本文件是 [引脚核对规则.md](./引脚核对规则.md) 的子集。接口→Bank 归属→VCC"
+    },
+    {
+     "title": "核心原则",
+     "line": 18,
+     "end_line": 25,
+     "raw_head": "## 核心原则",
+     "body_chars": 131,
+     "body_head": "## 核心原则\n\n**一条 portRef 行 = 一个物理引脚的全部复用选项。**\n\nEDIF 网表中的 `portRef` 列出了该引脚可以配置的所有功能。只有出现在这个列表中的功能，芯片才能通过配置寄存器选择。不在列表中的功能，该引脚"
+    },
+    {
+     "title": "数据来源",
+     "line": 26,
+     "end_line": 43,
+     "raw_head": "## 数据来源",
+     "body_chars": 418,
+     "body_head": "## 数据来源\n\nEDIF 网表中，每个 `portRef` 行格式：\n\n```\nportRef FUNC_A_M0  FUNC_B_M1  FUNC_C_M2  FUNC_D_M3  GPIOx_y_z_D  (instanceRef U"
+    },
+    {
+     "title": "GPIO 标识解读",
+     "line": 44,
+     "end_line": 55,
+     "raw_head": "## GPIO 标识解读",
+     "body_chars": 161,
+     "body_head": "## GPIO 标识解读\n\n```\nGPIO2_A4_D_J\n  │    │  │ └── IO 域后缀（决定电压）\n  │    │  └──── 驱动类型（D=推挽驱动, U=上拉）\n  │    └─────── 引脚编号（A0~D"
+    },
+    {
+     "title": "IO 域后缀与电压",
+     "line": 56,
+     "end_line": 61,
+     "raw_head": "## IO 域后缀与电压",
+     "body_chars": 132,
+     "body_head": "## IO 域后缀与电压\n\n> **VCCIO 域后缀与电压映射表详见 [引脚核对规则.md](./引脚核对规则.md) §GPIO 域后缀与 VCCIO 映射**（含 `_J` 双域陷阱、`_F` MIPI PHY、`_D` USB 等全"
+    },
+    {
+     "title": "检查流程",
+     "line": 62,
+     "end_line": 63,
+     "raw_head": "## 检查流程",
+     "body_chars": 8,
+     "body_head": "## 检查流程\n"
+    },
+    {
+     "title": "第一步：提取端口复用表",
+     "line": 64,
+     "end_line": 81,
+     "raw_head": "### 第一步：提取端口复用表",
+     "body_chars": 467,
+     "body_head": "### 第一步：提取端口复用表\n\n从 EDN 中提取每个引脚的完整 `portRef` 行，按 Mux 分类：\n\n```\n解析逻辑：\n  for line in edn:\n      if \"portRef\" in line and \"U1"
+    },
+    {
+     "title": "第二步：逐接口信号核对",
+     "line": 82,
+     "end_line": 92,
+     "raw_head": "### 第二步：逐接口信号核对",
+     "body_chars": 154,
+     "body_head": "### 第二步：逐接口信号核对\n\n对每个接口信号：\n\n```\n1. 追踪物理连接 → 得到 SoC 引脚名\n2. 查该引脚的 Mux 列表 → 接口需要的功能在列表中吗？\n3. 确认 Mux 选项编号 → 固件/BSP 需要配置对应的 Mu"
+    },
+    {
+     "title": "第三步：检查三种冲突",
+     "line": 93,
+     "end_line": 94,
+     "raw_head": "### 第三步：检查三种冲突",
+     "body_chars": 15,
+     "body_head": "### 第三步：检查三种冲突\n"
+    },
+    {
+     "title": "冲突类型一：专用功能与 GPIO 互斥",
+     "line": 95,
+     "end_line": 105,
+     "raw_head": "#### 冲突类型一：专用功能与 GPIO 互斥",
+     "body_chars": 159,
+     "body_head": "#### 冲突类型一：专用功能与 GPIO 互斥\n\n```\nGPIO2_A5_D_J:\n  Mux0:  UART3_CTSN\n  Mux3:  UART4_TX\n  专用:  SDMMC0_CMD  ← 如果使用了 SD 卡，该引脚不能做"
+    },
+    {
+     "title": "冲突类型二：同引脚多功能",
+     "line": 106,
+     "end_line": 116,
+     "raw_head": "#### 冲突类型二：同引脚多功能",
+     "body_chars": 159,
+     "body_head": "#### 冲突类型二：同引脚多功能\n\n```\nGPIO5_D3_D_L:\n  Mux1:  UART3_CTSN\n  Mux2:  SPI1_MISO\n  专用:  VO_LCDC_CLK, PWM1_CH0_M1\n\n一个引脚只能选一种功能"
+    },
+    {
+     "title": "冲突类型三：同功能跨域 Mux",
+     "line": 117,
+     "end_line": 131,
+     "raw_head": "#### 冲突类型三：同功能跨域 Mux",
+     "body_chars": 233,
+     "body_head": "#### 冲突类型三：同功能跨域 Mux\n\n```\nUART3_TX 可映射到三个不同引脚、不同电压：\n\n  M0: GPIO2_A3_D_J → VCCIO2 = 3.3V  ← 本设计使用\n  M1: GPIO5_D4_U_L → VC"
+    },
+    {
+     "title": "接口引脚复用关系速查（模板）",
+     "line": 132,
+     "end_line": 135,
+     "raw_head": "## 接口引脚复用关系速查（模板）",
+     "body_chars": 97,
+     "body_head": "## 接口引脚复用关系速查（模板）\n\n> 以下为某 RV1126B 项目的速查表示例，展示标准格式。每个项目的接口/引脚/Mux 配置不同，需根据实际芯片手册填写。**格式通用，数据特定。**\n"
+    },
+    {
+     "title": "J3（示例：DF56C-26S 调试接口）",
+     "line": 136,
+     "end_line": 148,
+     "raw_head": "### J3（示例：DF56C-26S 调试接口）",
+     "body_chars": 708,
+     "body_head": "### J3（示例：DF56C-26S 调试接口）\n\n| Pin | SoC 引脚 | Mux0 | Mux1 | Mux2 | Mux3 | 专用 | 冲突 |\n|:---:|------|:---:|:---:|:---:|:---:|"
+    },
+    {
+     "title": "J5（DF56C-26S DVP 摄像头接口）",
+     "line": 149,
+     "end_line": 159,
+     "raw_head": "### J5（DF56C-26S DVP 摄像头接口）",
+     "body_chars": 459,
+     "body_head": "### J5（DF56C-26S DVP 摄像头接口）\n\n| Pin | SoC 引脚 | Mux0 | Mux1 | 专用 |\n|:---:|------|:---:|:---:|------|\n| 2 | GPIO2_A3_D_J | "
+    },
+    {
+     "title": "J8（USL00-30L RGMII 以太网）",
+     "line": 160,
+     "end_line": 169,
+     "raw_head": "### J8（USL00-30L RGMII 以太网）",
+     "body_chars": 210,
+     "body_head": "### J8（USL00-30L RGMII 以太网）\n\n| Pin | SoC 引脚 | 功能 | Mux |\n|:---:|------|------|:---:|\n| 4 | GPIO5_D7_U_L | UART0_RX | M1 "
+    },
+    {
+     "title": "最终交付检查清单",
+     "line": 170,
+     "end_line": 179,
+     "raw_head": "## 最终交付检查清单",
+     "body_chars": 231,
+     "body_head": "## 最终交付检查清单\n\n- [ ] 每个接口信号的物理连接已追踪到 SoC 引脚\n- [ ] 所需功能已确认存在于该引脚的 Mux 列表中\n- [ ] Mux 选项编号已记录（供 BSP/设备树配置）\n- [ ] 专用功能与 GPIO 冲"
+    }
+   ],
+   "n_sections": 17,
+   "suggest_prefix": "IC-"
+  },
+  "raw_rules/引脚电平检查方案.md": {
+   "file": "raw_rules/引脚电平检查方案.md",
+   "chars": 4638,
+   "sections": [
+    {
+     "title": "引脚电平检查方案",
+     "line": 1,
+     "end_line": 15,
+     "raw_head": "# 引脚电平检查方案",
+     "body_chars": 375,
+     "body_head": "# 引脚电平检查方案\n\n> 适用场景：验证原理图中每个信号引脚的电压与芯片 VCCIO 域、外设电平是否匹配\n>\n> **前置依赖**：本文件是 [引脚核对规则.md](./引脚核对规则.md) 的子集。接口→Bank 归属→VCCIO 域"
+    },
+    {
+     "title": "一、核心流程",
+     "line": 16,
+     "end_line": 31,
+     "raw_head": "## 一、核心流程",
+     "body_chars": 196,
+     "body_head": "## 一、核心流程\n\n```\nStep 1: 确定信号路径（接口→中间器件→芯片）\n         ↓\nStep 2: 查芯片引脚所在的 VCCIO 域\n         ↓\nStep 3: 追踪该 VCCIO 域的供电网络 → 得到电压"
+    },
+    {
+     "title": "二、Step 1 — 确定信号路径",
+     "line": 32,
+     "end_line": 44,
+     "raw_head": "## 二、Step 1 — 确定信号路径",
+     "body_chars": 215,
+     "body_head": "## 二、Step 1 — 确定信号路径\n\n> **物理连接追踪方法详见 [引脚核对规则.md](./引脚核对规则.md) §正确流程（第一步～第四步）**\n> 本节聚焦于电平维度的 Step 2-5。\n\n示例（UART3_TX 信号路径追"
+    },
+    {
+     "title": "三、Step 2 — 查芯片 VCCIO 域",
+     "line": 45,
+     "end_line": 46,
+     "raw_head": "## 三、Step 2 — 查芯片 VCCIO 域",
+     "body_chars": 26,
+     "body_head": "## 三、Step 2 — 查芯片 VCCIO 域\n"
+    },
+    {
+     "title": "从芯片引脚名提取域后缀",
+     "line": 47,
+     "end_line": 60,
+     "raw_head": "### 从芯片引脚名提取域后缀",
+     "body_chars": 288,
+     "body_head": "### 从芯片引脚名提取域后缀\n\n```\n引脚名格式：FUNC_M0  FUNC_M1  GPIOx_y_Dir_Domain\n                                        ↑\n              "
+    },
+    {
+     "title": "四、Step 3 — 追踪供电网络",
+     "line": 61,
+     "end_line": 71,
+     "raw_head": "## 四、Step 3 — 追踪供电网络",
+     "body_chars": 133,
+     "body_head": "## 四、Step 3 — 追踪供电网络\n\n在 EDN 中搜索每个 VCCIO 电源引脚所在的网络：\n\n```\n搜索：VCCIO1_VCC_I\n  → 所在 net: \"VCC_1V8\"\n  → 该网络的供电来源：PMIC.LDOx\n  →"
+    },
+    {
+     "title": "EDN 查询方法",
+     "line": 72,
+     "end_line": 74,
+     "raw_head": "### EDN 查询方法",
+     "body_chars": 23,
+     "body_head": "### EDN 查询方法\n\n```python"
+    },
+    {
+     "title": "伪代码",
+     "line": 75,
+     "end_line": 88,
+     "raw_head": "# 伪代码",
+     "body_chars": 336,
+     "body_head": "# 伪代码\nfor net in edn_nets:\n    if \"VCCIO1_VCC_I\" in net:\n        net_name = net.name\n        # 找网络中的其他组件，确认供电来源\n        "
+    },
+    {
+     "title": "五、Step 4 — 检查中间芯片",
+     "line": 89,
+     "end_line": 92,
+     "raw_head": "## 五、Step 4 — 检查中间芯片",
+     "body_chars": 282,
+     "body_head": "## 五、Step 4 — 检查中间芯片\n\n> ⛔ **G0 前置依赖（2026-06-05 新增）**：Step 4 涉及芯片内部参数（供电范围、引脚排列、方向控制、OE 逻辑等），必须基于官方数据手册原文判定。在执行 Step 4 之前"
+    },
+    {
+     "title": "5.1 确认路径上的所有中间芯片",
+     "line": 93,
+     "end_line": 105,
+     "raw_head": "### 5.1 确认路径上的所有中间芯片",
+     "body_chars": 246,
+     "body_head": "### 5.1 确认路径上的所有中间芯片\n\n信号路径上可能经过以下类型芯片，每一颗都需要检查：\n\n```\n接口 ──→ [串联电阻] ──→ [电平转换器] ──→ [缓冲器] ──→ [逻辑门] ──→ 芯片引脚\n            "
+    },
+    {
+     "title": "追踪时发现信号经过了芯片 Ux 而非直连",
+     "line": 106,
+     "end_line": 111,
+     "raw_head": "# 追踪时发现信号经过了芯片 Ux 而非直连",
+     "body_chars": 172,
+     "body_head": "# 追踪时发现信号经过了芯片 Ux 而非直连\nJ5.2 → net \"UART3_TX\" → portRef B1 (instanceRef Ux)\n                                       ↑\n    "
+    },
+    {
+     "title": "5.2 对每颗中间芯片，要求提供数据手册",
+     "line": 112,
+     "end_line": 125,
+     "raw_head": "### 5.2 对每颗中间芯片，要求提供数据手册",
+     "body_chars": 443,
+     "body_head": "### 5.2 对每颗中间芯片，要求提供数据手册\n\n**必须从手册中确认以下信息：**\n\n| 检查项 | 手册中查找 | 本设计案例（U9 MS4553S） |\n|--------|-----------|------|\n| 芯片型号 | "
+    },
+    {
+     "title": "5.3 核对手册与实际电路",
+     "line": 126,
+     "end_line": 148,
+     "raw_head": "### 5.3 核对手册与实际电路",
+     "body_chars": 569,
+     "body_head": "### 5.3 核对手册与实际电路\n\n**引脚排列一致性**：\n```\n手册引脚排列  ←→  EDN 网表中的 portInstance 顺序\n    ↓                        ↓\n  1=VCCB        "
+    },
+    {
+     "title": "5.4 核对信号方向与芯片能力",
+     "line": 149,
+     "end_line": 157,
+     "raw_head": "### 5.4 核对信号方向与芯片能力",
+     "body_chars": 159,
+     "body_head": "### 5.4 核对信号方向与芯片能力\n\n```\n手册：自动方向检测，每个通道独立判断\n      推拉模式 20Mbps，开漏模式 2Mbps\n      UART3_TX: SoC→A1, 自动检测→B1→J5  ✅ 支持\n      "
+    },
+    {
+     "title": "5.5 核对 Footprint 一致性",
+     "line": 158,
+     "end_line": 166,
+     "raw_head": "### 5.5 核对 Footprint 一致性",
+     "body_chars": 134,
+     "body_head": "### 5.5 核对 Footprint 一致性\n\n```\n手册封装：SOT23-8\nPCB Footprint 属性：SN74LVC2T45DCTR (SM8)\n              ↓\n      ⚠ 引脚排列可能不同！需核对 B"
+    },
+    {
+     "title": "5.6 信号直连（无中间芯片）",
+     "line": 167,
+     "end_line": 177,
+     "raw_head": "### 5.6 信号直连（无中间芯片）",
+     "body_chars": 114,
+     "body_head": "### 5.6 信号直连（无中间芯片）\n\n如果信号路径上没有芯片，直接对比两端电压：\n\n```\nVI0_DATA0 → 接口引脚 → 芯片 GPIOx (VCCIOx = yV)\n外设必须兼容 yV 电平 ⚠\n```\n\n---\n"
+    },
+    {
+     "title": "六、Step 5 — 对比标注 vs 实际",
+     "line": 178,
+     "end_line": 189,
+     "raw_head": "## 六、Step 5 — 对比标注 vs 实际",
+     "body_chars": 206,
+     "body_head": "## 六、Step 5 — 对比标注 vs 实际\n\n```\n接口标注电压  vs  网络名暗示的电压  vs  VCCIO 域实际电压\n     ↓                    ↓                    ↓\n  \""
+    },
+    {
+     "title": "七、完整检查清单",
+     "line": 190,
+     "end_line": 191,
+     "raw_head": "## 七、完整检查清单",
+     "body_chars": 12,
+     "body_head": "## 七、完整检查清单\n"
+    },
+    {
+     "title": "对每个信号执行",
+     "line": 192,
+     "end_line": 202,
+     "raw_head": "### 对每个信号执行",
+     "body_chars": 222,
+     "body_head": "### 对每个信号执行\n\n- [ ] 已追踪从接口到芯片的完整路径\n- [ ] 已提取芯片引脚的 VCCIO 域后缀\n- [ ] 已追踪该 VCCIO 域的供电网络 → 确认电压值\n- [ ] 已检查路径上是否有电平转换器 → 确认两侧电压"
+    },
+    {
+     "title": "高风险信号优先检查",
+     "line": 203,
+     "end_line": 213,
+     "raw_head": "### 高风险信号优先检查",
+     "body_chars": 207,
+     "body_head": "### 高风险信号优先检查\n\n| 风险特征 | 原因 |\n|----------|------|\n| `_J` 后缀的引脚 | VCCIO2(3.3V) vs VCCIO3(1.8V) 可能混淆 |\n| 网名含电压标签 | 可能是错误标注，"
+    },
+    {
+     "title": "八、批量检查方案（可用脚本实现）",
+     "line": 214,
+     "end_line": 224,
+     "raw_head": "## 八、批量检查方案（可用脚本实现）",
+     "body_chars": 259,
+     "body_head": "## 八、批量检查方案（可用脚本实现）\n\n```\n1. 从 EDN 提取所有 VCCIO 电源引脚 → 追踪到供电网络 → 建立 {VCCIO域: 电压} 表\n2. 从 EDN 提取所有信号路径 → 找到芯片引脚 → 查域后缀 → 查表得电"
+    }
+   ],
+   "n_sections": 21,
+   "suggest_prefix": "LS-"
+  },
+  "raw_rules/接口电路检查规则.md": {
+   "file": "raw_rules/接口电路检查规则.md",
+   "chars": 5083,
+   "sections": [
+    {
+     "title": "第二部分：动态电路与隐性风险检查 (Dynamic & Integrity Checks)",
+     "line": 26,
+     "end_line": 27,
+     "raw_head": "第二部分：动态电路与隐性风险检查 (Dynamic & Integrity Checks)",
+     "body_chars": 46,
+     "body_head": "第二部分：动态电路与隐性风险检查 (Dynamic & Integrity Checks)\n"
+    },
+    {
+     "title": "2.1 电平转换芯片（Level Shifter）判定树",
+     "line": 28,
+     "end_line": 39,
+     "raw_head": "2.1 电平转换芯片（Level Shifter）判定树",
+     "body_chars": 337,
+     "body_head": "2.1 电平转换芯片（Level Shifter）判定树\n\n当 AI 发现信号路径中存在电平转换器（如 TXS0102, MS4553S, 74LVC2T45）时，强制执行：\n\n供电匹配：核对 $V_{CCA}$ 与 SoC IO域电压是否"
+    },
+    {
+     "title": "2.2 默认电平与单点多驱检查",
+     "line": 40,
+     "end_line": 45,
+     "raw_head": "2.2 默认电平与单点多驱检查",
+     "body_chars": 161,
+     "body_head": "2.2 默认电平与单点多驱检查\n\n开漏/漏极开路（OD/OC）网络：针对 I2C、MDIO 等总线，必须查找外部上拉电阻。若缺失则报错；若存在，需验证上拉电源网络电压 $\\equiv$ VCCIO 电压。\n\n单网多驱冲突：扫描是否有多个配置"
+    },
+    {
+     "title": "2.3 电源域耦合与上电时序",
+     "line": 46,
+     "end_line": 49,
+     "raw_head": "2.3 电源域耦合与上电时序",
+     "body_chars": 112,
+     "body_head": "2.3 电源域耦合与上电时序\n\n跨电源域直连：如果信号两端直连，且一端为 SoC 常供电，另一端为外设受控电（如 VCC_Sensor_EN 控制），且中间无电平转换或缓冲器，需抛出警告：“存在掉电倒灌风险，请人工确认”。\n"
+    },
+    {
+     "title": "第三部分：常见外设标准电路检查规则 (Peripheral Standard Rules)",
+     "line": 50,
+     "end_line": 53,
+     "raw_head": "第三部分：常见外设标准电路检查规则 (Peripheral Standard Rules)",
+     "body_chars": 81,
+     "body_head": "第三部分：常见外设标准电路检查规则 (Peripheral Standard Rules)\n\nAI 在识别到特定接口协议时，需额外激活以下外围电路专属检查规则：\n"
+    },
+    {
+     "title": "3.1 低速串行总线 (I2C / UART)",
+     "line": 54,
+     "end_line": 75,
+     "raw_head": "3.1 低速串行总线 (I2C / UART)",
+     "body_chars": 632,
+     "body_head": "3.1 低速串行总线 (I2C / UART)\n\n【I2C (IIC) 总线】\n\n> ⚡ **强制检查（自学习 K-T001）**：I2C 总线检查已在 3 个不同芯片平台（RK3588 / RK3576 / MP2975+FPGA）验证为"
+    },
+    {
+     "title": "3.2 工业接口转换 (RS232 / RS485 / RS422)",
+     "line": 76,
+     "end_line": 97,
+     "raw_head": "3.2 工业接口转换 (RS232 / RS485 / RS422)",
+     "body_chars": 514,
+     "body_head": "3.2 工业接口转换 (RS232 / RS485 / RS422)\n\n【RS232】\n\n芯片检查：必须存在 RS232 收发器（如 MAX3232）。\n\n电容网络：收发器的电荷泵引脚（C1+, C1-, C2+, C2-, V+, V-）"
+    },
+    {
+     "title": "3.3 高速内存总线 (DDR3 / DDR4 / LPDDR4 / LPDDR5)",
+     "line": 98,
+     "end_line": 145,
+     "raw_head": "3.3 高速内存总线 (DDR3 / DDR4 / LPDDR4 / LPDDR5)",
+     "body_chars": 1429,
+     "body_head": "3.3 高速内存总线 (DDR3 / DDR4 / LPDDR4 / LPDDR5)\n\n高速内存对拓扑、电源及信号线序要求极高，针对极易翻车的“信号接错/接反”场景，AI 需重点检查以下规则：\n\n【致命接错与接反专项排查 (Fatal Wr"
+    },
+    {
+     "title": "3.4 视频与高速接口 (MIPI / DVP)",
+     "line": 146,
+     "end_line": 163,
+     "raw_head": "3.4 视频与高速接口 (MIPI / DVP)",
+     "body_chars": 610,
+     "body_head": "3.4 视频与高速接口 (MIPI / DVP)\n\n【MIPI (CSI/DSI) 高速串行视频】\n\n专用引脚约束：MIPI 信号必须映射到 SoC 的 MIPI PHY 专用硬件引脚，绝对禁止复用到普通 GPIO 引脚上。\n\n串联器件：差"
+    },
+    {
+     "title": "第四部分：最终交付与异常判定逻辑输出",
+     "line": 164,
+     "end_line": 178,
+     "raw_head": "第四部分：最终交付与异常判定逻辑输出",
+     "body_chars": 267,
+     "body_head": "第四部分：最终交付与异常判定逻辑输出\n\nAI 检查完毕后，必须按以下格式输出判定结果：\n\n$$致命错误 CRITICAL$$\n\n：引脚电压不匹配、多源驱动短路、关键组件缺失（如 I2C 没上拉，DDR 没 ZQ 电阻）、方向芯片方向颠倒、高"
+    }
+   ],
+   "n_sections": 10,
+   "suggest_prefix": "PB-"
+  },
+  "raw_rules/电源检查.md": {
+   "file": "raw_rules/电源检查.md",
+   "chars": 4594,
+   "sections": [
+    {
+     "title": "电源检查规则",
+     "line": 1,
+     "end_line": 8,
+     "raw_head": "# 电源检查规则",
+     "body_chars": 240,
+     "body_head": "# 电源检查规则\n\n> 适用场景：PMIC 供电方案验证，含上电时序、电源启动流程、PMIC 配置、上下拉模型、电容/电阻配置\n\n> ⛔ **G0 前置依赖**：本规则中所有涉及 PMIC 内部参数的判定（EN 阈值、Vref、限流值、时序"
+    },
+    {
+     "title": "一、上电时序检查",
+     "line": 9,
+     "end_line": 12,
+     "raw_head": "## 一、上电时序检查",
+     "body_chars": 169,
+     "body_head": "## 一、上电时序检查\n\n> ⚡ **强制检查（自学习 K-T004）**：PMIC 上电时序 EN→PG 级联链路已在 3 个项目（RK806 / RK806S-5 / MP2975+MPQ7920）验证为 🔴CRITICAL 级风险点。"
+    },
+    {
+     "title": "1.1 时序约束来源",
+     "line": 13,
+     "end_line": 24,
+     "raw_head": "### 1.1 时序约束来源",
+     "body_chars": 316,
+     "body_head": "### 1.1 时序约束来源\n\n从 PMIC 和各受电器件（SoC/DDR/Flash 等）的手册中提取：\n\n| 参数 | 来源 | 含义 |\n|---|---|---|\n| tON | PMIC 手册 | 从 EN 有效到输出达到目标电压"
+    },
+    {
+     "title": "1.2 多轨启动顺序验证",
+     "line": 25,
+     "end_line": 39,
+     "raw_head": "### 1.2 多轨启动顺序验证",
+     "body_chars": 346,
+     "body_head": "### 1.2 多轨启动顺序验证\n\n```\n步骤：\n1. 从 EDN 提取所有 PMIC 输出轨 → 建立 {PMIC输出: 目标电压} 表\n2. 从各受电器件手册提取 Power Sequencing 要求 → 建立 {轨名: [依赖轨,"
+    },
+    {
+     "title": "1.3 tON / tOFF / tRAMP 参数核对",
+     "line": 40,
+     "end_line": 48,
+     "raw_head": "### 1.3 tON / tOFF / tRAMP 参数核对",
+     "body_chars": 156,
+     "body_head": "### 1.3 tON / tOFF / tRAMP 参数核对\n\n对每条电源轨：\n- 实际 tON（从 EN 到 Vout 稳定）是否 ≥ 手册最小值且 ≤ 手册最大值\n- tRAMP 是否匹配受电器件要求（部分 DDR 对 VDDQ 上升"
+    },
+    {
+     "title": "二、电源启动流程",
+     "line": 49,
+     "end_line": 50,
+     "raw_head": "## 二、电源启动流程",
+     "body_chars": 12,
+     "body_head": "## 二、电源启动流程\n"
+    },
+    {
+     "title": "2.1 EN 链追踪",
+     "line": 51,
+     "end_line": 63,
+     "raw_head": "### 2.1 EN 链追踪",
+     "body_chars": 236,
+     "body_head": "### 2.1 EN 链追踪\n\n从 EDN 网表中追踪每个 PMIC 的 EN 引脚来源：\n\n```\nEN 引脚 → net → 来源器件（前级 PMIC 的 PG / SoC GPIO / 固定上拉 / 分压电阻）\n```\n\n检查项：\n-"
+    },
+    {
+     "title": "2.2 PG 级联验证",
+     "line": 64,
+     "end_line": 76,
+     "raw_head": "### 2.2 PG 级联验证",
+     "body_chars": 201,
+     "body_head": "### 2.2 PG 级联验证\n\n追踪 PG (Power Good) 信号的去向：\n\n```\nPMIC.PG → net → 下一级 PMIC.EN / SoC 复位逻辑 / 状态指示\n```\n\n检查项：\n- 每路 PG 是否实际连接到下"
+    },
+    {
+     "title": "2.3 保护机制确认",
+     "line": 77,
+     "end_line": 86,
+     "raw_head": "### 2.3 保护机制确认",
+     "body_chars": 220,
+     "body_head": "### 2.3 保护机制确认\n\n| 保护类型 | 手册参数 | 检查项 |\n|---|---|---|\n| UVLO (欠压锁定) | VUVLO_R / VUVLO_F | 输入电压范围是否满足 |\n| OCP (过流保护) | ILIM"
+    },
+    {
+     "title": "三、PMIC 配置验证",
+     "line": 87,
+     "end_line": 88,
+     "raw_head": "## 三、PMIC 配置验证",
+     "body_chars": 15,
+     "body_head": "## 三、PMIC 配置验证\n"
+    },
+    {
+     "title": "3.1 分压电阻计算",
+     "line": 89,
+     "end_line": 106,
+     "raw_head": "### 3.1 分压电阻计算",
+     "body_chars": 245,
+     "body_head": "### 3.1 分压电阻计算\n\n对每路可调输出：\n\n```\nVout = Vref × (1 + R1 / R2)\n\n核对步骤：\n1. 从 PMIC 手册提取 Vref（内部参考电压）\n2. 从 EDN 网表追踪 FB 引脚连接的分压电阻取"
+    },
+    {
+     "title": "3.2 FB 网络一致性",
+     "line": 107,
+     "end_line": 112,
+     "raw_head": "### 3.2 FB 网络一致性",
+     "body_chars": 117,
+     "body_head": "### 3.2 FB 网络一致性\n\n- FB 引脚是否直接连接到分压电阻中点（无中间器件）\n- FB 引脚下拉电阻接地是否良好（确认 net body 中有 GND portRef）\n- 前馈电容 (CFF) 配置是否与手册推荐一致\n"
+    },
+    {
+     "title": "3.3 可编程寄存器默认值",
+     "line": 113,
+     "end_line": 120,
+     "raw_head": "### 3.3 可编程寄存器默认值",
+     "body_chars": 143,
+     "body_head": "### 3.3 可编程寄存器默认值\n\n对于 I²C/SPI 可编程的 PMIC：\n- 默认寄存器值（Power-On Reset 值）是否与实际电路匹配\n- 若默认值与目标电压不一致，BSP/固件是否在初始化中重新配置 → 标注为 ⚫UNV"
+    },
+    {
+     "title": "四、上下拉模型",
+     "line": 121,
+     "end_line": 122,
+     "raw_head": "## 四、上下拉模型",
+     "body_chars": 11,
+     "body_head": "## 四、上下拉模型\n"
+    },
+    {
+     "title": "4.1 EN 引脚默认态与外部配合",
+     "line": 123,
+     "end_line": 134,
+     "raw_head": "### 4.1 EN 引脚默认态与外部配合",
+     "body_chars": 286,
+     "body_head": "### 4.1 EN 引脚默认态与外部配合\n\n| PMIC EN 引脚 | 内部结构 | 外部电路要求 |\n|---|---|---|\n| 内部上拉 (PU) | 弱上拉至内部 LDO | 外部下拉可用开漏 GPIO 或跳线控制；不可直接接"
+    },
+    {
+     "title": "4.2 开漏输出的上拉要求",
+     "line": 135,
+     "end_line": 141,
+     "raw_head": "### 4.2 开漏输出的上拉要求",
+     "body_chars": 136,
+     "body_head": "### 4.2 开漏输出的上拉要求\n\nPG / FAULT / INT 等开漏输出引脚：\n- 必须外部上拉至有效逻辑电平（通常与 SoC VCCIO 域一致）\n- 上拉电阻值：1kΩ ~ 10kΩ（手册推荐范围）\n- 多个开漏输出共享同一上"
+    },
+    {
+     "title": "4.3 MODE/SYNC 配置引脚",
+     "line": 142,
+     "end_line": 149,
+     "raw_head": "### 4.3 MODE/SYNC 配置引脚",
+     "body_chars": 124,
+     "body_head": "### 4.3 MODE/SYNC 配置引脚\n\nPMIC 的 MODE（工作模式选择）、SYNC（同步时钟）、FREQ（频率设定）等配置引脚：\n- 电平定义是否与手册一致（有的 MODE 引脚通过电阻分压设定多档）\n- 配置引脚不得浮空\n\n"
+    },
+    {
+     "title": "五、电容配置",
+     "line": 150,
+     "end_line": 151,
+     "raw_head": "## 五、电容配置",
+     "body_chars": 10,
+     "body_head": "## 五、电容配置\n"
+    },
+    {
+     "title": "5.1 输入/输出电容手册要求",
+     "line": 152,
+     "end_line": 162,
+     "raw_head": "### 5.1 输入/输出电容手册要求",
+     "body_chars": 282,
+     "body_head": "### 5.1 输入/输出电容手册要求\n\n对每路 PMIC 输入/输出：\n\n| 参数 | 来源 | 检查项 |\n|---|---|---|\n| 最小/最大容值 | 手册推荐工作条件 | EDN 中该 net 上的电容是否在范围内 |\n| 耐"
+    },
+    {
+     "title": "5.2 去耦密度检查",
+     "line": 163,
+     "end_line": 171,
+     "raw_head": "### 5.2 去耦密度检查",
+     "body_chars": 202,
+     "body_head": "### 5.2 去耦密度检查\n\n| 电源轨类型 | 建议去耦 |\n|---|---|\n| SoC VDD_CORE | ≥ 4 颗（10μF + 0.1μF × N） |\n| DDR VDDQ | 每颗粒 ≥ 2 颗（0.1μF + 1μF"
+    },
+    {
+     "title": "5.3 耐压与介质类型",
+     "line": 172,
+     "end_line": 178,
+     "raw_head": "### 5.3 耐压与介质类型",
+     "body_chars": 134,
+     "body_head": "### 5.3 耐压与介质类型\n\n- MLCC 直流偏置降额：在 DC 偏置下，MLCC 有效容值显著降低（X5R 在 80% 额定电压下可能只剩 20% 容值）\n- 若 BOM 中使用 Y5V 或 Z5U 介质，标记为 🟡 WARNING"
+    },
+    {
+     "title": "六、电阻配置",
+     "line": 179,
+     "end_line": 180,
+     "raw_head": "## 六、电阻配置",
+     "body_chars": 10,
+     "body_head": "## 六、电阻配置\n"
+    },
+    {
+     "title": "6.1 限流/频率设定电阻",
+     "line": 181,
+     "end_line": 188,
+     "raw_head": "### 6.1 限流/频率设定电阻",
+     "body_chars": 229,
+     "body_head": "### 6.1 限流/频率设定电阻\n\n| 电阻类型 | 手册参数 | 检查项 |\n|---|---|---|\n| ILIM（限流设定） | RILIM = f(ILIM) 公式或查表 | 实际值是否在手册允许范围内（通常 1kΩ ~ 100"
+    },
+    {
+     "title": "6.2 电流采样电阻（Shunt）",
+     "line": 189,
+     "end_line": 199,
+     "raw_head": "### 6.2 电流采样电阻（Shunt）",
+     "body_chars": 264,
+     "body_head": "### 6.2 电流采样电阻（Shunt）\n\n对于电流监测 IC（如 INA219）或有电流采样的 PMIC：\n- 阻值：是否按手册公式计算（如 INA219：Rshunt = VFS / IMAX）\n- 功率：P = I²R，降额 50%"
+    },
+    {
+     "title": "七、交付检查清单",
+     "line": 200,
+     "end_line": 212,
+     "raw_head": "## 七、交付检查清单",
+     "body_chars": 465,
+     "body_head": "## 七、交付检查清单\n\n- [ ] 所有 PMIC 的输出电压已通过分压电阻公式验证\n- [ ] 上电时序已与 SoC/DDR 手册交叉核对\n- [ ] 每路 EN 的来源已追踪并确认无误\n- [ ] PG 级联链路完整（无断链、无悬空）"
+    }
+   ],
+   "n_sections": 25,
+   "suggest_prefix": "PO-"
+  },
+  "raw_rules/证据文件Schema规范.md": {
+   "file": "raw_rules/证据文件Schema规范.md",
+   "chars": 10888,
+   "sections": [
+    {
+     "title": "证据文件 JSON Schema 规范",
+     "line": 1,
+     "end_line": 7,
+     "raw_head": "# 证据文件 JSON Schema 规范",
+     "body_chars": 95,
+     "body_head": "# 证据文件 JSON Schema 规范\n\n> 所有硬件检查任务产出的 .json 证据文件必须遵循本规范。\n> Schema 版本: 2.0 | 生效: 2026-06-15\n\n---\n"
+    },
+    {
+     "title": "一、通用要求",
+     "line": 8,
+     "end_line": 9,
+     "raw_head": "## 一、通用要求",
+     "body_chars": 10,
+     "body_head": "## 一、通用要求\n"
+    },
+    {
+     "title": "1.1 根节点元信息",
+     "line": 10,
+     "end_line": 35,
+     "raw_head": "### 1.1 根节点元信息",
+     "body_chars": 529,
+     "body_head": "### 1.1 根节点元信息\n\n每个证据 JSON 文件根节点必须包含 `meta` 对象：\n\n```json\n{\n  \"meta\": {\n    \"task_id\": \"T6\",\n    \"task_name\": \"连接器逐引脚分析\",\n"
+    },
+    {
+     "title": "二、任务输出 Schema",
+     "line": 36,
+     "end_line": 37,
+     "raw_head": "## 二、任务输出 Schema",
+     "body_chars": 17,
+     "body_head": "## 二、任务输出 Schema\n"
+    },
+    {
+     "title": "T1: IC 清单 — `v10_ic_inventory.csv`",
+     "line": 38,
+     "end_line": 54,
+     "raw_head": "### T1: IC 清单 — `v10_ic_inventory.csv`",
+     "body_chars": 537,
+     "body_head": "### T1: IC 清单 — `v10_ic_inventory.csv`\n\nCSV 格式，列定义：\n\n| 列名 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| 位号 | string | ✅"
+    },
+    {
+     "title": "T1 附加: RK3576 参数 — `v10_rk3576_params.json`",
+     "line": 55,
+     "end_line": 99,
+     "raw_head": "### T1 附加: RK3576 参数 — `v10_rk3576_params.json`",
+     "body_chars": 937,
+     "body_head": "### T1 附加: RK3576 参数 — `v10_rk3576_params.json`\n\n```json\n{\n  \"soc\": \"RK3576\",\n  \"package\": \"BGA698\",\n  \"vccio_domains\": "
+    },
+    {
+     "title": "T4: VCCIO 域映射 — `v10_vccio_map.json`",
+     "line": 100,
+     "end_line": 148,
+     "raw_head": "### T4: VCCIO 域映射 — `v10_vccio_map.json`",
+     "body_chars": 1309,
+     "body_head": "### T4: VCCIO 域映射 — `v10_vccio_map.json`\n\n```json\n{\n  \"vccio_domains\": [\n    {\n      \"name\": \"PMUIO0\",\n      \"voltage\": "
+    },
+    {
+     "title": "T5: 供电网络 — `v10_power_rails.json`",
+     "line": 149,
+     "end_line": 178,
+     "raw_head": "### T5: 供电网络 — `v10_power_rails.json`",
+     "body_chars": 669,
+     "body_head": "### T5: 供电网络 — `v10_power_rails.json`\n\n```json\n{\n  \"rails\": [\n    {\n      \"net\": \"VCC_3V3_S3\",\n      \"voltage\": \"3.3V\",\n"
+    },
+    {
+     "title": "T6: 连接器 — `v10_connector_pinout.json`",
+     "line": 179,
+     "end_line": 221,
+     "raw_head": "### T6: 连接器 — `v10_connector_pinout.json`",
+     "body_chars": 1069,
+     "body_head": "### T6: 连接器 — `v10_connector_pinout.json`\n\n```json\n{\n  \"connectors\": {\n    \"J1\": [\n      {\n        \"pin\": \"&1\",\n        "
+    },
+    {
+     "title": "T7: DDR — `v10_ddr_check.json`",
+     "line": 222,
+     "end_line": 298,
+     "raw_head": "### T7: DDR — `v10_ddr_check.json`",
+     "body_chars": 2032,
+     "body_head": "### T7: DDR — `v10_ddr_check.json`\n\n```json\n{\n  \"checks\": {\n    \"chip_count\": {\n      \"status\": \"PASS\",\n      \"finding\":"
+    },
+    {
+     "title": "T8: 外设 — `v10_peripheral_check.json`",
+     "line": 299,
+     "end_line": 358,
+     "raw_head": "### T8: 外设 — `v10_peripheral_check.json`",
+     "body_chars": 1236,
+     "body_head": "### T8: 外设 — `v10_peripheral_check.json`\n\n```json\n{\n  \"i2c_groups\": [\n    {\n      \"bus_id\": \"I2C1\",\n      \"scl_net\": \"I2"
+    },
+    {
+     "title": "T9: 悬空引脚 — `v10_floating_pins.json`",
+     "line": 359,
+     "end_line": 397,
+     "raw_head": "### T9: 悬空引脚 — `v10_floating_pins.json`",
+     "body_chars": 861,
+     "body_head": "### T9: 悬空引脚 — `v10_floating_pins.json`\n\n```json\n{\n  \"perChip\": {\n    \"SOC_RK3576\": {\n      \"connected\": 86,\n      \"nc_d"
+    },
+    {
+     "title": "T10: 芯片专属 — `v10_rk3576_specific.json`",
+     "line": 398,
+     "end_line": 431,
+     "raw_head": "### T10: 芯片专属 — `v10_rk3576_specific.json`",
+     "body_chars": 735,
+     "body_head": "### T10: 芯片专属 — `v10_rk3576_specific.json`\n\n```json\n{\n  \"saradc_in0_boot\": {\n    \"status\": \"WARNING\",\n    \"finding\": \"R1"
+    },
+    {
+     "title": "三、枚举值定义",
+     "line": 432,
+     "end_line": 443,
+     "raw_head": "## 三、枚举值定义",
+     "body_chars": 401,
+     "body_head": "## 三、枚举值定义\n\n| 枚举名 | 允许值 |\n|--------|------|\n| **检查等级** | `CRITICAL` `WARNING` `OK` `INFERRED` `UNVERIFIED` |\n| **检查状态** "
+    },
+    {
+     "title": "四、F2 报告代理的使用规范",
+     "line": 444,
+     "end_line": 455,
+     "raw_head": "## 四、F2 报告代理的使用规范",
+     "body_chars": 271,
+     "body_head": "## 四、F2 报告代理的使用规范\n\n> ⛔ **报告生成前，F2 代理必须首先读取本文件。**\n\n1. 按本 Schema 定义的字段名读取 JSON，**严禁猜测字段名**\n2. 字段不存在时 **必须报错**，不得静默跳过——空章节不"
+    },
+    {
+     "title": "五、版本历史",
+     "line": 456,
+     "end_line": 461,
+     "raw_head": "## 五、版本历史",
+     "body_chars": 164,
+     "body_head": "## 五、版本历史\n\n| 版本 | 日期 | 变更 |\n|------|------|------|\n| 1.0 | — | 初始（隐式，未成文） |\n| 2.0 | 2026-06-15 | 正式成文：新增 meta 元信息、T6 方向枚"
+    }
+   ],
+   "n_sections": 16,
+   "suggest_prefix": "SYN-"
+  }
+ }
+}
