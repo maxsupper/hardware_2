@@ -73,7 +73,7 @@ class Step0aConfig(BaseDoc):
 
 # ---------- G0 手册检索 ----------
 class IcEntry(BaseModel):
-    refdes: str
+    refdes: str = ""          # 冗余字段：dict 键即 refdes，可缺省
     model: str
     ic_type: str = ""
     manual_path: str = ""

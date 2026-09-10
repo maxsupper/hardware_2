@@ -131,6 +131,16 @@ def _finalize(gate, name, checks) -> GateResult:
     return r
 
 
+def main_gate_cli(ws_dir, gate):
+    ws = Path(ws_dir)
+    fns = {"G1": ("B_prep", validate_prep), "G3": ("B_prep", validate_data),
+           "G4": ("E_analyze", validate_evidence), "G5": ("F_report", validate_report)}
+    subdir, fn = fns[gate]
+    r = fn(ws / subdir)
+    (ws / "gates" / f"{gate}.json").write_text(r.model_dump_json(indent=1), encoding="utf-8")
+    return r.status.value
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("gate", choices=["G1", "G3", "G4", "G5"])
