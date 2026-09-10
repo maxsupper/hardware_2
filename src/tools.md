@@ -34,6 +34,20 @@
 - 输出   : budget_check dict（status/estimates/caps/checks）
 - 已验证 : 512K 硬顶钳制生效
 
+## [T-REFBOOK] refbook_search
+- 模块   : src/hardware_analysis/tools/refbook_search.py
+- 功能   : refbook/datasheet 递归扫描 + 型号模糊匹配（相等/互含/token重叠评分）
+- 输入   : model(必填)；--root 默认 storge/refbook；--top
+- 输出   : [{score,path,name,stem_match}] 按分降序
+- 已验证 : RK3588/SIT3232/EG4X20 均命中
+
+## [T-WEB] web_tools（web_search / web_extract / web_download）
+- 模块   : src/hardware_analysis/tools/web_tools.py
+- 功能   : Tavily 搜索/正文抽取校验/文件下载（HTTP直连，config 密钥）
+- 输入   : search(q[,max_results])；extract(url[,depth])；download(url,dest)
+- 输出   : search→[title,url,content]；extract→{url,ok,raw_content,error}；download→{url,ok,dest,size}
+- 已验证 : search 定位 EG4X20 官方手册 PDF；key 有效
+
 ## [T-CFG] config.load
 - 模块   : src/hardware_analysis/config.py::Config
 - 功能   : 读取 config.json（LLM/预算/网络/路径），环境变量覆盖 LLM_API_KEY/TAVILY_API_KEY
