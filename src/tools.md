@@ -3,6 +3,14 @@
 > 注册门禁：凡在 `src/` 新增脚本必须在此登记一条接口；未登记=不可合入。
 > 全部工具输入/输出均为 JSON；确定性工具幂等可重跑。
 
+## [T-EDN-PARSE] edn_parse
+- 模块   : src/hardware_analysis/tools/edn_parse.py
+- 功能   : EDIF 2.0.0 s-表达式 真实语法解析（OrCAD/CAPTURE 导出）；产 per-file components/nets JSON
+- 输入   : edn(str,必填) EDN 路径；--out(str,可选) 输出目录
+- 输出   : {stem}.components.json（refdes→{refdes,model,cell}）；{stem}.nets.json（[{net, joins:[{refdes,pin}]}]）；stdout 统计
+- 已验证 : FL-26-E-MR203-A(606元件/462net/2773连) B(346/340/1364)
+- 副作用 : 只写 out；幂等
+
 ## [T-CFG] config.load
 - 模块   : src/hardware_analysis/config.py::Config
 - 功能   : 读取 config.json（LLM/预算/网络/路径），环境变量覆盖 LLM_API_KEY/TAVILY_API_KEY
