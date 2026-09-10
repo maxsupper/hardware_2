@@ -1,0 +1,13 @@
+{
+ "chip": "RK3576",
+ "sources": [
+  "raw_platmform/RK3576/hardware_check.md",
+  "raw_platmform/RK3576/pinout.json",
+  "raw_platmform/RK3576/pinout.md"
+ ],
+ "sources_exist": {
+  "raw_platmform/RK3576/hardware_check.md": true,
+  "raw_platmform/RK3576/pinout.json": true,
+  "raw_platmform/RK3576/pinout.md": true
+ }
+}
