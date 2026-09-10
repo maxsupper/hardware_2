@@ -79,36 +79,31 @@ class Orchestrator:
         self._ic_type_llm()      # LLM 判定 ic_type 并回写 manual_index.json（mock 走 SINK）
 
     def _ic_type_llm(self):
-        """对 manual_index 中每颗唯一 IC 判定 ic_type（SINK/PASS_THRU/POWER_SRC）。"""
-        from hardware_analysis.agents.direct import llm_json
-        from hardware_analysis.models.contracts import GateResult
+        """对 manual_index 中每颗唯一 IC 判定 ic_type（SINK/PASS_THRU/POWER_SRC）。
+        走可复用 LLMChecker（含持久化缓存）；契约 = IcTypeVerdict。"""
+        from hardware_analysis.common.llm_check import LLMChecker
+        from hardware_analysis.models.contracts import IcTypeVerdict
         p = self._b("manual_index.json")
         if not p.exists():
             return
         mi = json.loads(p.read_text(encoding="utf-8"))
-        seen = set()
+        checker = LLMChecker(self.ws.dir / ".run" / "llm_cache.json")
+        seen = {}
         for key, e in mi.get("entries", {}).items():
-            if e.get("ic_type", "UNKNOWN") != "UNKNOWN" or e["model"] in seen:
+            model = e.get("model") or ""
+            if not model or model in seen:
                 continue
-            seen.add(e["model"])
-            try:
-                obj, errs, sec = llm_json("hw_search",
-                    f"判定 IC 型号 {e['model']} 的类型：SINK(信号落点)/PASS_THRU(电平转换/收发器,需给出通道)"
-                    f"/POWER_SRC(电源源)。手册路径={e.get('manual_path')}。"
-                    f"只输出 ic_type 与 channels。", GateResult)
-                t = "SINK"
-                if obj and getattr(obj, "gate", ""):
-                    t = obj.gate if obj.gate in ("SINK", "PASS_THRU", "POWER_SRC") else t
-            except Exception:
-                t = "SINK"
-            self._log("ic_type", model=e["model"], ic_type=t)
-        # 回写（同一型号统一）
-        by_model = {}
-        for key, e in mi.get("entries", {}).items():
-            by_model.setdefault(e["model"], "SINK")
+            obj, meta = checker.run(
+                "hw_search",
+                f"判定 IC 型号 {model} 的类型：SINK(信号落点)/PASS_THRU(电平转换/收发器,给通道)/POWER_SRC(电源源)。",
+                IcTypeVerdict,
+                payload={"model": model, "manual": e.get("manual_path"), "status": e.get("status")})
+            t = obj.ic_type if (obj and obj.ic_type in ("SINK", "PASS_THRU", "POWER_SRC")) else "SINK"
+            seen[model] = t
+            self._log("ic_type", model=model, ic_type=t, cached=meta.get("cached"))
         for key, e in mi.get("entries", {}).items():
             if e.get("ic_type", "UNKNOWN") == "UNKNOWN":
-                e["ic_type"] = by_model.get(e["model"], "SINK")
+                e["ic_type"] = seen.get(e.get("model"), "SINK")
         p.write_text(json.dumps(mi, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ---------- PH-2 数据预检（Wave0，确定性；门禁 G2 在 run 中校验） ----------
@@ -129,7 +124,7 @@ class Orchestrator:
         self.cleanup_temp()                       # 即用即清：合并后删中间文件
         self._r(f"refdes_map {self.ws.dir / 'B_prep'}")
         self._r(f"tracer {self.ws.dir / 'B_prep'}")
-        self._r(f"netlist_graph {self.ws.dir / 'B_prep'} --groups 3 --product {self.product}")
+        self._r(f"netlist_graph {self.ws.dir / 'B_prep'} --groups 0 --product {self.product}")
         self._log("ph3_done", edns=[e.name for e in edns])
 
     # ---------- PH-4 深度分析（只读 netlist_graph.json + 复核 + 回环） ----------
@@ -170,6 +165,15 @@ class Orchestrator:
                     ev.model_dump_json(exclude_none=True, indent=1), encoding="utf-8")
             self._log("icon_ok" if obj else "icon_err", refdes=d["refdes"], kind="analyze", sec=sec,
                       err=("" if obj else "；".join(errs)[:100]))
+        # 回环：对 STUB/OPEN_END/ic_type 未定 → request → PH-3 定向重读源 EDN 复核（≤3 轮）
+        try:
+            from hardware_analysis.tools import clarify
+            req = e / "clarify_requests.jsonl"
+            clarify.emit_requests(self._b(), req)
+            res = clarify.resolve(self.product, self._b(), req, e / "clarify_resolutions.jsonl")
+            self._log("clarify_done", requests=len(res))
+        except Exception as ex:
+            self._log("clarify_err", err=str(ex)[:120])
 
     # ---------- PH-5 报告合成 ----------
     def _act_ph5(self):

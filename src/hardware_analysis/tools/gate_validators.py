@@ -13,6 +13,7 @@ if __package__ in (None, ""):
 
 from hardware_analysis.models.contracts import GateCheck, GateResult, GateStatus
 from hardware_analysis.workspace.manager import RunWorkspace
+from hardware_analysis.common.conventions import CONV
 
 REQUIRED_PREP = ["global_components.json", "global_nets.json",
                  "signal_chains.json", "merge_report.json",
@@ -138,7 +139,7 @@ def validate_manual_index(b_prep_dir: Path) -> GateResult:
         entries = d.get("entries", {})
         bp = b_prep_dir / "bom_entries.json"
         boms = json.loads(bp.read_text(encoding="utf-8")).get("entries", {}) if bp.exists() else {}
-        u_keys = [k for k, v in boms.items() if str(v.get("refdes", "")).upper().startswith("U")]
+        u_keys = [k for k, v in boms.items() if CONV.is_active(v.get("refdes", ""))]
         missing = [k for k in u_keys if k not in entries]
         _check(checks, "MI-001", GateStatus.PASS if not missing else GateStatus.WARNING,
                "manual_index 覆盖 BOM 全部 U*", f"缺 {len(missing)}/{len(u_keys)}")

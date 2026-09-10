@@ -13,19 +13,15 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-TRANSPARENT = ("R", "L", "BEAD", "FB", "FERR", "0R", "N.C.", "NC", "TP", "JMP", "JUMP")
+from hardware_analysis.common.conventions import CONV
 
 
 def board_of(name: str) -> str:
-    """从文件名解析板号：...-A_V00... / ...-B_V10... → 'A'/'B'；无则 'X'。"""
-    m = re.search(r"-([A-Z])_V\d", name)
-    return m.group(1) if m else (re.search(r"-([A-Z])_", name).group(1)
-                                 if re.search(r"-([A-Z])_", name) else "X")
+    return CONV.board_of(name)
 
 
 def _t(refdes: str) -> bool:
-    s = str(refdes or "").upper()
-    return any(s.startswith(p) for p in TRANSPARENT)
+    return CONV.is_transparent(refdes)
 
 
 def load_per_file(dirp: Path) -> dict:

@@ -15,12 +15,13 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from hardware_analysis.tools import refbook_search
+from hardware_analysis.common.conventions import CONV
 
 
 def build(bom_entries_path: str | Path, refbook_root: str = "storge/refbook",
           product: str = "") -> dict:
     bom = json.loads(Path(bom_entries_path).read_text(encoding="utf-8")).get("entries", {})
-    ics = {k: v for k, v in bom.items() if str(v.get("refdes", "")).upper().startswith("U")}
+    ics = {k: v for k, v in bom.items() if CONV.is_active(v.get("refdes", ""))}
     # 按型号去重检索（同型号只查一次）
     models = {}
     for k, v in ics.items():

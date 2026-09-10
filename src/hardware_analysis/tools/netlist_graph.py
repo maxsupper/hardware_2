@@ -19,35 +19,23 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from hardware_analysis.tools import tracer as _tracer
-
-_ACTIVE = ("U",)
-_CONN = ("J", "CN", "P", "CON")
-_MECH = ("H", "MH")
+from hardware_analysis.common.conventions import CONV
 
 
 def kind_of(rd: str) -> str:
-    r = str(rd or "").upper()
-    if r.startswith(_ACTIVE):
-        return "IC"
-    if r.startswith("TP"):
-        return "TESTPOINT"
-    if r.startswith(_MECH):
-        return "MECH"
-    if r.startswith(_CONN):
-        return "CONNECTOR"
-    if r.startswith(("R", "C", "L", "FB", "D", "Q", "Y", "X", "F", "BEAD", "LED", "SW")):
-        return "PASSIVE"
-    return "OTHER"
+    return CONV.kind_of(rd)
 
 
 def _pinnorm(pin: str) -> str:
-    p = str(pin or "").strip().lstrip("&")
-    p = re.sub(r"_[AB]$", "", p)
-    return p.lower()
+    return CONV.pin_norm(pin)
 
 
 def _netnorm(net: str) -> str:
-    return re.sub(r"_[AB]$", "", str(net or "")).upper()
+    return CONV.net_norm(net)
+
+
+def _power(net: str) -> bool:
+    return CONV.is_power_net(net)
 
 
 def _is_zero_ohm(dev: dict) -> bool:
@@ -80,13 +68,13 @@ def connector_pairs(dev_pins: dict, kinds: dict) -> tuple[list, list]:
         for rb, pb in by_board[b_board]:
             corr = pin_corr(pa, pb)
             sig = sum(1 for _, _, na, nb in corr
-                      if not _tracer._is_power(na) and _netnorm(na) == _netnorm(nb))
+                      if not _power(na) and _netnorm(na) == _netnorm(nb))
             pinm = len(corr)
-            if pinm >= 3:
+            if pinm >= CONV.cfg["connector_pair_min_signal"]:
                 scored.append((sig, pinm, ra, rb, corr))
     pairs, links, used_b = [], [], set()
     for sig, pinm, ra, rb, corr in sorted(scored, reverse=True):
-        if rb in used_b or sig < 3:
+        if rb in used_b or sig < CONV.cfg["connector_pair_min_signal"]:
             continue
         used_b.add(rb)
         pairs.append({"a": f"{a_board}::{ra}", "b": f"{b_board}::{rb}",
@@ -95,8 +83,8 @@ def connector_pairs(dev_pins: dict, kinds: dict) -> tuple[list, list]:
         for pn_a, pn_b, na, nb in corr:
             links.append({"a": f"{a_board}::{ra}.{pn_a}", "b": f"{b_board}::{rb}.{pn_b}",
                           "net_a": na, "net_b": nb, "method": "connector_pin",
-                          "kind": "gnd" if _tracer._is_power(na) and "GND" in na.upper()
-                                  else ("power" if _tracer._is_power(na) else "signal"),
+                          "kind": "gnd" if _power(na) and "GND" in na.upper()
+                                  else ("power" if _power(na) else "signal"),
                           "net_match": _netnorm(na) == _netnorm(nb)})
     return pairs, links
 
@@ -129,10 +117,12 @@ def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
                 net_pins[(b, net)].append((rd, pn))
     kinds = {k: kind_of(k[1]) for k in dev_pins}
 
-    # ---- 子 agent 分发追踪并合并 ----
+    # ---- 子 agent 分发追踪并合并（groups<=0 表示按接插件数自适应，上限 5） ----
     conns = [(b, rd) for (b, rd) in dev_pins if kinds.get((b, rd)) == "CONNECTOR"]
+    if groups is None or groups <= 0:
+        groups = min(5, max(1, len(conns)))
     all_traces = []
-    if groups and groups > 1 and conns:
+    if groups > 1 and conns:
         for i in range(groups):
             part = conns[i::groups]
             all_traces += _tracer.trace(gnets, only_connectors=part)["traces"]
@@ -198,7 +188,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
                    "model": (rmap.get(f"{b}::{r2}", {}).get("identity", {}).get("model", "")),
                    "kind": kinds.get((b, r2), "OTHER")}
                   for (r2, p2) in net_pins.get((b, net), []) if (r2, p2) != (rd, pin)]
-            if _tracer._is_power(net):
+            if _power(net):
                 side = "pwr"
             elif (b, rd, pin) in start_pins:
                 side = "up"
@@ -214,7 +204,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
             status = "OK"
             if not nb:
                 status = "OPEN_END"
-            elif len(nb) > 2:
+            elif len(nb) >= CONV.cfg["fanout_min_neighbors"]:
                 status = "FANOUT"
             if tr and tr["end_type"] in ("STUB", "OPEN_END") and side == "down":
                 status = tr["end_type"]
@@ -231,8 +221,8 @@ def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
     nets = []
     for key, e in gnets.items():
         b, net = e["board"], e["net"]
-        k = "gnd" if _tracer._is_power(net) and "GND" in net.upper() else (
-            "power" if _tracer._is_power(net) else "signal")
+        k = "gnd" if _power(net) and "GND" in net.upper() else (
+            "power" if _power(net) else "signal")
         nets.append({"board": b, "net": net,
                      "joins": [{"refdes": j.get("refdes", ""), "pin": j.get("pin", "")} for j in e.get("joins", [])],
                      "kind": k, "alias_group": alias_of.get((b, net), "")})
@@ -246,9 +236,9 @@ def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
     # ---- diff pairs ----
     diff = defaultdict(list)
     for nd in nets:
-        m = re.match(r"^(.*?)[_\-]?([PN])$", nd["net"])
-        if m and nd["kind"] == "signal":
-            diff[(nd["board"], m.group(1))].append(nd["net"])
+        k = CONV.diff_pair_key(nd["net"])
+        if k and nd["kind"] == "signal":
+            diff[(nd["board"], k[0])].append(nd["net"])
     diff_pairs = [sorted(v) for v in diff.values() if len(v) >= 2]
 
     meta = {"boards": sorted({d["board"] for d in devices}),
@@ -288,7 +278,7 @@ def validate(doc: dict) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("b_prep_dir")
-    ap.add_argument("--groups", type=int, default=1)
+    ap.add_argument("--groups", type=int, default=0, help="子 agent 分组数；<=0 表示按接插件数自适应(上限5)")
     ap.add_argument("--product", default="")
     args = ap.parse_args()
     d = Path(args.b_prep_dir)

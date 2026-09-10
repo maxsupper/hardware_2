@@ -19,8 +19,8 @@ _W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 
 def _board_of(name: str) -> str:
-    m = re.search(r"-([A-Z])_V\d", name) or re.search(r"-([A-Z])_", name)
-    return m.group(1) if m else "X"
+    from hardware_analysis.common.conventions import CONV
+    return CONV.board_of(name)
 
 
 def _docx_rows(path: Path) -> list[tuple]:

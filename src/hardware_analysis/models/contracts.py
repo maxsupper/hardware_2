@@ -256,3 +256,12 @@ class ClarifyResolution(BaseModel):
     round: int = 1
     evidence: dict[str, Any] = Field(default_factory=dict)
     apply_to: dict[str, Any] = Field(default_factory=dict)
+
+
+# ---------- 通用检查契约（替代用 GateResult 当载体） ----------
+class IcTypeVerdict(BaseModel):
+    model: str = ""
+    ic_type: str = "SINK"              # SINK|PASS_THRU|POWER_SRC|UNVERIFIED
+    channels: list[dict[str, Any]] = Field(default_factory=list)  # PASS_THRU: {in:[..],out:[..]}
+    reason: str = ""
+    confidence: Confidence = Confidence.UNCERTAIN

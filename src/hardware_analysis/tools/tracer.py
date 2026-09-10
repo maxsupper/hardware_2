@@ -15,28 +15,23 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-TRANSPARENT = ("R", "L", "BEAD", "FB", "FERR", "TP", "JMP", "JUMP", "0R")
-CONNECTOR_PREFIX = ("J", "CN", "P", "CON")
-ACTIVE_PREFIX = ("U",)   # 有源器件(芯片/模组)
-
-import re as _re
-_PWR = _re.compile(r"^(GND|AGND|DGND|VSS|VCC|VDD|VBAT|VIN|VBUS|\+|-)\d*", _re.I)
+from hardware_analysis.common.conventions import CONV
 
 
 def _is_power(net: str) -> bool:
-    return bool(_PWR.match(str(net or "").strip()))
+    return CONV.is_power_net(net)
 
 
 def _t(refdes: str) -> bool:
-    return any(str(refdes or "").upper().startswith(p) for p in TRANSPARENT)
+    return CONV.is_transparent(refdes)
 
 
 def _is_active(refdes: str) -> bool:
-    return any(str(refdes or "").upper().startswith(p) for p in ACTIVE_PREFIX)
+    return CONV.is_active(refdes)
 
 
 def _is_conn(refdes: str) -> bool:
-    return any(str(refdes or "").upper().startswith(p) for p in CONNECTOR_PREFIX)
+    return CONV.is_connector(refdes)
 
 
 def build_index(global_nets: dict):
@@ -72,7 +67,7 @@ def walk(net2pins, dev_pins, board, start_net, origin_ref):
         pins = net2pins.get((board, start_net), [])
         return [start_net], [(rd, pn) for rd, pn in pins if rd != origin_ref][:6], "POWER"
     path, cur, used = [start_net], start_net, set()
-    for _ in range(60):
+    for _ in range(CONV.cfg["trace_guard"]):
         pins = net2pins.get((board, cur), [])
         nxt = None
         for rd, pn in pins:

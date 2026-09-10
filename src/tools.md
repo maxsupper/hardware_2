@@ -122,3 +122,20 @@
 - refdes_map：**按板配对**（A_EDN↔A_BOM）；DNP=EDN有BOM无（不装）；edn_symbol 与 BOM 料号不判冲突
 - tracer：**接口优先**（起点=接插件脚）；只跨"真串联无源件"（两端非电源/地）；双向验证；终点 CHIP/POWER/TO_CONNECTOR/STUB/OPEN_END；--only_connectors 支持子 agent 分发
 - refbook_search：型号**变体匹配**（RK860-2→RK860）+ 词元命中 + 手册/TRM 加权；纯字节重叠不入阈
+
+## [T-CLARIFY] clarify（PH-4↔PH-3 回环协议）
+- 模块   : src/hardware_analysis/tools/clarify.py
+- 功能   : PH-4 提 request（自含 scope+假设）→ PH-3 只重读源 EDN 该局部定向复查 → resolution(CONFIRMED/CORRECTED+delta)；有界≤3轮
+- 输入   : emit <B_prep> <out.jsonl>；resolve <product> <B_prep> <req.jsonl> <out.jsonl>
+- 输出   : clarify_requests.jsonl / clarify_resolutions.jsonl
+- 已验证 : FL-25-E-MR203 → 94 request / 94 CONFIRMED（回查源 EDN joins）
+
+## [T-COMMON] common（通用层：约定 + 可复用 LLM 检查器）
+- 模块   : src/hardware_analysis/common/conventions.py, llm_check.py
+- 功能   : ①Common conventions 单一来源（位号前缀/电源网/透明件/连接器/差分对/板号/脚名归一 + 阈值），可经 config conventions 覆盖；②LLMChecker 统一"角色+任务+契约+按key持久化缓存+宽松归一"
+- 输入   : Conventions(overrides)；LLMChecker(cache_path).run(agent,task,contract,payload)
+- 输出   : 归一化契约对象 + meta(errors/sec/cached/key)
+- 已验证 : 全工具改用 CONV（去重 _board_of×3/前缀常量×3）；ic_type 判定走 LLMChecker 缓存
+
+## v2 命名统一
+- 位号种类前缀、透明件、连接器、电源网正则、差分对正则、板号正则、追踪 guard、扇出阈值、连接器配对阈值 → 全部集中在 `common/conventions.py::DEFAULTS`
