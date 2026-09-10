@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.1",
+  "kind": "config_example",
+  "_notes": "真实 config.json 由此模板生成并替换 apiKey（config.json 已 gitignore，不入库）。apiKey 支持环境变量 LLM_API_KEY / TAVILY_API_KEY 覆盖。",
+  "project_root": ".",
+  "llm": {
+    "provider": "spark-dsv4",
+    "baseUrl": "http://222.128.103.10:18080/api/v1",
+    "apiKey": "sk-REPLACE_ME",
+    "models": {
+      "flash": "deepseek-v4-flash-0731",
+      "pro": "deepseek-v4-pro"
+    },
+    "default_model": "flash"
+  },
+  "budget": {
+    "context_total": 524288,
+    "input_hard_cap": 400000,
+    "target": 256000,
+    "rule_bundle_tokens": 40000,
+    "auto_retry": 3
+  },
+  "web": {
+    "search_provider": "tavily",
+    "apiKey": "tvly-REPLACE_ME",
+    "search": {"max_results": 5, "timeout": 20},
+    "extract": {"depth": "basic", "timeout": 30},
+    "download_dir": "storge/datasheet"
+  },
+  "paths": {
+    "raw": "raw",
+    "roles": "roles",
+    "rules": "rules",
+    "src": "src",
+    "web": "web",
+    "project_dir": "project",
+    "storge": {
+      "refbook": "storge/refbook",
+      "datasheet": "storge/datasheet",
+      "products": "storge/project",
+      "problem": "storge/problem"
+    }
+  }
+}
