@@ -60,6 +60,12 @@ def col_map(header_row: list) -> dict:
     return m
 
 
+def _board_of(name: str) -> str:
+    import re
+    m = re.search(r"-([A-Z])_V\d", name) or re.search(r"-([A-Z])_", name)
+    return m.group(1) if m else "X"
+
+
 def parse_bom(path: Path) -> dict:
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     ws, header_vals = pick_sheet(wb)
@@ -96,7 +102,7 @@ def parse_bom(path: Path) -> dict:
         qty = get("qty")
         for rd in [x.strip() for x in refdes_cell.replace("，", ",").split(",") if x.strip()]:
             entries[rd] = {
-                "refdes": rd,
+                "refdes": rd, "board": _board_of(path.name),
                 "name": get("name"), "model_name": get("model_name", get("name")),
                 "mfg_model": get("mfg_model"), "mfg": get("mfg"), "package": get("package"),
                 "qty": qty, "grade": get("grade"), "note": get("note"),

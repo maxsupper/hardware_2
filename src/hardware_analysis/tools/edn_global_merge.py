@@ -1,14 +1,13 @@
-"""多 EDN 全局合并 + 信号链 — 阶段3a 产物 B（确定性工具）。
+"""多 EDN 全局合并 + 信号链 — 阶段3a（v2：板级隔离 + BOM/EDN 按板配对）.
 
-输入: edn_parse 产出的 per-file {stem}.components.json + {stem}.nets.json
-处理:
-  - 元件: 按 refdes 合并（跨文件同 refdes 不同 model → 冲突记录，不静默合并）
-  - 网络: 按网名合并（两端文件都出现 → 跨板候选）；同名冲突记录
-  - 信号链: 从全局图上沿"透明器件"(R/L/BEAD/0R跳线)走到终端，构建完整链路
-用法: python -m hardware_analysis.tools.edn_global_merge <per-file-dir> <product_out_dir>
+关键变更(用户确认 A1)：
+  - 每块板位号独立编号，身份 = (板, 位号)；禁止按裸位号跨板合并
+  - 网络亦按板隔离：key = "板::网名"
+  - 跨板连续只经"板间连接器"建立（见 connectors 匹配，后续实现）
+  - BOM/EDN 按板配对：A_EDN ↔ A_BOM
 """
 from __future__ import annotations
-import argparse, json, sys
+import argparse, json, re, sys
 from pathlib import Path
 
 if __package__ in (None, ""):
@@ -17,124 +16,110 @@ if __package__ in (None, ""):
 TRANSPARENT = ("R", "L", "BEAD", "FB", "FERR", "0R", "N.C.", "NC", "TP", "JMP", "JUMP")
 
 
-def _is_transparent(refdes_or_model: str) -> bool:
-    s = (refdes_or_model or "").upper()
+def board_of(name: str) -> str:
+    """从文件名解析板号：...-A_V00... / ...-B_V10... → 'A'/'B'；无则 'X'。"""
+    m = re.search(r"-([A-Z])_V\d", name)
+    return m.group(1) if m else (re.search(r"-([A-Z])_", name).group(1)
+                                 if re.search(r"-([A-Z])_", name) else "X")
+
+
+def _t(refdes: str) -> bool:
+    s = str(refdes or "").upper()
     return any(s.startswith(p) for p in TRANSPARENT)
 
 
 def load_per_file(dirp: Path) -> dict:
-    """读取目录下所有 {stem}.components.json / {stem}.nets.json"""
     files = {}
     for comp in sorted(dirp.glob("*.components.json")):
         stem = comp.name.replace(".components.json", "")
         nets = dirp / f"{stem}.nets.json"
-        files[stem] = {
-            "components": json.loads(comp.read_text(encoding="utf-8")),
-            "nets": json.loads(nets.read_text(encoding="utf-8")) if nets.exists() else [],
-        }
+        files[stem] = {"board": board_of(stem),
+                       "components": json.loads(comp.read_text(encoding="utf-8")),
+                       "nets": json.loads(nets.read_text(encoding="utf-8")) if nets.exists() else []}
     return files
 
 
 def merge(files: dict) -> dict:
-    comps, comp_conflict, nets, conflicts = {}, [], {}, []
+    comps, nets = {}, {}
+    board_stats = {}
     for stem, f in files.items():
+        b = f["board"]
+        bs = board_stats.setdefault(b, {"components": 0, "nets": 0})
         for refdes, c in f["components"].items():
-            if refdes in comps:
-                m0 = comps[refdes].get("model")
-                if m0 and c["model"] and m0 != c["model"]:
-                    comp_conflict.append({"refdes": refdes, "model_A": m0, "model_B": c["model"], "file_B": stem})
-                    continue  # 冲突不合并
-                comps[refdes].setdefault("files", []).append(stem)
-            else:
-                comps[refdes] = {"refdes": refdes, "model": c["model"], "files": [stem]}
+            if not refdes:
+                continue
+            key = f"{b}::{refdes}"                     # ★ 板级身份
+            comps[key] = {"refdes": refdes, "board": b, "model": c.get("model", ""), "file": stem}
+            bs["components"] += 1
         for net in f["nets"]:
-            name, joins = net["net"], net["joins"]
-            entry = nets.setdefault(name, {"net": name, "files": {}, "joins": []})
-            entry["files"][stem] = entry["files"].get(stem, 0) + 1
-            for j in joins:
-                entry["joins"].append({"refdes": j["refdes"], "pin": j["pin"], "file": stem,
-                                       "src": f"{stem}/{j['refdes']}.{j['pin']}"})
-
-    # 跨板候选：一个网名出现在 >=2 个文件
-    cross = {n: v for n, v in nets.items() if len(v["files"]) >= 2}
-    return {
-        "components": comps,
-        "nets": nets,
-        "cross_board_nets": cross,
-        "component_conflicts": comp_conflict,
-    }
+            name = net["net"]
+            key = f"{b}::{name}"                       # ★ 网按板隔离
+            e = nets.setdefault(key, {"net": name, "board": b, "files": {}, "joins": []})
+            e["files"][stem] = e["files"].get(stem, 0) + 1
+            for j in net["joins"]:
+                e["joins"].append({"refdes": j["refdes"], "pin": j["pin"], "board": b, "file": stem})
+            bs["nets"] += 1
+    return {"components": comps, "nets": nets, "board_stats": board_stats}
 
 
-def build_signal_chains(merged: dict) -> dict:
-    """跨越透明器件构建端到端信号链（按 net→透明器件→net 走）。"""
+def build_signal_chains(merged: dict) -> list:
     nets = merged["nets"]
-    # 确定每个透明器件的两个端子所在 net（由 joins 反查）
-    term = {}  # (refdes,pin) -> netname
-    for nname, e in nets.items():
+    term, dev = {}, {}
+    for key, e in nets.items():
+        b = e["board"]
         for j in e["joins"]:
-            rd, pn = str(j.get("refdes")), str(j.get("pin"))
-            if rd and pn:
-                term[(rd, pn)] = nname
-
-    from collections import defaultdict
-    dev = defaultdict(dict)   # refdes -> {pin: netname}
-    for (refdes, pin), nname in term.items():
-        dev[refdes][pin] = nname
-
-    # 透明器件: 取某引脚 net，沿该器件另一端 net 继续
-    visited_nets, chains = set(), []
-    for start_name in nets:
-        if start_name in visited_nets:
+            rd = j["refdes"]
+            if not rd:
+                continue
+            term[(b, rd, j["pin"])] = e["net"]
+            dev.setdefault((b, rd), {})[j["pin"]] = e["net"]
+    chains, visited = [], set()
+    for key, e in nets.items():
+        if key in visited:
             continue
-        if _is_transparent(start_name):
-            continue
-        chain = [start_name]
-        cur = start_name
-        # 找下一跳：当前 net 上第一个"透明器件"的另一个端子
+        cur_name, cur_key, b = e["net"], key, e["board"]
+        chain = [{"board": b, "net": cur_name}]
         guard = 0
-        while cur in nets and guard < 50:
+        while key in nets and guard < 60:
             guard += 1
-            nxt = None
-            for j in nets[cur]["joins"]:
-                if _is_transparent(j["refdes"]):
-                    other = nxt if False else None
-                    for pin2, n2 in dev.get(j["refdes"], {}).items():
-                        if n2 != cur and n2 not in visited_nets:
+            e2 = nets[key]; nxt = None
+            for j in e2["joins"]:
+                if _t(j["refdes"]):
+                    for pin2, n2 in (dev.get((b, j["refdes"])) or {}).items():
+                        if n2 != cur_name and (b, n2) not in [(c["board"], c["net"]) for c in chain]:
                             nxt = n2
                             break
                 if nxt:
                     break
             if not nxt:
                 break
-            visited_nets.add(cur)
-            cur = nxt
-            chain.append(cur)
-        visited_nets.add(cur)
-        chains.append({"start": start_name, "path": chain})
+            visited.add(key)
+            chain.append({"board": b, "net": nxt}); cur_name = nxt
+            key = f"{b}::{nxt}"
+        visited.add(key)
+        chains.append({"start": f"{b}::{chain[0]['net']}", "path": chain, "hops": len(chain) - 1,
+                       "end_type": "TERMINAL" if len(chain) > 1 else "STANDALONE"})
     return chains
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("input_dir", help="含 per-file *.components.json/*.nets.json 的目录")
-    ap.add_argument("out_dir", help="写 global_components/global_nets/cross_board/signal_chains 的目录")
+    ap.add_argument("input_dir"); ap.add_argument("out_dir")
     args = ap.parse_args()
-
     files = load_per_file(Path(args.input_dir))
     m = merge(files)
     chains = build_signal_chains(m)
     out = Path(args.out_dir); out.mkdir(parents=True, exist_ok=True)
     (out / "global_components.json").write_text(json.dumps(m["components"], ensure_ascii=False, indent=1), encoding="utf-8")
     (out / "global_nets.json").write_text(json.dumps(m["nets"], ensure_ascii=False, indent=1), encoding="utf-8")
-    (out / "cross_board_nets.json").write_text(json.dumps(m["cross_board_nets"], ensure_ascii=False, indent=1), encoding="utf-8")
     (out / "signal_chains.json").write_text(json.dumps(chains, ensure_ascii=False, indent=1), encoding="utf-8")
     (out / "merge_report.json").write_text(json.dumps(
-        {"files": list(files), "components": len(m["components"]),
-         "nets": len(m["nets"]), "cross_board": len(m["cross_board_nets"]),
-         "component_conflicts": m["component_conflicts"], "signal_chains": len(chains)},
+        {"files": list(files), "boards": m["board_stats"],
+         "components": len(m["components"]), "nets": len(m["nets"]), "signal_chains": len(chains)},
         ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"文件={list(files)} | 元件={len(m['components'])} | 全局net={len(m['nets'])} "
-          f"| 跨板={len(m['cross_board_nets'])} | 冲突={len(m['component_conflicts'])} | 信号链={len(chains)}")
+    print(f"板: {list(m['board_stats'])} | 元件={len(m['components'])} | 网络={len(m['nets'])} | 信号链={len(chains)}")
+    for b, s in m["board_stats"].items():
+        print(f"  板{b}: 元件{s['components']} 网络{s['nets']}")
 
 
 if __name__ == "__main__":

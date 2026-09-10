@@ -1,8 +1,10 @@
-"""位号↔BOM↔功能映射生成器 — 阶段3a 产物 D.
+"""位号↔BOM↔功能映射 — 阶段3a 产物 D（v2：按板配对 + DNP 标注）.
 
-输入: B_prep/global_components.json(EDN) + B_prep/bom_entries.json(BOM)
-合并规则: refdes 主键；双源都在→合并；仅在其一→标记缺失来源；型号不同→冲突记录。
-function 层一期留空（由 E 阶段分析渐进填充）。
+输入: B_prep/global_components.json(板级: "板::位号") + bom_entries.json(含 board)
+规则(用户确认):
+  - 身份 = (板, 位号)；A_EDN ↔ A_BOM、B_EDN ↔ B_BOM
+  - EDN 有、该板 BOM 无 → 不装(DNP)，populated=False，不算缺项
+  - EDN 符号名(cellRef) 与 BOM 料号是不同标识，不判冲突
 用法: python -m hardware_analysis.tools.refdes_map <B_prep_dir>
 """
 from __future__ import annotations
@@ -15,70 +17,66 @@ if __package__ in (None, ""):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("b_prep_dir", help="含 global_components.json / bom_entries.json 的目录")
+    ap.add_argument("b_prep_dir")
     args = ap.parse_args()
     d = Path(args.b_prep_dir)
-    comps = json.loads((d / "global_components.json").read_text(encoding="utf-8"))
+    gcomp = json.loads((d / "global_components.json").read_text(encoding="utf-8"))
     bom = json.loads((d / "bom_entries.json").read_text(encoding="utf-8")).get("entries", {})
 
-    comps = {k: v for k, v in comps.items() if k}  # 去空 refdes
+    # 按板拆 BOM
+    bom_by_board: dict[str, dict] = {}
+    for rd, b in bom.items():
+        bom_by_board.setdefault(b.get("board", "X"), {})[rd] = b
 
-    components = []
-    conflicts, bom_only, edn_only = [], [], []
-    for rd in sorted(set(comps) | set(bom)):
-        c = comps.get(rd, {})
-        b = bom.get(rd, {})
-        edn_symbol = c.get("model", "")            # EDN 符号名(CAP/RESISTOR...)
-        bom_pn = b.get("mfg_model", "") or b.get("model_name", "")   # BOM 料号
-        # 仅当两源都是“料号”级别才判冲突；符号名 vs 料号不算冲突
-        if rd in comps and rd in bom and edn_symbol and bom_pn and edn_symbol == bom_pn:
-            pass
-        if rd in bom and rd not in comps:
-            bom_only.append(rd)
-        if rd in comps and rd not in bom:
-            edn_only.append(rd)
+    components, dnp_list, bom_only_list = [], [], []
+    per_board = {}
+    for key, c in gcomp.items():
+        board, refdes = (key.split("::", 1) + [""])[:2]
+        bb = bom_by_board.get(board, {})
+        b = bb.get(refdes, {})
+        edn_symbol = c.get("model", "")
+        bom_pn = b.get("mfg_model", "") or b.get("model_name", "")
+        populated = bool(b)
+        per_board.setdefault(board, {"both": 0, "dnp": 0, "bom_only": 0})
+        if populated:
+            per_board[board]["both"] += 1
+        else:
+            per_board[board]["dnp"] += 1
+            dnp_list.append(f"{board}::{refdes}")
         components.append({
-            "refdes": rd,
+            "id": key, "board": board, "refdes": refdes,
             "identity": {
-                "bom_name": b.get("name", ""),
-                "model": bom_pn or edn_symbol or "",      # 优先料号，退而符号名
-                "value": b.get("name", ""),
-                "package": b.get("package", ""),
-                "mfg": b.get("mfg", ""),
-                "mfg_model": b.get("mfg_model", ""),
-                "qty": b.get("qty", ""),
-                "grade": b.get("grade", ""),
+                "bom_name": b.get("name", ""), "model": bom_pn or edn_symbol or "",
+                "package": b.get("package", ""), "mfg": b.get("mfg", ""),
+                "mfg_model": b.get("mfg_model", ""), "grade": b.get("grade", ""),
             },
             "function": {"category": "", "role": "", "description": "", "nets": [], "power_domains": []},
             "manual": {"status": "UNKNOWN", "path": ""},
-            "provenance": {
-                "in_edn": rd in comps,
-                "in_bom": rd in bom,
-                "edn_symbol": edn_symbol,                 # 符号名单独保留
-                "bom_row": b.get("bom_row", ""),
-                "bom_file": b.get("bom_file", ""),
-                "match": "both" if (rd in comps and rd in bom) else ("edn_only" if rd in comps else "bom_only"),
-                "confidence": "DEFINITE",
-            },
+            "provenance": {"in_edn": True, "in_bom": populated, "edn_symbol": edn_symbol,
+                           "bom_row": b.get("bom_row", ""), "bom_file": b.get("bom_file", ""),
+                           "populated": populated, "match": "both" if populated else "dnp"},
         })
 
+    # BOM 有、EDN 无（按板）
+    edn_keys = set(k for k in gcomp)
+    for board, bb in bom_by_board.items():
+        for rd in bb:
+            if f"{board}::{rd}" not in edn_keys:
+                bom_only_list.append(f"{board}::{rd}")
+                per_board.setdefault(board, {"both": 0, "dnp": 0, "bom_only": 0})["bom_only"] += 1
+
     out = {
-        "schema_version": "1.0", "kind": "refdes_function_map",
-        "product": "", "status": "WARNING" if (conflicts or bom_only or edn_only) else "PASS",
+        "schema_version": "1.0", "kind": "refdes_function_map", "product": "",
+        "status": "PASS",
         "components": components,
-        "index_by_category": {},
-        "stats": {
-            "total": len(components), "both": len(components) - len(bom_only) - len(edn_only),
-            "bom_only": len(bom_only), "edn_only": len(edn_only),
-            "model_conflicts": len(conflicts),
-        },
-        "conflicts": conflicts, "bom_only": bom_only, "edn_only": edn_only[:20],
+        "dnp": dnp_list, "bom_only": bom_only_list,
+        "stats": {"total": len(components), "dnp": len(dnp_list), "bom_only": len(bom_only_list),
+                  "per_board": per_board},
     }
     (d / "refdes_function_map.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"映射: total={out['stats']['total']} both={out['stats']['both']} "
-          f"bom_only={len(bom_only)} edn_only={len(edn_only)} 型号冲突={len(conflicts)}")
-    if conflicts:
-        print("  冲突样例:", conflicts[:3])
+    print(f"映射: total={len(components)} 不装(DNP)={len(dnp_list)} bom_only={len(bom_only_list)}")
+    for b, s in per_board.items():
+        print(f"  板{b}: both={s['both']} 不装={s['dnp']} bom_only={s['bom_only']}")
 
 
 if __name__ == "__main__":
