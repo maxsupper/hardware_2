@@ -1,0 +1,358 @@
+{
+  "schema_version": "1.0",
+  "kind": "rule_bundle",
+  "scope": "common/引脚复用",
+  "source": "raw/raw_rules/引脚复用关系检查规则.md",
+  "source_sha1": "c808a11e6573fd99a078019f8cb8e7ce1152ba74",
+  "generated_at": "2026-09-11T08:43:44+00:00",
+  "tokens_est": 5040,
+  "entries": [
+    {
+      "id": "IC-067",
+      "title": "引脚复用关系检查规则",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**⛔ 启动前必须先读取数据**：",
+        "⛔ **G0 前置依赖**：本规则中的 Mux 选项对照和功能验证依赖芯片数据手册中的引脚复用表。",
+        "执行前必须已完成 `hardware-reviewer.md` 中定义的 Step 0（G0 手册搜索），芯片复用表必须以手册原文为准。",
+        "若手册 MISSING，Mux 判定结论必须用 ⚫UNVERIFIED 标注。"
+      ],
+      "must_not": [
+        "**禁止在本文件内重新到 EDN 追踪电压**。"
+      ],
+      "text": "\n> 适用场景：从 EDIF 网表检查芯片引脚复用（Mux）配置，验证接口信号是否正确映射\n>\n> **前置依赖**：本文件是 [引脚核对规则.md](./引脚核对规则.md) 的子集。接口→Bank 归属→VCCIO 域→电压的综合性推断由父文件完成。\n>\n> **⛔ 启动前必须先读取数据**：\n> 1. 读取 `.sisyphus/temp/g0_ic.msg` 获取 IC 清单和手册状态\n> 2. 读取 `.sisyphus/temp/vccio.msg` 获取全部 VCCIO 域→电压映射。**禁止在本文件内重新到 EDN 追踪电压**。\n> 3. 若上述文件不存在，回到对应前级步骤先生成。\n>\n> 本文件在此基础上做 Mux 维度的专项检查（三种冲突、速查表、固件一致性）。VCCIO 表、portRef 解析基础均继承自父文件。\n>\n> ⛔ **G0 前置依赖**：本规则中的 Mux 选项对照和功能验证依赖芯片数据手册中的引脚复用表。执行前必须已完成 `hardware-reviewer.md` 中定义的 Step 0（G0 手册搜索），芯片复用表必须以手册原文为准。若手册 MISSING，Mux 判定结论必须用 ⚫UNVERIFIED 标注。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 1,
+          "end_line": 17
+        }
+      ]
+    },
+    {
+      "id": "IC-068",
+      "title": "核心原则",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n**一条 portRef 行 = 一个物理引脚的全部复用选项。**\n\nEDIF 网表中的 `portRef` 列出了该引脚可以配置的所有功能。只有出现在这个列表中的功能，芯片才能通过配置寄存器选择。不在列表中的功能，该引脚无法实现。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 18,
+          "end_line": 25
+        }
+      ]
+    },
+    {
+      "id": "IC-069",
+      "title": "数据来源",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\nEDIF 网表中，每个 `portRef` 行格式：\n\n```\nportRef FUNC_A_M0  FUNC_B_M1  FUNC_C_M2  FUNC_D_M3  GPIOx_y_z_D  (instanceRef U1000)\n```\n\n| 组成部分 | 含义 | 示例 |\n|----------|------|------|\n| `FUNC_A_M0` | 功能 A，Mux 选项 0（默认） | `UART3_TX_M0` |\n| `FUNC_A_M1` | 功能 A，Mux 选项 1 | `UART3_TX_M1` |\n| `_M2` / `_M3` | Mux 选项 2/3 | `PWM0_CH2_M2` |\n| 无后缀 | 专用功能，不经 Mux | `SDMMC0_CLK` |\n| `GPIOx_y_z_D` | GPIO 标识 + IO 域 | `GPIO2_A4_D_J` |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 26,
+          "end_line": 43
+        }
+      ]
+    },
+    {
+      "id": "IC-070",
+      "title": "GPIO 标识解读",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\nGPIO2_A4_D_J\n  │    │  │ └── IO 域后缀（决定电压）\n  │    │  └──── 驱动类型（D=推挽驱动, U=上拉）\n  │    └─────── 引脚编号（A0~D7）\n  └──────────── Bank 编号（0~6）\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 44,
+          "end_line": 55
+        }
+      ]
+    },
+    {
+      "id": "IC-071",
+      "title": "IO 域后缀与电压",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> **VCCIO 域后缀与电压映射表详见 [引脚核对规则.md](./引脚核对规则.md) §GPIO 域后缀与 VCCIO 映射**（含 `_J` 双域陷阱、`_F` MIPI PHY、`_D` USB 等全部后缀说明）\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 56,
+          "end_line": 61
+        }
+      ]
+    },
+    {
+      "id": "IC-072",
+      "title": "检查流程",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 62,
+          "end_line": 63
+        }
+      ]
+    },
+    {
+      "id": "IC-073",
+      "title": "第一步：提取端口复用表",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n从 EDN 中提取每个引脚的完整 `portRef` 行，按 Mux 分类：\n\n```\n解析逻辑：\n  for line in edn:\n      if \"portRef\" in line and \"U1000\" in line:\n          funcs = line 按空格拆分\n          for f in funcs:\n              if f.endswith(\"_M0\"):  → Mux0 功能\n              if f.endswith(\"_M1\"):  → Mux1 功能\n              if f.endswith(\"_M2\"):  → Mux2 功能\n              if f.endswith(\"_M3\"):  → Mux3 功能\n              if f.startswith(\"GPIO\"): → GPIO 标识\n              else: → 专用功能（非 Mux 功能）\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 64,
+          "end_line": 81
+        }
+      ]
+    },
+    {
+      "id": "IC-074",
+      "title": "第二步：逐接口信号核对",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n对每个接口信号：\n\n```\n1. 追踪物理连接 → 得到 SoC 引脚名\n2. 查该引脚的 Mux 列表 → 接口需要的功能在列表中吗？\n3. 确认 Mux 选项编号 → 固件/BSP 需要配置对应的 Mux\n4. 检查 VCCIO 域电压 → 与外设电平匹配吗？\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 82,
+          "end_line": 92
+        }
+      ]
+    },
+    {
+      "id": "IC-075",
+      "title": "第三步：检查三种冲突",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 93,
+          "end_line": 94
+        }
+      ]
+    },
+    {
+      "id": "IC-076",
+      "title": "冲突类型一：专用功能与 GPIO 互斥",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\nGPIO2_A5_D_J:\n  Mux0:  UART3_CTSN\n  Mux3:  UART4_TX\n  专用:  SDMMC0_CMD  ← 如果使用了 SD 卡，该引脚不能做 GPIO\n\n判断：在 BSP/设备树中检查 SDMMC0 是否使能\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 95,
+          "end_line": 105
+        }
+      ]
+    },
+    {
+      "id": "IC-077",
+      "title": "冲突类型二：同引脚多功能",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\nGPIO5_D3_D_L:\n  Mux1:  UART3_CTSN\n  Mux2:  SPI1_MISO\n  专用:  VO_LCDC_CLK, PWM1_CH0_M1\n\n一个引脚只能选一种功能。如果 UART3_CTSN 使能，则 SPI1_MISO 不可用。\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 106,
+          "end_line": 116
+        }
+      ]
+    },
+    {
+      "id": "IC-078",
+      "title": "冲突类型三：同功能跨域 Mux",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\nUART3_TX 可映射到三个不同引脚、不同电压：\n\n  M0: GPIO2_A3_D_J → VCCIO2 = 3.3V  ← 本设计使用\n  M1: GPIO5_D4_U_L → VCCIO5 = 1.8V\n  M2: GPIO6_C2_D_M → VCCIO6 = 1.8V\n\n如果外设需要 1.8V 但选了 M0，则电压不匹配。\n如果外设需要 3.3V 但选了 M1/M2，同样不匹配。\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 117,
+          "end_line": 131
+        }
+      ]
+    },
+    {
+      "id": "IC-079",
+      "title": "接口引脚复用关系速查（模板）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> 以下为某 RV1126B 项目的速查表示例，展示标准格式。每个项目的接口/引脚/Mux 配置不同，需根据实际芯片手册填写。**格式通用，数据特定。**\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 132,
+          "end_line": 135
+        }
+      ]
+    },
+    {
+      "id": "IC-080",
+      "title": "J3（示例：DF56C-26S 调试接口）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| Pin | SoC 引脚 | Mux0 | Mux1 | Mux2 | Mux3 | 专用 | 冲突 |\n|:---:|------|:---:|:---:|:---:|:---:|------|:---:|\n| 1 | GPIO4_A0_U_K | I2C1_SDA_M2 | — | — | — | CAM_CLK3_OUT | — |\n| 2 | GPIO4_A2_D_K | — | — | — | UART4_RX_M0 | PWM0_CH4_M1 | — |\n| 3 | GPIO2_A5_D_J | UART3_CTSN | — | — | UART4_TX | SDMMC0_CMD | ⚠ |\n| 4 | GPIO4_A1_U_K | I2C1_SCL_M2 | — | — | — | CAM_CLK2_OUT | — |\n| 5 | GPIO2_A4_D_J | UART3_RTSN | — | — | UART4_RX | SDMMC0_CLK | ⚠ |\n| 7 | GPIO0_C5_D_H | **UART1_RX** | I2C5_SDA | — | — | PWM0_CH1, SPI2AHB_D2 | — |\n| 9 | GPIO5_D3_D_L | — | UART3_CTSN | SPI1_MISO | — | VO_LCDC_CLK | ⚠ |\n| 14 | GPIO0_C4_D_H | **UART1_TX** | I2C5_SCL | — | — | PWM0_CH0, SPI2AHB_D3 | — |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 136,
+          "end_line": 148
+        }
+      ]
+    },
+    {
+      "id": "IC-081",
+      "title": "J5（DF56C-26S DVP 摄像头接口）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| Pin | SoC 引脚 | Mux0 | Mux1 | 专用 |\n|:---:|------|:---:|:---:|------|\n| 2 | GPIO2_A3_D_J | **UART3_TX** | FEPHY_LEDLINK | PWM0_CH2_M2 |\n| 4 | GPIO2_A2_D_J | **UART3_RX** | — | SDMMC0_D2, TEST_CLK1 |\n| 3 | GPIO4_A4_D_K | **SPI0_MOSI_M1** | SAI1_SCLK | I2C3_SCL |\n| 5 | GPIO4_A7_D_K | **SPI0_CLK_M1** | SAI1_SDO | UART5_RX_M0 |\n| 6 | GPIO4_A2_D_K | **UART4_RX_M0** | — | PWM0_CH4_M1 |\n| 8 | GPIO4_*_K | **UART4_TX_M1/M2** | — | — |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 149,
+          "end_line": 159
+        }
+      ]
+    },
+    {
+      "id": "IC-082",
+      "title": "J8（USL00-30L RGMII 以太网）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| Pin | SoC 引脚 | 功能 | Mux |\n|:---:|------|------|:---:|\n| 4 | GPIO5_D7_U_L | UART0_RX | M1 |\n| 5 | GPIO5_D6_U_L | UART0_TX | M1 |\n| 13-30 | ETH_* / FEPHY_* | RGMII 专用 | 专用引脚 |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 160,
+          "end_line": 169
+        }
+      ]
+    },
+    {
+      "id": "IC-083",
+      "title": "最终交付检查清单",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n- [ ] 每个接口信号的物理连接已追踪到 SoC 引脚\n- [ ] 所需功能已确认存在于该引脚的 Mux 列表中\n- [ ] Mux 选项编号已记录（供 BSP/设备树配置）\n- [ ] 专用功能与 GPIO 冲突已排查\n- [ ] 跨域 Mux 电压已匹配外设电平\n- [ ] VCCIO 域电压已通过网表供电网络确认\n- [ ] 网名标签与实际 GPIO Bank 编号一致\n- [ ] 固件/BSP 中的 Mux 配置与硬件一致",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚复用关系检查规则.md",
+          "line": 170,
+          "end_line": 179
+        }
+      ]
+    }
+  ]
+}

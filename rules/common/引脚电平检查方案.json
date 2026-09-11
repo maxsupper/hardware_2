@@ -1,0 +1,447 @@
+{
+  "schema_version": "1.0",
+  "kind": "rule_bundle",
+  "scope": "common/引脚电平",
+  "source": "raw/raw_rules/引脚电平检查方案.md",
+  "source_sha1": "27e577c3ac0111c7a034bbc2ad3f7396bd10f4ec",
+  "generated_at": "2026-09-11T08:43:44+00:00",
+  "tokens_est": 5880,
+  "entries": [
+    {
+      "id": "LS-001",
+      "title": "引脚电平检查方案",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**⛔ 启动前必须先读取数据**："
+      ],
+      "must_not": [
+        "**禁止在本文件内重新到 EDN 追踪电压**。"
+      ],
+      "text": "\n> 适用场景：验证原理图中每个信号引脚的电压与芯片 VCCIO 域、外设电平是否匹配\n>\n> **前置依赖**：本文件是 [引脚核对规则.md](./引脚核对规则.md) 的子集。接口→Bank 归属→VCCIO 域→电压的综合性推断由父文件完成。\n>\n> **⛔ 启动前必须先读取数据**：\n> 1. 读取 `.sisyphus/temp/g0_ic.msg` 获取 IC 清单和手册状态\n> 2. 读取 `.sisyphus/temp/vccio.msg` 获取全部 VCCIO 域→电压映射。**禁止在本文件内重新到 EDN 追踪电压**。\n> 3. 若上述文件不存在，回到对应前级步骤先生成。\n>\n> 本文件在此基础上做电压维度的专项深度检查（中间芯片、标注对比）。VCCIO 表、追踪方法均继承自父文件。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 1,
+          "end_line": 15
+        }
+      ]
+    },
+    {
+      "id": "LS-002",
+      "title": "一、核心流程",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\nStep 1: 确定信号路径（接口→中间器件→芯片）\n         ↓\nStep 2: 查芯片引脚所在的 VCCIO 域\n         ↓\nStep 3: 追踪该 VCCIO 域的供电网络 → 得到电压\n         ↓\nStep 4: 检查路径上的电平转换器件\n         ↓\nStep 5: 对比接口标注 vs 实际电压\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 16,
+          "end_line": 31
+        }
+      ]
+    },
+    {
+      "id": "LS-003",
+      "title": "二、Step 1 — 确定信号路径",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> **物理连接追踪方法详见 [引脚核对规则.md](./引脚核对规则.md) §正确流程（第一步～第四步）**\n> 本节聚焦于电平维度的 Step 2-5。\n\n示例（UART3_TX 信号路径追踪）：\n\n```\nJ5.2 → net \"UART3_TX\" → 电平转换器(Ux.A1) → net \"UART3_TX_3V3\" → SoC(GPIOx_y_z_D)\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 32,
+          "end_line": 44
+        }
+      ]
+    },
+    {
+      "id": "LS-004",
+      "title": "三、Step 2 — 查芯片 VCCIO 域",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 45,
+          "end_line": 46
+        }
+      ]
+    },
+    {
+      "id": "LS-005",
+      "title": "从芯片引脚名提取域后缀",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\n引脚名格式：FUNC_M0  FUNC_M1  GPIOx_y_Dir_Domain\n                                        ↑\n                                     域后缀\n```\n\n常见后缀与 VCCIO 域对照：\n\n> **VCCIO 域后缀与电压映射表详见 [引脚核对规则.md](./引脚核对规则.md) §GPIO 域后缀与 VCCIO 映射**（含 `_J` 双域陷阱、`_F` MIPI PHY、`_D` USB 等全部后缀说明）\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 47,
+          "end_line": 60
+        }
+      ]
+    },
+    {
+      "id": "LS-006",
+      "title": "四、Step 3 — 追踪供电网络",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n在 EDN 中搜索每个 VCCIO 电源引脚所在的网络：\n\n```\n搜索：VCCIO1_VCC_I\n  → 所在 net: \"VCC_1V8\"\n  → 该网络的供电来源：PMIC.LDOx\n  → 电压：1.8V\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 61,
+          "end_line": 71
+        }
+      ]
+    },
+    {
+      "id": "LS-007",
+      "title": "EDN 查询方法",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 72,
+          "end_line": 74
+        }
+      ]
+    },
+    {
+      "id": "LS-008",
+      "title": "伪代码",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**实际 VCCIO 电压值必须通过网表追踪获取**，不可依赖预设表。"
+      ],
+      "must_not": [],
+      "text": "for net in edn_nets:\n    if \"VCCIO1_VCC_I\" in net:\n        net_name = net.name\n        # 找网络中的其他组件，确认供电来源\n        for port in net.ports:\n            if is_pmic_port(port) or is_ldo_port(port) or is_vout_port(port):\n                确认电压来源\n```\n\n> **实际 VCCIO 电压值必须通过网表追踪获取**，不可依赖预设表。每个项目的 VCCIO 域配置不同（不同 PMIC、不同电压分配），以实际追踪结果为准。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 75,
+          "end_line": 88
+        }
+      ]
+    },
+    {
+      "id": "LS-009",
+      "title": "五、Step 4 — 检查中间芯片",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "⛔ **G0 前置依赖（2026-06-05 新增）**：Step 4 涉及芯片内部参数（供电范围、引脚排列、方向控制、OE 逻辑等），必须基于官方数据手册原文判定。",
+        "在执行 Step 4 之前，必须已完成 `hardware-reviewer.md` 中定义的 Step 0（G0 手册搜索），即已输出 IC 型号→手册匹配表，且该芯片的手册状态为 FOUND。"
+      ],
+      "must_not": [
+        "若手册状态为 MISSING，该芯片的 Step 4 结论必须用 ⚫UNVERIFIED 标注，不得做出 CRITICAL/WARNING/OK 判定。"
+      ],
+      "text": "\n> ⛔ **G0 前置依赖（2026-06-05 新增）**：Step 4 涉及芯片内部参数（供电范围、引脚排列、方向控制、OE 逻辑等），必须基于官方数据手册原文判定。在执行 Step 4 之前，必须已完成 `hardware-reviewer.md` 中定义的 Step 0（G0 手册搜索），即已输出 IC 型号→手册匹配表，且该芯片的手册状态为 FOUND。若手册状态为 MISSING，该芯片的 Step 4 结论必须用 ⚫UNVERIFIED 标注，不得做出 CRITICAL/WARNING/OK 判定。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 89,
+          "end_line": 92
+        }
+      ]
+    },
+    {
+      "id": "LS-010",
+      "title": "5.1 确认路径上的所有中间芯片",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n信号路径上可能经过以下类型芯片，每一颗都需要检查：\n\n```\n接口 ──→ [串联电阻] ──→ [电平转换器] ──→ [缓冲器] ──→ [逻辑门] ──→ 芯片引脚\n              ↓                ↓              ↓            ↓\n           阻值匹配         电压转换        驱动增强      逻辑组合\n```\n\n从 EDN 网表中识别中间芯片：\n\n```",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 93,
+          "end_line": 105
+        }
+      ]
+    },
+    {
+      "id": "LS-011",
+      "title": "追踪时发现信号经过了芯片 Ux 而非直连",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "J5.2 → net \"UART3_TX\" → portRef B1 (instanceRef Ux)\n                                       ↑\n                              不是 J5 直连 SoC，经过了芯片 Ux\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 106,
+          "end_line": 111
+        }
+      ]
+    },
+    {
+      "id": "LS-012",
+      "title": "5.2 对每颗中间芯片，要求提供数据手册",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**必须从手册中确认以下信息：**",
+        "| VCCA/VCCB 关系 | 电气参数 | VCCA 必须 ≤ VCCB |"
+      ],
+      "must_not": [],
+      "text": "\n**必须从手册中确认以下信息：**\n\n| 检查项 | 手册中查找 | 本设计案例（U9 MS4553S） |\n|--------|-----------|------|\n| 芯片型号 | 首页标题 | MS4553S（杭州瑞盟） |\n| 功能 | 产品简述 | 2-bit 双向自动方向电平转换器 |\n| 封装引脚排列 | 管脚排列图 | SOT23-8（1-VCCB, 2-B1, 3-B2, 4-OE, 5-GND, 6-A2, 7-A1, 8-VCCA） |\n| 供电电压范围 | 推荐工作条件 | VCCA=1.65~5.5V, VCCB=2.3~5.5V (VCCA≤VCCB) |\n| 方向控制方式 | 功能描述 | **自动方向检测**，无需 DIR 引脚 |\n| OE 引脚逻辑 | 使能说明 | OE=H 使能，OE=L 高阻态 |\n| VCCA/VCCB 关系 | 电气参数 | VCCA 必须 ≤ VCCB |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 112,
+          "end_line": 125
+        }
+      ]
+    },
+    {
+      "id": "LS-013",
+      "title": "5.3 核对手册与实际电路",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n**引脚排列一致性**：\n```\n手册引脚排列  ←→  EDN 网表中的 portInstance 顺序\n    ↓                        ↓\n  1=VCCB                  PORT: VCCB\n  2=B1                    PORT: B1\n  3=B2                    PORT: B2     ✅ 一致\n  4=OE                    PORT: OE\n  5=GND                   PORT: GND\n  6=A2                    PORT: A2\n  7=A1                    PORT: A1\n  8=VCCA                  PORT: VCCA\n```\n\n**供电电压是否在手册允许范围内**：\n```\n手册要求：VCCA ≤ VCCB, VCCA=1.65~5.5V, VCCB=2.3~5.5V\n实际电路：VCCA = VCC_3V3 = 3.3V, VCCB = VCC_3V3 = 3.3V\n判定：3.3V ≤ 3.3V ✅ 满足 VCCA ≤ VCCB 且在允许范围内\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 126,
+          "end_line": 148
+        }
+      ]
+    },
+    {
+      "id": "LS-014",
+      "title": "5.4 核对信号方向与芯片能力",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\n手册：自动方向检测，每个通道独立判断\n      推拉模式 20Mbps，开漏模式 2Mbps\n      UART3_TX: SoC→A1, 自动检测→B1→J5  ✅ 支持\n      UART3_RX: J5→B2, 自动检测→A2→SoC  ✅ 支持\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 149,
+          "end_line": 157
+        }
+      ]
+    },
+    {
+      "id": "LS-015",
+      "title": "5.5 核对 Footprint 一致性",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\n手册封装：SOT23-8\nPCB Footprint 属性：SN74LVC2T45DCTR (SM8)\n              ↓\n      ⚠ 引脚排列可能不同！需核对 BOM 实际焊接料号\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 158,
+          "end_line": 166
+        }
+      ]
+    },
+    {
+      "id": "LS-016",
+      "title": "5.6 信号直连（无中间芯片）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "外设必须兼容 yV 电平 ⚠"
+      ],
+      "must_not": [],
+      "text": "\n如果信号路径上没有芯片，直接对比两端电压：\n\n```\nVI0_DATA0 → 接口引脚 → 芯片 GPIOx (VCCIOx = yV)\n外设必须兼容 yV 电平 ⚠\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 167,
+          "end_line": 177
+        }
+      ]
+    },
+    {
+      "id": "LS-017",
+      "title": "六、Step 5 — 对比标注 vs 实际",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\n接口标注电压  vs  网络名暗示的电压  vs  VCCIO 域实际电压\n     ↓                    ↓                    ↓\n  \"GPIO1-3V3\"        可能错误             实际 3.3V\n```\n\n**规则**：以 VCCIO 域实际电压为准，不信任网名或标注。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 178,
+          "end_line": 189
+        }
+      ]
+    },
+    {
+      "id": "LS-018",
+      "title": "七、完整检查清单",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 190,
+          "end_line": 191
+        }
+      ]
+    },
+    {
+      "id": "LS-019",
+      "title": "对每个信号执行",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n- [ ] 已追踪从接口到芯片的完整路径\n- [ ] 已提取芯片引脚的 VCCIO 域后缀\n- [ ] 已追踪该 VCCIO 域的供电网络 → 确认电压值\n- [ ] 已检查路径上是否有电平转换器 → 确认两侧电压\n- [ ] 已记录 VCCA/VCCB 电压（如有转换器）\n- [ ] 已确认方向控制（自动/手动）\n- [ ] 接口侧标注 vs 实际电压 → 一致？\n- [ ] 外设数据手册要求的电平 → 匹配？\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 192,
+          "end_line": 202
+        }
+      ]
+    },
+    {
+      "id": "LS-020",
+      "title": "高风险信号优先检查",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| 风险特征 | 原因 |\n|----------|------|\n| `_J` 后缀的引脚 | VCCIO2(3.3V) vs VCCIO3(1.8V) 可能混淆 |\n| 网名含电压标签 | 可能是错误标注，如 \"GPIO1-3V3\" |\n| 有电平转换器的路径 | 确认两侧电压匹配外设 |\n| 电平转换器为缓冲模式 | VCCA=VCCB 则无转换，电平等于供电 |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 203,
+          "end_line": 213
+        }
+      ]
+    },
+    {
+      "id": "LS-021",
+      "title": "八、批量检查方案（可用脚本实现）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\n1. 从 EDN 提取所有 VCCIO 电源引脚 → 追踪到供电网络 → 建立 {VCCIO域: 电压} 表\n2. 从 EDN 提取所有信号路径 → 找到芯片引脚 → 查域后缀 → 查表得电压\n3. 检测路径上的电平转换器 → 追踪其 VCCA/VCCB → 确认转换比\n4. 输出每个信号的完整电压链：接口标注 | 转换器侧 | 芯片侧\n5. 标记不一致项 → 生成报告\n```\n\n具体实现参考本目录下的 `引脚核对规则.md` 和 `引脚复用关系检查规则.md`。",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚电平检查方案.md",
+          "line": 214,
+          "end_line": 224
+        }
+      ]
+    }
+  ]
+}

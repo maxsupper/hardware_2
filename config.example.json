@@ -18,7 +18,7 @@
     "context_total": 524288,
     "input_hard_cap": 400000,
     "target": 256000,
-    "rule_bundle_tokens": 40000,
+    "rule_bundle_tokens": 64000,
     "auto_retry": 3
   },
   "web": {

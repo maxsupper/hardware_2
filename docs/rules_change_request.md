@@ -56,3 +56,45 @@
 - **(A)** 全部批准（A1+A2+A3+B）；
 - **(B)** 批准 A，B 的 ID 段/条数要调整（给出）；
 - **(C)** 暂不写回 rules.json，仅保留代码实现（我记为"待批"）。
+
+---
+
+## E. v4 变更记录（2026-09-11，**已实施并固化**）
+
+> 由 `scripts/prepare_rules/apply_v4_rules.py` 幂等写入 `rules/rules.json`（`_audit.v4_applied`），并重渲染 `docs/check_list.md`。
+
+### E1. 新增强制规则（rules[]）
+
+| ID | 阶段 | 门 | 规则要点 |
+|---|---|---|---|
+| `NG-010` | PH-2 | G2 | 方向语义与权威来源：`links[].side∈{up,down,bi,pwr,nc}` 同网一致；电源/地判定用 conventions 权威正则，禁自造 |
+| `NG-011` | PH-2 | G2 | 追踪：起=接插件脚，止=有源落点；可跨越件=2 脚 R/L/BEAD/FB/FERR/JMP/0R 且两端非电源地；`trace_max_hops=6`；访问集防绕圈 |
+| `NG-012` | PH-2 | G2 | 差分对语义：`_P/_N`、`P/N`、`H/L`、`+/-` 视为同一逻辑信号，跨到搭档=原地打转 |
+| `NG-013` | PH-2 | G2 | 双向验证：正反路径集合一致且互达→OK；否则 MISMATCH 必带原因分类 |
+| `NG-014` | PH-2 | G2 | 落点判定：CHIP / TO_CONNECTOR / POWER / OPEN_END / STUB |
+| `PF-001` | PH-2 | G2 | 平台识别：按 `rules/index.json` 的 `platform.detect` 写入 `netlist_graph.meta.platform` |
+| `PF-002` | PH-3 | G3 | 平台规则加载：按 `load_policy` 注入 common+platform 规则；`pinout.json` 不进 LLM |
+| `PF-003` | PH-3 | G3 | 官方引脚核对：SoC/DDR/PMIC/eMMC 以 `platform/<芯片>/pinout.json` 为权威（IC-007/IC-008） |
+| `PF-004` | PH-3 | G3 | 核对覆盖率=已核对/应核对；低于阈值或存在未解释不一致 → 不得 PASS |
+| `PF-005` | PH-3 | G3 | 规则束预算：全量须在 `rule_bundle_tokens`（≥58K）内完整注入；截断须显式列出被丢弃 ID |
+
+- 规则束归属（通配符）：PH-2 += `PF-001*`；PH-3 += `PF-*`；PH-2 既有 `NG-*` 自动纳入 NG-010~014。
+- 门禁审计登记：G2 强制 NG-010~014；G3 强制 PF-002/003/004（`gate_enforced`）。
+
+### E2. 新增代码生成硬性要求（dev_rules）
+
+| ID | 要点 |
+|---|---|
+| `DEV-009` | **规范先行**：规范是唯一权威，代码服从规范；实现与规范不一致时改代码；缺参数化条款先补规范 |
+| `DEV-010` | **权威来源不重复定义**：conventions 为单一真源，工具不得自造正则/常量 |
+| `DEV-011` | **md→json 校验护栏**：转换产物必过 `rules_contracts` Pydantic 校验 + 预算护栏 |
+
+### E3. 单一真源 / 平台链路
+
+- **单一真源**（NG-006）：`netlist_graph.json` 不内嵌邻接表（删 `upstream/downstream/via`），邻接由 `pins+joins` 经 `GraphIndex` 派生；等值证据见 `tools/verify_adjacency.py` + `docs/evidence/adjacency_baseline_FL-25-E-MR203.json`（4131 引脚 EQUIVALENT）。
+- **平台链路**：`raw/raw_platmform/<芯片>` →（`platform_to_json`）→ `rules/platform/<芯片>/{rules*,pinout,pinout.index}.json` + `rules/index.json`；PH-3 经 `load_rule_assets` 注入规则束、`platform_check` 做官方核对（RK3588 覆盖率 0.817），`pinout` 绝不进 LLM。
+- **规则资产化**：`raw/raw_rules/*.md` →（`md_to_json`）→ `rules/common/*.json`（6 个 / 165 条，ID 与 `rules.json` 100% 对齐）。
+
+### E4. 预算调整
+
+- `rule_bundle_tokens` **40000 → 64000**（PH-3 全量 202 条 / 56720 tok 无截断）；`context_total=512K` 天花板不变。

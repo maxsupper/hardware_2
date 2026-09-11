@@ -1,0 +1,1080 @@
+{
+ "schema_version": "1.0",
+ "kind": "platform_rules",
+ "scope": "platform/E2000",
+ "source": "raw/raw_platmform/E2000/数据手册.md",
+ "source_sha1": "6e5df1a82f0b2c8c2208a6c36500a381b04b602f",
+ "generated_at": "2026-09-11T08:43:56+00:00",
+ "tokens_est": 19897,
+ "entries": [
+  {
+   "id": "PF-E2000-016",
+   "title": "2.1.5 Pin Map",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.1.5 Pin Map\r\nPhytium\r\n北京飞龙\r\nPhytium\r\n北京飞龙\r\n2025-08-\r\nPhytium\r\n北京飞龙\r\n2025-08-\r\nPhytium\r\n北京飞龙\r\n2025-08-\r\n\r\n2 接口说明 \r\n版权所有 © 飞腾信息技术有限公司 \r\n \r\n图 2-2  E2000Q BGA MAP 结构图 \r\nA\r\nVSS\r\nPCIE2_RE\r\nFCLKP\r\nPCIE2_RE\r\nFCLKN\r\nVSS\r\nSGMII0_R\r\nXN\r\nVSS\r\nSGMII1_R\r\nXN\r\nVSS\r\nSGMII2_R\r\nXN\r\nVSS\r\nSGMII3_R\r\nXN\r\nVSS\r\nDP1_AUX_\r\nN\r\nVSS\r\nSPIM2_CS\r\nN0\r\nSPIM2_SC\r\nLK\r\nGPIO1_13\r\nDP1_HPD\r\nCRU_CLK_\r\nOBV\r\nCAN0_TX\r\nCAN0_RX\r\nCAN1_TX\r\nUART2_RX\r\nD\r\nUART2_TX\r\nD\r\nUART2_RT\r\nS_N\r\nRFU_A53\r\nRFU_A55\r\nVSS\r\nC\r\nPCIE2_RX\r\nP0\r\nPCIE2_RX\r\nN0\r\nVSS\r\nVSS\r\nVSS\r\nSGMII0_R\r\nXP\r\nVSS\r\nSGMII1_R\r\nXP\r\nVSS\r\nSGMII2_R\r\nXP\r\nVSS\r\nSGMII3_R\r\nXP\r\nVSS\r\nDP1_AUX_\r\nP\r\nVSS\r\nSPIM2_RX\r\nD\r\nSPIM2_TX\r\nD\r\nVSS\r\nDP0_HPD\r\nCRU_RST_\r\nOK\r\nVSS\r\nLBC_ADDR\r\nCAN1_RX\r\nVSS\r\nUART2_CT\r\nS_N\r\nVSS\r\nUSB2_P4_\r\nVBUSDET\r\nUSB2_P3_\r\nDP\r\nSD1_VOLT\r\nSD1_DATA\r\nE\r\nVSS\r\nVSS\r\nPCIE2_TX\r\nP0\r\nPCIE2_TX\r\nN0\r\nSGMII0_T\r\nXN\r\nVSS\r\nSGMII1_T\r\nXN\r\nVSS\r\nSGMII2_T\r\nXN\r\nVSS\r\nDP0_AUX_\r\nN\r\nVSS\r\nSGMII3_T\r\nXN\r\nVSS\r\nLBC_AD7\r\nLBC_ALE\r\nVSS\r\nLBC_ADDR\r\nLBC_ADDR\r\nVSS\r\nLBC_ADDR\r\nLBC_AD14\r\nVSS\r\nGPIO2_7\r\nUSB2_P4_\r\nDP\r\nUSB2_P4_\r\nDM\r\nVSS\r\nUSB2_P3_\r\nDM\r\nSD1_VOLT\r\nSD1_DATA\r\nG\r\nPCIE2_RX\r\nP1\r\nPCIE2_RX\r\nN1\r\nVSS\r\nVSS\r\nSGMII0_T\r\nXP\r\nVSS\r\nSGMII1_T\r\nXP\r\nVSS\r\nSGMII2_T\r\nXP\r\nVSS\r\nDP0_AUX_\r\nP\r\nVSS\r\nSGMII3_T\r\nXP\r\nVSS\r\nLBC_AD8\r\nLBC_CS_N\r\nVSS\r\nLBC_ADDR\r\nVSS\r\nVSS\r\nLBC_AD13\r\nVSS\r\nVSS\r\nI2S_SDI2\r\nVSS\r\nUSB2_P4_\r\nID\r\nUSB2_P3_\r\nID\r\nUSB2_P3_\r\nVBUSDET\r\nVSS\r\nSD1_CMD\r\nJ\r\nVSS\r\nVSS\r\nPCIE2_TX\r\nP1\r\nPCIE2_TX\r\nN1\r\nVSS\r\nVSS\r\nSGMII0_R\r\nEFCLKP\r\nVSS\r\nSGMII1_R\r\nEFCLKN\r\nVSS\r\nSGMII2_R\r\nEFCLKP\r\nVSS\r\nSGMII3_R\r\nEFCLKN\r\nVSS\r\nLBC_AD6\r\nLBC_AD5\r\nLBC_PSS\r\nLBC_ADDR\r\nLBC_AD11\r\nLBC_AD12\r\nLBC_ADDR\r\nLBC_ADDR\r\nGPIO2_6\r\nI2S_SDO3\r\nI2S_SDI3\r\nVSS\r\nGPIO2_15\r\nGPIO2_5\r\nSD1_CLK\r\nSD1_DATA\r\nL\r\nPCIE2_RX\r\nP2\r\nPCIE2_RX\r\nN2\r\nVSS\r\nVSS\r\nRFU_L9\r\nRFU_L11\r\nSGMII0_R\r\nEFCLKN\r\nVSS\r\nSGMII1_R\r\nEFCLKP\r\nVSS\r\nSGMII2_R\r\nEFCLKN\r\nVSS\r\nSGMII3_R\r\nEFCLKP\r\nVSS\r\nLBC_AD10\r\nLBC_AD4\r\nLBC_AD1\r\nVSS\r\nLBC_ADDR\r\nLBC_ADDR\r\nVSS\r\nLBC_AD15\r\nLBC_ADDR\r\nVSS\r\nGPIO2_13\r\nGPIO2_12\r\nVSS\r\nI2S_SDI0\r\nSD1_DATA\r\nSD1_DET_\r\nN\r\nN\r\nVSS\r\nVSS\r\nPCIE2_TX\r\nP2\r\nPCIE2_TX\r\nN2\r\nVSS\r\nRFU_N11\r\nRFU_N13\r\nVSS\r\nRFU_N17\r\nRFU_N19\r\nRFU_N21\r\nRFU_N23\r\nVSS\r\nLBC_AD9\r\nSMCORE_1\r\nVSS\r\nLBC_AD0\r\nLBC_ADDR\r\nSMCORE_4\r\nLBC_OE_N\r\nLBC_CS_N\r\nLBC_AD3\r\nLBC_AD2\r\nUSB2_P3_\r\nREXT\r\nGPIO2_11\r\nGPIO2_2\r\nGPIO2_14\r\nI2S_SDO0\r\nVSS\r\nSD1_WP_N\r\nR\r\nPCIE2_RX\r\nP3\r\nPCIE2_RX\r\nN3\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nAVDDH\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_1\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVDDIO_4\r\nVSS\r\nUSB2_P4_\r\nREXT\r\nGPIO2_1\r\nGPIO2_0\r\nVSS\r\nVSS\r\nFJTAG_NT\r\nRST\r\nFJTAG_TD\r\nU\r\nVSS\r\nVSS\r\nPCIE2_TX\r\nP3\r\nPCIE2_TX\r\nN3\r\nVSS\r\nRFU_U11\r\nRFU_U13\r\nVSS\r\nNF_RB_N1\r\nVSS\r\nNF_DATA2\r\nNF_DATA1\r\nFJTAG_TM\r\nS\r\nFJTAG_TC\r\nK\r\nAVDDH\r\nVSS\r\nAVDDH\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_1\r\nVSS\r\nUSB2_VCC\r\nA33_1\r\nVSS\r\nPLL_AVDD\r\nL\r\nVSS\r\nVDDIO_4\r\nW\r\nPCIE0_RX\r\nP\r\nPCIE0_RX\r\nN\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVDD33\r\nNF_CE_N0\r\nNF_CLE\r\nNF_DATA0\r\nNF_ALE\r\nVSS\r\nFJTAG_TD\r\nO\r\nY\r\nVSS\r\nAVDDH\r\nVSS\r\nPLL_DVDD\r\nL_1\r\nSENSEVDD\r\nSENSEGND\r\nVSS\r\nUSB2_VDD\r\nA_1\r\nVSS\r\nRFU_Y38\r\nVSS\r\nRFU_Y43\r\nVSS\r\nAA\r\nVSS\r\nVSS\r\nPCIE0_TX\r\nP\r\nPCIE0_TX\r\nN\r\nVSS\r\nRFU_AA11\r\nRFU_AA13\r\nNF_DATA6\r\nNF_DATA7\r\nNF_CE_N1\r\nVSS\r\nVSS\r\nMIO6_A\r\nMIO6_B\r\nAC\r\nPCIE1_RX\r\nP\r\nPCIE1_RX\r\nN\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nAVDDL\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nUSB2_VCC\r\nA18_1\r\nVSS\r\nRFU_AC45\r\nVSS\r\nNF_DATA4\r\nVSS\r\nNF_WEN_C\r\nLK\r\nNF_RB_N0\r\nWAKEUP_N\r\nPWM3\r\nAE\r\nVSS\r\nVSS\r\nPCIE1_TX\r\nP\r\nPCIE1_TX\r\nN\r\nVSS\r\nSGMII3_R\r\nEXT\r\nVSS\r\nVSS\r\nAVDD_CLK\r\nVSS\r\nPLL_AVDD\r\nH_1\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDA\r\nVSS\r\nEFUSE_VQ\r\nPS\r\nVSS\r\nNF_DATA5\r\nNF_DATA3\r\nNF_REN_W\r\nRN\r\nSD0_DATA\r\nSD0_DATA\r\nVSS\r\nTACH3\r\nAG\r\nPCIE1_RE\r\nFCLKP\r\nPCIE1_RE\r\nFCLKN\r\nVSS\r\nVSS\r\nSGMII1_R\r\nEXT\r\nSGMII2_R\r\nEXT\r\nVSS\r\nSMCORE_3\r\nSD0_DATA\r\nSD0_RST_\r\nN\r\nVSS\r\nSD0_DATA\r\nPWM2\r\nTACH2\r\nAH\r\nAVDD_CLK\r\nVSS\r\nAVDDL\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nPLL_DVDD\r\nL_0\r\nVSS\r\nVDDIO18\r\nVSS\r\nPLL_AVDD\r\nH_0\r\nAJ\r\nVSS\r\nVSS\r\nPCIE0_RE\r\nFCLKP\r\nPCIE0_RE\r\nFCLKN\r\nVSS\r\nSGMII0_R\r\nEXT\r\nVSS\r\nVSS\r\nSD0_CLK\r\nSD0_CMD\r\nSD0_DET_\r\nN\r\nQSPI_SCK\r\nPWM1\r\nTACH1\r\nAK\r\nVSS\r\nAVDD_CLK\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO18\r\nVSS\r\nAL\r\nUSB2_P0_\r\nDP\r\nUSB2_P0_\r\nDM\r\nVSS\r\nVSS\r\nVSS\r\nPCIE2_RE\r\nXT\r\nVSS\r\nSD0_VOLT\r\nSD0_PWR_\r\nEN\r\nVSS\r\nQSPI_SI_\r\nIO1\r\nQSPI_SO_\r\nIO0\r\nVSS\r\nPWM0\r\nAN\r\nUSB2_P2_\r\nID\r\nVSS\r\nUSB2_P1_\r\nDP\r\nUSB2_P1_\r\nDM\r\nVSS\r\nPCIE0_RE\r\nXT\r\nVSS\r\nAVDD_CLK\r\nVSS\r\nAVDDL\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_3\r\nSMCORE_2\r\nSD0_INT_\r\nN\r\nQSPI_WP_\r\nIO2\r\nVSS\r\nVSS\r\nTACH0\r\nGPIO0_0\r\nAR\r\nUSB2_P2_\r\nDM\r\nUSB2_P2_\r\nDP\r\nUSB2_P2_\r\nVBUSDET\r\nVSS\r\nVSS\r\nPCIE1_RE\r\nXT\r\nVSS\r\nVSS\r\nAVDD_CLK\r\nVSS\r\nAVDDL\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_2\r\nVSS\r\nVSS\r\nQSPI_CSN\r\nQSPI_HOL\r\nD_IO3\r\nVSS\r\nQSPI_CSN\r\nSE_SMBAL\r\nT\r\nSE_SMBCL\r\nK\r\nAU\r\nVSS\r\nVSS\r\nDDR_DQ10\r\nDDR_DQ13\r\nVSS\r\nUSB2_P1_\r\nREXT\r\nVSS\r\nSMCORE_0\r\nCPU_POR_\r\nN\r\nUART1_TX\r\nD\r\nCLK_REF_\r\n50M\r\nSE_CFG4\r\nVSS\r\nSE_SMBDA\r\nT\r\nAV\r\nVSS\r\nVSS\r\nAVDD_CLK\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_2\r\nAW\r\nDDR_DQ14\r\nDDR_DQ4\r\nVSS\r\nDDR_DQ11\r\nVSS\r\nUSB2_P0_\r\nREXT\r\nVSS\r\nRFU_AW47\r\n_DOWN\r\nVSS\r\nUART1_RX\r\nD\r\nVSS\r\nGPIO1_12\r\nSE_CFG2\r\nSE_CFG3\r\nAY\r\nVSS\r\nUSB2_VDD\r\nA_0\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_0\r\nVSS\r\nBA\r\nDDR_DQ5\r\nDDR_DQ2\r\nDDR_DQS_\r\nC10\r\nDDR_DQS_\r\nT10\r\nVSS\r\nUSB2_P2_\r\nREXT\r\nVSS\r\nRFU_BA47\r\n_DOWN\r\nGPIO1_11\r\nVSS\r\nSE_SDA\r\nSE_SCL\r\nSE_CFG0\r\nSE_CFG1\r\nBC\r\nDDR_DQ1\r\nVSS\r\nDDR_DQS_\r\nT1\r\nDDR_DQS_\r\nC1\r\nDDR_DQ12\r\nVSS\r\nVSS\r\nUSB2_VCC\r\nA33_0\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDDIO_0\r\nVSS\r\nDDR_CKE1\r\nDDR_PAR\r\nVSS\r\nDDR_A11\r\nVSS\r\nDDR_A17\r\nBE\r\nDDR_DQS_\r\nT9\r\nDDR_DQS_\r\nC9\r\nVSS\r\nDDR_DQ15\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nUSB2_VCC\r\nA18_0\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nVDD\r\nVSS\r\nDDR_ZN_S\r\nENSE\r\nVSS\r\nDDR_A2\r\nDDR_A8\r\nVSS\r\nDDR_CLK_\r\nT3\r\nDDR_CLK_\r\nC3\r\nBG\r\nDDR_DQS_\r\nC0\r\nDDR_DQS_\r\nT0\r\nDDR_DQ9\r\nVSS\r\nDDR_DQ8\r\nVSS\r\nVSS\r\nVSS\r\nVDDQ\r\nVSS\r\nVDDQ\r\nVDDQ\r\nVSS\r\nVDDQ\r\nVDDQ_CK\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nVSS\r\nDDR_ODT0\r\nDDR_A10\r\nVSS\r\nDDR_RESE\r\nT_N\r\nDDR_ODT3\r\nVSS\r\nDDR_A7\r\nDDR_A0\r\nVSS\r\nDDR_C0\r\nBJ\r\nDDR_DQ6\r\nVSS\r\nDDR_DQ29\r\nDDR_DQ30\r\nVSS\r\nDDR_DQ31\r\nDDR_DQ28\r\nVSS\r\nDDR_DQ33\r\nVDDQ\r\nVSS\r\nVSS\r\nVDDQ\r\nVSS\r\nVDDQ\r\nVSS\r\nDDR_DQS_\r\nC15\r\nVSS\r\nDDR_DQ51\r\nVSS\r\nDDR_CLK_\r\nC0\r\nDDR_CKE0\r\nDDR_ACT_\r\nN\r\nDDR_A16\r\nVSS\r\nDDR_A13\r\nDDR_CLK_\r\nT1\r\nDDR_A4\r\nDDR_CLK_\r\nT2\r\nDDR_CLK_\r\nC2\r\nBL\r\nDDR_DQ7\r\nDDR_DQ0\r\nVSS\r\nDDR_DQ24\r\nDDR_DQS_\r\nC3\r\nVSS\r\nDDR_DQ26\r\nDDR_DQ37\r\nVSS\r\nDDR_DQ32\r\nDDR_DQS_\r\nC4\r\nDDR_DQS_\r\nT4\r\nDDR_DQ39\r\nDDR_DQ35\r\nDDR_DQ54\r\nDDR_DQ53\r\nDDR_DQS_\r\nT15\r\nVSS\r\nDDR_DQ52\r\nDDR_DQ48\r\nDDR_CLK_\r\nT0\r\nVSS\r\nDDR_A15\r\nDDR_A3\r\nDDR_BG1\r\nDDR_A6\r\nDDR_CLK_\r\nC1\r\nVSS\r\nDDR_CKE2\r\nDDR_ODT2\r\nBN\r\nDDR_DQ3\r\nDDR_DQ23\r\nDDR_DQ27\r\nVSS\r\nDDR_DQS_\r\nT3\r\nVSS\r\nVSS\r\nDDR_DQ36\r\nVSS\r\nDDR_DQS_\r\nC13\r\nVSS\r\nVSS\r\nVSS\r\nDDR_DQ34\r\nVSS\r\nVSS\r\nDDR_DQ50\r\nVSS\r\nDDR_DQS_\r\nC6\r\nVSS\r\nVSS\r\nDDR_CS_N\r\nVSS\r\nDDR_A14\r\nDDR_A1\r\nVSS\r\nDDR_A9\r\nDDR_BA0\r\nVSS\r\nDDR_CKE3\r\nBR\r\nDDR_DQ22\r\nVSS\r\nDDR_DQS_\r\nT12\r\nDDR_DQS_\r\nC12\r\nDDR_DQ20\r\nVSS\r\nDDR_DQ25\r\nVSS\r\nVSS\r\nDDR_DQS_\r\nT13\r\nVSS\r\nVSS\r\nDDR_DQ38\r\nVSS\r\nVSS\r\nDDR_DQ49\r\nVSS\r\nVSS\r\nDDR_DQS_\r\nT6\r\nDDR_DQ55\r\nVSS\r\nDDR_CS_N\r\nDDR_A12\r\nVSS\r\nDDR_A5\r\nDDR_ALER\r\nT_N\r\nDDR_BA1\r\nDDR_ODT1\r\nDDR_CS_N\r\nDDR_CS_N\r\nBU\r\nDDR_DQ19\r\nDDR_DQ17\r\nDDR_DQS_\r\nT11\r\nDDR_DQS_\r\nC2\r\nVSS\r\nDDR_DQ16\r\nVSS\r\nDDR_CB3\r\nDDR_DQS_\r\nT17\r\nVSS\r\nDDR_DQS_\r\nT8\r\nDDR_CB5\r\nVSS\r\nDDR_DQ44\r\nDDR_DQ42\r\nVSS\r\nDDR_DQS_\r\nC14\r\nDDR_DQS_\r\nT5\r\nVSS\r\nDDR_DQ40\r\nDDR_DQ62\r\nVSS\r\nDDR_DQ56\r\nDDR_DQS_\r\nC16\r\nVSS\r\nDDR_DQ60\r\nDDR_DQ57\r\nVSS\r\nDDR_BG0\r\nVSS\r\nBW\r\nVSS\r\nDDR_DQS_\r\nC11\r\nDDR_DQS_\r\nT2\r\nDDR_DQ21\r\nDDR_DQ18\r\nDDR_CB7\r\nDDR_CB4\r\nDDR_CB2\r\nDDR_DQS_\r\nC17\r\nDDR_DQS_\r\nC8\r\nDDR_CB6\r\nDDR_CB0\r\nDDR_CB1\r\nDDR_DQ45\r\nDDR_DQ43\r\nDDR_DQS_\r\nT14\r\nDDR_DQS_\r\nC5\r\nDDR_DQ46\r\nDDR_DQ47\r\nDDR_DQ41\r\nDDR_DQ63\r\nDDR_DQ59\r\nDDR_DQS_\r\nT16\r\nDDR_DQS_\r\nC7\r\nDDR_DQS_\r\nT7\r\nDDR_DQ61\r\nDDR_DQ58\r\nVSS\r\nPhytium\r\n北京飞龙\r\nPhytium\r\n北京飞龙\r\n2025-08-\r\nPhytium\r\n北京飞龙\r\n2025-08-\r\nPhytium\r\n北京飞龙\r\n2025-08-\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 3590,
+     "end_line": 4644
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-017",
+   "title": "2.2 DDR 内存接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2 DDR 内存接口\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4645,
+     "end_line": 4645
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-018",
+   "title": "2.2.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.1 接口特性\r\nE2000Q 的DDR 控制器作为芯片的片外大容量存储控制部件，负责管理全芯片的主存\r\n储器空间。DDR 控制器主要特性如下：\r\n支持DDR4、LPDDR4 协议；\r\n支持的器件类型：DDR4：X8、X16；LPDDR4：X16、X32；\r\n支持的接口电压：DDR4——1.2V；LPDDR4——1.1V；\r\nDDR4 最多支持4Rank、LPDDR4 支持2Rank；\r\nDDR4 容量范围为1GB~64GB，LPDDR4 容量范围为512MB~16GB；\r\n支持72bit 数据，包含64bit 数据和8bit 开关可配置带外ECC，支持全位宽模式\r\n和半位宽模式(仅支持低32bit 数据和低4bit ECC)；\r\n支持多种低功耗功能，包括DRAM 自刷新、DDR 控制器时钟关断和电源关断；\r\n支持多种频率点的时序参数组合，详见表2-6、表2-7；\r\n64 位2Rank LPDDR4 最大支持2133MT/s，其余最大支持2400MT/s；\r\n64 位LPDDR4 的性能，如stream 带宽和lmbench 延迟，低于同频下的32 位LPDDR4，\r\n相比32 位LPDDR4，其主要优势是可支持更高的存储容量。\r\n表2-6\r\n支持的DDR4 时序参数组合\r\nDRAM 类型\r\n频率\r\nCL\r\n[1]\r\ntRCD\r\n[2]\r\ntRP\r\n[3]\r\nCWL\r\n[4]\r\nDDR4\r\n2400\r\n15/16/17/18\r\n15/16/17/18\r\n15/16/17/18\r\n12/16\r\nDDR4\r\n2133\r\n14/15/16\r\n14/15/16\r\n14/15/16\r\n11/14\r\nDDR4\r\n1866\r\n12/13/14\r\n12/13/14\r\n12/13/14\r\n10/12\r\nDDR4\r\n1600\r\n10/11/12\r\n10/11/12\r\n10/11/12\r\n9/11\r\n注[1]：CL：CAS Latency(读命令到读数据的时钟周期数)；\r\n注[2]：tRCD：RAS-to-CAS delay(行激活命令到读写命令的延迟周期数)；\r\n注[3]：tRP：Precharge Period(预充电时间周期数)；\r\n注[4]：CWL：CAS Write Latency(写命令到写数据的时钟周期数)。\r\n表2-7\r\n支持的LPDDR4 时序参数组合\r\nDRAM 类型\r\n频率\r\nRL\r\n[1]\r\ntRCD\r\n[2]\r\ntRP\r\n[3]\r\nWL\r\n[4]\r\n\r\n2 接口说明\r\n\r\nLPDDR4\r\n2400\r\n24/28\r\n18ns\r\n12/22\r\nLPDDR4\r\n2133\r\n20/22\r\n10/18\r\nLPDDR4\r\n1600\r\n14/16\r\n8/12\r\nLPDDR4\r\n1066\r\n10/12\r\n6/8\r\n注[1]：RL：Read Latency(读命令到读数据的时钟周期数)；\r\n注[2]：tRCD：RAS-to-CAS delay(行激活命令到读写命令的延迟周期数)；\r\n注[3]：tRP：Precharge Period(预充电时间周期数)；\r\n注[4]：WL：Write Latency(写命令到写数据的时钟周期数)。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4646,
+     "end_line": 4736
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-019",
+   "title": "2.2.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.2 信号描述\r\nE2000Q DDR4 模式与LPDDR4 模式信号描述如表2-8 所示。\r\n表2-8\r\nE2000Q DDR4 与LPDDR4 信号描述\r\nDDR4\r\nLPDDR4\r\n信号名称\r\n方向\r\n信号描述\r\n信号名称\r\n方向\r\n信号描述\r\nDDR_A0\r\nO\r\nDDR4 地址和控制命令\r\n信号，包括\r\nBankAddress、\r\nBankGroup 等\r\nL_CA0\r\nO\r\nLPDDR4 地址和控制\r\n命令\r\nDDR_A1\r\nO\r\nL_CA1\r\nO\r\nDDR_A2\r\nO\r\nL_CA2\r\nO\r\nDDR_A3\r\nO\r\nL_CA3\r\nO\r\nDDR_A4\r\nO\r\nL_CA4\r\nO\r\nDDR_A5\r\nO\r\nL_CA5\r\nO\r\nDDR_A6\r\nO\r\nU_CA0\r\nO\r\nDDR_A7\r\nO\r\nU_CA1\r\nO\r\nDDR_A8\r\nO\r\nU_CA2\r\nO\r\nDDR_A9\r\nO\r\nU_CA3\r\nO\r\nDDR_A10\r\nO\r\nU_CA4\r\nO\r\nDDR_A11\r\nO\r\nU_CA5\r\nO\r\nDDR_A12\r\nO\r\nDDR_A13\r\nO\r\nDDR_A14/WE_N\r\nO\r\nCS_N11\r\nO\r\nLPDDR4 通道的\r\n片选信号\r\nDDR_A15/CAS_N\r\nO\r\nCS_N10\r\nO\r\nDDR_A16/RAS_N\r\nO\r\nCS_N9\r\nO\r\nDDR_A17\r\nO\r\nDDR_BA0\r\nO\r\nCS_N12\r\nO\r\nDDR_BA1\r\nO\r\nCS_N13\r\nO\r\n\r\n2 接口说明\r\n\r\nDDR_BG0\r\nO\r\nCS_N7\r\nO\r\nDDR_BG1\r\nO\r\nDDR_C0\r\nO\r\nDDR4 通道的ChipID\r\nDDR_CKE[3:0]\r\nO\r\nDDR4 通道的\r\n时钟使能信号\r\nDDR_CKE[3:0]\r\nO\r\nLPDDR4 通道的\r\n时钟使能信号\r\nDDR_CS_N[3:0]\r\nO\r\nDDR4 通道的片选信号\r\nDDR_CS_N[3:0]\r\nO\r\nLPDDR4 通道的\r\n片选信号\r\nDDR_ODT0\r\nO\r\nDDR4 通道的终端匹配\r\n电阻的使能控制信号\r\nCS_N4\r\nO\r\nDDR_ODT1\r\nO\r\nCS_N5\r\nO\r\nDDR_ODT2\r\nO\r\nCS_N6\r\nO\r\nDDR_ODT3\r\nO\r\nCS_N8\r\nO\r\nDDR_ZN_SENSE\r\nI/O\r\n阻抗校准接口信号\r\nDDR_ZN_SENSE\r\nI/O\r\n阻抗校准接口信号\r\nDDR_ACT_N\r\nO\r\nActivation 命令接口\r\n信号\r\nCS_N14\r\nO\r\nLPDDR4 通道的\r\n片选信号\r\nDDR_ALERT_N\r\n警告信号\r\nDDR_RESET_N\r\nO\r\nDDR4 复位信号\r\nDDR_RESET_N\r\nO\r\nLPDDR4 复位信号\r\nDDR_PAR\r\nO\r\nDDR4 通道的校验信号\r\nCS_N15\r\nO\r\nLPDDR4 通道的\r\n片选信号\r\nDDR_CLK_T[3:0]\r\nO\r\nDDR4 通道的差分时钟\r\nDDR_CLK_T[3:0]\r\nO\r\nLPDDR4 通道的\r\n差分时钟\r\nDDR_CLK_C[3:0]\r\nO\r\nDDR_CLK_C[3:0]\r\nO\r\nDDR_DQS_T[7:0]\r\nI/O\r\nDDR4 数据\r\n差分选通信号\r\nDDR_DQS_T[7:0]\r\nI/O\r\nLPDDR4 数据\r\n差分选通信号\r\nDDR_DQS_C[7:0]\r\nI/O\r\nDDR_DQS_C[7:0]\r\nI/O\r\nDDR_DQS_T8\r\nI/O\r\nDDR_DQS_C8\r\nI/O\r\nDDR_DQS_T[16:9]\r\nI/O\r\nDM[7:0]\r\nI/O\r\nLPDDR4 掩码屏蔽信\r\n号\r\nDDR_DQS_C[16:9]\r\nI/O\r\nDDR_DQS_T17\r\nI/O\r\nDDR_DQS_C17\r\nI/O\r\nDDR_DQ[63:0]\r\nI/O\r\nDDR4 64 位数据\r\nDDR_DQ[63:0]\r\nI/O\r\nLPDDR4 64 位数据\r\nDDR_CB[7:0]\r\nI/O\r\nDDR4 校验数据信号\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4737,
+     "end_line": 4952
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-020",
+   "title": "2.2.3 引脚分布",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.3 引脚分布\r\nE2000Q 芯片DDR 通道的引脚分布如图2-3 所示，红色部分表示内存信号有关引脚。\r\n\r\n2 接口说明\r\n\r\n图2-3\r\nE2000Q DDR 引脚分布(顶视图)\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4953,
+     "end_line": 4959
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-021",
+   "title": "2.2.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.4 拓扑结构\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4960,
+     "end_line": 4960
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-022",
+   "title": "2.2.4.1 DDR4 模式拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.4.1 DDR4 模式拓扑结构\r\nE2000Q 采用五颗16 位DDR4 SDRAM 单RANK 颗粒的拓扑结构(带ECC)如图2-4 所示。\r\n\r\n2 接口说明\r\n\r\n图2-4\r\nE2000Q DDR4 SDRAM 单RANK 结构图\r\n\r\n2 接口说明\r\n\r\n用作存储ECC数据的颗粒(图示DDR4)未使用的信号处理方式多样，示例拓扑结构仅为其中一种，\r\n请查阅具体使用的颗粒规格书进行正确处理；若使用颗粒含BG1 信号，处理方式参考BG0。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4961,
+     "end_line": 4972
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-023",
+   "title": "2.2.4.2 LPDDR4 模式拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.4.2 LPDDR4 模式拓扑结构\r\nE2000Q 采用两颗32 位LPDDR4 SDRAM 单RANK 颗粒的拓扑结构如图2-5 所示，每个\r\n32 位LPDDR4 颗粒包含A 和B 两个Channel，其中DQ/DM/DQS/CS 信号与E2000Q 点对点\r\n直连，AC/CLK 信号采用FLY-BY 拓扑连接，多RANK 模式同一RANK CKE 信号使用同一个\r\nCKE 信号。\r\n图2-5\r\nE2000Q LPDDR4 SDRAM 单RANK 结构图\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4973,
+     "end_line": 4982
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-024",
+   "title": "2.2.5 交换准则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.5 交换准则\r\n按照8bit 划分为一个slice，一个通道72bit 可划分为9 个slice。DDR4 方案每组\r\nslice 内有11 个信号如表2-9 所示，LPDDR4 方案每组slice 内有11 个信号如表2-10\r\n所示。\r\n表2-9\r\nDDR4 方案Slice 分组表\r\nSlice[n]\r\n信号名\r\n备注\r\nSlice[0]\r\nDDR_DQ[7:0]、DQS0_C、DQS0_T、DM0/DBI0\r\n数据\r\nSlice[1]\r\nDDR_DQ[15:8]、DQS1_C、DQS1_T、DM1/DBI1\r\n数据\r\nSlice[2]\r\nDDR_DQ[23:16]、DQS2_C、DQS2_T、DM2/DBI2\r\n数据\r\nSlice[3]\r\nDDR_DQ[31:24]、DQS3_C、DQS3_T、DM3/DBI3\r\n数据\r\nSlice[4]\r\nDDR_DQ[39:32]、DQS4_C、DQS4_T、DM4/DBI4\r\n数据\r\nSlice[5]\r\nDDR_DQ[47:40]、DQS5_C、DQS5_T、DM5/DBI5\r\n数据\r\nSlice[6]\r\nDDR_DQ[55:48]、DQS6_C、DQS6_T、DM6/DBI6\r\n数据\r\nSlice[7]\r\nDDR_DQ[63:56]、DQS7_C、DQS7_T、DM7/DBI7\r\n数据\r\nSlice[8]\r\nDDR_CB[7:0]、DQS8_C、DQS8_T、DM8/DBI8\r\nECC\r\n表2-10\r\nLPDDR4 方案Slice 分组表\r\nGroup\r\nChannel\r\nSlice[n]\r\n备注\r\nL_Group\r\nL_Channel_A\r\nDDR_DQ[7:0]、DQS0_C、DQS0_T、DM0\r\n数据\r\nDDR_DQ[15:8]、DQS1_C、DQS1_T、DM1\r\n数据\r\nU_Channel_B\r\nDDR_DQ[23:16]、DQS2_C、DQS2_T、DM2\r\n数据\r\nDDR_DQ[31:24]、DQS3_C、DQS3_T、DM3\r\n数据\r\nU_Group\r\nL_Channel_A\r\nDDR_DQ[39:32]、DQS4_C、DQS4_T、DM4\r\n数据\r\nDDR_DQ[47:40]、DQS5_C、DQS5_T、DM5\r\n数据\r\nU_Channel_B\r\nDDR_DQ[55:48]、DQS6_C、DQS6_T、DM6\r\n数据\r\nDDR_DQ[63:56]、DQS7_C、DQS7_T、DM7\r\n数据\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4983,
+     "end_line": 5046
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-025",
+   "title": "2.2.5.1 DDR4 交换准则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "若用户需要ECC 功能，Slice[8]必须连接至X16 颗粒的低八位或"
+   ],
+   "must_not": [],
+   "text": "2.2.5.1 DDR4 交换准则\r\nX8、X16 内存交换准则：\r\nDQ 交换：在进行X8、X16 兼容内存的设计时，同个slice 内部的8 位DQ 可以自\r\n由互换。\r\nSlice 交换：Slice[7:0]之间可以任意交换，Slice[8]为ECC 用途，不能与其他\r\nSlice 交换。若用户需要ECC 功能，Slice[8]必须连接至X16 颗粒的低八位或\r\n内存槽对应的Slice，若确认无需使用ECC 功能，可将Slice[8]的信号悬空。\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5047,
+     "end_line": 5056
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-026",
+   "title": "2.2.5.2 LPDDR4 交换准则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.5.2 LPDDR4 交换准则\r\n根据64 位DQ 数据划分两个Group，L_Group 包含L_Channel_A(Slice0、Slice1)、\r\nU_Channel_B(Slice2 、Slice3) ，U_Group 包含L_Channel_A(Slice4 、Slice5) 、\r\nU_Channel_B(Slice6 、Slice7) ，每个Group 可以整体交换，在每个Group 内部\r\nL_Channel_A 与U_Channel_B 可以整体交换，每个Channel 内部两个Slice 可以整体交\r\n换，每个Slice 内部8bit DQ 数据可以相互交换线序。\r\nLPDDR4 在PCB 设计时可以按照以上规则调整线序，方便PCB 的布线工作。需要声明，若LPDDR4\r\n的线序有所调整，则PHY 的寄存器也需要重新配置，需更新相应固件。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5057,
+     "end_line": 5064
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-027",
+   "title": "2.2.6 校准电阻要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.6 校准电阻要求\r\n内存DDR_ZN_SENSE 采用240Ω 1%精度的外部校准电阻与地连接，要求尽可能靠近\r\n引脚，避免外部干扰。\r\n图2-6\r\nDDR 校准电阻参考电路\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5065,
+     "end_line": 5069
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-028",
+   "title": "2.2.7 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.7 PCB 设计建议\r\nPCB 设计参考第7 章，另外还有以下几点需注意。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5070,
+     "end_line": 5071
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-029",
+   "title": "2.2.7.1 走线参考要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.7.1 走线参考要求\r\nDQ/DM/DQS 信号走线需参考GND 网络，AC(Address Command)、CLK、MISC(alert reset)\r\n信号走线优先参考GND，其次参考VDDQ(需保证另一面参考为GND)，保证参考平面完整，\r\n保证没有跨平面分割的情况；建议VDDQ 电源和其它电源引脚都能扇出对应引脚数量或\r\n者更多数量的过孔，比如有7 个VDDQ 的PIN，则要求CPU 区域扇出7 个及以上的VDDQ\r\n过孔。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5072,
+     "end_line": 5077
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-030",
+   "title": "2.2.7.2 布线参考",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.7.2 布线参考\r\n针对DDR4、LPDDR4 或DDR4 DIMM 不同内存方案，提供如下几种内存方案布局布线\r\n\r\n2 接口说明\r\n\r\n参考示意图。\r\n图2-7\r\nE2000Q DDR4 X16 内存颗粒布线示意图(三层布线)\r\n图2-8\r\nE2000Q LPDDR4 X32 内存颗粒布线示意图(三层布线)\r\n\r\n2 接口说明\r\n\r\n图2-9\r\nE2000Q LPDDR4 X32 内存颗粒AC 信号Fly-by 拓扑走线局部示意图\r\n图2-10\r\nE2000Q DDR4 DIMM 布线示意图(三层布线)\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5078,
+     "end_line": 5094
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-031",
+   "title": "2.2.7.3 DDR4 SDRAM 端接设计",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.7.3 DDR4 SDRAM 端接设计\r\n图2-11 为DDR4 SDRAM VTT 端接设计原理图和PCB 参考。参考图2-11，CLK 信号\r\n通过39Ω电阻和10nF 电容端接到GND，AC 信号通过39Ω排阻端接到VTT 电源，同时每\r\n两个信号的VTT 上拉处需就近放置一个对地的100nF 去耦电容。为保证最佳信号质量，\r\n用户可根据实际应用调整端接电阻阻值，若使用颗粒含BG1 信号，处理方式参考BG0。\r\n\r\n2 接口说明\r\n\r\n图2-11\r\nDDR4 SDRAM 端接设计参考\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5095,
+     "end_line": 5104
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-032",
+   "title": "2.2.7.4 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.7.4 布线要求\r\n表2-11\r\nDDR4 X16 SDRAM 布线要求(Fly-by 拓扑)\r\n类别\r\n参数\r\n要求\r\n器件选型\r\n校准电阻\r\n240Ω 1%\r\n端接电阻\r\n39Ω 5%\r\nCLK 端接电容\r\n10nF 10%\r\nAC 端接电容\r\n100nF 10%\r\n走线长度\r\n限制\r\n信号BGA 区域neck mode 走线长度\r\n≤13mm(CLK/AC/DQS/DQ)\r\nAC/CLK 到首个颗粒的长度\r\nL≤100mm\r\nDQ/DM/DQS 到颗粒的长度\r\nL≤80mm\r\nMISC 信号(alert/reset)长度限制\r\nL≤200mm\r\n相邻颗粒扇出孔间走线长度\r\nL≤16mm\r\n颗粒扇出孔到焊盘走线长度(包含过孔)\r\n≤2.5mm(CLK)、≤2.5mm(Address)、\r\n≤2.5mm(CMD)\r\n末端颗粒扇出孔到端接电阻长度(越短越优)\r\n≤12mm\r\n走线长度\r\n匹配\r\nDQS 与CLK 的最大长度差\r\n0mm≤L(CLK–DQS)≤150mm\r\n每个颗粒的AC 走线与CLK 走线等长\r\n-0.2mm≤L(CLK-AC)≤0.2mm\r\nDQ/DM/DQS 走线组内等长\r\n0mm≤L(DQ/DM-DQS)≤0.1mm\r\n每个颗粒CLK 差分对内等长\r\n≤0.1mm\r\n每个颗粒DQS 差分对内等长\r\n≤0.1mm\r\n走线间距\r\nAC 到DQ/DM/DQS\r\n≥6H\r\nCLK 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\nDQS 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n\r\n2 接口说明\r\n\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\n同类信号\r\n≥4H(CLK/DQS 带状线)、\r\n≥5H(CLK/DQS 微带线)、\r\n≥3.3H(AC/DQ/DM 带状线)、\r\n≥4H(AC/DQ/DM 微带线)、\r\n≥0.2mm(MISC)\r\n信号与电源平面或过孔边缘间距\r\n≥5H(CLK/AC/DQS/DQ/DM)、\r\n≥3H(MISC)\r\n换层\r\n建议过孔数量\r\n≤3 个(DQ/DM/DQS)、\r\n≤6 个(CLK/AC/MISC)\r\n注[1]：H 为走线距离最近参考平面的高度，后续出现H 均为此意，将不做解释。\r\nAC 单端阻抗控制：主干45Ω，颗粒间50Ω，扇出线50Ω，末端端接走线50Ω；\r\nCLK 差分阻抗控制：主干75Ω，颗粒间80Ω，扇出线80Ω，末端端接走线80Ω；\r\nDQS 差分阻抗控制：75Ω；\r\nDQ/MD 单端阻抗控制：45Ω；\r\nMISC(alert/reset)单端阻抗控制：40~60Ω；\r\n表2-12\r\nLPDDR4 X32 SDRAM 布线要求(点对点/Fly-by 拓扑)\r\n类别\r\n参数\r\n要求\r\n器件选型\r\n校准电阻\r\n240Ω 1%\r\n走线长度\r\n限制\r\n信号BGA 区域neck mode 走线长度\r\n≤13mm(CLK/AC/DQS/DQ)\r\n信号分支节点到颗粒channelA 走线长度（尽量短）≤2mm(CLK/AC)；包含过孔长度\r\n信号分支节点到颗粒channelB 走线长度（尽量短）≤6.5mm(CLK/AC)；包含过孔长度\r\n信号布线总长度\r\nL(DQS/DQ/DM)≤65mm\r\nL(AC/CLK)≤80mm\r\nMISC 信号(alert/reset)长度限制\r\n≤150mm\r\n走线长度\r\n匹配\r\nDQS 与CLK 间的最大长度差\r\n0mm≤L(CLK-DQS)≤50mm\r\nAC/CLK 走线组内等长\r\n-0.2mm≤L(CLK-AC)≤0.2mm\r\nDQ/DM/DQS 走线组内等长\r\n0mm≤L(DQ/DM-DQS)≤0.1mm\r\nCLK 差分对内等长\r\n≤0.1mm\r\nDQS 差分对内等长\r\n≤0.1mm\r\n走线间距\r\nAC 到DQ/DM/DQS\r\n≥6H\r\nCLK 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\nDQS 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n\r\n2 接口说明\r\n\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\n同类信号\r\n≥4H(CLK/DQS 带状线)、\r\n≥5H(CLK/DQS 微带线)、\r\n≥3.3H(AC/DQ/DM 带状线)、\r\n≥4H(AC/DQ/DM 微带线)、\r\n≥0.2mm(MISC)\r\n信号与电源平面或过孔边缘间距\r\n≥5H(CLK/AC/DQS/DQ/DM)、\r\n≥3H(MISC)\r\n换层\r\n建议过孔数量\r\n≤3 个(CLK/AC/DQS/DQ/DM/MISC)\r\n表2-13\r\nLPDDR4 X32 SDRAM 布线要求(点对点/T 拓扑)\r\n类别\r\n参数\r\n要求\r\n器件选型\r\n校准电阻\r\n240Ω 1%\r\n走线长度\r\n限制\r\n信号BGA 区域neck mode 走线长度\r\n≤13mm(CLK/AC/DQS/DQ)\r\n信号分支节点到颗粒焊盘走线长度（尽量短）\r\n≤5mm(CLK/AC)\r\n信号布线总长度\r\nL(DQS/DQ/DM)≤65mm\r\nL(AC/CLK)≤80mm\r\nMISC 信号(alert/reset)长度限制\r\n≤150mm\r\n走线长度\r\n匹配\r\nDQS 与CLK 间的最大长度差\r\n0mm≤L(CLK-DQS)≤50mm\r\nAC/CLK 走线组内等长\r\n-0.2mm≤L(CLK-AC)≤0.2mm\r\nDQ/DM/DQS 走线组内等长\r\n0mm≤L(DQ/DM-DQS)≤0.1mm\r\nCLK 差分对内等长\r\n≤0.1mm\r\nDQS 差分对内等长\r\n≤0.1mm\r\n走线间距\r\nAC 到DQ/DM/DQS\r\n≥6H\r\nCLK 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\nDQS 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\n同类信号\r\n≥4H(CLK/DQS 带状线)、\r\n≥5H(CLK/DQS 微带线)、\r\n≥3.3H(AC/DQ/DM 带状线)、\r\n≥4H(AC/DQ/DM 微带线)、\r\n≥0.2mm(MISC)\r\n信号与电源平面或过孔边缘间距\r\n≥5H(CLK/AC/DQS/DQ/DM)、\r\n≥3H(MISC)\r\n换层\r\n建议过孔数量\r\n≤3 个(CLK/AC/DQS/DQ/DM/MISC)\r\nAC 单端阻抗控制：主干45Ω，分支50Ω；\r\n\r\n2 接口说明\r\n\r\nCLK 差分阻抗控制：主干差分75Ω，分支80Ω；\r\nDQS 差分阻抗控制：差分75Ω；\r\nDQ/DM 单端阻抗控制：45Ω；\r\nMISC(alert/reset)单端阻抗控制：40~60Ω。\r\n表2-14\r\nDDR4 DIMM 布线要求\r\n类别\r\n参数\r\n要求\r\n器件选型\r\n校准电阻\r\n240Ω 1%\r\n走线长度\r\n限制\r\n信号BGA 区域neck mode 走线长度\r\n≤13mm(CLK/AC/DQS/DQ)\r\n信号布线总长度\r\nL(DQS/DQ/DM)≤80mm\r\nL(AC/CLK)≤70mm\r\nMISC 信号(alert/reset)长度限制\r\n≤150mm\r\n走线长度\r\n匹配\r\nDQS 与CLK 间的最大长度差\r\n-50mm≤L(CLK-DQS)≤50mm\r\nAC/CLK 走线组内等长\r\n-0.2mm≤L(CLK-AC)≤0.2mm\r\nDQ/DM/DQS 走线组内等长\r\n0mm≤L(DQ/DM-DQS)≤0.1mm\r\nCLK 差分对内等长\r\n≤0.1mm\r\nDQS 差分对内等长\r\n≤0.1mm\r\n走线间距\r\nAC 到DQ/DM/DQS\r\n≥6H\r\nCLK 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\nDQS 与其它信号\r\n≥4H(带状线)、≥5H(微带线)、与\r\n颗粒BGA 区域过孔/焊盘间距≥2H\r\n同类信号\r\n≥4H(CLK/DQS 带状线)、\r\n≥5H(CLK/DQS 微带线)、\r\n≥3.3H(AC/DQ/DM 带状线)、\r\n≥4H(AC/DQ/DM 微带线)、\r\n≥0.2mm(MISC)\r\n信号与电源平面或过孔边缘间距\r\n≥5H(CLK/AC/DQS/DQ/DM)、\r\n≥3H(MISC)\r\n换层\r\n建议过孔数量\r\n≤3 个(CLK/AC/DQS/DQ/DM/MISC)\r\n\r\nAC 单端阻抗控制：45Ω；\r\n\r\nCLK 差分阻抗控制：75Ω；\r\n\r\nDQS 差分阻抗控制：75Ω；\r\n\r\nDQ/DM 单端阻抗控制：45Ω；\r\n\r\nMISC(alert/reset)单端阻抗控制：40~60Ω；\r\n\r\nDIMM 的AC 信号pad 附近一定要放置大量的VDDQ 电源的滤波电容。\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5105,
+     "end_line": 5359
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-033",
+   "title": "2.3 PCIe 接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3 PCIe 接口\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5360,
+     "end_line": 5360
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-034",
+   "title": "2.3.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.1 接口特性\r\nE2000Q 的PCIe 控制器支持PCIe3.0 规范，兼容PCIe2.0 和PCIe1.0，接口特性如\r\n下：\r\n支持Root Complex 和End Point 两种模式，软件可配置；\r\n支持热插拔功能，热插拔信号检测在位为1，不在位为0；\r\n支持链路翻转和极性翻转，以及速率降级；\r\n支持单个控制器的关断和掉电；\r\n支持VGA 空间的访问。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5361,
+     "end_line": 5368
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-035",
+   "title": "2.3.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.2 信号描述\r\nE2000Q PCIe 需要提供100MHz 的差分时钟输入，时钟输入信号分别为\r\nPCIE0_REFCLKP/N、PCIE1_REFCLKP/N、PCIE2_REFCLKP/N。信号描述如表2-15 所示。\r\n表2-15\r\nPCIe 信号描述\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nPCIE0_TXP\r\nPCIE0_TXN\r\nO\r\n上/下行链路数据发送差分信号\r\n220nF 电容耦合连\r\n接\r\nPCIE0_RXP\r\nPCIE0_RXN\r\n上/下行链路数据接收差分信号\r\n220nF 电容耦合连\r\n接\r\nPCIE0_REFCLKP\r\nPCIE0_REFCLKN\r\nPCIE0、USB3.0 PORT0 参考时钟差分信号\r\n100nF 电容耦合连\r\n接或直连\r\nPCIE0_REXT\r\nPCIE0、USB3.0 PORT0 外部校准电阻输入信号，\r\n外接3.01KΩ 1%电阻到地\r\nPCIE1_TXP\r\nPCIE1_TXN\r\nO\r\n上/下行链路数据发送差分信号\r\n220nF 电容耦合连\r\n接\r\nPCIE1_RXP\r\nPCIE1_RXN\r\n上/下行链路数据接收差分信号\r\n220nF 电容耦合连\r\n接\r\nPCIE1_REFCLKP\r\nPCIE1_REFCLKN\r\nPCIE1、USB3.0 PORT1、SATA0 参考时钟差分信号\r\n100nF 电容耦合连\r\n接或直连\r\nPCIE1_REXT\r\nPCIE1、USB3.0 PORT1、SATA0 外部校准电阻输入\r\n信号，外接3.01KΩ 1%电阻到地\r\nPCIE2_TXP[3:0]\r\nPCIE2_TXN[3:0]\r\nO\r\n上/下行链路数据发送差分信号\r\n220nF 电容耦合连\r\n接\r\n\r\n2 接口说明\r\n\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nPCIE2_RXP[3:0]\r\nPCIE2_RXN[3:0]\r\n上/下行链路数据接收差分信号\r\n220nF 电容耦合连\r\n接\r\nPCIE2_REFCLKP\r\nPCIE2_REFCLKN\r\nPCIE2 参考时钟差分信号\r\n100nF 电容耦合连\r\n接或直连\r\nPCIE2_REXT\r\n外部校准电阻输入信号，外接3.01KΩ 1%电阻到\r\n地\r\nPCIE0_PRSNT\r\nPCIE0 控制器热拔插信号，高有效\r\n0：外设拔出，1：外设插入\r\n/\r\nPCIE1_PRSNT\r\nPCIE1 控制器热拔插信号，高有效\r\n0：外设拔出，1：外设插入\r\n/\r\nPCIE2_PRSNT0\r\nPCIE2 控制器C0（X4、X2，X1）热拔插信号，高\r\n有效\r\n0：外设拔出，1：外设插入\r\n/\r\nPCIE2_PRSNT1\r\nPCIE2 控制器C1 热拔插信号，高有效\r\n0：外设拔出，1：外设插入\r\n/\r\nPCIE2_PRSNT2\r\nPCIE2 控制器C2 热拔插信号，高有效\r\n0：外设拔出，1：外设插入\r\n/\r\nPCIE2_PRSNT3\r\nPCIE2 控制器C3 热拔插信号，高有效\r\n0：外设拔出，1：外设插入\r\n/\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5369,
+     "end_line": 5466
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-036",
+   "title": "2.3.3 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "注1：设备必须在系统上电前接入E2000Q 的指定接口；"
+   ],
+   "must_not": [],
+   "text": "2.3.3 拓扑结构\r\nPCIe 所有lane 均支持P、N 极性翻转，其中PCIE2 的X4 控制器还支持链路翻转。\r\nPCIE2 包含一个X4 和3 个X1 控制器，所以可以用作1 个X4、1 个X2+2 个X1 或4 个X1\r\n使用，常用连接拓扑如下图所示。PCIE2 的X4 链路翻转后向下兼容X2、X1 使用。\r\n图2-12\r\n下行链路1X4 拓扑结构\r\n\r\n2 接口说明\r\n\r\n图2-13\r\n下行链路1X2+2X1 拓扑结构\r\n图2-14\r\n下行链路4X1 拓扑结构\r\nE2000Q 系列芯片PCIe 链路中有一路PCIE1 与SATA0 存在复用关系，当用于连接M.2\r\n接口类型的SSD 时，支持协议自适应。典型连接拓扑如下图所示。\r\n图2-15\r\nSATA 与PCIe 自适应连接拓扑图\r\n注1：设备必须在系统上电前接入E2000Q 的指定接口；\r\n注2：该类型接口不支持热插拔，系统启动后无法再自适应插入设备；\r\n注3：检测逻辑为：当检测到PEDET 为高时，接口为PCIe 功能；当检测到PEDET 为低时，接口为SATA\r\n功能；\r\n注4：在不使用自适应功能时，软件可强制配置接口类型，不再使用SP_DET 信号。\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5467,
+     "end_line": 5491
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-037",
+   "title": "2.3.4 AC 电容、校准电阻要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.4 AC 电容、校准电阻要求\r\n输出端到接收端之间，PCIe 采用交流耦合的方式。具体要求如表2-16 所示。\r\n表2-16\r\nPCIe 链路AC 耦合电容\r\n最小值\r\n最大值\r\n建议值\r\n精度\r\n176nF\r\n265nF\r\n220nF\r\n10%\r\n如图2-16 所示，E2000Q 的PCIe 控制器需外接阻值为3.01KΩ精度为1%的校准电\r\n阻。外部校准电阻要求尽可能靠近芯片引脚，走线避开高速信号等干扰源。\r\n图2-16\r\n外部校准电阻参考电路\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5492,
+     "end_line": 5507
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-038",
+   "title": "2.3.5 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.5 PCB 设计建议\r\nPCB 设计参考第7 章，另外还有以下几点需注意；\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5508,
+     "end_line": 5509
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-039",
+   "title": "2.3.5.1 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.5.1 布线要求\r\n表2-17\r\nPCIe 布线要求\r\n参数\r\n要求\r\n阻抗控制数据信号\r\n85Ω±10%差分\r\n阻抗控制时钟信号\r\n100Ω±10%差分\r\n数据信号AC 耦合电容\r\n220nF 10%\r\n时钟信号AC 耦合电容\r\n100nF 10%\r\n校准电阻\r\n3.01KΩ 1%\r\n最大允许插入损耗@4GHz\r\n16dB\r\nLane 间长度差\r\n≤180mm\r\n差分对内等长\r\n≤0.05mm\r\n差分对间距离\r\n≥5H\r\n[1]\r\n与其它信号间距\r\n≥5H\r\n自身间距\r\n[2]\r\n≥7H\r\n与参考平面边缘间距\r\n≥5H\r\n建议过孔数量\r\n≤4 个\r\n\r\n2 接口说明\r\n\r\n注[1]：H 为走线距离最近参考平面的高度。\r\n注[2]：信号走线蛇形绕线时自身的间距要求。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5510,
+     "end_line": 5547
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-040",
+   "title": "2.3.5.2 交流耦合电容要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.5.2 交流耦合电容要求\r\nPCIe 需要在发送端和接收端之间放置交流耦合电容。建议使用0402 或更小尺寸的\r\n封装以减小阻抗变化，P/N 信号上一对耦合电容需紧挨且平行放置。\r\n图2-17\r\nAC 耦合电容PCB 摆放示意图\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5548,
+     "end_line": 5552
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-041",
+   "title": "2.3.5.3 走线间距要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "差分对P 和N 必须在同一层，并按"
+   ],
+   "must_not": [],
+   "text": "2.3.5.3 走线间距要求\r\nPCIe 差分对之间的走线间距(走线边缘距离)需至少保持5H，H 为走线距离最近参考\r\n平面的高度，尽量远离开关电源的开关管和电感等噪声源。\r\nPCIe 信号线建议并行走线，走线间不要有其他信号或过孔。TX 和RX 建议走在不同\r\n层，或者同层隔开尽可能远的距离（至少保持7H）。差分对P 和N 必须在同一层，并按\r\n照差分约束布线。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5553,
+     "end_line": 5558
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-042",
+   "title": "2.3.5.4 走线等长要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.5.4 走线等长要求\r\n差分对P 和N 两条走线总长度之差不能超过0.05mm。建议在扇出时，对较短的走线\r\n进行一定的等长补偿，TX 和RX 信号线间不要求等长。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5559,
+     "end_line": 5561
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-043",
+   "title": "2.3.5.5 走线参考要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.3.5.5 走线参考要求\r\nPCIe 信号走线需参考GND 网络，走线与参考平面边缘间距应不小于5H，保证参考\r\n平面完整，尽量保证没有跨平面分割的情况，如果设计中无法避免跨平面参考，建议在\r\n跨平面分割处用旁路电容将回流信号连接起来。\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5562,
+     "end_line": 5568
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-044",
+   "title": "2.4 以太网MAC 接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4 以太网MAC 接口\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5569,
+     "end_line": 5569
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-045",
+   "title": "2.4.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.1 接口特性\r\nE2000Q 集成了4 个以太网控制器，共有的功能特性如下：\r\n支持802.1as 协议；\r\n支持巨帧(Jumbo 帧)，最大帧长度为16KB；\r\n支持接收、发送方向校验和卸载功能；\r\n支持部分存储转发功能；\r\n接收方向支持帧过滤和帧筛选功能；\r\n支持内/外回环(loopback)功能；\r\n支持大数据包发送卸载(Large Send Offload,LSO)。\r\n各以太网控制器独有的特性如下：\r\n控制器0 支持千兆SGMII（最高到2.5G）、USXGMII（10G）、1000BASE-X、10GBASE-R、\r\n10GBASE-KR\r\n[1]，支持8 队列；\r\n控制器1 支持千兆SGMII（最高到2.5G）、USXGMII（10G）、1000BASE-X、10GBASE-R、\r\n10GBASE-KR\r\n[1]，支持4 队列；\r\n控制器2、3 支持SGMII 接口（最高到2.5G）、1000BASE-X、RGMII 接口，支持4\r\n队列。\r\n注[1]：链路可以按照10GBASE-KR 使用，但不支持AN 自协商和硬件训练机制，由于Serdes 驱\r\n动能力问题插损支持受限（参考表2-33）。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5570,
+     "end_line": 5589
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-046",
+   "title": "2.4.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.2 信号描述\r\nE2000Q 有4 路SGMII 接口，使用时需要提供100MHz 的差分时钟输入，时钟输入信\r\n号分别为\r\nSGMII0_REFCLKP/N 、SGMII1_REFCLKP/N 、SGMII2_REFCLKP/N\r\n和\r\nSGMII3_REFCLKP/N。E2000Q 另有2 路USXGMII 接口，使用时需要提供156.25MHz 的差分\r\n时钟输入；另外SGMII2 与RGMII0、SGMII3 与RGMII1 分别共用同一个控制器及同一路\r\nMDIO 接口，不能同时使用。MDIO 接口与SGMII、RGMII 有对应关系，使用时需注意。信\r\n号描述见以下表格所示。\r\n表2-18\r\nSGMII 信号描述\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nSGMII0_TXP\r\nO\r\n数据发送差分信号\r\n100nF 电容耦合连接\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5590,
+     "end_line": 5609
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-047",
+   "title": "3 电源管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "3 电源管理\r\n\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nSGMII0_TXN\r\nSGMII0_RXP\r\nSGMII0_RXN\r\n数据接收差分信号\r\n100nF 电容耦合连接\r\nSGMII0_REFCLKP\r\nSGMII0_REFCLKN\r\nSGMII0、USXGMII0 参考时钟差分信号\r\n100nF 电容耦合连接或\r\n直连\r\nSGMII0_REXT\r\nSGMII0、USXGMII0 外部校准电阻输入信号，\r\n外接3.01KΩ 1%电阻到地\r\nMDC0\r\nO\r\nSGMII0 管理接口时钟信号\r\n源端串接22Ω电阻\r\nMDIO0\r\nI/O\r\nSGMII0 管理接口数据信号\r\n直连\r\nSGMII1_TXP\r\nSGMII1_TXN\r\nO\r\n数据发送差分信号\r\n100nF 电容耦合连接\r\nSGMII1_RXP\r\nSGMII1_RXN\r\n数据接收差分信号\r\n100nF 电容耦合连接\r\nSGMII1_REFCLKP\r\nSGMII1_REFCLKN\r\nSGMII1、USXGMII1、SATA1 参考时钟差分信\r\n号\r\n100nF 电容耦合连接或\r\n直连\r\nSGMII1_REXT\r\nSGMII1、USXGMII1、SATA1 外部校准电阻输\r\n入信号，外接3.01KΩ 1%电阻到地\r\nMDC1\r\nO\r\nSGMII1 管理接口时钟信号\r\n源端串接22Ω电阻\r\nMDIO1\r\nI/O\r\nSGMII1 管理接口数据信号\r\n直连\r\nSGMII2_TXP\r\nSGMII2_TXN\r\nO\r\n数据发送差分信号\r\n100nF 电容耦合连接\r\nSGMII2_RXP\r\nSGMII2_RXN\r\n数据接收差分信号\r\n100nF 电容耦合连接\r\nSGMII2_REFCLKP\r\nSGMII2_REFCLKN\r\nSGMII2、DP0 参考时钟差分信号\r\n100nF 电容耦合连接或\r\n直连\r\nSGMII2_REXT\r\nSGMII2、DP0 外部校准电阻输入信号，外接\r\n3.01KΩ 1%电阻到地\r\nMDC2\r\nO\r\nSGMII2 管理接口时钟信号\r\n源端串接22Ω电阻\r\nMDIO2\r\nI/O\r\nSGMII2 管理接口数据信号\r\n直连\r\nSGMII3_TXP\r\nSGMII3_TXN\r\nO\r\n数据发送差分信号\r\n100nF 电容耦合连接\r\nSGMII3_RXP\r\nSGMII3_RXN\r\n数据接收差分信号\r\n100nF 电容耦合连接\r\nSGMII3_REFCLKP\r\nSGMII3_REFCLKN\r\nSGMII3、DP1 参考时钟差分信号\r\n100nF 电容耦合连接或\r\n直连\r\nSGMII3_REXT\r\nSGMII3、DP1 外部校准电阻输入信号，外接\r\n3.01KΩ 1%电阻到地\r\n\r\n2 接口说明\r\n\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nMDC3\r\nO\r\nSGMII3 管理接口时钟信号\r\n源端串接22Ω电阻\r\nMDIO3\r\nI/O\r\nSGMII3 管理接口数据信号\r\n直连\r\n表2-19\r\nUSXGMII 信号描述\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nUSXGMII0_TXP\r\nUSXGMII0_TXN\r\nO\r\n数据发送差分信号\r\nUSXGMII0_RXP\r\nUSXGMII0_RXN\r\n数据接收差分信号\r\nSGMII0_REFCLKP\r\nSGMII0_REFCLKN\r\nUSXGMII0、SGMII0 参考时钟差分信号\r\n100nF 电容耦合连接或\r\n直连\r\nSGMII0_REXT\r\nUSXGMII0、SGMII0 外部校准电阻输入信号，\r\n外接3.01KΩ 1%电阻到地\r\nUSXGMII1_TXP\r\nUSXGMII1_TXN\r\nO\r\n数据发送差分信号\r\nUSXGMII1_RXP\r\nUSXGMII1_RXN\r\n数据接收差分信号\r\nSGMII1_REFCLKP\r\nSGMII1_REFCLKN\r\nUSXGMII1、SGMII1、SATA1 参考时钟差分信\r\n号\r\n100nF 电容耦合连接或\r\n直连\r\nSGMII1_REXT\r\nUSXGMII1、SGMII1、SATA1 外部校准电阻输\r\n入信号，外接3.01KΩ 1%电阻到地\r\n表2-20\r\nRGMII 信号描述\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nRGMII0_TXD0\r\nO\r\n发送数据位0\r\nMAC 端串接22Ω电阻\r\nRGMII0_TXD1\r\nO\r\n发送数据位1\r\nMAC 端串接22Ω电阻\r\nRGMII0_TXD2\r\nO\r\n发送数据位2\r\nMAC 端串接22Ω电阻\r\nRGMII0_TXD3\r\nO\r\n发送数据位3\r\nMAC 端串接22Ω电阻\r\nRGMII0_TXCLK\r\nO\r\n发送数据采样时钟\r\nMAC 端串接22Ω电阻\r\nRGMII0_TXCTL\r\nO\r\n发送控制\r\nMAC 端串接22Ω电阻\r\nRGMII0_RXD0\r\n接收数据位0\r\nPHY 端串接22Ω电阻\r\nRGMII0_RXD1\r\n接收数据位1\r\nPHY 端串接22Ω电阻\r\nRGMII0_RXD2\r\n接收数据位2\r\nPHY 端串接22Ω电阻\r\nRGMII0_RXD3\r\n接收数据位3\r\nPHY 端串接22Ω电阻\r\nRGMII0_RXCLK\r\n接收数据采样时钟\r\nPHY 端串接22Ω电阻\r\nRGMII0_RXCTL\r\n接收控制\r\nPHY 端串接22Ω电阻\r\nMDC2\r\nO\r\nRGMII0 管理接口时钟信号\r\nMAC 端串接22Ω电阻\r\n\r\n2 接口说明\r\n\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nMDIO2\r\nI/O\r\nRGMII0 管理接口数据信号\r\n直连\r\nRGMII1_TXD0\r\nO\r\n发送数据位0\r\nMAC 端串接22Ω电阻\r\nRGMII1_TXD1\r\nO\r\n发送数据位1\r\nMAC 端串接22Ω电阻\r\nRGMII1_TXD2\r\nO\r\n发送数据位2\r\nMAC 端串接22Ω电阻\r\nRGMII1_TXD3\r\nO\r\n发送数据位3\r\nMAC 端串接22Ω电阻\r\nRGMII1_TXCLK\r\nO\r\n发送数据采样时钟\r\nMAC 端串接22Ω电阻\r\nRGMII1_TXCTL\r\nO\r\n发送控制\r\nMAC 端串接22Ω电阻\r\nRGMII1_RXD0\r\n接收数据位0\r\nPHY 端串接22Ω电阻\r\nRGMII1_RXD1\r\n接收数据位1\r\nPHY 端串接22Ω电阻\r\nRGMII1_RXD2\r\n接收数据位2\r\nPHY 端串接22Ω电阻\r\nRGMII1_RXD3\r\n接收数据位3\r\nPHY 端串接22Ω电阻\r\nRGMII1_RXCLK\r\n接收数据采样时钟\r\nPHY 端串接22Ω电阻\r\nRGMII1_RXCTL\r\n接收控制\r\nPHY 端串接22Ω电阻\r\nMDC3\r\nO\r\nRGMII1 管理接口时钟信号\r\nMAC 端串接22Ω电阻\r\nMDIO3\r\nI/O\r\nRGMII1 管理接口数据信号\r\n直连\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5610,
+     "end_line": 5869
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-048",
+   "title": "2.4.3 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.3 电气特性\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5870,
+     "end_line": 5870
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-049",
+   "title": "2.4.3.1 MDIO",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.3.1 MDIO\r\n表2-21\r\nMDIO 接口时序特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nT\r\nMDC 时钟周期\r\n-\r\nns\r\nT1\r\nMDIO 信号输出时相对MDC 下降沿的偏差（+/-）0\r\n-\r\nns\r\nT2\r\nMDIO 信号输入时的建立时间\r\n-\r\n-\r\nns\r\nT3\r\nMDIO 信号输入时的保持时间\r\n-\r\n-\r\nns\r\n图2-18\r\nMDIO 接口时序\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5871,
+     "end_line": 5902
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-050",
+   "title": "2.4.3.2 RGMII",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.3.2 RGMII\r\n表2-22\r\nRGMII 接口AC 电气特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nt R\r\n信号电平由低到高跳变时间\r\n（20%-80%）\r\n-\r\n-\r\n0.75\r\nns\r\nt F\r\n信号电平由高到低跳变时间\r\n（20%-80%）\r\n-\r\n-\r\n0.75\r\nns\r\ntD\r\n时钟占空比\r\n%\r\n表2-23\r\nRGMII 接口时序特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nT1\r\nTX_CLK 时钟周期\r\n-\r\n-\r\nns\r\nT2\r\nTX_CLK 与TXD、TX_CTL 偏差\r\n-\r\nns\r\nT3\r\nRX_CLK 时钟周期\r\n-\r\n-\r\nns\r\nT4\r\nRXD、RX_CTL 的hold\r\n-\r\n-\r\nns\r\nT5\r\nRXD、RX_CTL 的setup\r\n-\r\n-\r\nns\r\n图2-19\r\nRGMII 接口时序图\r\n注：支持RGMII 接口延迟设置，在进行PCB 设计时可以一定程度降低对时序的要求，通过延迟配置\r\n\r\n2 接口说明\r\n\r\n满足时序要求。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5903,
+     "end_line": 5967
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-051",
+   "title": "2.4.3.3 SGMII",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.3.3 SGMII\r\n表2-24\r\nSGMII 引脚DC 电气特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nVring\r\n输出振铃\r\n%\r\nΔRo\r\n阻抗匹配偏差\r\n-\r\n10%\r\n-\r\n%\r\nVi\r\n输入电压范围\r\n1725\r\nmV\r\n表2-25\r\nSGMII 发送模块AC 电特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nJD\r\n确定性抖动\r\n-\r\n-\r\n0.17\r\nUI\r\nJT\r\n总抖动\r\n-\r\n-\r\n0.35\r\nUI\r\nUI\r\n800-100ppm\r\n800+100ppm\r\nps\r\n表2-26\r\nSGMII 接收模块AC 电特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nJD\r\n确定性抖动\r\n-\r\n-\r\n0.17\r\nUI\r\nJT\r\n总抖动\r\n-\r\n-\r\n0.35\r\nUI\r\nUI\r\n800-100ppm\r\n800+100ppm\r\nps\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5968,
+     "end_line": 6037
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-052",
+   "title": "2.4.3.4 USXGMII",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.3.4 USXGMII\r\n表2-27\r\nUSXGMII 引脚AC 电气特性\r\n符号\r\n特性\r\n最小值\r\n最大值\r\n单位\r\ntCK(avg)\r\n输出上升时间（20%至80%）\r\n--\r\nps\r\ntCH(avg)\r\n输出下降时间（20%至80%）\r\n--\r\nps\r\nDj\r\n确定性抖动\r\n--\r\n16.90\r\nps\r\n眼宽\r\n67.87\r\n--\r\nps\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6038,
+     "end_line": 6062
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-053",
+   "title": "2.4.3.5 10GBASE-KR",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.3.5 10GBASE-KR\r\n表2-28\r\n10GBASE-KR 发送模块DC 电特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nVtx-dff\r\n输出差分电压\r\n-\r\n1200\r\nmV\r\n\r\n2 接口说明\r\n\r\n表2-29\r\n10GBASE-KR 接收模块DC 电特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nVrx-dff\r\n输入差分电压\r\n-\r\n1200\r\nmV\r\nRrd\r\n差分阻抗\r\n-\r\nΩ\r\n表2-30\r\n10GBASE-KR 发送模块AC 电特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nTbaud\r\n发送波特率\r\n10.3125-100(ppm)\r\n10.3125\r\n10.3125+100(ppm)\r\nGBd\r\nDj\r\n确定性抖动\r\n-\r\n-\r\n0.155\r\nUI\r\nTj\r\n总抖动\r\n-\r\n-\r\n0.3\r\nUI\r\n表2-31\r\n10GBASE-KR 接收模块AC 电特性\r\n符号\r\n描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nRbaud\r\n接收波特率\r\n10.3125-100(ppm)\r\n10.3125\r\n10.3125+100(ppm)\r\nGBd\r\nRj\r\n随机抖动\r\n-\r\n-\r\n0.130\r\nUI\r\nSjmax\r\n总抖动\r\n-\r\n-\r\n0.115\r\nUI\r\nDco\r\n占空比失真\r\n-\r\n-\r\n0.035\r\nUI\r\nTj\r\n总抖动\r\n-\r\n-\r\n1.0\r\nUI\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6063,
+     "end_line": 6160
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-054",
+   "title": "2.4.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.4 拓扑结构\r\nSGMII 接口与PHY 芯片交流耦合连接即可，MDIO 接口需要注意有对应关系，另外MDIO\r\n需外接1.5K 电阻上拉，图示上拉电平VDDIO 需用户按实际应用确定。\r\n图2-20\r\nSGMII 连接拓扑\r\nUSXGMII 接口与光模块连接器直接连接即可，如图所示。\r\n\r\n2 接口说明\r\n\r\n图2-21\r\nUSXGMII 连接拓扑\r\nRGMII 接口连接方式如图，MDIO 接口需要注意有对应关系，其中MDIO 信号需外接\r\n1.5K 电阻上拉，图示上拉电平VDDIO 需用户按实际应用确定。\r\n图2-22\r\nRGMII 连接拓扑\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6161,
+     "end_line": 6175
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-055",
+   "title": "2.4.5 校准电阻要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.5 校准电阻要求\r\n如图2-23 所示，使用SGMII、USXGMII 时，对应的控制器需外接阻值为3.01KΩ精\r\n度为1%的校准电阻。外部校准电阻要求尽可能靠近芯片引脚，走线避开高速信号等干扰\r\n源。\r\n图2-23\r\n外部校准电阻连接示意图\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6176,
+     "end_line": 6184
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-056",
+   "title": "2.4.6 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.4.6 PCB 设计建议\r\n表2-32\r\nSGMII 布线要求\r\n参数\r\n要求\r\n阻抗控制\r\n100Ω±10%差分\r\nAC 耦合电容\r\n100nF 10%\r\n校准电阻\r\n3.01KΩ 1%\r\n最大允许插入损耗\r\n9dB@1562.5MHz\r\n差分对内等长\r\n≤0.07mm\r\n差分对间距离\r\n≥5H\r\nTX 和RX 间距离\r\n≥7H\r\n与其它信号间距\r\n≥5H\r\n与参考平面边缘最小间距\r\n≥5H\r\n建议过孔数量\r\n≤2 个\r\n表2-33\r\nUSXGMII 布线要求\r\n参数\r\n要求\r\n阻抗控制\r\n100Ω±10%差分\r\n时钟信号AC 耦合电容\r\n100nF 10%\r\n校准电阻\r\n3.01KΩ 1%\r\n最大允许插入损耗\r\n6.5dB@5GHz（SFI）\r\n6.0dB@5GHz（XFI）\r\n15dB@5GHz（10GBASE-KR）\r\n差分对内等长\r\n≤0.05mm\r\n差分对间距离\r\n≥5H\r\n与其它信号间距\r\n≥5H\r\n自身间距\r\n≥7H\r\n与参考平面边缘最小间距\r\n≥5H\r\n建议过孔数量\r\n≤2 个\r\n表2-34\r\nRGMII 布线要求\r\n参数\r\n要求\r\n阻抗控制\r\n50Ω±10%单端\r\n最大走线长度\r\n150mm\r\n信号等长要求\r\n-2.5mm≤L(TXCLK- TXD[3:0]、TX_CTL)≤2.5mm\r\n-2.5mm≤L(RXCLK- RXD[3:0]、RX_CTL)≤2.5mm\r\n信号间最小距离\r\n≥3H\r\n\r\n2 接口说明\r\n\r\n参数\r\n要求\r\n时钟信号与其它信号间距\r\n≥5H\r\n与参考平面边缘最小间距\r\n≥5H\r\n建议过孔数量\r\n≤3 个\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6185,
+     "end_line": 6259
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-057",
+   "title": "2.4.6.1 设计要点",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "USXGMII、SGMII 信号走线必须按100Ω±10%阻抗差分走线；",
+    "RGMII 信号走线必须"
+   ],
+   "must_not": [],
+   "text": "2.4.6.1 设计要点\r\n尽量缩短走线长度，尽量远离开关电源、晶振等噪声源，以保证信号质量。\r\nUSXGMII、SGMII 信号走线必须按100Ω±10%阻抗差分走线；RGMII 信号走线必须\r\n按50Ω±10%阻抗走线。\r\n建议在换层孔附近添加回流孔，尽量减少换层过孔数量。\r\n信号走线参考GND，保证参考平面完整，不建议存在跨平面分割的情况。如果设\r\n计中无法避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连接起\r\n来。\r\nSGMII 信号100nF 耦合电容建议靠近接收端并对称放置。\r\nSGMII 接口TX/RX 信号之间走线无需等长处理，同层走线时，建议保证7H 间距。\r\nUSXGMII 接口TX/RX 信号之间走线无需等长处理，TX 和RX 建议走在不同层，或者\r\n同层隔开尽可能远的距离（至少保持7H）。\r\nUSXGMII 接口建议在扇出时对差分对内P 和N 较短的走线进行一定的等长补偿。\r\nRGMII 走线TX 信号组内等长、RX 信号组内等长，TX 和RX 间无需等长。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6260,
+     "end_line": 6273
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-058",
+   "title": "2.5 USB 接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5 USB 接口\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6274,
+     "end_line": 6274
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-059",
+   "title": "2.5.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.1 接口特性\r\nE2000Q 集成了USB2.0 OTG 控制器、USB3.0 控制器两种USB 控制器，其中：\r\nUSB2.0 OTG 控制器支持如下功能：\r\n兼容USB2.0 规范；\r\n可工作在Host 或Device 模式；\r\n支持挂载单个设备，不支持HUB 设备；\r\nUSB2_P3 和USB2_P4 控制器支持USB 唤醒功能；\r\n支持USB2.0 L0/L1/L2 电源管理；\r\n支持SRP 会话请求协议；\r\n每个方向最大支持6 个端点。\r\nUSB3.0 控制器支持如下功能：\r\n\r\n2 接口说明\r\n\r\n兼容USB3.0 规范，向下兼容USB2.0 规范\r\n兼容xHCI1.1 规范；\r\n包含一个USB2.0 端口和一个USB3.0 端口；\r\nUSB3.0 端口兼容PIPE 接口；\r\n支持USB2.0 L0/L1/L2 电源管理；\r\n支持USB3.0 U0/U1/U2.U3 电源管理；\r\n支持超速、高速、全速和低速模式；\r\n最大支持挂载USB 设备不超过16 个，包含USB HUB 设备(*挂载设备能力以实测为\r\n准)。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6275,
+     "end_line": 6297
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-060",
+   "title": "2.5.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.2 信号描述\r\nE2000Q 含有两个带复用功能的USB3.0 接口(兼容USB2.0 接口，USB2_P0/P1)，使用\r\n时需要提供100MHz 的差分时钟输入，时钟输入信号分别为PCIE0_REFCLKP/N 、\r\nPCIE1_REFCLKP/N。\r\n另外E2000Q 还集成了3 个USB2.0 接口USB2_P2/P3/P4，均支持OTG 功能。\r\n表2-35\r\nUSB 接口描述\r\n信号名称\r\n方向\r\n信号描述\r\n推荐连接方式\r\nPCIE0_REFCLKP\r\nUSB3.0 PORT0、PCIE0 100MHz 参考时钟差\r\n分信号\r\n100nF 电容耦合连接\r\n或直连\r\nPCIE0_REFCLKN\r\nPCIE1_REFCLKP\r\nUSB3.0 PORT1、PCIE1、SATA0 100MHz 参考\r\n时钟差分信号\r\n100nF 电容耦合连接\r\n或直连\r\nPCIE1_REFCLKN\r\nUSB3_P0_TXP\r\nO\r\nUSB3.0 数据发送差分信号\r\n100nF 电容耦合连接\r\nUSB3_P0_TXN\r\nO\r\nUSB3_P0_RXP\r\nUSB3.0 数据接收差分信号\r\n直连\r\nUSB3_P0_RXN\r\n直连\r\nUSB2_P0_DP\r\nI/O\r\nUSB2.0 数据输入输出差分信号，用于USB3\r\n向下兼容\r\n直连\r\nUSB2_P0_DM\r\nI/O\r\n直连\r\nUSB2_P0_REXT\r\nUSB2.0 PORT0 外部校准电阻输入信号，外\r\n接200Ω 1%电阻到地\r\nPCIE0_REXT\r\nUSB3.0 PORT0、PCIE0 外部校准电阻输入信\r\n号，外接3.01KΩ 1%电阻到地\r\nUSB3_P1_TXP\r\nO\r\nUSB3.0 数据发送差分信号\r\n100nF 电容耦合连接\r\nUSB3_P1_TXN\r\nO\r\nUSB3_P1_RXP\r\nUSB3.0 数据接收差分信号\r\n直连\r\nUSB3_P1_RXN\r\n直连\r\n\r\n2 接口说明\r\n\r\nUSB2_P1_DP\r\nI/O\r\nUSB2.0 数据输入输出差分信号，用于USB3\r\n向下兼容\r\n直连\r\nUSB2_P1_DM\r\nI/O\r\n直连\r\nUSB2_P1_REXT\r\nUSB2.0 PORT1 外部校准电阻输入信号，外\r\n接200Ω 1%电阻到地\r\nPCIE1_REXT\r\nUSB3.0 PORT1、PCIE1、SATA0 外部校准电\r\n阻输入信号，外接3.01KΩ 1%电阻到地\r\nUSB2_P2_DP\r\nI/O\r\nUSB2.0 数据输入输出差分信号\r\n直连\r\nUSB2_P2_DM\r\nI/O\r\n直连\r\nUSB2_P2_ID\r\nOTG 识别管脚，HOST 时为低，Device 时为\r\n高，内部有上拉电阻到1.8V\r\nUSB2_P2_VBUSDET\r\nVBUS 检测管脚\r\nVBUS分压到1.8V接入\r\nUSB2_P2_REXT\r\nUSB2.0 PORT2 外部校准电阻输入信号，外\r\n接200Ω 1%电阻到地\r\nUSB2_P3_DP\r\nI/O\r\nUSB2.0 数据输入输出差分信号\r\n直连\r\nUSB2_P3_DM\r\nI/O\r\n直连\r\nUSB2_P3_ID\r\nOTG 识别管脚，HOST 时为低，Device 时为\r\n高，内部有上拉电阻到1.8V\r\nUSB2_P3_VBUSDET\r\nVBUS 检测管脚\r\nVBUS分压到1.8V接入\r\nUSB2_P3_REXT\r\nUSB2.0 PORT3 外部校准电阻输入信号，外\r\n接200Ω 1%电阻到地\r\nUSB2_P4_DP\r\nI/O\r\nUSB2.0 数据输入输出差分信号\r\n直连\r\nUSB2_P4_DM\r\nI/O\r\n直连\r\nUSB2_P4_ID\r\nOTG 识别管脚，HOST 时为低，Device 时为\r\n高，内部有上拉电阻到1.8V\r\nUSB2_P4_VBUSDET\r\nVBUS 检测管脚\r\nVBUS分压到1.8V接入\r\nUSB2_P4_REXT\r\nUSB2.0 PORT4 外部校准电阻输入信号，外\r\n接200Ω 1%电阻到地\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6298,
+     "end_line": 6421
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-061",
+   "title": "2.5.3 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.3 电气特性\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6422,
+     "end_line": 6422
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-062",
+   "title": "2.5.3.1 USB2.0",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.3.1 USB2.0\r\n表2-36\r\nUSB2.0 接口电气特性\r\n符号\r\n说明\r\n最小值\r\n最大值\r\n单位\r\nVIH\r\n输入电平高\r\n0.7VDDX\r\n[1]\r\nVDDX\r\n[1]\r\nVIL\r\n输入电平低\r\n0.2\r\nVOH\r\n输出电平高\r\n0.8VDDX\r\n[1]\r\nVDDX\r\n[1]\r\n\r\n2 接口说明\r\n\r\nVOL\r\n输出电平低\r\n0.2\r\n注[1]：VDDX=VDDA，VCCA18 或VCCA33；\r\nVDDA = 0.8V±5% ，VCCA18 = 1.8V±5% ，VCCA33 = 3.3V±5%。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6423,
+     "end_line": 6453
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-063",
+   "title": "2.5.3.2 USB3.0",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.3.2 USB3.0\r\n表2-37\r\nUSB3.0 接口电气特性\r\n符号\r\n说明\r\n最小值\r\n经典值\r\n最大值\r\n单位\r\nVDIFF\r\nTxp（接收器的Rxp）上的电压相对\r\n于Txn（接收器的Rxn）的电压，即\r\n差分电压VDIFF=Txp-Txn\r\n-0.4\r\n0.4\r\nVDIFF-PP\r\n差分电压摆幅，即差分电压峰峰\r\n值VDIFF-PP=2*VDIFF\r\n0.8\r\n1.2\r\nVCM\r\n共模电压VCM=(Txp+Txn)/2，同一差\r\n分对上相对于地的平均电压\r\n2.2\r\nVTX_out_normal_m\r\node\r\n正常模式下的输出电压峰峰值\r\n0.8\r\n1.2\r\nVTX_out_low_power\r\n_mode\r\n低功耗模式下的输出电压峰峰值\r\n0.4\r\n1.2\r\nZTX_cal\r\n正常模式时，校准后的差分驱动\r\n阻抗\r\nΩ\r\nZTX_PD\r\n设置输出为高阻时的阻抗\r\n9K\r\nΩ\r\nTTRANSITION\r\n20%-80%转换时间\r\nps\r\nZRX_cal\r\n正常模式下，校准后的接收端阻\r\n抗（单端）\r\nΩ\r\nZRX_PD_POS\r\n复位或关电期间，直流共模输入\r\n阻抗\r\n10K(0~200mV)\r\n20K(>200mV)\r\nΩ\r\nΩ\r\nZRX_PD_NEG\r\n复位或关电期间，直流共模输入\r\n阻抗\r\n1K(<0V)\r\nΩ\r\n+FREFEXT_SSC\r\n扩频时钟模式下，参考时钟频率\r\n99.97\r\n100.03\r\nMHz\r\n\r\n2 接口说明\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6454,
+     "end_line": 6522
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-064",
+   "title": "2.5.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.4 拓扑结构\r\n图2-24\r\nUSB-A 接口连接拓扑\r\n图2-25\r\nMicro-B 接口连接拓扑\r\n图2-26\r\nUSB 过流保护连接拓扑\r\nUSB 接口过流保护连接拓扑如图2-26 所示，USB 5V 电源需通过过流保护芯片接入\r\n连接器，E2000Q 通过VBUS_EN 引脚输出高电平使能过流保护芯片，当外部设备短路或电\r\n流超过过流保护芯片阈值时，该芯片输出低电平给OC_N 引脚，E2000Q 收到过流信号后\r\n进行相应逻辑处理最终关闭该端口并通知用户该端口存在故障。\r\n\r\n2 接口说明\r\n\r\n图2-26 所示上拉电平VDDIO 需用户按实际应用确定。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6523,
+     "end_line": 6537
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-065",
+   "title": "2.5.5 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.5 PCB 设计建议\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6538,
+     "end_line": 6538
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-066",
+   "title": "2.5.5.1 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.5.1 布线要求\r\n表2-38\r\nUSB 布线要求\r\n参数\r\n要求\r\n阻抗控制\r\n90Ω±10%差分、50Ω±10%单端\r\nAC 耦合电容\r\n100nF 10%\r\nUSB3.0 校准电阻\r\n3.01KΩ 1%\r\nUSB2.0 校准电阻\r\n200Ω 1%\r\nUSB3.0 最大允许插入损耗@2.5GHz\r\n9dB\r\n最大走线长度共模电感到连接器(USB2.0 信号)\r\n24mm\r\n差分组内等长(USB2.0 信号)\r\n≤1.2mm\r\n差分组内等长(USB3.0 信号)\r\n≤0.1mm\r\n差分对间距离(USB3.0Gne1 5Gbps)\r\n≥7H\r\n差分对间距离(USB2.0 信号)\r\n≥5H\r\n与其它信号间距\r\n≥5H\r\n与参考平面边缘间距\r\n≥5H\r\n建议过孔数量\r\n≤2 个\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6539,
+     "end_line": 6569
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-067",
+   "title": "2.5.5.2 设计要点",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.5.5.2 设计要点\r\nUSB 信号走线参考GND，保证参考平面完整，尽量保证没有跨平面分割的情况。如\r\n果设计中无法避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连\r\n接起来。\r\n尽量缩短走线长度，尽量远离开关电源、晶振等噪声源，以保证信号质量。\r\n建议在换层孔附近添加回流孔，尽量减少换层过孔数量。\r\n根据USB3.0 规范要求，USB-A 接口电力传输为5V 900mA，USB-C 接口可高达\r\n100W(20V 5A)，建议VBUS 电源采用铺平面方式接入，建议提高电源通路的通流\r\n能力达到规范要求的1.5 倍。\r\nTX 与RX 信号之间走线无需等长处理。\r\nTX 信号上串接的100nF 耦合电容尽量靠近USB 座并对称放置，图2-27。\r\nUSB 座上机壳地与数字地完全分开单点连接。\r\nUSB 信号ESD 防护和过流保护器件靠近USB 座放置，图2-27。\r\n\r\n2 接口说明\r\n\r\n图2-27\r\nUSB 接口耦合电容与ESD 器件PCB 布局示意图\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6570,
+     "end_line": 6587
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-068",
+   "title": "2.6 DisplayPort 接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.6 DisplayPort 接口\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6588,
+     "end_line": 6588
+    }
+   ]
+  }
+ ]
+}

@@ -91,6 +91,71 @@ def connector_pairs(dev_pins: dict, kinds: dict) -> tuple[list, list]:
     return pairs, links
 
 
+# 平台识别（P4-B）：读 rules/index.json 的 platform.*.detect；缺失时扫 rules/platform/* 目录名回退。
+_ROOT = Path(__file__).resolve().parents[3]
+FALLBACK_MIN_PINS = 100
+
+
+def _load_platform_specs(root: Path | None = None) -> dict:
+    """→ {chip: {"model_regex":..., "min_pins":...}}；优先 rules/index.json，缺失时目录名回退。"""
+    root = root or _ROOT
+    plats: dict[str, dict] = {}
+    idxp = root / "rules" / "index.json"
+    if idxp.exists():
+        try:
+            d = json.loads(idxp.read_text(encoding="utf-8"))
+        except Exception:
+            d = {}
+        for chip, spec in (d.get("platform") or {}).items():
+            if not isinstance(spec, dict):
+                continue
+            det = spec.get("detect") if isinstance(spec.get("detect"), dict) else spec
+            rx = det.get("model_regex") or det.get("regex") or chip
+            try:
+                mp = int(det.get("min_pins", spec.get("min_pins", 0)) or 0)
+            except (TypeError, ValueError):
+                mp = 0
+            plats[chip] = {"model_regex": rx, "min_pins": mp}
+    if not plats:                                  # 优雅降级：扫 rules/platform/* 目录名
+        base = root / "rules" / "platform"
+        if base.is_dir():
+            for p in sorted(base.iterdir()):
+                if p.is_dir():
+                    plats[p.name] = {"model_regex": re.escape(p.name),
+                                     "min_pins": FALLBACK_MIN_PINS}
+    return plats
+
+
+def detect_platform(devices: list[dict], root: Path | None = None) -> tuple[str, str, dict]:
+    """识别主控平台 → (platform, platform_device, summary)。
+
+    规则：遍历 kind==IC 器件，re.search(model_regex, model, re.I) 且 len(pins)>=min_pins；
+    多个命中取引脚数最多者。匹配不到 → ("", "", {status:NO_PLATFORM_MATCH})，不抛错。
+    """
+    specs = _load_platform_specs(root)
+    ic_devs = [d for d in devices if str(d.get("kind", "")).upper() == "IC"]
+    candidates: list[dict] = []
+    best = None                                   # (npins, chip, device_id)
+    for chip, spec in specs.items():
+        try:
+            rx = re.compile(str(spec.get("model_regex") or chip), re.I)
+        except re.error:
+            rx = re.compile(re.escape(chip), re.I)
+        minp = int(spec.get("min_pins") or 0)
+        for d in ic_devs:
+            model = str(d.get("model") or "")
+            npins = len(d.get("pins") or {})
+            if rx.search(model) and npins >= minp:
+                candidates.append({"chip": chip, "device": d.get("id", ""),
+                                   "model": model, "pins": npins})
+                if best is None or npins > best[0]:
+                    best = (npins, chip, d.get("id", ""))
+    if best:
+        _, chip, dev_id = best
+        return chip, dev_id, {"device": dev_id, "status": "MATCHED", "candidates": candidates}
+    return "", "", {"device": "", "status": "NO_PLATFORM_MATCH", "candidates": candidates}
+
+
 def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | None = None) -> dict:
     gcomp = json.loads((b_prep / "global_components.json").read_text(encoding="utf-8"))
     gnets = json.loads((b_prep / "global_nets.json").read_text(encoding="utf-8"))
@@ -144,6 +209,31 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
     for i, t in enumerate(all_traces):
         t["id"] = f"T-{i+1:04d}"
 
+    # NG-010：同网络内 side 必须一致（网络级统一，禁止同网混合 side）。
+    # 优先级：电源/地→pwr；差分对成员→bi；起点脚(接插件)→up；终点脚→down；否则 bi。
+    net_side, net_pair = {}, {}
+    for key, e in gnets.items():
+        b, net = e["board"], e["net"]
+        roles = set()
+        for j in e.get("joins", []):
+            rd, pn = j.get("refdes", ""), j.get("pin", "")
+            if not rd:
+                continue
+            if _power(net):
+                roles.add("pwr")
+            elif CONV.diff_pair_key(net):
+                roles.add("diff")
+            elif (b, rd, pn) in start_pins:
+                roles.add("up")
+            elif (b, rd, pn) in end_pins:
+                roles.add("down")
+            else:
+                roles.add("bi")
+        chosen = next(r for r in ("pwr", "diff", "up", "down", "bi") if r in roles)
+        net_side[(b, net)] = "bi" if chosen in ("diff", "bi") else chosen
+        _k = CONV.diff_pair_key(net)
+        net_pair[(b, net)] = _k[0] if _k else ""          # NG-012 pair_id
+
     # ---- 0Ω 别名组 ----
     alias_of = {}
     for key, c in gcomp.items():
@@ -187,14 +277,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
             if not net:
                 continue
             nbr = sum(1 for (r2, p2) in net_pins.get((b, net), []) if (r2, p2) != (rd, pin))
-            if _power(net):
-                side = "pwr"
-            elif (b, rd, pin) in start_pins:
-                side = "up"
-            elif (b, rd, pin) in end_pins:
-                side = "down"
-            else:
-                side = "bi"
+            side = net_side.get((b, net), "bi")   # NG-010：同一 (板,网) 全部 link 用统一 side
             tr = None
             for t in all_traces:
                 if t["board"] == b and (t["start_net"] == net or net in t.get("path", [])):
@@ -209,6 +292,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
                 status = tr["end_type"]
             # NG-006：不内嵌邻接表；fanout=同网邻居数（0 表示悬空/开终点）。邻接用 GraphIndex 派生。
             link = {"net": net, "pin": pin, "side": side,
+                    "pair_id": net_pair.get((b, net), ""),
                     "fanout": nbr, "trace": tr, "status": status}
             if f"{b}::{rd}.{pin}" in peer_of:
                 link["cross_board"] = {"peer": peer_of[f"{b}::{rd}.{pin}"], "status": "PAIRED"}
@@ -229,7 +313,12 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
     paths = [{"id": t["id"], "board": t["board"], "connector": t["connector"], "pin": t["pin"],
               "start_net": t["start_net"], "path": t.get("path", []),
               "endpoint_pins": t.get("endpoint_pins", []), "end_type": t["end_type"],
-              "bidirectional": t["bidirectional"], "status": "OK"} for t in all_traces]
+              "bidirectional": t["bidirectional"], "status": "OK",
+              # NG-011/013：追踪深度与绕圈/原因分类随 paths 透传
+              "hops": t.get("hops", max(len(t.get("path", [])) - 1, 0)),
+              "reason": t.get("reason", ""),
+              "depth_exceeded": bool(t.get("depth_exceeded", False)),
+              "oscillation": bool(t.get("oscillation", False))} for t in all_traces]
 
     # ---- diff pairs ----
     diff = defaultdict(list)
@@ -239,10 +328,20 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
             diff[(nd["board"], k[0])].append(nd["net"])
     diff_pairs = [sorted(v) for v in diff.values() if len(v) >= 2]
 
+    # ---- 平台识别（P4-B）：写入 meta.platform / meta.platform_detect ----
+    platform, platform_device, platform_detect = detect_platform(devices)
+    if platform_detect["status"] == "NO_PLATFORM_MATCH":
+        platform_detect["warning"] = "WARNING: 未识别到已知平台，规则束将仅注入通用规则"
+
     meta = {"boards": sorted({d["board"] for d in devices}),
             "devices": len(devices), "nets": len(nets), "paths": len(paths),
+            "platform": platform, "platform_device": platform_device,
+            "platform_detect": platform_detect,
             "cross_board_links": len(xlinks), "connector_pairs": len(pairs),
             "sub_agent_groups": groups,
+            "trace_limits": {"max_hops": int(CONV.cfg.get("trace_max_hops", 6)),
+                              "depth_exceeded": sum(1 for p in paths if p.get("depth_exceeded")),
+                              "oscillation": sum(1 for p in paths if p.get("oscillation"))},
             "end_types": {k: sum(1 for p in paths if p["end_type"] == k)
                           for k in {p["end_type"] for p in paths}}}
     return {"schema_version": "3.0", "kind": "netlist_graph", "product": product, "status": "PASS",
@@ -323,9 +422,47 @@ def validate(doc: dict) -> dict:
     # NG-006：结构单一真源——links 不得内嵌邻接表
     embedded = sum(1 for d in doc["devices"] for lk in d["links"]
                    if lk.get("upstream") or lk.get("downstream") or "via" in lk)
+    # NG-010：同网 side 一致性——残余混合 side 必须为 0；raw 冲突仅作归并证据（信息性）。
+    side_sets = defaultdict(set)
+    for d in doc["devices"]:
+        b = d["board"]
+        for lk in d["links"]:
+            side_sets[(b, lk.get("net", ""))].add(lk.get("side"))
+    mixed = {k: sorted(v) for k, v in side_sets.items() if len(v) > 1}
+    start_pins = {(p["board"], p["connector"], p["pin"]) for p in doc.get("paths", [])}
+    end_pins = set()
+    for p in doc.get("paths", []):
+        for ep in p.get("endpoint_pins", []):
+            rd, _, pn = ep.partition(".")
+            end_pins.add((p["board"], rd, pn))
+    raw_roles = defaultdict(set)
+    for nd in doc.get("nets", []):
+        b, net = nd["board"], nd["net"]
+        for j in nd.get("joins", []):
+            rd, pn = j.get("refdes", ""), j.get("pin", "")
+            if not rd:
+                continue
+            if CONV.is_power_net(net):
+                raw_roles[(b, net)].add("pwr")
+            elif CONV.diff_pair_key(net):
+                raw_roles[(b, net)].add("diff")
+            elif (b, rd, pn) in start_pins:
+                raw_roles[(b, net)].add("up")
+            elif (b, rd, pn) in end_pins:
+                raw_roles[(b, net)].add("down")
+            else:
+                raw_roles[(b, net)].add("bi")
+    normalized = {k: sorted(v) for k, v in raw_roles.items() if len(v) > 1}
+    side_conflicts = {
+        "count": len(mixed),
+        "sample": [f"{k[0]}::{k[1]}={v}" for k, v in list(mixed.items())[:5]],
+        "normalized": len(normalized),
+        "normalized_sample": [f"{k[0]}::{k[1]}={v}" for k, v in list(normalized.items())[:5]],
+    }
     return {"dangling_joins": len(issues["dangling_joins"]),
             "uncovered_pins": len(issues["uncovered_pins"]),
             "embedded_adjacency": embedded,
+            "side_conflicts": side_conflicts,
             "sample_dangling": issues["dangling_joins"][:5],
             "sample_uncovered": issues["uncovered_pins"][:5],
             "status": "PASS" if not issues["dangling_joins"] and not embedded else "FAIL"}
@@ -351,6 +488,9 @@ def main() -> None:
     doc["meta"]["size_bytes"] = out.stat().st_size
     print(f"  netlist_graph.json = {out.stat().st_size/1048576:.3f} MB (紧凑)")
     m = doc["meta"]
+    pd = m.get("platform_detect", {})
+    print(f"  平台识别: platform={m.get('platform') or '-'} "
+          f"status={pd.get('status')} device={pd.get('device') or '-'}")
     print(f"netlist_graph: 板={m['boards']} 器件={m['devices']} 网={m['nets']} 路径={m['paths']} "
           f"跨板={m['cross_board_links']} 配对={m['connector_pairs']} 分组={m['sub_agent_groups']}")
     print(f"  终点={m['end_types']} | 校验 dangling={v['dangling_joins']} uncovered={v['uncovered_pins']} -> {v['status']}")

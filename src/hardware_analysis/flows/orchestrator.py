@@ -182,6 +182,38 @@ class Orchestrator:
         ics = [d for d in doc["devices"] if d["kind"] == "IC" and d["source"].get("populated")]
         e = self._p3(); e.mkdir(parents=True, exist_ok=True)
         notes = self._p3("clarify_requests.jsonl")
+        # ---- 平台引脚核对（模块导入；产物写 PH-3；失败不中断）----
+        platform = doc["meta"].get("platform", "") or ""
+        # ---- 规则束加载（循环外一次，循环内复用；失败降级不中断）----
+        rules_text = ""
+        try:
+            from hardware_analysis.flows.rule_loader import load_rule_assets, render_rules_text
+            assets = load_rule_assets("PH-3", platform=platform)
+            rules_text = render_rules_text(assets["entries"])
+            if assets.get("truncated"):
+                dropped = list(assets.get("dropped", []) or [])
+                self._log("rules_truncated", stage="PH-3", dropped=len(dropped),
+                          ids=dropped[:20], dropped_tokens=assets.get("dropped_tokens", 0))
+                warn = ("\n\n⚠️ 本次规则束因预算被截断，以下规则未注入: "
+                        + ", ".join(str(i) for i in dropped))
+                if "本次规则束因预算被截断" not in rules_text:
+                    rules_text += warn
+            self._log("rules_injected", stage="PH-3", ids=len(assets["rule_ids"]),
+                      tokens=assets["tokens_est"], truncated=assets.get("truncated", False))
+        except Exception as ex:
+            rules_text = ""
+            self._log("rules_load_failed", err=str(ex)[:120])
+        if platform:
+            try:
+                from hardware_analysis.tools import platform_check as pc
+                pc_report = pc.run(self._p2(), platform)
+                (e / "platform_check.json").write_text(
+                    json.dumps(pc_report, ensure_ascii=False, indent=1), encoding="utf-8")
+                cov = (pc_report.get("coverage") or {}).get("fill_rate")
+                self._log("platform_check_done", platform=pc_report.get("platform", ""),
+                          status=pc_report.get("status", ""), coverage=cov)
+            except Exception as ex:
+                self._log("platform_check_failed", err=str(ex)[:120])
         for d in ics:
             # slice：本 IC + 相关 nets/paths + 手册前置
             slice_ = {"task": "analyze_ic", "device": d,
@@ -190,7 +222,7 @@ class Orchestrator:
             obj, errs, sec = llm_json("hw_analyze",
                 f"分析 IC {d['id']}({d['model']})：引脚/VCCIO/供电/外围；并**复核** tracer 判定 "
                 f"ic_type={d['ic'].get('ic_type')} 是否正确；输出 summary(§4.3)。输入切片:"
-                + json.dumps(slice_, ensure_ascii=False)[:2000], SummaryDoc)
+                + json.dumps(slice_, ensure_ascii=False)[:2000], SummaryDoc, rules_text=rules_text)
             if obj:
                 (e / f"{d['refdes']}_summary.json").write_text(
                     json.dumps(obj.model_dump(), ensure_ascii=False, indent=1), encoding="utf-8")

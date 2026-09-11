@@ -1,0 +1,1096 @@
+{
+ "schema_version": "1.0",
+ "kind": "platform_rules",
+ "scope": "platform/RK3588",
+ "source": "raw/raw_platmform/RK3588/hardware_check.md",
+ "source_sha1": "630987e573c6bb27720b277f3ba227d3c96b7c94",
+ "generated_at": "2026-09-11T08:43:31+00:00",
+ "tokens_est": 7430,
+ "entries": [
+  {
+   "id": "PF-RK3588-001",
+   "title": "一、VCCIO 域定义",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "**VCCIO 编号与 GPIO Bank 编号不是一一对应关系**，必须逐子 Bank 查表。",
+    "二者必须同时上电。"
+   ],
+   "must_not": [],
+   "text": "## 一、VCCIO 域定义\n\nRK3588 共有 9 个 GPIO/IO 供电域，每个域供电给不同的 GPIO Bank 子集。**VCCIO 编号与 GPIO Bank 编号不是一一对应关系**，必须逐子 Bank 查表。\n\n| 域 | 电压 | 类型 | 承载接口 |\n|---|:---:|------|------|\n| **PMUIO1** | 1.8V 固定 | PMU IO | GPIO0_A, GPIO0_B[0:4], JTAG/UART Debug (M1), REFCLK_OUT, 32K时钟, NPOR复位 |\n| **PMUIO2** | 1.8V/3.3V 自识别 | PMU IO | GPIO0_B[5:7], GPIO0_C, GPIO0_D, PCIe控制信号, AVS信号, UART0_M0 |\n| **EMMCIO_1V8** | 1.8V 固定 | eMMC 专用IO | GPIO2_A[0:3], GPIO2_D[0:7], FSPI_M0 (与eMMC复用) |\n| **VCCIO1** | 1.8V 固定 | GPIO IO | GPIO1_C, GPIO1_D[0:5] |\n| **VCCIO2** | 1.8V/3.3V 自识别 | GPIO IO | GPIO4_D[0:5], SDMMC, JTAG_M1, CAN0_M1 |\n| **VCCIO3** | 1.8V 固定 | GPIO IO | GPIO2_A[6:7], GPIO2_B, GPIO2_C[0:5], GPIO4_C[2:6], GMAC0 |\n| **VCCIO4** | 1.8V/3.3V 自识别 | GPIO IO | GPIO1_A, GPIO1_B[0:5], GPIO1_D[6:7], PCIe3.0控制信号, MIPI CAM CLK |\n| **VCCIO5** | 1.8V/3.3V 自识别 | GPIO IO | GPIO3_A/B/C/D, GMAC1, SDIO_M1, PCIe控制信号, CIF |\n| **VCCIO6** | 1.8V/3.3V 自识别 | GPIO IO | GPIO4_A, GPIO4_B[0:5], GPIO4_C[0:1], CIF/BT1120, PCIe控制信号 |\n\n> **供电引脚说明**：可调域（PMUIO2, VCCIO2/4/5/6）均有一对供电引脚 —— `{DOMAIN}` 主供电（1.8V/3.3V）和 `{DOMAIN}_1V8`（1.8V 固定，给内部1.8V电路使用）。二者必须同时上电。\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 13,
+     "end_line": 32
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-002",
+   "title": "二、GPIO Bank → VCCIO 域映射表",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 二、GPIO Bank → VCCIO 域映射表\n\n> **来源：RK3588 官方 PinOut 表 V1.1（2022-09-22），本表为权威来源。**\n> 当任何工具或脚本的 `gpio_bank_map` 与本表冲突时，以本表为准。\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 33,
+     "end_line": 37
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-003",
+   "title": "2.1 精确映射表",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 2.1 精确映射表\n\n| GPIO 子 Bank | VCCIO 域 | 电压 | 关键说明 |\n|---|---|---|---|\n| GPIO0_A[0:7] | PMUIO1 | 1.8V fixed | |\n| GPIO0_B[0:4] | PMUIO1 | 1.8V fixed | |\n| GPIO0_B[5:7] | PMUIO2 | 1.8V/3.3V | **同Bank跨域分离点** |\n| GPIO0_C[0:7] | PMUIO2 | 1.8V/3.3V | |\n| GPIO0_D[0:7] | PMUIO2 | 1.8V/3.3V | |\n| GPIO1_A[0:7] | **VCCIO4** | 1.8V/3.3V | ⚠️ 不在 VCCIO1 |\n| GPIO1_B[0:5] | **VCCIO4** | 1.8V/3.3V | ⚠️ 不在 VCCIO1 |\n| GPIO1_C[0:7] | VCCIO1 | 1.8V fixed | |\n| GPIO1_D[0:5] | VCCIO1 | 1.8V fixed | |\n| GPIO1_D[6:7] | VCCIO4 | 1.8V/3.3V | **同Bank跨域分离点** |\n| GPIO2_A[0:3] | **EMMCIO_1V8** | 1.8V fixed | ⚠️ 不在 VCCIO2 |\n| GPIO2_A[6:7] | VCCIO3 | 1.8V fixed | **同Bank跨域分离点** |\n| GPIO2_B[0:7] | VCCIO3 | 1.8V fixed | |\n| GPIO2_C[0:5] | VCCIO3 | 1.8V fixed | |\n| GPIO2_D[0:7] | **EMMCIO_1V8** | 1.8V fixed | ⚠️ 不在 VCCIO2 |\n| GPIO3_A[0:7] | VCCIO5 | 1.8V/3.3V | |\n| GPIO3_B[0:7] | VCCIO5 | 1.8V/3.3V | |\n| GPIO3_C[0:7] | VCCIO5 | 1.8V/3.3V | |\n| GPIO3_D[0:7] | VCCIO5 | 1.8V/3.3V | |\n| GPIO4_A[0:7] | VCCIO6 | 1.8V/3.3V | |\n| GPIO4_B[0:5] | VCCIO6 | 1.8V/3.3V | |\n| GPIO4_C[0:1] | VCCIO6 | 1.8V/3.3V | |\n| GPIO4_C[2:6] | VCCIO3 | 1.8V fixed | **同Bank跨域分离点** |\n| GPIO4_D[0:5] | VCCIO2 | 1.8V/3.3V | SDMMC / JTAG 复用 |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 38,
+     "end_line": 66
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-004",
+   "title": "2.2 关键例外（必须逐子 Bank 匹配）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "### 2.2 关键例外（必须逐子 Bank 匹配）"
+   ],
+   "must_not": [],
+   "text": "### 2.2 关键例外（必须逐子 Bank 匹配）\n\n| 子 Bank | 错误映射（按编号一刀切） | 正确映射（PinOut 表） |\n|---|---|---|\n| GPIO1_A[0:7], GPIO1_B[0:5] | ❌ VCCIO1 | ✅ **VCCIO4** |\n| GPIO2_A[0:3] | ❌ VCCIO2 | ✅ **EMMCIO_1V8** |\n| GPIO2_D[0:7] | ❌ VCCIO2 | ✅ **EMMCIO_1V8** |\n| GPIO4_D[0:5] | ❌ VCCIO3 | ✅ **VCCIO2** |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 67,
+     "end_line": 75
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-005",
+   "title": "2.3 域汇总速查",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 2.3 域汇总速查\n\n| 域 | 包含 GPIO | 总GPIO数 |\n|---|---|---|\n| PMUIO1 | GPIO0_A[0:7], GPIO0_B[0:4] | 13 |\n| PMUIO2 | GPIO0_B[5:7], GPIO0_C[0:7], GPIO0_D[0:7] | 19 |\n| EMMCIO_1V8 | GPIO2_A[0:3], GPIO2_D[0:7] | 12 |\n| VCCIO1 | GPIO1_C[0:7], GPIO1_D[0:5] | 14 |\n| VCCIO2 | GPIO4_D[0:5] | 6 |\n| VCCIO3 | GPIO2_A[6:7], GPIO2_B[0:7], GPIO2_C[0:5], GPIO4_C[2:6] | 21 |\n| VCCIO4 | GPIO1_A[0:7], GPIO1_B[0:5], GPIO1_D[6:7] | 17 |\n| VCCIO5 | GPIO3_A[0:7], GPIO3_B[0:7], GPIO3_C[0:7], GPIO3_D[0:7] | 32 |\n| VCCIO6 | GPIO4_A[0:7], GPIO4_B[0:5], GPIO4_C[0:1] | 16 |\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 76,
+     "end_line": 91
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-006",
+   "title": "三、检查规则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 三、检查规则\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 92,
+     "end_line": 93
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-007",
+   "title": "3.1 反向供电校验（强制）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "每分配一个信号到某 VCCIO 域后，必须执行反向校验："
+   ],
+   "must_not": [],
+   "text": "### 3.1 反向供电校验（强制）\n\n每分配一个信号到某 VCCIO 域后，必须执行反向校验：\n\n1. **正向分配**：`GPIO{Bank}_{Port}{Pin}` → 查本文件 §2.1 映射表 → 得 `VCCIO_domain` 和预期电压\n2. **反向追踪**：查 U6 (RK3588) 该 VCCIO 域的供电引脚（如 `U6.VCCIO4`, `U6.EMMCIO_1V8`）→ 追踪其物理网络名称 → 查电源树得实际电压\n3. **交叉比对**：正向分配的域电压 vs 反向追踪的供电引脚实际电压\n4. **不一致 → WARNING**，阻止继续\n5. 如映射表无匹配 → 标记为 `INFERRED`，电压从供电引脚反向追踪\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 94,
+     "end_line": 103
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-008",
+   "title": "3.2 GPIO 子 Bank 精度规则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "- **必须**使用 §2.1 映射表逐子 Bank 匹配",
+    "- 对每个 GPIO 引脚，必须匹配到子 Bank 级别（`GPIO{Bank}_{Port}[range]`）"
+   ],
+   "must_not": [
+    "- **禁止**按 GPIO Bank 编号一刀切映射 VCCIO 域"
+   ],
+   "text": "### 3.2 GPIO 子 Bank 精度规则\n\n- **禁止**按 GPIO Bank 编号一刀切映射 VCCIO 域\n- **必须**使用 §2.1 映射表逐子 Bank 匹配\n- 同一 Bank 内存在跨域分离（如 GPIO0_B 跨 PMUIO1/PMUIO2, GPIO1_D 跨 VCCIO1/VCCIO4, GPIO2_A 跨 EMMCIO/VCCIO3）\n- 对每个 GPIO 引脚，必须匹配到子 Bank 级别（`GPIO{Bank}_{Port}[range]`）\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 104,
+     "end_line": 110
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-009",
+   "title": "3.3 PinOut 表为权威来源",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 3.3 PinOut 表为权威来源\n\n- 当任何 `gpio_bank_map` 脚本或工具与本文件 §2.1 映射表冲突时，以本表（PinOut 表）为准\n- 本表数据源：RK3588_PinOut_V1.1_20220922.xlsx，逐Pin解析\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 111,
+     "end_line": 115
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-010",
+   "title": "3.4 信号分配 I/O 方向校验",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 3.4 信号分配 I/O 方向校验\n\n- 确认信号方向与 GPIO 默认 I/O 方向兼容\n- eMMC 域 GPIO 默认上拉（D0-D7/A0）或下拉（A1-A3），见 PinOut 表\n- SDMMC 域 GPIO4_D 默认上拉（D0-D2/D3-u/D4）或下拉（D5），见 PinOut 表\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 116,
+     "end_line": 123
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-011",
+   "title": "四、时钟电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "- IOMUX 必须设为 CLK32K_IN 功能，输入幅度必须满足 PMUIO1 域供电要求",
+    "- 时钟 IO 电平必须与外设匹配，否则加电平转换"
+   ],
+   "must_not": [],
+   "text": "## 四、时钟电路\n\n- 24MHz 晶体：CL ≤12pF，频偏 ≤20ppm\n- XOUT24M 串 22Ω 限流电阻，XOUT/XIN 间 510kΩ 并联电阻不可随意修改\n- 负载电容材质 COG/NPO，推荐贴片 4Pin 晶体\n- 32.768KHz：频率偏差 ±30ppm，幅度 0.7×VDD~VDD（VDD=PMUIO1），占空比 45%~55%\n- IOMUX 必须设为 CLK32K_IN 功能，输入幅度必须满足 PMUIO1 域供电要求\n- REFCLK_OUT 可输出时钟（频率可配）\n- CLK32K_OUT0/1 可提供给 WIFI/BT/PCIe 等设备当休眠或工作时钟\n- MIPI_CAMERA0_CLK~MIPI_CAMERA4_CLK：默认 24MHz 输出\n- ETH0/1_REFCLKO_25M：25MHz 时钟输出给 Ethernet PHY\n- 时钟 IO 电平必须与外设匹配，否则加电平转换\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 124,
+     "end_line": 138
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-012",
+   "title": "五、复位/看门狗",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 五、复位/看门狗\n\n- NPOR (Pin M31) 低有效，最短 4μs（100 个 24MHz 周期），需 100nF 去抖电容\n- RESET_L 上拉电源 = PMUIO1_1V8\n- TSADC_SHUT 输出硬件复位（芯片内部 7 个 TSADC 模块，超温时输出低电平）\n- RK806-1 RESETB 上电完成后释放低电平（开漏输出）\n- 看门狗：RK3588 内部集成 Watchdog Timer\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 139,
+     "end_line": 148
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-013",
+   "title": "六、系统启动",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 六、系统启动\n\n- 引导源：FSPI0/FSPI1/eMMC/UFS/SDMMC0/USB2.0/USB3.2\n- SARADC_IN0_BOOT (Pin AM16) 多种 Config 模式，专用引脚不可他用\n- SDMMC_DET (Pin P31)：复用为 SDMMC 卡检测\n- 不支持 PCIe BOOT\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 149,
+     "end_line": 157
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-014",
+   "title": "七、JTAG / UART Debug",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "- IO 电平必须匹配"
+   ],
+   "must_not": [],
+   "text": "## 七、JTAG / UART Debug\n\n- SWD 两线模式（ARM JTAG）\n- JTAG_M1 (PMUIO1, 与 UART2_M1 复用，推荐预留)\n- JTAG_M0 (VCCIO2, 与 SDMMC 复用)\n- **JTAG_TCK/TMS 串 100Ω + TVS**\n- UART2_M0 (PMUIO2) 为 Debug UART\n- **UART2_RX/TX 串 100Ω + TVS**\n- IO 电平必须匹配\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 158,
+     "end_line": 169
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-015",
+   "title": "八、DDR 电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 八、DDR 电路\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 170,
+     "end_line": 171
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-016",
+   "title": "8.1 控制器",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 8.1 控制器\n\nRK3588 支持 LPDDR4/LPDDR4X/LPDDR5，2 通道 × 32bit（每通道 2×16bit 子通道），最大 32GB\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 172,
+     "end_line": 175
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-017",
+   "title": "8.2 DDR PHY I/O Map",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 8.2 DDR PHY I/O Map\n\nRK3588 DDR PHY I/O Map 详见设计指南表 2-4。**DQ/CA 顺序全部不支持对调。**点对点拓扑，全部 ODT 终端。\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 176,
+     "end_line": 179
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-018",
+   "title": "8.3 ZQ（每颗必须检查）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "### 8.3 ZQ（每颗必须检查）"
+   ],
+   "must_not": [],
+   "text": "### 8.3 ZQ（每颗必须检查）\n\n| 对象 | 连接 | 电阻 |\n|------|------|:---:|\n| RK3588 DDR PHY ZQ | → VDDQ_DDR_S0 | 240Ω ±1% |\n| LPDDR4/4X/5 颗粒 ZQ | → VDDQ_DDR_S0 | 240Ω ±1% |\n| LPDDR4/4X ODT_CA | → VDD2_DDR_S3 | 10kΩ ±5% |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 180,
+     "end_line": 187
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-019",
+   "title": "8.4 供电电压",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 8.4 供电电压\n\n#### SOC 端（RK3588 DDR PHY）\n\n| 电源 | LPDDR4/4X | LPDDR5 |\n|------|:---:|:---:|\n| DDR_CHx_VDD | 0.75V | 0.75V |\n| DDR_CHx_VDD_MIF | 0.75V | 0.75V |\n| DDR_CHx_VDDQ | 0.6V | 0.5V |\n| DDR_CHx_VDDQ_CK | 0.6V | 0.5V |\n| DDR_CHx_VDDQ_CKE | 1.1V | 1.05V |\n| DDR_CHx_PLL_DVDD | 0.75V~0.85V | 0.75V~0.85V |\n| DDR_CHx_PLL_AVDD1V8 | 1.8V | 1.8V |\n\n#### DRAM 颗粒端\n\n| 电源 | LPDDR4 | LPDDR4X | LPDDR5 |\n|------|:---:|:---:|:---:|\n| VDD1 | 1.8V | 1.8V | 1.8V |\n| VDD2 | 1.1V | 1.1V | — |\n| VDD2H | — | — | 1.05V |\n| VDD2L | — | — | 0.9V |\n| VDDQ | 1.1V | **0.6V** | 0.5V |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 188,
+     "end_line": 211
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-020",
+   "title": "8.5 PMIC 设置",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "RK806-1 BUCK6/BUCK9 分压电阻必须根据颗粒 VDDQ/VDD2 调整（详见设计指南图 2-16/2-17）"
+   ],
+   "must_not": [],
+   "text": "### 8.5 PMIC 设置\n\nRK806-1 BUCK6/BUCK9 分压电阻必须根据颗粒 VDDQ/VDD2 调整（详见设计指南图 2-16/2-17）\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 212,
+     "end_line": 215
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-021",
+   "title": "8.6 上电时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 8.6 上电时序\n\nSOC 端：DDR_CH_VDD / DDR_VDD_MIF → DDR_CH_VDDQ_CKE → DDR_VDDQ\nDRAM 颗粒上电时序请参考各 JEDEC 标准\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 216,
+     "end_line": 222
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-022",
+   "title": "九、eMMC 电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 九、eMMC 电路\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 223,
+     "end_line": 224
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-023",
+   "title": "9.1 接口设计（设计指南表 2-5）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "EMMC_CMD | **必须**外部 10kΩ 上拉"
+   ],
+   "must_not": [],
+   "text": "### 9.1 接口设计（设计指南表 2-5）\n\n| 信号 | 外部电路 |\n|------|------|\n| EMMC_D[7:0] | D0 预留 10kΩ 上拉 |\n| EMMC_CLKOUT | RK3588 端串 0Ω；颗粒端预留 10pF→GND (V1.3 修正) |\n| EMMC_CMD | **必须**外部 10kΩ 上拉 |\n| EMMC_DATA_STROBE | 颗粒端串 0Ω；预留 47kΩ 下拉 |\n| EMMC_RSTN | RK3588 端串 0Ω+上拉；颗粒端 100nF→GND |\n\n- 支持 HS400ES/HS400/HS200/DDR50\n- **EMMCIO_1V8 域（1.8V 固定）**，与 FSPI0_M0 复用\n- GPIO 充足时 RSTN 须接颗粒 RST_n\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 225,
+     "end_line": 240
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-024",
+   "title": "十、FSPI Flash 电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 十、FSPI Flash 电路\n\n- 与 eMMC 复用 EMMCIO_1V8 域引脚（FSPI_M0）\n- FSPI_M1/M2 在其他域（VCCIO3/VCCIO5）\n- 接口设计参考设计指南表 2-6\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 241,
+     "end_line": 248
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-025",
+   "title": "十一、PCIe 参数",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 十一、PCIe 参数\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 249,
+     "end_line": 250
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-026",
+   "title": "11.1 控制器",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 11.1 控制器\n\nRK3588 共 5 个 PCIe 控制器 + 5 个 PHY：\n- 2× PCIe3.0 PHY（支持 ×4/×2/×1 + ×2/×1/×1）\n- 3× PCIe2.0/SATA3.0/USB3.0 Combo PHY\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 251,
+     "end_line": 256
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-027",
+   "title": "11.2 PCIe3.0",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 11.2 PCIe3.0\n\n| 参数 | 值 |\n|------|------|\n| AC 耦合电容 | **220nF**（推荐 0201 封装） |\n| RESREF | **200Ω ±1%** 到 GND，靠近 RK3588 引脚 |\n| PERSTn | 0Ω 串联，标准 PCIe Slot 用 3.3V 电平 |\n| NPOR_u 去抖 | ≥100nF 到 GND (Pin M31) |\n| RESET_L 上拉 | PMUIO1_1V8 域 |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 257,
+     "end_line": 266
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-028",
+   "title": "11.3 PCIe2.0",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 11.3 PCIe2.0\n\n| 参数 | 值 |\n|------|------|\n| AC 耦合电容 | **100nF**（推荐 0201 封装） |\n| PERSTn | 0Ω 串联，3.3V 电平 |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 267,
+     "end_line": 273
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-029",
+   "title": "11.4 PCIe 控制信号域分布",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 11.4 PCIe 控制信号域分布\n\n| 域 | PCIe 控制信号 |\n|------|------|\n| PMUIO2 | PCIE30X1_0/1_CLKREQN_M0, WAKEN_M0, PERSTN_M0, PCIE30X4_CLKREQN_M0 |\n| VCCIO4 | PCIE30X1_0/1_CLKREQN_M2, WAKEN_M2, PERSTN_M2, PCIE30X4_CLKREQN_M3, WAKEN_M3, PERSTN_M3, PCIE30X2_CLKREQN_M3 |\n| VCCIO5 | PCIE30X4_CLKREQN_M2, WAKEN_M2, PERSTN_M2, PCIE30X2_CLKREQN_M2, WAKEN_M2, PERSTN_M2, PCIE20X1_2_CLKREQN_M0 |\n| VCCIO6 | PCIE30X1_0/1_CLKREQN_M1, WAKEN_M1, PERSTN_M1, PCIE30X2_CLKREQN_M1, WAKEN_M1, PERSTN_M1, PCIE20X1_2_CLKREQN_M1 |\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 274,
+     "end_line": 284
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-030",
+   "title": "十二、PMIC 供电",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 十二、PMIC 供电\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 285,
+     "end_line": 286
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-031",
+   "title": "12.1 PMIC 型号与架构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 12.1 PMIC 型号与架构\n\n| 元件 | 型号 | 用途 |\n|------|------|------|\n| 主 PMIC | **RK806-1** (单 PMIC 方案) | 大部分电源轨 |\n| 外部 DCDC U1 | **RK860-2** (I2C 42H) | NPU 供电 |\n| 外部 DCDC U5 | **RK860-3** (I2C 43H) | Big CPU0 供电 |\n| 外部 DCDC U13 | **RK860-2** (I2C 42H) | Big CPU1 供电 |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 287,
+     "end_line": 295
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-032",
+   "title": "12.2 RK860 参数",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 12.2 RK860 参数\n\n| 参数 | 值 |\n|------|------|\n| VIN | 2.7V ~ 5.5V |\n| VOUT | 0.5V ~ 1.5V（默认 0.8V，步进 6.25mV） |\n| IOUT max | 7A (V1.3) / 6A (V1.2) |\n| Fsw | 2.4MHz |\n| L | 0.22μH ~ 0.47μH |\n| CIN/COUT | >10μF / 44μF ~ 88μF |\n| 封装 | WLCSP-20 (1.65mm × 2.05mm, pitch 0.4mm) |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 296,
+     "end_line": 307
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-033",
+   "title": "12.3 RK806-1 BUCK/LDO 参数",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 12.3 RK806-1 BUCK/LDO 参数\n\n| BUCK | 最大电流 | L | CIN | COUT | Fsw |\n|------|:---:|------|------|------|:---:|\n| BUCK1 | 6.5A | 0.22μH | 22μF | 66μF | 2MHz |\n| BUCK2/3/4 | 5A | 0.22μH | 22μF | 66μF | 2MHz |\n| BUCK5/6/7/8/9/10 | 3A | 0.47μH | 10μF | 44μF | 2MHz |\n\n| LDO | 电流 | COUT |\n|------|:---:|------|\n| PLDO1/4 | 500mA | ≥1μF |\n| PLDO 其他 | 300mA | ≥1μF |\n| NLDO3/4 | 500mA | ≥2.2μF |\n| NLDO 其他 | 300mA | ≥2.2μF |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 308,
+     "end_line": 322
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-034",
+   "title": "12.4 上电时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 12.4 上电时序\n\nRK806-1 Slot 1-6 上电时序为固化的默认电压和时序，详见设计指南图 2-64/2-65。\n\n整体上电序列：\nPMU_0V75 / PLL_DVDD_0V75 → VDD_LOGIC → VDD_BIG0/1 / VDD_GPU / VDD_NPU / VDD_VDENC → VDD_BIG0/1_MEM / VDD_GPU_MEM / VDD_NPU_MEM / VDD_VDENC_MEM → RESETn（最后一路稳定后 ≥1ms）\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 323,
+     "end_line": 331
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-035",
+   "title": "十三、通用接口规则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 十三、通用接口规则\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 332,
+     "end_line": 333
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-036",
+   "title": "SDMMC：SDMMC0 (VCCIO2)，支持 SD Card",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### SDMMC：SDMMC0 (VCCIO2)，支持 SD Card",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 334,
+     "end_line": 334
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-037",
+   "title": "SDIO：SDIO_M0 (VCCIO3), SDIO_M1 (VCCIO5)",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### SDIO：SDIO_M0 (VCCIO3), SDIO_M1 (VCCIO5)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 335,
+     "end_line": 335
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-038",
+   "title": "SPI：支持 FSPI（Octal），SPI0~SPI4 共 5 组",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### SPI：支持 FSPI（Octal），SPI0~SPI4 共 5 组",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 336,
+     "end_line": 336
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-039",
+   "title": "I2C：支持 I2C0~I2C8 共 9 组，上拉 2.2k~4.7kΩ；RK3588 支持 I3C 兼容",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### I2C：支持 I2C0~I2C8 共 9 组，上拉 2.2k~4.7kΩ；RK3588 支持 I3C 兼容",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 337,
+     "end_line": 337
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-040",
+   "title": "UART：支持 UART0~UART9 共 10 组，支持流控和 RS485 自动收发",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### UART：支持 UART0~UART9 共 10 组，支持流控和 RS485 自动收发",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 338,
+     "end_line": 338
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-041",
+   "title": "CAN：支持 CAN0~CAN2 共 3 组",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### CAN：支持 CAN0~CAN2 共 3 组",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 339,
+     "end_line": 339
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-042",
+   "title": "GMAC：GMAC0 (RGMII/RMII, VCCIO3), GMAC1 (RGMII/RMII, VCCIO5)",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### GMAC：GMAC0 (RGMII/RMII, VCCIO3), GMAC1 (RGMII/RMII, VCCIO5)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 340,
+     "end_line": 340
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-043",
+   "title": "SATA：3 路 SATA3.0（与 PCIe2.0 Combo PHY 复用）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### SATA：3 路 SATA3.0（与 PCIe2.0 Combo PHY 复用）",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 341,
+     "end_line": 341
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-044",
+   "title": "USB：2× USB3.0/DP1.4 Combo PHY + 2× USB2.0 HOST + 2× USB2.0 OTG (Type-C)",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### USB：2× USB3.0/DP1.4 Combo PHY + 2× USB2.0 HOST + 2× USB2.0 OTG (Type-C)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 342,
+     "end_line": 342
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-045",
+   "title": "HDMI RX：HDMI2.0 RX",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### HDMI RX：HDMI2.0 RX",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 343,
+     "end_line": 343
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-046",
+   "title": "HDMI/eDP TX：2× HDMI2.1/eDP Combo PHY，TX AC 耦合",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### HDMI/eDP TX：2× HDMI2.1/eDP Combo PHY，TX AC 耦合",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 344,
+     "end_line": 344
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-047",
+   "title": "DP：DP0/DP1 (与 USB3 Combo PHY)，TX AC 耦合",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### DP：DP0/DP1 (与 USB3 Combo PHY)，TX AC 耦合",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 345,
+     "end_line": 345
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-048",
+   "title": "MIPI CSI：CSI0/1 (DPHY RX) + D/C-PHY0/1 (Combo RX)",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### MIPI CSI：CSI0/1 (DPHY RX) + D/C-PHY0/1 (Combo RX)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 346,
+     "end_line": 346
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-049",
+   "title": "MIPI DSI：D/C-PHY0/1 (Combo TX)",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### MIPI DSI：D/C-PHY0/1 (Combo TX)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 347,
+     "end_line": 347
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-050",
+   "title": "Audio：I2S0/1/2/3 + PDM0/1 + SPDIF0/1_TX + DSM PWM Audio",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### Audio：I2S0/1/2/3 + PDM0/1 + SPDIF0/1_TX + DSM PWM Audio\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 348,
+     "end_line": 351
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-051",
+   "title": "十四、PCB 设计",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 十四、PCB 设计\n\n- 推荐 10 层 1 阶/2 阶 HDI 或 8 层 PTH 板\n- 时钟串阻近源端，TX 串阻近源端，RX 串阻近接收端\n- ESD/耦合电容近连接器\n- DDR 各电源域独立 PDN + 背面去耦 + 回流地孔\n- BGA 焊盘区域挖参考层（8GT/s 及以上信号）\n- PCIe3.0 / HDMI2.1 / DP1.4 等 8GT/s+ 信号：避免玻纤编织效应（10° 或 zigzag 走线）\n- 各接口独立 PCB 规范（见设计指南第 3.4 节）\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 352,
+     "end_line": 363
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-052",
+   "title": "十五、检查优先级",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [
+    "**P0** | **VCCIO 域映射**：逐子 Bank 匹配，禁止按编号一刀切"
+   ],
+   "text": "## 十五、检查优先级\n\n| 优先级 | 检查项 |\n|:---:|------|\n| **P0** | **VCCIO 域映射**：逐子 Bank 匹配，禁止按编号一刀切 |\n| **P0** | **反向供电校验**：正向分配域 vs 反向追踪供电引脚电压 |\n| **P0** | DDR PHY I/O Map 引脚分配 |\n| **P0** | DDR ZQ 电阻连接 240Ω ±1% |\n| **P0** | DDR 电源电压 |\n| **P0** | eMMC CMD 上拉 10kΩ |\n| **P0** | NPOR 复位 100nF |\n| **P0** | SARADC_IN0_BOOT 配置 |\n| **P0** | PCIe3.0 RESREF 200Ω ±1% |\n| **P1** | DDR CA 顺序不可对调 |\n| **P1** | PMIC RK806-1 FB6/FB9 匹配 |\n| **P1** | eMMC STRB 下拉 47kΩ |\n| **P1** | JTAG/UART 100Ω 串阻 |\n| **P1** | GPIO 子 Bank 跨域分离点校验（GPIO0_B, GPIO1_D, GPIO2_A, GPIO4_C） |\n| **P2** | 时钟输出电平匹配 |\n| **P2** | PCIe AC 耦合电容值（3.0: 220nF, 2.0: 100nF） |\n| **P2** | 各接口 PCB Layout |\n\n---\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 364,
+     "end_line": 387
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3588-053",
+   "title": "附录 A：PinOut 表 GPIO 域总览",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 附录 A：PinOut 表 GPIO 域总览\n\n| 引脚 | 域 |\n|---|---|\n| GPIO0_A[0:7], GPIO0_B[0:4] | PMUIO1 (1.8V) |\n| GPIO0_B[5:7], GPIO0_C[0:7], GPIO0_D[0:7] | PMUIO2 (1.8V/3.3V) |\n| GPIO2_A[0:3], GPIO2_D[0:7] | **EMMCIO_1V8** (1.8V) |\n| GPIO1_C[0:7], GPIO1_D[0:5] | VCCIO1 (1.8V) |\n| GPIO4_D[0:5] | VCCIO2 (1.8V/3.3V) |\n| GPIO2_A[6:7], GPIO2_B[0:7], GPIO2_C[0:5], GPIO4_C[2:6] | VCCIO3 (1.8V) |\n| GPIO1_A[0:7], GPIO1_B[0:5], GPIO1_D[6:7] | VCCIO4 (1.8V/3.3V) |\n| GPIO3_A/B/C/D (全部) | VCCIO5 (1.8V/3.3V) |\n| GPIO4_A[0:7], GPIO4_B[0:5], GPIO4_C[0:1] | VCCIO6 (1.8V/3.3V) |\n\n---\n\n> **数据来源**：RK3588_PinOut_V1.1_20220922.xlsx + Rockchip RK3588 硬件设计指南 V1.3\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3588/hardware_check.md",
+     "line": 388,
+     "end_line": 405
+    }
+   ]
+  }
+ ]
+}

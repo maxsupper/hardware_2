@@ -1,0 +1,2323 @@
+{
+ "schema_version": "1.0",
+ "kind": "pinout_table",
+ "scope": "platform/E2000",
+ "source": "raw/raw_platmform/E2000/pinout.json",
+ "source_sha1": "7f1a842abb13a50f5dc9551f1cf39b307c2219a2",
+ "generated_at": "2026-09-11T08:43:31+00:00",
+ "tokens_est": 21233,
+ "meta": {
+  "platform": "E2000Q",
+  "total_entries": 163,
+  "source_sha1": "7f1a842abb13a50f5dc9551f1cf39b307c2219a2",
+  "generated_at": "2026-09-11T08:43:31+00:00"
+ },
+ "entries": [
+  {
+   "pin": "AA5",
+   "ball": "AA5",
+   "functions": [
+    "PCIE0_TXP",
+    "USB3_P0_TXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AA7",
+   "ball": "AA7",
+   "functions": [
+    "PCIE0_TXN",
+    "USB3_P0_TXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "W1",
+   "ball": "W1",
+   "functions": [
+    "PCIE0_RXP",
+    "USB3_P0_RXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "W3",
+   "ball": "W3",
+   "functions": [
+    "PCIE0_RXN",
+    "USB3_P0_RXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AE5",
+   "ball": "AE5",
+   "functions": [
+    "PCIE1_TXP",
+    "USB3_P1_TXP",
+    "SATA0_TXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AE7",
+   "ball": "AE7",
+   "functions": [
+    "PCIE1_TXN",
+    "USB3_P1_TXN",
+    "SATA0_TXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AC1",
+   "ball": "AC1",
+   "functions": [
+    "PCIE1_RXP",
+    "USB3_P1_RXP",
+    "SATA0_RXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AC3",
+   "ball": "AC3",
+   "functions": [
+    "PCIE1_RXN",
+    "USB3_P1_RXN",
+    "SATA0_RXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "G9",
+   "ball": "G9",
+   "functions": [
+    "SGMII0_TXP",
+    "USXGMII0_TXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "E9",
+   "ball": "E9",
+   "functions": [
+    "SGMII0_TXN",
+    "USXGMII0_TXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "C11",
+   "ball": "C11",
+   "functions": [
+    "SGMII0_RXP",
+    "USXGMII0_RXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "A11",
+   "ball": "A11",
+   "functions": [
+    "SGMII0_RXN",
+    "USXGMII0_RXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "G13",
+   "ball": "G13",
+   "functions": [
+    "SGMII1_TXP",
+    "USXGMII1_TXP",
+    "SATA1_TXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "E13",
+   "ball": "E13",
+   "functions": [
+    "SGMII1_TXN",
+    "USXGMII1_TXN",
+    "SATA1_TXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "C15",
+   "ball": "C15",
+   "functions": [
+    "SGMII1_RXP",
+    "USXGMII1_RXP",
+    "SATA1_RXP"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "A15",
+   "ball": "A15",
+   "functions": [
+    "SGMII1_RXN",
+    "USXGMII1_RXN",
+    "SATA1_RXN"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "G17",
+   "ball": "G17",
+   "functions": [
+    "SGMII2_TXP",
+    "DP0_L0_P"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "E17",
+   "ball": "E17",
+   "functions": [
+    "SGMII2_TXN",
+    "DP0_L0_N"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "G25",
+   "ball": "G25",
+   "functions": [
+    "SGMII3_TXP",
+    "DP1_L0_P"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "E25",
+   "ball": "E25",
+   "functions": [
+    "SGMII3_TXN",
+    "DP1_L0_N",
+    "2.1.4.2 低速IO PAD 类型",
+    "如图为低速IO PAD 的示意图，其中包括双向三态、16 级驱动强度可调，带有施密",
+    "特触发器和上下拉的IO pad。",
+    "图2-1",
+    "低速IO PAD 示意图"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AU53",
+   "ball": "AU53",
+   "functions": [
+    "CLK_REF_50M",
+    "—"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": ""
+  },
+  {
+   "pin": "AU49",
+   "ball": "AU49",
+   "functions": [
+    "CPU_POR_N"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=UP"
+  },
+  {
+   "pin": "GPIO0_0",
+   "ball": "AN59",
+   "functions": [
+    "GPIO0_0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO0_0"
+  },
+  {
+   "pin": "AR55",
+   "ball": "AR55",
+   "functions": [
+    "QSPI_CSN0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "AJ55",
+   "ball": "AJ55",
+   "functions": [
+    "QSPI_SCK"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "AL55",
+   "ball": "AL55",
+   "functions": [
+    "QSPI_SO_IO0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "AL53",
+   "ball": "AL53",
+   "functions": [
+    "QSPI_SI_IO1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "AN51",
+   "ball": "AN51",
+   "functions": [
+    "QSPI_WP_IO2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "AR51",
+   "ball": "AR51",
+   "functions": [
+    "QSPI_HOLD_IO3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "GPIO0_7",
+   "ball": "BA57",
+   "functions": [
+    "SE_CFG0",
+    "GPIO0_7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_7"
+  },
+  {
+   "pin": "GPIO0_8",
+   "ball": "BA59",
+   "functions": [
+    "SE_CFG1",
+    "GPIO0_8"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_8"
+  },
+  {
+   "pin": "GPIO0_9",
+   "ball": "AW57",
+   "functions": [
+    "SE_CFG2",
+    "GPIO0_9"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_9"
+  },
+  {
+   "pin": "GPIO0_10",
+   "ball": "AW59",
+   "functions": [
+    "SE_CFG3",
+    "GPIO0_10"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_10"
+  },
+  {
+   "pin": "GPIO0_11",
+   "ball": "AU55",
+   "functions": [
+    "SE_CFG4",
+    "GPIO0_11"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_11"
+  },
+  {
+   "pin": "GPIO0_12",
+   "ball": "AN57",
+   "functions": [
+    "TACH0",
+    "GPIO0_12"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO0_12"
+  },
+  {
+   "pin": "GPIO0_13",
+   "ball": "AL59",
+   "functions": [
+    "PWM0",
+    "GPIO0_13"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO0_13"
+  },
+  {
+   "pin": "GPIO0_14",
+   "ball": "AJ59",
+   "functions": [
+    "TACH1",
+    "GPIO0_14"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO0_14"
+  },
+  {
+   "pin": "GPIO0_15",
+   "ball": "AJ57",
+   "functions": [
+    "PWM1",
+    "GPIO0_15"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO0_15"
+  },
+  {
+   "pin": "GPIO1_0",
+   "ball": "AG59",
+   "functions": [
+    "TACH2",
+    "GPIO1_0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO1_0"
+  },
+  {
+   "pin": "GPIO1_1",
+   "ball": "AG57",
+   "functions": [
+    "PWM2",
+    "GPIO1_1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO1_1"
+  },
+  {
+   "pin": "GPIO1_2",
+   "ball": "AE59",
+   "functions": [
+    "TACH3",
+    "PCIE0_PRSNT",
+    "GPIO1_2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO1_2"
+  },
+  {
+   "pin": "GPIO1_3",
+   "ball": "AC59",
+   "functions": [
+    "PWM3",
+    "GPIO1_3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO1_3"
+  },
+  {
+   "pin": "GPIO1_4",
+   "ball": "AC57",
+   "functions": [
+    "WAKEUP_N",
+    "GPIO1_4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO1_4"
+  },
+  {
+   "pin": "GPIO1_5",
+   "ball": "AR49",
+   "functions": [
+    "QSPI_CSN1",
+    "GPIO1_5"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO1_5"
+  },
+  {
+   "pin": "GPIO1_6",
+   "ball": "BA55",
+   "functions": [
+    "SE_SCL",
+    "USB_VBUS_EN0",
+    "MIO3_A",
+    "GPIO1_6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO1_6"
+  },
+  {
+   "pin": "GPIO1_7",
+   "ball": "BA53",
+   "functions": [
+    "SE_SDA",
+    "USB_OC_N0",
+    "MIO3_B",
+    "GPIO1_7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO1_7"
+  },
+  {
+   "pin": "AR59",
+   "ball": "AR59",
+   "functions": [
+    "SE_SMBCLK"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "AU59",
+   "ball": "AU59",
+   "functions": [
+    "SE_SMBDAT"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "AR57",
+   "ball": "AR57",
+   "functions": [
+    "SE_SMBALT"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "GPIO1_11",
+   "ball": "BA49",
+   "functions": [
+    "GPIO1_11"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO1_11"
+  },
+  {
+   "pin": "GPIO1_12",
+   "ball": "AW55",
+   "functions": [
+    "GPIO1_12"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_12"
+  },
+  {
+   "pin": "GPIO1_13",
+   "ball": "A35",
+   "functions": [
+    "GPIO1_13"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_13"
+  },
+  {
+   "pin": "GPIO1_14",
+   "ball": "R57",
+   "functions": [
+    "FJTAG_NTRST",
+    "GPIO1_14"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_14"
+  },
+  {
+   "pin": "GPIO1_15",
+   "ball": "R59",
+   "functions": [
+    "FJTAG_TDI",
+    "GPIO1_15"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_15"
+  },
+  {
+   "pin": "U59",
+   "ball": "U59",
+   "functions": [
+    "FJTAG_TCK"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "W59",
+   "ball": "W59",
+   "functions": [
+    "FJTAG_TDO"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "U57",
+   "ball": "U57",
+   "functions": [
+    "FJTAG_TMS"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "GPIO2_3",
+   "ball": "AA57",
+   "functions": [
+    "MIO6_A",
+    "GPIO2_3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_3"
+  },
+  {
+   "pin": "GPIO2_4",
+   "ball": "AA59",
+   "functions": [
+    "MIO6_B",
+    "GPIO2_4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_4"
+  },
+  {
+   "pin": "AW51",
+   "ball": "AW51",
+   "functions": [
+    "UART1_RXD"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "AU51",
+   "ball": "AU51",
+   "functions": [
+    "UART1_TXD"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "A39",
+   "ball": "A39",
+   "functions": [
+    "CRU_CLK_OBV"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "GPIO2_8",
+   "ball": "C39",
+   "functions": [
+    "CRU_RST_OK",
+    "GPIO2_8"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_8"
+  },
+  {
+   "pin": "GPIO2_9",
+   "ball": "C37",
+   "functions": [
+    "DP0_HPD",
+    "UART1_CTS_N",
+    "QSPI_CSN2",
+    "GPIO2_9"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO2_9"
+  },
+  {
+   "pin": "GPIO2_10",
+   "ball": "A37",
+   "functions": [
+    "DP1_HPD",
+    "UART1_RTS_N",
+    "QSPI_CSN3",
+    "GPIO2_10"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO2_10"
+  },
+  {
+   "pin": "A41",
+   "ball": "A41",
+   "functions": [
+    "CAN0_TX",
+    "MIO0_A"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "A43",
+   "ball": "A43",
+   "functions": [
+    "CAN0_RX",
+    "PCIE2_PRSNT0",
+    "MIO0_B"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "A45",
+   "ball": "A45",
+   "functions": [
+    "CAN1_TX",
+    "MIO1_A"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "C45",
+   "ball": "C45",
+   "functions": [
+    "CAN1_RX",
+    "PCIE2_PRSNT1",
+    "MIO1_B"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "A47",
+   "ball": "A47",
+   "functions": [
+    "UART2_RXD",
+    "MIO2_A"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP"
+  },
+  {
+   "pin": "GPIO3_0",
+   "ball": "A49",
+   "functions": [
+    "UART2_TXD",
+    "PCIE2_PRSNT2",
+    "SPIM2_CSN3",
+    "MIO2_B",
+    "GPIO3_0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO3_0"
+  },
+  {
+   "pin": "GPIO3_1",
+   "ball": "C49",
+   "functions": [
+    "UART2_CTS_N",
+    "SPIM2_CSN2",
+    "MIO10_A",
+    "GPIO3_1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_1"
+  },
+  {
+   "pin": "GPIO3_2",
+   "ball": "A51",
+   "functions": [
+    "UART2_RTS_N",
+    "PCIE2_PRSNT3",
+    "SPIM2_CSN1",
+    "MIO10_B",
+    "GPIO3_2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_2"
+  },
+  {
+   "pin": "GPIO3_3",
+   "ball": "A33",
+   "functions": [
+    "SPIM2_SCLK",
+    "MDC1",
+    "LBC_RB_N4",
+    "GPIO3_3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO3_3"
+  },
+  {
+   "pin": "GPIO3_4",
+   "ball": "C33",
+   "functions": [
+    "SPIM2_TXD",
+    "MDIO1",
+    "LBC_RB_N5",
+    "GPIO3_4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO3_4"
+  },
+  {
+   "pin": "GPIO3_5",
+   "ball": "C31",
+   "functions": [
+    "SPIM2_RXD",
+    "MDC0",
+    "LBC_CS_N4",
+    "GPIO3_5"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_5"
+  },
+  {
+   "pin": "GPIO3_6",
+   "ball": "A31",
+   "functions": [
+    "SPIM2_CSN0",
+    "MDIO0",
+    "LBC_CS_N5",
+    "GPIO3_6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_6"
+  },
+  {
+   "pin": "GPIO3_7",
+   "ball": "AJ53",
+   "functions": [
+    "SD0_DET_N",
+    "NF_RB_N2",
+    "MDC1",
+    "LBC_BWE_N",
+    "GPIO3_7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_7"
+  },
+  {
+   "pin": "GPIO3_8",
+   "ball": "AL49",
+   "functions": [
+    "SD0_PWR_EN",
+    "NF_WP_N",
+    "MDIO1",
+    "GPIO3_8"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO3_8"
+  },
+  {
+   "pin": "GPIO3_9",
+   "ball": "AL47",
+   "functions": [
+    "SD0_VOLT0",
+    "NF_DQS",
+    "MDC0",
+    "GPIO3_9"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO3_9"
+  },
+  {
+   "pin": "GPIO3_10",
+   "ball": "AN49",
+   "functions": [
+    "SD0_INT_N",
+    "NF_CE_N2",
+    "MDIO0",
+    "GPIO3_10"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_10"
+  },
+  {
+   "pin": "GPIO3_11",
+   "ball": "AG51",
+   "functions": [
+    "SD0_RST_N",
+    "NF_RB_N3",
+    "GPIO3_11"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_11"
+  },
+  {
+   "pin": "GPIO3_12",
+   "ball": "AJ51",
+   "functions": [
+    "SD0_CMD",
+    "NF_CE_N3",
+    "GPIO3_12"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_12"
+  },
+  {
+   "pin": "GPIO3_13",
+   "ball": "AG49",
+   "functions": [
+    "SD0_DATA0",
+    "GPIO3_13"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_13"
+  },
+  {
+   "pin": "GPIO3_14",
+   "ball": "AE55",
+   "functions": [
+    "SD0_DATA1",
+    "GPIO3_14"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_14"
+  },
+  {
+   "pin": "GPIO3_15",
+   "ball": "AE53",
+   "functions": [
+    "SD0_DATA2",
+    "GPIO3_15"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO3_15"
+  },
+  {
+   "pin": "GPIO4_0",
+   "ball": "AG55",
+   "functions": [
+    "SD0_DATA3",
+    "GPIO4_0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_0"
+  },
+  {
+   "pin": "GPIO4_1",
+   "ball": "AJ49",
+   "functions": [
+    "SD0_CLK",
+    "GPIO4_1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO4_1"
+  },
+  {
+   "pin": "GPIO4_2",
+   "ball": "AC55",
+   "functions": [
+    "NF_RB_N0",
+    "SD0_DATA4",
+    "LBC_RB_N6",
+    "GPIO4_2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_2"
+  },
+  {
+   "pin": "GPIO4_3",
+   "ball": "AC53",
+   "functions": [
+    "NF_WEN_CLK",
+    "SD0_DATA5",
+    "LBC_RB_N7",
+    "GPIO4_3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO4_3"
+  },
+  {
+   "pin": "GPIO4_4",
+   "ball": "AE51",
+   "functions": [
+    "NF_REN_WRN",
+    "SD0_DATA6",
+    "LBC_CS_N6",
+    "GPIO4_4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO4_4"
+  },
+  {
+   "pin": "GPIO4_5",
+   "ball": "W51",
+   "functions": [
+    "NF_CLE",
+    "SD0_DATA7",
+    "LBC_CS_N7",
+    "GPIO4_5"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO4_5"
+  },
+  {
+   "pin": "GPIO4_6",
+   "ball": "W55",
+   "functions": [
+    "NF_ALE",
+    "SPIM0_SCLK",
+    "LBC_BCTL",
+    "GPIO4_6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO4_6"
+  },
+  {
+   "pin": "GPIO4_7",
+   "ball": "W53",
+   "functions": [
+    "NF_DATA0",
+    "SD0_VOLT1",
+    "SPIM0_TXD",
+    "LBC_WE_N0",
+    "GPIO4_7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_7"
+  },
+  {
+   "pin": "GPIO4_8",
+   "ball": "U55",
+   "functions": [
+    "NF_DATA1",
+    "SD0_WP_N",
+    "SPIM0_RXD",
+    "LBC_WE_N1",
+    "GPIO4_8"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_8"
+  },
+  {
+   "pin": "GPIO4_9",
+   "ball": "U53",
+   "functions": [
+    "NF_DATA2",
+    "SPIM0_CSN0",
+    "LBC_PAR0",
+    "GPIO4_9"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_9"
+  },
+  {
+   "pin": "GPIO4_10",
+   "ball": "AE49",
+   "functions": [
+    "NF_DATA3",
+    "PCIE0_PRSNT",
+    "SPIM0_CSN1",
+    "LBC_PAR1",
+    "GPIO4_10"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_10"
+  },
+  {
+   "pin": "GPIO4_11",
+   "ball": "AC49",
+   "functions": [
+    "NF_DATA4",
+    "SPIM0_CSN2",
+    "GPIO4_11"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_11"
+  },
+  {
+   "pin": "GPIO4_12",
+   "ball": "AE47",
+   "functions": [
+    "NF_DATA5",
+    "PCIE1_PRSNT",
+    "SPIM0_CSN3",
+    "LBC_CS_N2",
+    "GPIO4_12"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_12"
+  },
+  {
+   "pin": "GPIO4_13",
+   "ball": "AA47",
+   "functions": [
+    "NF_DATA6",
+    "JTAGM_NTRST",
+    "LBC_CS_N3",
+    "GPIO4_13"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_13"
+  },
+  {
+   "pin": "GPIO4_14",
+   "ball": "AA49",
+   "functions": [
+    "NF_DATA7",
+    "JTAGM_TCK",
+    "MIO8_A",
+    "LBC_RB_N0",
+    "GPIO4_14"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_14"
+  },
+  {
+   "pin": "GPIO4_15",
+   "ball": "W49",
+   "functions": [
+    "NF_CE_N0",
+    "JTAGM_TMS",
+    "MIO8_B",
+    "LBC_RB_N1",
+    "GPIO4_15"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO4_15"
+  },
+  {
+   "pin": "GPIO5_0",
+   "ball": "AA51",
+   "functions": [
+    "NF_CE_N1",
+    "JTAGM_TDO",
+    "MIO9_A",
+    "LBC_RB_N2",
+    "GPIO5_0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_0"
+  },
+  {
+   "pin": "GPIO5_1",
+   "ball": "U49",
+   "functions": [
+    "NF_RB_N1",
+    "JTAGM_TDI",
+    "MIO9_B",
+    "LBC_RB_N3",
+    "GPIO5_1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_1"
+  },
+  {
+   "pin": "GPIO5_2",
+   "ball": "G59",
+   "functions": [
+    "SD1_CMD",
+    "NF_DATA8",
+    "MIO11_A",
+    "GPIO5_2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_2"
+  },
+  {
+   "pin": "GPIO5_3",
+   "ball": "J59",
+   "functions": [
+    "SD1_DATA0",
+    "NF_DATA9",
+    "FTLM_LDRQ_N",
+    "MIO11_B",
+    "GPIO5_3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_3"
+  },
+  {
+   "pin": "GPIO5_4",
+   "ball": "L57",
+   "functions": [
+    "SD1_DATA1",
+    "NF_DATA10",
+    "FTLM_SIRQ_N",
+    "FTLS_SIRQ_N",
+    "GPIO5_4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_4"
+  },
+  {
+   "pin": "GPIO5_5",
+   "ball": "C59",
+   "functions": [
+    "SD1_DATA2",
+    "NF_DATA11",
+    "FTLM_LCLK",
+    "FTLS_LCLK",
+    "GPIO5_5"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_5"
+  },
+  {
+   "pin": "GPIO5_6",
+   "ball": "E59",
+   "functions": [
+    "SD1_DATA3",
+    "NF_DATA12",
+    "FTLM_LAD0",
+    "FTLS_LAD0",
+    "GPIO5_6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_6"
+  },
+  {
+   "pin": "GPIO5_7",
+   "ball": "J57",
+   "functions": [
+    "SD1_CLK",
+    "NF_DATA13",
+    "FTLM_LAD1",
+    "FTLS_LAD1",
+    "GPIO5_7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO5_7"
+  },
+  {
+   "pin": "GPIO5_8",
+   "ball": "L59",
+   "functions": [
+    "SD1_DET_N",
+    "NF_DATA14",
+    "FTLM_LAD2",
+    "FTLS_LAD2",
+    "GPIO5_8"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO5_8"
+  },
+  {
+   "pin": "GPIO5_9",
+   "ball": "N59",
+   "functions": [
+    "SD1_WP_N",
+    "NF_DATA15",
+    "FTLM_LAD3",
+    "FTLS_LAD3",
+    "GPIO5_9"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO5_9"
+  },
+  {
+   "pin": "GPIO5_10",
+   "ball": "C57",
+   "functions": [
+    "SD1_VOLT0",
+    "FTLM_LFRAME_N",
+    "FTLS_LFRAME_N",
+    "GPIO5_10"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO5_10"
+  },
+  {
+   "pin": "GPIO5_11",
+   "ball": "E57",
+   "functions": [
+    "SD1_VOLT1",
+    "FTLM_RST_N",
+    "FTLS_RST_N",
+    "GPIO5_11"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,DOWN; gpio=GPIO5_11"
+  },
+  {
+   "pin": "GPIO5_12",
+   "ball": "E31",
+   "functions": [
+    "LBC_ALE",
+    "RGMII0_TXD0",
+    "MIO4_A",
+    "SPIM3_SCLK",
+    "GPIO5_12"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO5_12"
+  },
+  {
+   "pin": "GPIO5_13",
+   "ball": "G31",
+   "functions": [
+    "LBC_CS_N0",
+    "RGMII0_TXD1",
+    "MIO4_B",
+    "SPIM3_TXD",
+    "SD1_PWR_EN",
+    "GPIO5_13"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO5_13"
+  },
+  {
+   "pin": "GPIO5_14",
+   "ball": "N41",
+   "functions": [
+    "LBC_CS_N1",
+    "RGMII0_RXD0",
+    "MIO5_A",
+    "SPIM3_RXD",
+    "GPIO5_14"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO5_14"
+  },
+  {
+   "pin": "GPIO5_15",
+   "ball": "N39",
+   "functions": [
+    "LBC_OE_N",
+    "RGMII0_RXD1",
+    "MIO5_B",
+    "SPIM3_CSN0",
+    "GPIO5_15"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO5_15"
+  },
+  {
+   "pin": "GPIO0_1",
+   "ball": "J33",
+   "functions": [
+    "LBC_PSS",
+    "RGMII0_TXCTL",
+    "SPIM3_CSN1",
+    "GPIO0_1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL,UP; gpio=GPIO0_1"
+  },
+  {
+   "pin": "GPIO0_2",
+   "ball": "N33",
+   "functions": [
+    "LBC_AD0",
+    "RGMII0_RXD2",
+    "SPIM3_CSN2",
+    "GPIO0_2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_2"
+  },
+  {
+   "pin": "GPIO0_3",
+   "ball": "L33",
+   "functions": [
+    "LBC_AD1",
+    "RGMII0_RXD3",
+    "MIO7_A",
+    "SPIM3_CSN3",
+    "GPIO0_3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_3"
+  },
+  {
+   "pin": "GPIO0_4",
+   "ball": "N45",
+   "functions": [
+    "LBC_AD2",
+    "RGMII0_RXCLK",
+    "MIO7_B",
+    "SPIM1_CSN3",
+    "SD1_INT_N",
+    "GPIO0_4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_4"
+  },
+  {
+   "pin": "GPIO0_5",
+   "ball": "N43",
+   "functions": [
+    "LBC_AD3",
+    "RGMII0_RXCTL",
+    "SPIM1_SCLK",
+    "USB_VBUS_EN1",
+    "GPIO0_5"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_5"
+  },
+  {
+   "pin": "GPIO0_6",
+   "ball": "L31",
+   "functions": [
+    "LBC_AD4",
+    "RGMII0_TXCLK",
+    "SPIM1_TXD",
+    "USB_OC_N1",
+    "GPIO0_6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO0_6"
+  },
+  {
+   "pin": "J31",
+   "ball": "J31",
+   "functions": [
+    "LBC_AD5",
+    "RGMII0_TXD2",
+    "SPIM1_RXD"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J29",
+   "ball": "J29",
+   "functions": [
+    "LBC_AD6",
+    "RGMII0_TXD3",
+    "SPIM1_CSN0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "E29",
+   "ball": "E29",
+   "functions": [
+    "LBC_AD7",
+    "MDC2",
+    "USB_VBUS_EN3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "G29",
+   "ball": "G29",
+   "functions": [
+    "LBC_AD8",
+    "MDIO2",
+    "USB_OC_N3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "N27",
+   "ball": "N27",
+   "functions": [
+    "LBC_AD9",
+    "SPIM1_CSN1",
+    "USB_VBUS_EN4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "L29",
+   "ball": "L29",
+   "functions": [
+    "LBC_AD10",
+    "SPIM1_CSN2",
+    "USB_OC_N4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J37",
+   "ball": "J37",
+   "functions": [
+    "LBC_AD11",
+    "RGMII1_TXD0",
+    "UART0_RXD",
+    "KEY_COL0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J39",
+   "ball": "J39",
+   "functions": [
+    "LBC_AD12",
+    "RGMII1_TXD1",
+    "UART0_TXD",
+    "KEY_COL1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "G41",
+   "ball": "G41",
+   "functions": [
+    "LBC_AD13",
+    "RGMII1_RXD0",
+    "UART0_CTS_N",
+    "KEY_COL2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "E43",
+   "ball": "E43",
+   "functions": [
+    "LBC_AD14",
+    "RGMII1_RXD1",
+    "UART0_RTS_N",
+    "KEY_COL3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "L43",
+   "ball": "L43",
+   "functions": [
+    "LBC_AD15",
+    "RGMII1_TXCTL",
+    "UART0_DCD_N",
+    "KEY_COL4"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "C43",
+   "ball": "C43",
+   "functions": [
+    "LBC_ADDR16",
+    "RGMII1_RXD2",
+    "UART0_DSR_N",
+    "KEY_COL5"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "E41",
+   "ball": "E41",
+   "functions": [
+    "LBC_ADDR17",
+    "RGMII1_RXD3",
+    "MIO12_A",
+    "UART0_RI_N",
+    "KEY_COL6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "L45",
+   "ball": "L45",
+   "functions": [
+    "LBC_ADDR18",
+    "RGMII1_RXCLK",
+    "MIO12_B",
+    "UART0_DTR_N",
+    "KEY_COL7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J43",
+   "ball": "J43",
+   "functions": [
+    "LBC_ADDR19",
+    "RGMII1_RXCTL",
+    "USB_VBUS_EN2",
+    "KEY_ROW0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J41",
+   "ball": "J41",
+   "functions": [
+    "LBC_ADDR20",
+    "RGMII1_TXCLK",
+    "USB_OC_N2",
+    "KEY_ROW1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "L39",
+   "ball": "L39",
+   "functions": [
+    "LBC_ADDR21",
+    "RGMII1_TXD2",
+    "SPIM0_CSN3",
+    "KEY_ROW2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "GPIO1_8",
+   "ball": "E37",
+   "functions": [
+    "LBC_ADDR22",
+    "RGMII1_TXD3",
+    "SPIM0_CSN2",
+    "KEY_ROW3",
+    "GPIO1_8"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_8"
+  },
+  {
+   "pin": "GPIO1_9",
+   "ball": "E35",
+   "functions": [
+    "LBC_ADDR23",
+    "MDC3",
+    "SPIM0_CSN1",
+    "KEY_ROW4",
+    "GPIO1_9"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_9"
+  },
+  {
+   "pin": "GPIO1_10",
+   "ball": "G35",
+   "functions": [
+    "LBC_ADDR24",
+    "MDIO3",
+    "UART3_RTS_N",
+    "SPIM0_CSN0",
+    "KEY_ROW5",
+    "GPIO1_10"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO1_10"
+  },
+  {
+   "pin": "J35",
+   "ball": "J35",
+   "functions": [
+    "LBC_ADDR25",
+    "UART3_CTS_N",
+    "SPIM0_SCLK",
+    "KEY_ROW6"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "L37",
+   "ball": "L37",
+   "functions": [
+    "LBC_ADDR26",
+    "UART3_RXD",
+    "SPIM0_TXD",
+    "KEY_ROW7"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "N35",
+   "ball": "N35",
+   "functions": [
+    "LBC_ADDR27",
+    "UART3_TXD",
+    "SPIM0_RXD"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "GPIO2_0",
+   "ball": "R51",
+   "functions": [
+    "GPIO2_0",
+    "I2S_MCLK",
+    "FTH_RST_N",
+    "MDC3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_0"
+  },
+  {
+   "pin": "GPIO2_1",
+   "ball": "R49",
+   "functions": [
+    "GPIO2_1",
+    "I2S_BCLK",
+    "FTH_BCLK",
+    "MDIO3",
+    "PCIE1_PRSNT"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_1"
+  },
+  {
+   "pin": "GPIO2_2",
+   "ball": "N51",
+   "functions": [
+    "GPIO2_2",
+    "I2S_LRCK",
+    "FTH_SYNC",
+    "MDC2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_2"
+  },
+  {
+   "pin": "N55",
+   "ball": "N55",
+   "functions": [
+    "I2S_SDO0",
+    "FTH_SDO",
+    "MDIO2",
+    "PCIE2_PRSNT0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "L55",
+   "ball": "L55",
+   "functions": [
+    "I2S_SDI0",
+    "FTH_SDI0"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "GPIO2_5",
+   "ball": "J55",
+   "functions": [
+    "GPIO2_5",
+    "I2S_SDO1",
+    "FTH_SDI1",
+    "PCIE2_PRSNT1"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_5"
+  },
+  {
+   "pin": "GPIO2_6",
+   "ball": "J45",
+   "functions": [
+    "GPIO2_6",
+    "I2S_SDI1",
+    "FTH_SDI2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_6"
+  },
+  {
+   "pin": "GPIO2_7",
+   "ball": "E47",
+   "functions": [
+    "GPIO2_7",
+    "I2S_SDO2",
+    "FTH_SDI3",
+    "PCIE2_PRSNT2"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_7"
+  },
+  {
+   "pin": "G47",
+   "ball": "G47",
+   "functions": [
+    "I2S_SDI2",
+    "SATA0_ACTLED"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J47",
+   "ball": "J47",
+   "functions": [
+    "I2S_SDO3",
+    "PCIE2_PRSNT3"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "J49",
+   "ball": "J49",
+   "functions": [
+    "I2S_SDI3",
+    "SATA1_ACTLED",
+    "MIO13_A"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL"
+  },
+  {
+   "pin": "GPIO2_11",
+   "ball": "N49",
+   "functions": [
+    "GPIO2_11",
+    "MIO13_B"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_11"
+  },
+  {
+   "pin": "GPIO2_12",
+   "ball": "L51",
+   "functions": [
+    "GPIO2_12",
+    "MIO14_A"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_12"
+  },
+  {
+   "pin": "GPIO2_13",
+   "ball": "L49",
+   "functions": [
+    "GPIO2_13",
+    "MIO14_B"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_13"
+  },
+  {
+   "pin": "GPIO2_14",
+   "ball": "N53",
+   "functions": [
+    "GPIO2_14",
+    "MIO15_A"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_14"
+  },
+  {
+   "pin": "GPIO2_15",
+   "ball": "J53",
+   "functions": [
+    "GPIO2_15",
+    "MIO15_B"
+   ],
+   "type": "",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "",
+   "notes": "pull_config=SEL; gpio=GPIO2_15"
+  }
+ ]
+}

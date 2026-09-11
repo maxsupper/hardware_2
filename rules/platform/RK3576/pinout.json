@@ -1,0 +1,8539 @@
+{
+ "schema_version": "1.0",
+ "kind": "pinout_table",
+ "scope": "platform/RK3576",
+ "source": "raw/raw_platmform/RK3576/pinout.json",
+ "source_sha1": "dcd95c71f018664ae0a03fdb0fdb1737ea0bd75d",
+ "generated_at": "2026-09-11T08:43:31+00:00",
+ "tokens_est": 101662,
+ "meta": {
+  "platform": "RK3576",
+  "source": "pinout.md",
+  "parsed": "2026-06-30",
+  "total_entries": 698,
+  "source_sha1": "dcd95c71f018664ae0a03fdb0fdb1737ea0bd75d",
+  "generated_at": "2026-09-11T08:43:31+00:00"
+ },
+ "entries": [
+  {
+   "pin": "W1",
+   "ball": "W1",
+   "functions": [
+    "LP4_DQ0_A/LP4X_DQ0_A/LP5_DQ0_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T1",
+   "ball": "1T1",
+   "functions": [
+    "LP4_DQ1_A/LP4X_DQ1_A/LP5_DQ1_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P1",
+   "ball": "1P1",
+   "functions": [
+    "LP4_DQ2_A/LP4X_DQ2_A/LP5_DQ2_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "U1",
+   "ball": "U1",
+   "functions": [
+    "LP4_DQ3_A/LP4X_DQ3_A/LP5_DQ3_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1V3",
+   "ball": "1V3",
+   "functions": [
+    "LP4_DQ4_A/LP4X_DQ4_A/LP5_DQ4_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W4",
+   "ball": "1W4",
+   "functions": [
+    "LP4_DQ5_A/LP4X_DQ5_A/LP5_DQ5_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AC1",
+   "ball": "AC1",
+   "functions": [
+    "LP4_DQ6_A/LP4X_DQ6_A/LP5_DQ6_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AB1",
+   "ball": "AB1",
+   "functions": [
+    "LP4_DQ7_A/LP4X_DQ7_A/LP5_DQ7_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1V1",
+   "ball": "1V1",
+   "functions": [
+    "LP4_DMI0_A/LP4X_DMI0_A/LP5_DMI0_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1U1",
+   "ball": "1U1",
+   "functions": [
+    "LP4_DQS0P_A/LP4X_DQS0P_A/LP5_RDQS0P_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "Y1",
+   "ball": "Y1",
+   "functions": [
+    "LP4_DQS0N_A/LP4X_DQS0N_A/LP5_RDQS0N_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1V5",
+   "ball": "1V5",
+   "functions": [
+    "LP5_WCK0P_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1V4",
+   "ball": "1V4",
+   "functions": [
+    "LP5_WCK0N_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AF1",
+   "ball": "AF1",
+   "functions": [
+    "LP4_DQ8_A/LP4X_DQ8_A/LP5_DQ8_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB1",
+   "ball": "1AB1",
+   "functions": [
+    "LP4_DQ9_A/LP4X_DQ9_A/LP5_DQ9_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD1",
+   "ball": "1AD1",
+   "functions": [
+    "LP4_DQ10_A/LP4X_DQ10_A/LP5_DQ10_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AH1",
+   "ball": "AH1",
+   "functions": [
+    "LP4_DQ11_A/LP4X_DQ11_A/LP5_DQ11_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y1",
+   "ball": "1Y1",
+   "functions": [
+    "LP4_DQ12_A/LP4X_DQ12_A/LP5_DQ12_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W2",
+   "ball": "1W2",
+   "functions": [
+    "LP4_DQ13_A/LP4X_DQ13_A/LP5_DQ13_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA3",
+   "ball": "1AA3",
+   "functions": [
+    "LP4_DQ14_A/LP4X_DQ14_A/LP5_DQ14_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA1",
+   "ball": "1AA1",
+   "functions": [
+    "LP4_DQ15_A/LP4X_DQ15_A/LP5_DQ15_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AE1",
+   "ball": "AE1",
+   "functions": [
+    "LP4_DMI1_A/LP4X_DMI1_A/LP5_DMI1_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB4",
+   "ball": "1AB4",
+   "functions": [
+    "LP4_DQS1P_A/LP4X_DQS1P_A/LP5_RDQS1P_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB3",
+   "ball": "1AB3",
+   "functions": [
+    "LP4_DQS1N_A/LP4X_DQS1N_A/LP5_RDQS1N_A"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA6",
+   "ball": "1AA6",
+   "functions": [
+    "LP5_WCK1P_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA5",
+   "ball": "1AA5",
+   "functions": [
+    "LP5_WCK1N_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "T1",
+   "ball": "T1",
+   "functions": [
+    "LP4_A0_A/LP4X_A0_A/LP5_A0_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N1",
+   "ball": "1N1",
+   "functions": [
+    "LP4_A1_A/LP4X_A1_A/LP5_A1_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1R3",
+   "ball": "1R3",
+   "functions": [
+    "LP4_A2_A/LP4X_A2_A/LP5_A2_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T2",
+   "ball": "1T2",
+   "functions": [
+    "LP4_A3_A/LP4X_A3_A/LP5_A3_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M5",
+   "ball": "1M5",
+   "functions": [
+    "LP4_A4_A/LP4X_A4_A/LP5_A4_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P5",
+   "ball": "1P5",
+   "functions": [
+    "LP4_A5_A/LP4X_A5_A/LP5_A5_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1R5",
+   "ball": "1R5",
+   "functions": [
+    "LP5_A6_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L1",
+   "ball": "1L1",
+   "functions": [
+    "LP4_CLKP_A/LP4X_CLKP_A/LP5_CLKP_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "P1",
+   "ball": "P1",
+   "functions": [
+    "LP4_CLKN_A/LP4X_CLKN_A/LP5_CLKN_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1R4",
+   "ball": "1R4",
+   "functions": [
+    "LP4_CSN0_A/LP4X_CSN0_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T4",
+   "ball": "1T4",
+   "functions": [
+    "LP4_CSN1_A/LP4X_CSN1_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N3",
+   "ball": "1N3",
+   "functions": [
+    "LP4_CKE0_A/LP4X_CKE0_A/LP5_CSN0_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N5",
+   "ball": "1N5",
+   "functions": [
+    "LP4_CKE1_A/LP4X_CKE1_A/LP5_CSN1_A"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1R6",
+   "ball": "1R6",
+   "functions": [
+    "ZQ_A"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D2",
+   "ball": "1D2",
+   "functions": [
+    "LP4_DQ0_B/LP4X_DQ0_B/LP5_DQ0_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F2",
+   "ball": "1F2",
+   "functions": [
+    "LP4_DQ1_B/LP4X_DQ1_B/LP5_DQ1_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G1",
+   "ball": "1G1",
+   "functions": [
+    "LP4_DQ2_B/LP4X_DQ2_B/LP5_DQ2_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "K1",
+   "ball": "K1",
+   "functions": [
+    "LP4_DQ3_B/LP4X_DQ3_B/LP5_DQ3_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C3",
+   "ball": "1C3",
+   "functions": [
+    "LP4_DQ4_B/LP4X_DQ4_B/LP5_DQ4_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1B3",
+   "ball": "1B3",
+   "functions": [
+    "LP4_DQ5_B/LP4X_DQ5_B/LP5_DQ5_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A5",
+   "ball": "A5",
+   "functions": [
+    "LP4_DQ6_B/LP4X_DQ6_B/LP5_DQ6_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "G1",
+   "ball": "G1",
+   "functions": [
+    "LP4_DQ7_B/LP4X_DQ7_B/LP5_DQ7_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B4",
+   "ball": "B4",
+   "functions": [
+    "LP4_DMI0_B/LP4X_DMI0_B/LP5_DMI0_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "H1",
+   "ball": "H1",
+   "functions": [
+    "LP4_DQS0P_B/LP4X_DQS0P_B/LP5_RDQS0P_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F1",
+   "ball": "1F1",
+   "functions": [
+    "LP4_DQS0N_B/LP4X_DQS0N_B/LP5_RDQS0N_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G5",
+   "ball": "1G5",
+   "functions": [
+    "LP5_WCK0P_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G4",
+   "ball": "1G4",
+   "functions": [
+    "LP5_WCK0N_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1A1",
+   "ball": "1A1",
+   "functions": [
+    "LP4_DQ8_B/LP4X_DQ8_B/LP5_DQ8_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B1",
+   "ball": "B1",
+   "functions": [
+    "LP4_DQ9_B/LP4X_DQ9_B/LP5_DQ9_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B2",
+   "ball": "B2",
+   "functions": [
+    "LP4_DQ10_B/LP4X_DQ10_B/LP5_DQ10_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A2",
+   "ball": "A2",
+   "functions": [
+    "LP4_DQ11_B/LP4X_DQ11_B/LP5_DQ11_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E1",
+   "ball": "1E1",
+   "functions": [
+    "LP4_DQ12_B/LP4X_DQ12_B/LP5_DQ12_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C1",
+   "ball": "1C1",
+   "functions": [
+    "LP4_DQ13_B/LP4X_DQ13_B/LP5_DQ13_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "E1",
+   "ball": "E1",
+   "functions": [
+    "LP4_DQ14_B/LP4X_DQ14_B/LP5_DQ14_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "D1",
+   "ball": "D1",
+   "functions": [
+    "LP4_DQ15_B/LP4X_DQ15_B/LP5_DQ15_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1B1",
+   "ball": "1B1",
+   "functions": [
+    "LP4_DMI1_B/LP4X_DMI1_B/LP5_DMI1_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A3",
+   "ball": "A3",
+   "functions": [
+    "LP4_DQS1P_B/LP4X_DQS1P_B/LP5_RDQS1P_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B3",
+   "ball": "B3",
+   "functions": [
+    "LP4_DQS1N_B/LP4X_DQS1N_B/LP5_RDQS1N_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D4",
+   "ball": "1D4",
+   "functions": [
+    "LP5_WCK1P_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E4",
+   "ball": "1E4",
+   "functions": [
+    "LP5_WCK1N_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "L1",
+   "ball": "L1",
+   "functions": [
+    "LP4_A0_B/LP4X_A0_B/LP5_A0_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J1",
+   "ball": "1J1",
+   "functions": [
+    "LP4_A1_B/LP4X_A1_B/LP5_A1_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J3",
+   "ball": "1J3",
+   "functions": [
+    "LP4_A2_B/LP4X_A2_B/LP5_A2_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G2",
+   "ball": "1G2",
+   "functions": [
+    "LP4_A3_B/LP4X_A3_B/LP5_A3_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F4",
+   "ball": "1F4",
+   "functions": [
+    "LP4_A4_B/LP4X_A4_B/LP5_A4_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K5",
+   "ball": "1K5",
+   "functions": [
+    "LP4_A5_B/LP4X_A5_B/LP5_A5_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H5",
+   "ball": "1H5",
+   "functions": [
+    "LP5_A6_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K1",
+   "ball": "1K1",
+   "functions": [
+    "LP4_CLKP_B/LP4X_CLKP_B/LP5_CLKP_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "N1",
+   "ball": "N1",
+   "functions": [
+    "LP4_CLKN_B/LP4X_CLKN_B/LP5_CLKN_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J5",
+   "ball": "1J5",
+   "functions": [
+    "LP4_CSN0_B/LP4X_CSN0_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K4",
+   "ball": "1K4",
+   "functions": [
+    "LP4_CSN1_B/LP4X_CSN1_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K2",
+   "ball": "1K2",
+   "functions": [
+    "LP4_CKE0_B/LP4X_CKE0_B/LP5_CSN0_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M3",
+   "ball": "1M3",
+   "functions": [
+    "LP4_CKE1_B/LP4X_CKE1_B/LP5_CSN1_B"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1U5",
+   "ball": "1U5",
+   "functions": [
+    "LP4_RESET/LP4X_RESET/LP5_RESET"
+   ],
+   "type": "O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J6",
+   "ball": "1J6",
+   "functions": [
+    "ZQ_B"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C3",
+   "ball": "2C3",
+   "functions": [
+    "DDRPHY_PLL_DVDD"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D2",
+   "ball": "2D2",
+   "functions": [
+    "DDRPHY_PLL_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C2",
+   "ball": "2C2",
+   "functions": [
+    "DDRPHY_PLL_AVSS"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E2",
+   "ball": "2E2",
+   "functions": [
+    "DDRPHY_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F3",
+   "ball": "2F3",
+   "functions": [
+    "DDRPHY_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G2",
+   "ball": "2G2",
+   "functions": [
+    "DDRPHY_DVDD_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G3",
+   "ball": "2G3",
+   "functions": [
+    "DDRPHY_DVDD_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H2",
+   "ball": "2H2",
+   "functions": [
+    "DDRPHY_DVDD_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B2",
+   "ball": "2B2",
+   "functions": [
+    "DDRPHY_CKE_VDDQ"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D1",
+   "ball": "2D1",
+   "functions": [
+    "DDRPHY_CK_VDDQ"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E1",
+   "ball": "2E1",
+   "functions": [
+    "DDRPHY_VDDQ_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F1",
+   "ball": "2F1",
+   "functions": [
+    "DDRPHY_VDDQ_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F2",
+   "ball": "2F2",
+   "functions": [
+    "DDRPHY_VDDQ_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G1",
+   "ball": "2G1",
+   "functions": [
+    "DDRPHY_VDDQ_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H1",
+   "ball": "2H1",
+   "functions": [
+    "DDRPHY_VDDQ_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J2",
+   "ball": "2J2",
+   "functions": [
+    "DDRPHY_VDDQ_5"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD6",
+   "ball": "1AD6",
+   "functions": [
+    "UFS_TX_D0P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC6",
+   "ball": "1AC6",
+   "functions": [
+    "UFS_TX_D0N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD4",
+   "ball": "1AD4",
+   "functions": [
+    "UFS_TX_D1P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD5",
+   "ball": "1AD5",
+   "functions": [
+    "UFS_TX_D1N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK8",
+   "ball": "AK8",
+   "functions": [
+    "UFS_RX_D0P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL7",
+   "ball": "AL7",
+   "functions": [
+    "UFS_RX_D0N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK7",
+   "ball": "AK7",
+   "functions": [
+    "UFS_RX_D1P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL6",
+   "ball": "AL6",
+   "functions": [
+    "UFS_RX_D1N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R2",
+   "ball": "2R2",
+   "functions": [
+    "UFS_TX_REXT"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N2",
+   "ball": "2N2",
+   "functions": [
+    "UFS_AVDD0V85"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P2",
+   "ball": "2P2",
+   "functions": [
+    "UFS_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "GPIO1_A0",
+   "ball": "E28",
+   "functions": [
+    "EMMC_D0",
+    "FSPI0_D0",
+    "SAI0_SCLK_M2",
+    "UART7_RTSN_M1",
+    "I2C2_SCL_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_A0"
+  },
+  {
+   "pin": "GPIO1_A1",
+   "ball": "E29",
+   "functions": [
+    "EMMC_D1",
+    "FSPI0_D1",
+    "SAI0_LRCK_M2",
+    "UART7_CTSN_M1",
+    "I2C2_SDA_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_A1"
+  },
+  {
+   "pin": "1C24",
+   "ball": "1C24",
+   "functions": [
+    "EMMC_D2/FSPI0_D2/SAI0_SDO1_M2/SAI0_SDI3_M2/PDM0_SDI3_M1/UART7_TX_M1/UART6_RTSN_M"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up"
+  },
+  {
+   "pin": "F28",
+   "ball": "F28",
+   "functions": [
+    "EMMC_D3/FSPI0_D3/SAI0_SDO2_M2/SAI0_SDI2_M2/PDM0_SDI1_M1/UART7_RX_M1/UART6_CTSN_M"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up"
+  },
+  {
+   "pin": "GPIO1_A4",
+   "ball": "1D24",
+   "functions": [
+    "EMMC_D4",
+    "SAI0_MCLK_M2",
+    "SAI3_MCLK_M0",
+    "SPI0_CSN0_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_A4"
+  },
+  {
+   "pin": "GPIO1_A5",
+   "ball": "G28",
+   "functions": [
+    "EMMC_D5",
+    "SAI3_SCLK_M0",
+    "PDM0_SDI2_M1",
+    "SPI0_MOSI_M2",
+    "I2C9_SCL_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_A5"
+  },
+  {
+   "pin": "GPIO1_A6",
+   "ball": "D28",
+   "functions": [
+    "EMMC_D6",
+    "SAI3_LRCK_M0",
+    "PDM0_CLK1_M1",
+    "SPI0_MISO_M2",
+    "I2C9_SDA_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_A6"
+  },
+  {
+   "pin": "GPIO1_A7",
+   "ball": "1B24",
+   "functions": [
+    "EMMC_D7",
+    "SAI0_SDO0_M2",
+    "SAI3_SDI_M0",
+    "SPI0_CLK_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_A7"
+  },
+  {
+   "pin": "GPIO1_B0",
+   "ball": "1F22",
+   "functions": [
+    "EMMC_CMD",
+    "FSPI0_RSTN",
+    "FSPI0_CSN1",
+    "UART6_TX_M2",
+    "I2C7_SCL_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_B0"
+  },
+  {
+   "pin": "GPIO1_B1",
+   "ball": "1G23",
+   "functions": [
+    "EMMC_CLK",
+    "FSPI0_CLK",
+    "SAI0_SDO3_M2",
+    "SAI0_SDI1_M2",
+    "PDM0_CLK0_M1",
+    "PWM2_CH7_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_B1"
+  },
+  {
+   "pin": "GPIO1_B2",
+   "ball": "1F23",
+   "functions": [
+    "EMMC_STRB",
+    "SAI0_SDI0_M2",
+    "SAI3_SDO_M0",
+    "PDM0_SDI0_M1",
+    "SPI0_CSN1_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_B2"
+  },
+  {
+   "pin": "GPIO1_B3",
+   "ball": "1D23",
+   "functions": [
+    "EMMC_RSTN",
+    "FSPI0_CSN0",
+    "UART6_RX_M2",
+    "I2C7_SDA_M0",
+    "MIPI_TE_M3",
+    "PWM2_CH1_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO1_B3"
+  },
+  {
+   "pin": "1J20",
+   "ball": "1J20",
+   "functions": [
+    "VCCIO0_VCC1V8"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B24",
+   "ball": "B24",
+   "functions": [
+    "SDMMC0_D0/FSPI1_D0_M0/DSM_AUD_LP_M0/UART0_RX_M1/UART7_RX_M2/I2C8_SCL_M0/SPI0_MOS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B25",
+   "ball": "B25",
+   "functions": [
+    "SDMMC0_D1/FSPI1_D1_M0/DSM_AUD_LN_M0/SAI3_MCLK_M3/UART0_TX_M1/UART7_TX_M2/I2C8_SD"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A23",
+   "ball": "A23",
+   "functions": [
+    "SDMMC0_D2/FSPI1_D2_M0/DSM_AUD_RP_M0/SAI3_LRCK_M3/JTAG_TCK_M0/UART5_RTSN_M2/SPI0_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B23",
+   "ball": "B23",
+   "functions": [
+    "SDMMC0_D3/FSPI1_D3_M0/DSM_AUD_RN_M0/SAI3_SDI_M3/JTAG_TMS_M0/UART5_CTSN_M2/CAN1_T"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A21",
+   "ball": "1A21",
+   "functions": [
+    "SDMMC0_CMD/FSPI1_CSN0_M0/SAI3_SDO_M3/UART5_RX_M2/I2C5_SDA_M0/SPI0_CSN0_M1/PWM2_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B21",
+   "ball": "1B21",
+   "functions": [
+    "SDMMC0_CLK/FSPI1_CLK_M0/SAI3_SCLK_M3/TEST_CLK_OUT/UART5_TX_M2/I2C5_SCL_M0/SPI0_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "2A8",
+   "ball": "2A8",
+   "functions": [
+    "VCCIO1_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "U29",
+   "ball": "U29",
+   "functions": [
+    "OSC_XOUT"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "U28",
+   "ball": "U28",
+   "functions": [
+    "OSC_XIN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J10",
+   "ball": "2J10",
+   "functions": [
+    "OSC_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G11",
+   "ball": "2G11",
+   "functions": [
+    "PLL_DVDD0V75"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H12",
+   "ball": "2H12",
+   "functions": [
+    "PLL_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G12",
+   "ball": "2G12",
+   "functions": [
+    "PLL_AVSS"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "W28",
+   "ball": "W28",
+   "functions": [
+    "NPOR"
+   ],
+   "type": "I",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up"
+  },
+  {
+   "pin": "2H10",
+   "ball": "2H10",
+   "functions": [
+    "TVSS"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "GPIO0_A0",
+   "ball": "V29",
+   "functions": [
+    "REF_CLK0_OUT",
+    "AUPLL_CLK_IN_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_A0"
+  },
+  {
+   "pin": "GPIO0_A1",
+   "ball": "1R24",
+   "functions": [
+    "TSADC_CTRL_M0",
+    "TSADC_CTRL_ORG"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=high-z; gpio=GPIO0_A1"
+  },
+  {
+   "pin": "GPIO0_A2",
+   "ball": "1U23",
+   "functions": [
+    "CLK_32K_IN",
+    "CLK0_32K_OUT",
+    "I2C6_SCL_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_A2"
+  },
+  {
+   "pin": "GPIO0_A3",
+   "ball": "Y28",
+   "functions": [
+    "PWR_CTRL1",
+    "TSADC_CTRL_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_A3"
+  },
+  {
+   "pin": "GPIO0_A4",
+   "ball": "1T24",
+   "functions": [
+    "PWR_CTRL2"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_A4"
+  },
+  {
+   "pin": "GPIO0_A5",
+   "ball": "Y29",
+   "functions": [
+    "PWR_CTRL3",
+    "I2C6_SDA_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_A5"
+  },
+  {
+   "pin": "GPIO0_A6",
+   "ball": "1T21",
+   "functions": [
+    "PMIC_INT"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO0_A6"
+  },
+  {
+   "pin": "GPIO0_A7",
+   "ball": "1U21",
+   "functions": [
+    "SDMMC0_DETN",
+    "SPI2_CSN1_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO0_A7"
+  },
+  {
+   "pin": "GPIO0_B0",
+   "ball": "1U22",
+   "functions": [
+    "AUPLL_CLK_IN_M1",
+    "SPI2_CSN0_M0",
+    "I2C0_SCL_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=high-z; gpio=GPIO0_B0"
+  },
+  {
+   "pin": "GPIO0_B1",
+   "ball": "1P23",
+   "functions": [
+    "SPI2_MISO_M0",
+    "I2C0_SDA_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=high-z; gpio=GPIO0_B1"
+  },
+  {
+   "pin": "GPIO0_B2",
+   "ball": "1T22",
+   "functions": [
+    "SPI2_CLK_M0",
+    "I2C1_SCL_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=high-z; gpio=GPIO0_B2"
+  },
+  {
+   "pin": "GPIO0_B3",
+   "ball": "1T23",
+   "functions": [
+    "SPI2_MOSI_M0",
+    "I2C1_SDA_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO0",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=high-z; gpio=GPIO0_B3"
+  },
+  {
+   "pin": "2K11",
+   "ball": "2K11",
+   "functions": [
+    "PMUIO0_VCC1V8"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "GPIO0_B4",
+   "ball": "AD28",
+   "functions": [
+    "REF_CLK1_OUT",
+    "I2C1_SCL_M1",
+    "UART4_TX_M2",
+    "PWM1_CH0_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_B4"
+  },
+  {
+   "pin": "GPIO0_B5",
+   "ball": "AD29",
+   "functions": [
+    "REF_CLK2_OUT",
+    "I2C1_SDA_M1",
+    "UART4_RX_M2",
+    "PWM1_CH1_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_B5"
+  },
+  {
+   "pin": "1Y24",
+   "ball": "1Y24",
+   "functions": [
+    "SDMMC0_PWREN/SDMMC1_DETN_M2/HDMI_TX_HPDIN_M1/EDP_TX_HPDIN_M1/PWM1_CH2_M0/GPIO0_B"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO0_B7",
+   "ball": "1W24",
+   "functions": [
+    "I2C2_SCL_M0",
+    "UART1_TX_M0",
+    "NPU_AVS",
+    "PWM1_CH4_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_B7"
+  },
+  {
+   "pin": "GPIO0_C0",
+   "ball": "AB29",
+   "functions": [
+    "I2C2_SDA_M0",
+    "UART1_RX_M0",
+    "CPULIT_AVS",
+    "PWM1_CH3_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C0"
+  },
+  {
+   "pin": "GPIO0_C1",
+   "ball": "AB28",
+   "functions": [
+    "I2C0_SCL_M1",
+    "UART8_TX_M2",
+    "I3C0_SCL_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C1"
+  },
+  {
+   "pin": "GPIO0_C2",
+   "ball": "1V24",
+   "functions": [
+    "I2C0_SDA_M1",
+    "UART8_RX_M2",
+    "I3C0_SDA_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C2"
+  },
+  {
+   "pin": "GPIO0_C3",
+   "ball": "1W21",
+   "functions": [
+    "PDM0_CLK1_M0",
+    "HDMI_TX_CEC_M1",
+    "SPI0_CSN1_M0",
+    "PWM0_CH1_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C3"
+  },
+  {
+   "pin": "GPIO0_C4",
+   "ball": "1W22",
+   "functions": [
+    "SAI0_MCLK_M1",
+    "PDM0_CLK0_M0",
+    "UART10_TX_M2",
+    "PWM0_CH0_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C4"
+  },
+  {
+   "pin": "GPIO0_C5",
+   "ball": "1AA22",
+   "functions": [
+    "SAI0_SDO0_M1",
+    "DP_HPDIN_M1",
+    "UART10_RX_M2",
+    "I3C0_SDA_PU_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C5"
+  },
+  {
+   "pin": "GPIO0_C6",
+   "ball": "1Y21",
+   "functions": [
+    "SAI0_SCLK_M1",
+    "I2C3_SCL_M1",
+    "SPI0_CSN0_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C6"
+  },
+  {
+   "pin": "GPIO0_C7",
+   "ball": "1Y23",
+   "functions": [
+    "SAI0_LRCK_M1",
+    "I2C3_SDA_M1",
+    "SPI0_CLK_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_C7"
+  },
+  {
+   "pin": "GPIO0_D0",
+   "ball": "1W23",
+   "functions": [
+    "SAI0_SDI0_M1",
+    "PDM0_SDI0_M0",
+    "SPI0_MOSI_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_D0"
+  },
+  {
+   "pin": "GPIO0_D1",
+   "ball": "AC28",
+   "functions": [
+    "SAI0_SDI1_M1",
+    "SAI0_SDO3_M1",
+    "PDM0_SDI1_M0",
+    "SPI0_MISO_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "PMUIO1",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO0_D1"
+  },
+  {
+   "pin": "1Y22",
+   "ball": "1Y22",
+   "functions": [
+    "SAI0_SDI2_M1/SAI0_SDO2_M1/PDM0_SDI2_M0/I2C4_SCL_M0/CPUBIG_AVS/PWM1_CH5_M0/UART1_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1AA23",
+   "ball": "1AA23",
+   "functions": [
+    "SAI0_SDI3_M1/SAI0_SDO1_M1/PDM0_SDI3_M0/I2C4_SDA_M0/GPU_AVS/PWM2_CH0_M0/UART1_RTS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO0_D4",
+   "ball": "1U24",
+   "functions": [
+    "UART0_TX_M0",
+    "JTAG_TCK_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO0_D4"
+  },
+  {
+   "pin": "GPIO0_D5",
+   "ball": "AA28",
+   "functions": [
+    "UART0_RX_M0",
+    "JTAG_TMS_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up; gpio=GPIO0_D5"
+  },
+  {
+   "pin": "1U20",
+   "ball": "1U20",
+   "functions": [
+    "PMUIO1_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L2",
+   "ball": "2L2",
+   "functions": [
+    "PMU_LOGIC_DVDD0V75_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L10",
+   "ball": "2L10",
+   "functions": [
+    "PMU_LOGIC_DVDD0V75_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "GPIO4_A2",
+   "ball": "1D6",
+   "functions": [
+    "SAI1_MCLK_M0",
+    "SAI4_MCLK_M0",
+    "AUPLL_CLK_IN_M2",
+    "PWM2_CH5_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO2",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO4_A2"
+  },
+  {
+   "pin": "1C6",
+   "ball": "1C6",
+   "functions": [
+    "SAI1_SCLK_M0/FLEXBUS1_CSN_M4/SPI3_CSN0_M2/UART5_RTSN_M1/I2C2_SCL_M2/PWM2_CH4_M1/"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C5",
+   "ball": "1C5",
+   "functions": [
+    "SAI4_SCLK_M0/PDM1_SDI3_M1/FLEXBUS0_D13_M1/SPI3_MOSI_M2/UART6_TX_M0/I2C4_SCL_M1/C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B6",
+   "ball": "1B6",
+   "functions": [
+    "SAI1_LRCK_M0/FLEXBUS1_D12_M1/SPI4_CSN1_M2/UART5_CTSN_M1/I2C2_SDA_M2/PCIE1_CLKREQ"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B5",
+   "ball": "1B5",
+   "functions": [
+    "SAI4_LRCK_M0/PDM1_CLK0_M1/FLEXBUS0_D14_M1/SPI3_MISO_M2/UART6_RX_M0/I2C4_SDA_M1/C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO4_A7",
+   "ball": "A7",
+   "functions": [
+    "SAI1_SDO0_M0",
+    "SAI4_SDI_M0",
+    "SPI3_CLK_M2",
+    "PWM2_CH6_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO2",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO4_A7"
+  },
+  {
+   "pin": "1A5",
+   "ball": "1A5",
+   "functions": [
+    "SAI1_SDO1_M0/SAI1_SDI3_M0/PDM1_CLK1_M1/FLEXBUS1_D13_M1/SPI4_CLK_M2/UART5_TX_M1/U"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B7",
+   "ball": "B7",
+   "functions": [
+    "SAI1_SDO2_M0/SAI1_SDI2_M0/PDM1_SDI2_M1/FLEXBUS1_D14_M1/SPI4_MOSI_M2/UART5_RX_M1/"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B6",
+   "ball": "B6",
+   "functions": [
+    "SAI1_SDO3_M0/SAI1_SDI1_M0/PDM1_SDI1_M1/FLEXBUS1_D15_M1/SPI4_MISO_M2/MIPI_TE_M0/G"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A6",
+   "ball": "1A6",
+   "functions": [
+    "SAI1_SDI0_M0/SAI4_SDO_M0/PDM1_SDI0_M1/SPI4_CSN0_M2/SPI3_CSN1_M2/PWM2_CH7_M0/GPIO"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO4_B4",
+   "ball": "B8",
+   "functions": [
+    "SPDIF_RX0_M0",
+    "FLEXBUS0_CSN_M4",
+    "UART2_RX_M1",
+    "I2C3_SDA_M0",
+    "CAN1_RX_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO2",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO4_B4"
+  },
+  {
+   "pin": "1A4",
+   "ball": "1A4",
+   "functions": [
+    "SPDIF_TX0_M0/FLEXBUS0_D15_M1/UART2_TX_M1/I2C3_SCL_M0/PCIE0_CLKREQN_M2/CAN1_TX_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "2A2",
+   "ball": "2A2",
+   "functions": [
+    "VCCIO2_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A28",
+   "ball": "A28",
+   "functions": [
+    "ETH1_RXD2_M1/SDMMC1_D0_M0/SAI3_SCLK_M1/I2C9_SDA_M1/SPI1_CLK_M0/PCIE1_CLKREQN_M1/"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B27",
+   "ball": "B27",
+   "functions": [
+    "ETH1_RXD3_M1/SDMMC1_D1_M0/SAI3_LRCK_M1/I2C9_SCL_M1/SPI1_MOSI_M0/PWM1_CH1_M1/GPIO"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A23",
+   "ball": "1A23",
+   "functions": [
+    "ETH1_RXCLK_M1/SDMMC1_D2_M0/SAI3_SDO_M1/UART3_CTSN_M2/SPI1_MISO_M0/PCIE0_CLKREQN_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO1_B7",
+   "ball": "A27",
+   "functions": [
+    "ETH1_TXD2_M1",
+    "SDMMC1_D3_M0",
+    "SAI3_SDI_M1",
+    "UART3_RTSN_M2",
+    "SPI1_CSN0_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO3",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_B7"
+  },
+  {
+   "pin": "B26",
+   "ball": "B26",
+   "functions": [
+    "ETH1_TXD3_M1/SDMMC1_CMD_M0/PDM0_SDI2_M2/UART3_TX_M2/SPI1_CSN1_M0/PWM0_CH0_M1/GPI"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO1_C1",
+   "ball": "1B22",
+   "functions": [
+    "ETH1_TXCLK_M1",
+    "SDMMC1_CLK_M0",
+    "SAI3_MCLK_M1",
+    "PDM0_CLK0_M2",
+    "UART3_RX_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO3",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_C1"
+  },
+  {
+   "pin": "B29",
+   "ball": "B29",
+   "functions": [
+    "ETH1_PPSCLK_M1/SDMMC1_PWREN_M0/FSPI1_RSTN_M1/FSPI1_CSN1_M1/UART4_RTSN_M1/I2C6_SC"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up"
+  },
+  {
+   "pin": "1C23",
+   "ball": "1C23",
+   "functions": [
+    "ETH1_PPSTRIG_M1/SDMMC1_DETN_M0/FSPI1_CSN0_M1/UART4_CTSN_M1/I2C6_SDA_M1/SPI2_CSN0"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=up"
+  },
+  {
+   "pin": "1B23",
+   "ball": "1B23",
+   "functions": [
+    "ETH1_TXD0_M1/FSPI1_D0_M1/UART4_TX_M1/UART2_RTSN_M0/SPI2_MOSI_M1/PCIE0_BUTTONRSTN"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B28",
+   "ball": "B28",
+   "functions": [
+    "ETH1_TXD1_M1/FSPI1_D1_M1/UART4_RX_M1/UART2_CTSN_M0/SPI2_MISO_M1/PCIE1_BUTTONRSTN"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A26",
+   "ball": "A26",
+   "functions": [
+    "ETH1_TXCTL_M1/FSPI1_D2_M1/PDM0_SDI0_M2/UART2_TX_M0/I2C8_SCL_M1/SATA_CPPOD/GPIO1_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C22",
+   "ball": "1C22",
+   "functions": [
+    "ETH1_RXD0_M1/FSPI1_D3_M1/PDM0_SDI1_M2/UART2_RX_M0/I2C8_SDA_M1/SATA_CPDET/GPIO1_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO1_D0",
+   "ball": "C29",
+   "functions": [
+    "ETH1_RXD1_M1",
+    "SAI2_SDO_M0",
+    "UART10_TX_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO3",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_D0"
+  },
+  {
+   "pin": "GPIO1_D1",
+   "ball": "1D22",
+   "functions": [
+    "ETH1_RXCTL_M1",
+    "SAI2_SCLK_M0",
+    "UART10_RX_M1",
+    "I3C0_SDA_PU_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO3",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_D1"
+  },
+  {
+   "pin": "GPIO1_D2",
+   "ball": "1A24",
+   "functions": [
+    "ETH1_MDC_M1",
+    "SAI2_LRCK_M0",
+    "I3C0_SCL_M1",
+    "PWM1_CH3_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_D2"
+  },
+  {
+   "pin": "GPIO1_D3",
+   "ball": "C28",
+   "functions": [
+    "ETH1_MDIO_M1",
+    "SAI2_SDI_M0",
+    "I3C0_SDA_M1",
+    "PWM1_CH4_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO1_D3"
+  },
+  {
+   "pin": "1E21",
+   "ball": "1E21",
+   "functions": [
+    "ETH1_MCLK_M1/SAI2_MCLK_M0/PDM0_SDI3_M2/SPDIF_RX1_M2/UART10_RTSN_M1/I2C5_SCL_M1/G"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1E22",
+   "ball": "1E22",
+   "functions": [
+    "ETH_CLK1_25M_OUT_M1/FSPI1_CLK_M1/PDM0_CLK1_M2/SPDIF_TX1_M2/UART10_CTSN_M1/I2C5_S"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "2B10",
+   "ball": "2B10",
+   "functions": [
+    "VCCIO3_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B22",
+   "ball": "B22",
+   "functions": [
+    "VI_CIF_D15/SDMMC1_D0_M1/ETH0_RXD0_M1/SAI0_SDO0_M0/UART8_TX_M1/SPI4_CSN1_M3/I2C4_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B20",
+   "ball": "B20",
+   "functions": [
+    "VI_CIF_D14/SDMMC1_D1_M1/ETH0_TXCTL_M1/SAI0_SDO1_M0/UART8_RX_M1/I2C4_SDA_M2/GPIO2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B19",
+   "ball": "B19",
+   "functions": [
+    "VI_CIF_D13/SDMMC1_D2_M1/ETH0_TXD1_M1/SAI0_SDI0_M0/PDM0_SDI3_M3/UART1_TX_M1/GPIO2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A18",
+   "ball": "1A18",
+   "functions": [
+    "VI_CIF_D12/SDMMC1_D3_M1/ETH0_TXD0_M1/SAI0_SDI1_M0/PDM0_SDI2_M3/UART1_RX_M1/GPIO2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A17",
+   "ball": "1A17",
+   "functions": [
+    "VI_CIF_D11/SDMMC1_CMD_M1/ETH0_TXD3_M1/SAI0_SDI2_M0/PDM0_SDI1_M3/UART1_CTSN_M1/SP"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B16",
+   "ball": "1B16",
+   "functions": [
+    "VI_CIF_D10/SDMMC1_CLK_M1/ETH0_TXCLK_M1/SAI0_SDO2_M0/PDM0_CLK1_M3/UART1_RTSN_M1/S"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A19",
+   "ball": "A19",
+   "functions": [
+    "VI_CIF_D9/SDMMC1_PWREN_M1/ETH0_TXD2_M1/SAI0_SDI3_M0/PDM0_SDI0_M3/UART7_CTSN_M0/S"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C18",
+   "ball": "1C18",
+   "functions": [
+    "VI_CIF_D8/SDMMC1_DETN_M1/ETH0_RXCLK_M1/SAI0_MCLK_M0/PDM0_CLK0_M3/UART7_RTSN_M0/S"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A21",
+   "ball": "A21",
+   "functions": [
+    "VI_CIF_D7/ETH1_PTP_REFCLK_M1/ETH0_RXD3_M1/SAI0_SCLK_M0/UART7_TX_M0/UART8_RTSN_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B21",
+   "ball": "B21",
+   "functions": [
+    "VI_CIF_D6/ETH0_RXD2_M1/SAI0_LRCK_M0/UART7_RX_M0/UART8_CTSN_M1/I2C8_SDA_M2/GPIO2_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A17",
+   "ball": "A17",
+   "functions": [
+    "VI_CIF_D5/ETH1_RXD2_M0/ETH0_PTP_REFCLK_M1/PDM1_SDI1_M0/UART9_RX_M0/PWM1_CH0_M2/G"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A15",
+   "ball": "1A15",
+   "functions": [
+    "VI_CIF_D4/ETH1_RXD3_M0/ETH0_PPSCLK_M1/SAI2_MCLK_M1/PDM1_CLK1_M0/UART9_TX_M0/SPI1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1D15",
+   "ball": "1D15",
+   "functions": [
+    "VI_CIF_D3/ETH1_RXCLK_M0/ETH0_PPSTRIG_M1/SAI2_SCLK_M1/PDM1_SDI2_M0/UART11_CTSN_M1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A15",
+   "ball": "A15",
+   "functions": [
+    "VI_CIF_D2/ETH1_TXD2_M0/SAI2_LRCK_M1/PDM1_SDI3_M0/UART11_RTSN_M1/SPI1_MISO_M1/PWM"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A13",
+   "ball": "1A13",
+   "functions": [
+    "VI_CIF_D1/ETH1_TXD3_M0/SAI2_SDO_M1/PDM1_SDI0_M0/UART11_TX_M1/SPI1_CSN0_M1/PWM1_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C15",
+   "ball": "1C15",
+   "functions": [
+    "VI_CIF_D0/ETH1_TXCLK_M0/SAI2_SDI_M1/PDM1_CLK0_M0/UART11_RX_M1/SPI1_CLK_M1/PWM1_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO2_C6",
+   "ball": "1A14",
+   "functions": [
+    "ETH1_TXD0_M0",
+    "SAI4_SCLK_M3",
+    "UART4_CTSN_M0",
+    "I2C5_SCL_M2",
+    "PWM1_CH5_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_C6"
+  },
+  {
+   "pin": "GPIO2_C7",
+   "ball": "B15",
+   "functions": [
+    "ETH1_TXD1_M0",
+    "SAI4_LRCK_M3",
+    "UART4_RTSN_M0",
+    "I2C5_SDA_M2",
+    "PWM0_CH1_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_C7"
+  },
+  {
+   "pin": "GPIO2_D0",
+   "ball": "B16",
+   "functions": [
+    "ETH1_TXCTL_M0",
+    "SAI4_SDI_M3",
+    "UART4_TX_M0",
+    "I2C6_SCL_M2",
+    "PWM2_CH0_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_D0"
+  },
+  {
+   "pin": "GPIO2_D1",
+   "ball": "1A16",
+   "functions": [
+    "ETH1_RXD0_M0",
+    "SAI4_SDO_M3",
+    "UART4_RX_M0",
+    "I2C6_SDA_M2",
+    "PWM2_CH1_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_D1"
+  },
+  {
+   "pin": "B17",
+   "ball": "B17",
+   "functions": [
+    "CAM_CLK0_OUT_M1/ETH1_RXD1_M0/SAI4_MCLK_M3/UART6_TX_M1/I3C1_SCL_M0/PWM2_CH2_M2/GP"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "GPIO2_D3",
+   "ball": "B18",
+   "functions": [
+    "ETH1_RXCTL_M0",
+    "UART6_RX_M1",
+    "I3C1_SDA_M0",
+    "PWM2_CH3_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_D3"
+  },
+  {
+   "pin": "GPIO2_D4",
+   "ball": "1B13",
+   "functions": [
+    "ISP_PRELIGHT_TRIG_M0",
+    "ETH1_MDC_M0",
+    "UART6_RTSN_M1",
+    "I2C9_SDA_M2",
+    "PWM2_CH4_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_D4"
+  },
+  {
+   "pin": "GPIO2_D5",
+   "ball": "1B15",
+   "functions": [
+    "ISP_FLASH_TRIGOUT_M0",
+    "ETH1_MDIO_M0",
+    "UART6_CTSN_M1",
+    "I2C9_SCL_M2",
+    "PWM2_CH5_M2"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO2_D5"
+  },
+  {
+   "pin": "1D18",
+   "ball": "1D18",
+   "functions": [
+    "CAM_CLK1_OUT_M1/ETH_CLK1_25M_OUT_M0/ETH0_MCLK_M1/SAI3_MCLK_M2/SPDIF_RX0_M2/UART9"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1E15",
+   "ball": "1E15",
+   "functions": [
+    "CAM_CLK2_OUT_M1/ETH1_MCLK_M0/ETH_CLK0_25M_OUT_M1/SAI0_SDO3_M0/SPDIF_TX0_M2/UART9"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1D16",
+   "ball": "1D16",
+   "functions": [
+    "VI_CIF_HREF/ETH0_MDIO_M1/SAI3_SCLK_M2/UART3_TX_M0/SPI3_CLK_M0/I2C7_SCL_M1/GPIO3_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B18",
+   "ball": "1B18",
+   "functions": [
+    "VI_CIF_VSYNC/ETH1_PPSTRIG_M0/ETH0_MDC_M1/SAI3_LRCK_M2/UART3_RX_M0/SPI3_MOSI_M0/I"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A20",
+   "ball": "1A20",
+   "functions": [
+    "VI_CIF_CLKO/ETH1_PPSCLK_M0/ETH0_RXCTL_M1/SAI3_SDO_M2/SPDIF_RX1_M1/UART3_CTSN_M0/"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A19",
+   "ball": "1A19",
+   "functions": [
+    "VI_CIF_CLKI/ETH1_PTP_REFCLK_M0/ETH0_RXD1_M1/SAI3_SDI_M2/SPDIF_TX1_M1/UART3_RTSN_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "2A7",
+   "ball": "2A7",
+   "functions": [
+    "VCCIO4_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D13",
+   "ball": "1D13",
+   "functions": [
+    "VO_LCDC_D23/VO_EBC_SDSHR/ETH_CLK0_25M_OUT_M0/SAI4_SDI_M1/DSMC_RDYN/FLEXBUS1_D11/"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A9",
+   "ball": "A9",
+   "functions": [
+    "VO_LCDC_D22/VO_EBC_GDSP/ETH0_MDIO_M0/PDM1_SDI3_M2/DSMC_DATA15/FLEXBUS0_D7/UART1_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A7",
+   "ball": "1A7",
+   "functions": [
+    "VO_LCDC_D21/VO_EBC_GDOE/ETH0_MDC_M0/PDM1_SDI2_M2/DSMC_DATA14/FLEXBUS0_D6/UART1_R"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B13",
+   "ball": "B13",
+   "functions": [
+    "VO_LCDC_D20/VO_EBC_VCOM/ETH0_RXCTL_M0/PDM1_CLK1_M2/DSMC_DATA13/FLEXBUS0_D5/UART1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B14",
+   "ball": "B14",
+   "functions": [
+    "VO_LCDC_D19/VO_EBC_SDCE3/ETH0_MCLK_M0/SAI4_MCLK_M1/DSMC_CSN1/FLEXBUS0_D8/UART10_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A11",
+   "ball": "1A11",
+   "functions": [
+    "VO_LCDC_D18/VO_EBC_SDCE2/ETH0_RXD1_M0/PDM1_CLK0_M2/DSMC_DATA12/FLEXBUS0_D4/UART1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A13",
+   "ball": "A13",
+   "functions": [
+    "VO_LCDC_D17/VO_EBC_SDCE1/ETH0_RXD0_M0/PDM1_SDI1_M2/DSMC_DATA11/FLEXBUS0_D3/UART9"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "A11",
+   "ball": "A11",
+   "functions": [
+    "VO_LCDC_D16/VO_EBC_SDCE0/ETH0_TXCTL_M0/PDM1_SDI0_M2/DSMC_DATA10/FLEXBUS0_D2/UART"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B10",
+   "ball": "B10",
+   "functions": [
+    "VO_LCDC_D15/VO_EBC_SDDO15/ETH0_TXD1_M0/SPDIF_RX1_M0/DSMC_DATA9/FLEXBUS0_D1/UART9"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A9",
+   "ball": "1A9",
+   "functions": [
+    "VO_LCDC_D14/VO_EBC_SDDO14/ETH0_TXD0_M0/SPDIF_TX1_M0/DSMC_DATA8/FLEXBUS0_D0/UART9"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B11",
+   "ball": "B11",
+   "functions": [
+    "VO_LCDC_D13/VO_EBC_SDDO13/ETH0_TXCLK_M0/DSMC_DQS1/FLEXBUS0_CLK/SPI3_CSN0_M1/PWM0"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1D12",
+   "ball": "1D12",
+   "functions": [
+    "VO_LCDC_D12/VO_EBC_SDDO12/ETH0_PPSTRIG_M0/SAI1_SDI0_M1/DSMC_DQS0/FLEXBUS1_D10/FL"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1E9",
+   "ball": "1E9",
+   "functions": [
+    "VO_LCDC_D11/VO_EBC_SDDO11/ETH0_PPSCLK_M0/SAI1_SDO3_M1/DSMC_DATA7/FLEXBUS1_D9/UAR"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B10",
+   "ball": "1B10",
+   "functions": [
+    "VO_LCDC_D10/VO_EBC_SDDO10/ETH0_PTP_REFCLK_M0/SAI1_SDO2_M1/DSMC_DATA6/FLEXBUS1_D8"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B9",
+   "ball": "B9",
+   "functions": [
+    "VO_LCDC_D9/VO_EBC_SDDO9/ETH0_TXD3_M0/SAI2_SCLK_M2/DSMC_INT1/FLEXBUS0_D9/UART11_R"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A8",
+   "ball": "1A8",
+   "functions": [
+    "VO_LCDC_D8/VO_EBC_SDDO8/ETH0_TXD2_M0/SAI2_LRCK_M2/DSMC_INT3/FLEXBUS0_D10/FLEXBUS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1D9",
+   "ball": "1D9",
+   "functions": [
+    "VO_LCDC_D7/VO_EBC_SDDO7/SAI1_SDO1_M1/DSMC_DATA5/FLEXBUS1_D7/UART11_TX_M0/SPI2_CS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B9",
+   "ball": "1B9",
+   "functions": [
+    "VO_LCDC_D6/VO_EBC_SDDO6/SAI1_SDO0_M1/DSMC_DATA4/FLEXBUS1_D6/UART8_RX_M0/SPI1_MIS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1D7",
+   "ball": "1D7",
+   "functions": [
+    "VO_LCDC_D5/VO_EBC_SDDO5/SAI1_LRCK_M1/DSMC_DATA3/FLEXBUS1_D5/UART8_TX_M0/SPI1_MOS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C7",
+   "ball": "1C7",
+   "functions": [
+    "VO_LCDC_D4/VO_EBC_SDDO4/SAI1_SCLK_M1/DSMC_DATA2/FLEXBUS1_D4/UART8_RTSN_M0/SPI1_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C12",
+   "ball": "1C12",
+   "functions": [
+    "VO_LCDC_D3/VO_EBC_SDDO3/SAI1_MCLK_M1/DSMC_DATA1/FLEXBUS1_D3/UART8_CTSN_M0/SPI1_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A12",
+   "ball": "1A12",
+   "functions": [
+    "VO_LCDC_D2/VO_EBC_SDDO2/ETH0_RXCLK_M0/SAI2_MCLK_M2/DSMC_CSN2/FLEXBUS0_D11/FLEXBU"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1A10",
+   "ball": "1A10",
+   "functions": [
+    "VO_LCDC_D1/VO_EBC_SDDO1/ETH0_RXD3_M0/SAI2_SDI_M2/DSMC_CSN3/FLEXBUS0_D12/FLEXBUS1"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "B12",
+   "ball": "B12",
+   "functions": [
+    "VO_LCDC_D0/VO_EBC_SDDO0/ETH0_RXD2_M0/SAI2_SDO_M2/DSMC_CSN0/FLEXBUS1_D2/UART2_CTS"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1E12",
+   "ball": "1E12",
+   "functions": [
+    "VO_LCDC_DEN/VO_EBC_SDLE/SAI1_SDI1_M1/DSMC_DATA0/FLEXBUS1_D1/UART5_RX_M0/SPI3_CLK"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1D10",
+   "ball": "1D10",
+   "functions": [
+    "VO_LCDC_HSYNC/VO_EBC_GDCLK/SAI1_SDI2_M1/DSMC_CLKP/FLEXBUS1_D0/UART5_TX_M0/SPI3_M"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1C10",
+   "ball": "1C10",
+   "functions": [
+    "VO_LCDC_VSYNC/VO_EBC_SDCLK/SAI1_SDI3_M1/DSMC_CLKN/FLEXBUS1_CLK/UART5_CTSN_M0/SPI"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1E7",
+   "ball": "1E7",
+   "functions": [
+    "VO_LCDC_CLK/VO_EBC_SDOE/CAM_CLK0_OUT_M0/SAI4_SCLK_M1/DSMC_RESETN/FLEXBUS0_D15_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B12",
+   "ball": "1B12",
+   "functions": [
+    "SPDIF_RX0_M1/CAM_CLK1_OUT_M0/SAI4_LRCK_M1/DSMC_INT0/FLEXBUS0_D13_M0/FLEXBUS1_D14"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1B7",
+   "ball": "1B7",
+   "functions": [
+    "VO_POST_EMPTY/SPDIF_TX0_M1/CAM_CLK2_OUT_M0/SAI4_SDO_M1/DSMC_INT2/FLEXBUS0_D14_M0"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "2A4",
+   "ball": "2A4",
+   "functions": [
+    "VCCIO5_VCC_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A5",
+   "ball": "2A5",
+   "functions": [
+    "VCCIO5_VCC_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK3",
+   "ball": "AK3",
+   "functions": [
+    "DSM_AUD_LP_M1/SAI4_MCLK_M2/HDMI_TX_CEC_M0/I2C7_SCL_M3/SPI4_CSN1_M0/UART11_TX_M2/"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "AK2",
+   "ball": "AK2",
+   "functions": [
+    "DSM_AUD_LN_M1/HDMI_TX_HPDIN_M0/PCIE1_CLKREQN_M3/I2C7_SDA_M3/EDP_TX_HPDIN_M0/UART"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "AL2",
+   "ball": "AL2",
+   "functions": [
+    "DSM_AUD_RP_M1/HDMI_TX_SCL/I2C2_SCL_M3/CAN0_TX_M1/UART9_TX_M2/PWM2_CH0_M1/GPIO4_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1AE2",
+   "ball": "1AE2",
+   "functions": [
+    "DSM_AUD_RN_M1/HDMI_TX_SDA/I2C2_SDA_M3/CAN0_RX_M1/UART9_RX_M2/PWM2_CH1_M1/GPIO4_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "AL3",
+   "ball": "AL3",
+   "functions": [
+    "ISP_PRELIGHT_TRIG_M1/SAI4_LRCK_M2/DP_HPDIN_M0/I2C3_SCL_M3/SPI4_CSN0_M0/UART6_TX_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "AK1",
+   "ball": "AK1",
+   "functions": [
+    "ISP_FLASH_TRIGOUT_M1/SAI4_SDO_M2/VP0_SYNC_OUT/SATA1_ACTLED_M1/I2C3_SDA_M3/SPI4_M"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "1AE1",
+   "ball": "1AE1",
+   "functions": [
+    "SAI4_SDI_M2/VP1_SYNC_OUT/PCIE0_CLKREQN_M3/SATA0_ACTLED_M1/I2C6_SCL_M3/SPI4_MISO_"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "AJ1",
+   "ball": "AJ1",
+   "functions": [
+    "SAI4_SCLK_M2/VP2_SYNC_OUT/I2C6_SDA_M3/SPI4_CLK_M0/CAN1_RX_M1/PWM2_CH3_M1/GPIO4_C"
+   ],
+   "type": "I/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down"
+  },
+  {
+   "pin": "2N3",
+   "ball": "2N3",
+   "functions": [
+    "VCCIO6_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "GPIO4_D0",
+   "ball": "1AD2",
+   "functions": [
+    "UFS_RSTN"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO7",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO4_D0"
+  },
+  {
+   "pin": "GPIO4_D1",
+   "ball": "AK4",
+   "functions": [
+    "UFS_REFCLK"
+   ],
+   "type": "I/O",
+   "power_domain": "VCCIO7",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=down; gpio=GPIO4_D1"
+  },
+  {
+   "pin": "2M3",
+   "ball": "2M3",
+   "functions": [
+    "VCCIO7_VCC"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL5",
+   "ball": "AL5",
+   "functions": [
+    "OSC_UFS_XOUT"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK5",
+   "ball": "AK5",
+   "functions": [
+    "OSC_UFS_XIN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M2",
+   "ball": "2M2",
+   "functions": [
+    "OSC_UFS_AVDD"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T2",
+   "ball": "2T2",
+   "functions": [
+    "DP_TX_AUXP"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T3",
+   "ball": "2T3",
+   "functions": [
+    "DP_TX_AUXN"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK10",
+   "ball": "AK10",
+   "functions": [
+    "USB3_OTG0_SSRX1P/DP_TX_D0P"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL10",
+   "ball": "AL10",
+   "functions": [
+    "USB3_OTG0_SSRX1N/DP_TX_D0N"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL11",
+   "ball": "AL11",
+   "functions": [
+    "USB3_OTG0_SSTX1P/DP_TX_D1P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK11",
+   "ball": "AK11",
+   "functions": [
+    "USB3_OTG0_SSTX1N/DP_TX_D1N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK12",
+   "ball": "AK12",
+   "functions": [
+    "USB3_OTG0_SSRX2P/DP_TX_D2P"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL12",
+   "ball": "AL12",
+   "functions": [
+    "USB3_OTG0_SSRX2N/DP_TX_D2N"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL13",
+   "ball": "AL13",
+   "functions": [
+    "USB3_OTG0_SSTX2P/DP_TX_D3P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK13",
+   "ball": "AK13",
+   "functions": [
+    "USB3_OTG0_SSTX2N/DP_TX_D3N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T7",
+   "ball": "2T7",
+   "functions": [
+    "USB3_OTG0_REXT/DP_TX_REXT"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M5",
+   "ball": "2M5",
+   "functions": [
+    "USB3_OTG0_DP_TX_AVDD0V85"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N5",
+   "ball": "2N5",
+   "functions": [
+    "USB3_OTG0_DP_TX_DVDD0V85"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N4",
+   "ball": "2N4",
+   "functions": [
+    "USB3_OTG0_DP_TX_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK9",
+   "ball": "AK9",
+   "functions": [
+    "USB2_OTG0_DP"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL9",
+   "ball": "AL9",
+   "functions": [
+    "USB2_OTG0_DM"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R6",
+   "ball": "2R6",
+   "functions": [
+    "USB2_OTG0_ID"
+   ],
+   "type": "I",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P3",
+   "ball": "2P3",
+   "functions": [
+    "USB2_OTG0_VBUSDET"
+   ],
+   "type": "I",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R3",
+   "ball": "2R3",
+   "functions": [
+    "USB2_OTG0_REXT"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T4",
+   "ball": "2T4",
+   "functions": [
+    "USB2_OTG1_DP"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T5",
+   "ball": "2T5",
+   "functions": [
+    "USB2_OTG1_DM"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T9",
+   "ball": "2T9",
+   "functions": [
+    "USB2_OTG1_ID"
+   ],
+   "type": "I",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T10",
+   "ball": "2T10",
+   "functions": [
+    "USB2_OTG1_VBUSDET"
+   ],
+   "type": "I",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U8",
+   "ball": "2U8",
+   "functions": [
+    "USB2_OTG1_REXT"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P5",
+   "ball": "2P5",
+   "functions": [
+    "USB2_OTG_DVDD0V75"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P4",
+   "ball": "2P4",
+   "functions": [
+    "USB2_OTG_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P7",
+   "ball": "2P7",
+   "functions": [
+    "USB2_OTG_AVDD3V3"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N22",
+   "ball": "1N22",
+   "functions": [
+    "PCIE0_REFCLKP"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N23",
+   "ball": "1N23",
+   "functions": [
+    "PCIE0_REFCLKN"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "P29",
+   "ball": "P29",
+   "functions": [
+    "PCIE0_TXP/SATA0_TXP"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "P28",
+   "ball": "P28",
+   "functions": [
+    "PCIE0_TXN/SATA0_TXN"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "R28",
+   "ball": "R28",
+   "functions": [
+    "PCIE0_RXP/SATA0_RXP"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "R29",
+   "ball": "R29",
+   "functions": [
+    "PCIE0_RXN/SATA0_RXN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F11",
+   "ball": "2F11",
+   "functions": [
+    "PCIE0_SATA0_AVDD0V85"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F12",
+   "ball": "2F12",
+   "functions": [
+    "PCIE0_SATA0_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L23",
+   "ball": "1L23",
+   "functions": [
+    "PCIE1_REFCLKP"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M23",
+   "ball": "1M23",
+   "functions": [
+    "PCIE1_REFCLKN"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "N28",
+   "ball": "N28",
+   "functions": [
+    "PCIE1_TXP/SATA1_TXP/USB3_OTG1_SSTXP"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "N29",
+   "ball": "N29",
+   "functions": [
+    "PCIE1_TXN/SATA1_TXN/USB3_OTG1_SSTXN"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "M28",
+   "ball": "M28",
+   "functions": [
+    "PCIE1_RXP/SATA1_RXP/USB3_OTG1_SSRXP"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "M29",
+   "ball": "M29",
+   "functions": [
+    "PCIE1_RXN/SATA1_RXN/USB3_OTG1_SSRXN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E11",
+   "ball": "2E11",
+   "functions": [
+    "PCIE1_SATA1_USB3_OTG1_AVDD0V85"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E12",
+   "ball": "2E12",
+   "functions": [
+    "PCIE1_SATA1_USB3_OTG1_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK15",
+   "ball": "AK15",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D0N/MIPI_CPHY_DSI_TX_TRIO0_A"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL15",
+   "ball": "AL15",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D0P/MIPI_CPHY_DSI_TX_TRIO0_B"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK16",
+   "ball": "AK16",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D1N/MIPI_CPHY_DSI_TX_TRIO0_C"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL16",
+   "ball": "AL16",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D1P/MIPI_CPHY_DSI_TX_TRIO1_A"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK17",
+   "ball": "AK17",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_CLKN/MIPI_CPHY_DSI_TX_TRIO1_B"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL17",
+   "ball": "AL17",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_CLKP/MIPI_CPHY_DSI_TX_TRIO1_C"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK18",
+   "ball": "AK18",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D2N/MIPI_CPHY_DSI_TX_TRIO2_A"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL18",
+   "ball": "AL18",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D2P/MIPI_CPHY_DSI_TX_TRIO2_B"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK19",
+   "ball": "AK19",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D3N/MIPI_CPHY_DSI_TX_TRIO2_C"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL19",
+   "ball": "AL19",
+   "functions": [
+    "MIPI_DPHY_DSI_TX_D3P/NO_USE"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL20",
+   "ball": "AL20",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D0N/MIPI_CPHY_CSI_RX_TRIO0_A"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK20",
+   "ball": "AK20",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D0P/MIPI_CPHY_CSI_RX_TRIO0_B"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL21",
+   "ball": "AL21",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D1N/MIPI_CPHY_CSI_RX_TRIO0_C"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK21",
+   "ball": "AK21",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D1P/MIPI_CPHY_CSI_RX_TRIO1_A"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL22",
+   "ball": "AL22",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_CLKN/MIPI_CPHY_CSI_RX_TRIO1_B"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK22",
+   "ball": "AK22",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_CLKP/MIPI_CPHY_CSI_RX_TRIO1_C"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL23",
+   "ball": "AL23",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D2N/MIPI_CPHY_CSI_RX_TRIO2_A"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK23",
+   "ball": "AK23",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D2P/MIPI_CPHY_CSI_RX_TRIO2_B"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL24",
+   "ball": "AL24",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D3N/MIPI_CPHY_CSI_RX_TRIO2_C"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK24",
+   "ball": "AK24",
+   "functions": [
+    "MIPI_DPHY_CSI0_RX_D3P/NO_USE"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N7",
+   "ball": "2N7",
+   "functions": [
+    "MIPI_DCPHY_VREG"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M7",
+   "ball": "2M7",
+   "functions": [
+    "MIPI_DCPHY_AVDD"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M8",
+   "ball": "2M8",
+   "functions": [
+    "MIPI_DCPHY_AVDD1V2"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P8",
+   "ball": "2P8",
+   "functions": [
+    "MIPI_DCPHY_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AE28",
+   "ball": "AE28",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D0N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AE29",
+   "ball": "AE29",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D0P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AF28",
+   "ball": "AF28",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D1N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AF29",
+   "ball": "AF29",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D1P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC23",
+   "ball": "1AC23",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_CLKN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC22",
+   "ball": "1AC22",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_CLKP"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AG28",
+   "ball": "AG28",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D2N/MIPI_DPHY_CSI2_RX_D0N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AG29",
+   "ball": "AG29",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D2P/MIPI_DPHY_CSI2_RX_D0P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AH28",
+   "ball": "AH28",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D3N/MIPI_DPHY_CSI2_RX_D1N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AH29",
+   "ball": "AH29",
+   "functions": [
+    "MIPI_DPHY_CSI1_RX_D3P/MIPI_DPHY_CSI2_RX_D1P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD22",
+   "ball": "1AD22",
+   "functions": [
+    "MIPI_DPHY_CSI2_RX_CLKN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD21",
+   "ball": "1AD21",
+   "functions": [
+    "MIPI_DPHY_CSI2_RX_CLKP"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L11",
+   "ball": "2L11",
+   "functions": [
+    "MIPI_DPHY_CSI1/2_RX_AVDD0V75"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W20",
+   "ball": "1W20",
+   "functions": [
+    "MIPI_DPHY_CSI1/2_RX_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "H29",
+   "ball": "H29",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D0N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "H28",
+   "ball": "H28",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D0P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "J29",
+   "ball": "J29",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D1N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "J28",
+   "ball": "J28",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D1P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H23",
+   "ball": "1H23",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_CLKN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H22",
+   "ball": "1H22",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_CLKP"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "K29",
+   "ball": "K29",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D2N/MIPI_DPHY_CSI4_RX_D0N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "K28",
+   "ball": "K28",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D2P/MIPI_DPHY_CSI4_RX_D0P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "L29",
+   "ball": "L29",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D3N/MIPI_DPHY_CSI4_RX_D1N"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "L28",
+   "ball": "L28",
+   "functions": [
+    "MIPI_DPHY_CSI3_RX_D3P/MIPI_DPHY_CSI4_RX_D1P"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K23",
+   "ball": "1K23",
+   "functions": [
+    "MIPI_DPHY_CSI4_RX_CLKN"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K22",
+   "ball": "1K22",
+   "functions": [
+    "MIPI_DPHY_CSI4_RX_CLKP"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D11",
+   "ball": "2D11",
+   "functions": [
+    "MIPI_DPHY_CSI3/4_RX_AVDD0V75"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D12",
+   "ball": "2D12",
+   "functions": [
+    "MIPI_DPHY_CSI3/4_RX_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T12",
+   "ball": "2T12",
+   "functions": [
+    "HDMI_TX_SBDP/EDP_TX_AUXP"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U12",
+   "ball": "2U12",
+   "functions": [
+    "HDMI_TX_SBDN/EDP_TX_AUXN"
+   ],
+   "type": "AI/O",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE24",
+   "ball": "1AE24",
+   "functions": [
+    "HDMI_TX_D0P/EDP_TX_D0P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK27",
+   "ball": "AK27",
+   "functions": [
+    "HDMI_TX_D0N/EDP_TX_D0N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK28",
+   "ball": "AK28",
+   "functions": [
+    "HDMI_TX_D1P/EDP_TX_D1P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL28",
+   "ball": "AL28",
+   "functions": [
+    "HDMI_TX_D1N/EDP_TX_D1N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AJ28",
+   "ball": "AJ28",
+   "functions": [
+    "HDMI_TX_D2P/EDP_TX_D2P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK29",
+   "ball": "AK29",
+   "functions": [
+    "HDMI_TX_D2N/EDP_TX_D2N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL26",
+   "ball": "AL26",
+   "functions": [
+    "HDMI_TX_D3P/EDP_TX_D3P"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK26",
+   "ball": "AK26",
+   "functions": [
+    "HDMI_TX_D3N/EDP_TX_D3N"
+   ],
+   "type": "AO",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA20",
+   "ball": "1AA20",
+   "functions": [
+    "HDMI_TX_REXT/EDP_TX_REXT"
+   ],
+   "type": "A",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N11",
+   "ball": "2N11",
+   "functions": [
+    "HDMI_TX_EDP_TX_AVDDD0V75"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P11",
+   "ball": "2P11",
+   "functions": [
+    "HDMI_TX_EDP_TX_AVDDC0V75"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N10",
+   "ball": "2N10",
+   "functions": [
+    "HDMI_TX_EDP_TX_AVDDIO1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P10",
+   "ball": "2P10",
+   "functions": [
+    "HDMI_TX_EDP_TX_AVDDCMN1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A25",
+   "ball": "A25",
+   "functions": [
+    "SARADC_IN0_BOOT"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1A22",
+   "ball": "1A22",
+   "functions": [
+    "SARADC_IN1"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1B19",
+   "ball": "1B19",
+   "functions": [
+    "SARADC_IN2"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C19",
+   "ball": "1C19",
+   "functions": [
+    "SARADC_IN3"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E18",
+   "ball": "1E18",
+   "functions": [
+    "SARADC_IN4"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D19",
+   "ball": "1D19",
+   "functions": [
+    "SARADC_IN5"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D21",
+   "ball": "1D21",
+   "functions": [
+    "SARADC_IN6"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E19",
+   "ball": "1E19",
+   "functions": [
+    "SARADC_IN7"
+   ],
+   "type": "AI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A10",
+   "ball": "2A10",
+   "functions": [
+    "SARADC_AVDD1V8"
+   ],
+   "type": "API",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F10",
+   "ball": "2F10",
+   "functions": [
+    "TSADC_TEST_OUT_TS"
+   ],
+   "type": "-",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H11",
+   "ball": "2H11",
+   "functions": [
+    "OTP_DVDD0V75"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G5",
+   "ball": "2G5",
+   "functions": [
+    "CPU_BIG_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G6",
+   "ball": "2G6",
+   "functions": [
+    "CPU_BIG_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H6",
+   "ball": "2H6",
+   "functions": [
+    "CPU_BIG_DVDD_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H7",
+   "ball": "2H7",
+   "functions": [
+    "CPU_BIG_DVDD_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J6",
+   "ball": "2J6",
+   "functions": [
+    "CPU_BIG_DVDD_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J7",
+   "ball": "2J7",
+   "functions": [
+    "CPU_BIG_DVDD_5"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K6",
+   "ball": "2K6",
+   "functions": [
+    "CPU_BIG_DVDD_6"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K7",
+   "ball": "2K7",
+   "functions": [
+    "CPU_BIG_DVDD_7"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H4",
+   "ball": "2H4",
+   "functions": [
+    "CPU_LIT_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J3",
+   "ball": "2J3",
+   "functions": [
+    "CPU_LIT_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J4",
+   "ball": "2J4",
+   "functions": [
+    "CPU_LIT_DVDD_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K3",
+   "ball": "2K3",
+   "functions": [
+    "CPU_LIT_DVDD_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K4",
+   "ball": "2K4",
+   "functions": [
+    "CPU_LIT_DVDD_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E7",
+   "ball": "2E7",
+   "functions": [
+    "LOGIC_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F8",
+   "ball": "2F8",
+   "functions": [
+    "LOGIC_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F9",
+   "ball": "2F9",
+   "functions": [
+    "LOGIC_DVDD_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G8",
+   "ball": "2G8",
+   "functions": [
+    "LOGIC_DVDD_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G9",
+   "ball": "2G9",
+   "functions": [
+    "LOGIC_DVDD_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H8",
+   "ball": "2H8",
+   "functions": [
+    "LOGIC_DVDD_5"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H9",
+   "ball": "2H9",
+   "functions": [
+    "LOGIC_DVDD_6"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F7",
+   "ball": "2F7",
+   "functions": [
+    "LOGIC_MEM_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J9",
+   "ball": "2J9",
+   "functions": [
+    "LOGIC_MEM_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C4",
+   "ball": "2C4",
+   "functions": [
+    "GPU_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C5",
+   "ball": "2C5",
+   "functions": [
+    "GPU_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D4",
+   "ball": "2D4",
+   "functions": [
+    "GPU_DVDD_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D5",
+   "ball": "2D5",
+   "functions": [
+    "GPU_DVDD_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E4",
+   "ball": "2E4",
+   "functions": [
+    "GPU_DVDD_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C7",
+   "ball": "2C7",
+   "functions": [
+    "NPU_DVDD_0"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C8",
+   "ball": "2C8",
+   "functions": [
+    "NPU_DVDD_1"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C9",
+   "ball": "2C9",
+   "functions": [
+    "NPU_DVDD_2"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D7",
+   "ball": "2D7",
+   "functions": [
+    "NPU_DVDD_3"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D8",
+   "ball": "2D8",
+   "functions": [
+    "NPU_DVDD_4"
+   ],
+   "type": "PI",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A1",
+   "ball": "A1",
+   "functions": [
+    "VSS_0"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A4",
+   "ball": "A4",
+   "functions": [
+    "VSS_1"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "A29",
+   "ball": "A29",
+   "functions": [
+    "VSS_2"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "B5",
+   "ball": "B5",
+   "functions": [
+    "VSS_3"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "C1",
+   "ball": "C1",
+   "functions": [
+    "VSS_4"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "V28",
+   "ball": "V28",
+   "functions": [
+    "VSS_5"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL1",
+   "ball": "AL1",
+   "functions": [
+    "VSS_6"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1A2",
+   "ball": "1A2",
+   "functions": [
+    "VSS_7"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1A3",
+   "ball": "1A3",
+   "functions": [
+    "VSS_8"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1B2",
+   "ball": "1B2",
+   "functions": [
+    "VSS_9"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C2",
+   "ball": "1C2",
+   "functions": [
+    "VSS_10"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C4",
+   "ball": "1C4",
+   "functions": [
+    "VSS_11"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C9",
+   "ball": "1C9",
+   "functions": [
+    "VSS_12"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C13",
+   "ball": "1C13",
+   "functions": [
+    "VSS_13"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C16",
+   "ball": "1C16",
+   "functions": [
+    "VSS_14"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1C21",
+   "ball": "1C21",
+   "functions": [
+    "VSS_15"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D1",
+   "ball": "1D1",
+   "functions": [
+    "VSS_16"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D3",
+   "ball": "1D3",
+   "functions": [
+    "VSS_17"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1D5",
+   "ball": "1D5",
+   "functions": [
+    "VSS_18"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E2",
+   "ball": "1E2",
+   "functions": [
+    "VSS_19"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E3",
+   "ball": "1E3",
+   "functions": [
+    "VSS_20"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E5",
+   "ball": "1E5",
+   "functions": [
+    "VSS_21"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E6",
+   "ball": "1E6",
+   "functions": [
+    "VSS_22"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E10",
+   "ball": "1E10",
+   "functions": [
+    "VSS_23"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E13",
+   "ball": "1E13",
+   "functions": [
+    "VSS_24"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E16",
+   "ball": "1E16",
+   "functions": [
+    "VSS_25"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E23",
+   "ball": "1E23",
+   "functions": [
+    "VSS_26"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1E24",
+   "ball": "1E24",
+   "functions": [
+    "VSS_27"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F3",
+   "ball": "1F3",
+   "functions": [
+    "VSS_28"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F5",
+   "ball": "1F5",
+   "functions": [
+    "VSS_29"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F6",
+   "ball": "1F6",
+   "functions": [
+    "VSS_30"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F20",
+   "ball": "1F20",
+   "functions": [
+    "VSS_31"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F21",
+   "ball": "1F21",
+   "functions": [
+    "VSS_32"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1F24",
+   "ball": "1F24",
+   "functions": [
+    "VSS_33"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G3",
+   "ball": "1G3",
+   "functions": [
+    "VSS_34"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G6",
+   "ball": "1G6",
+   "functions": [
+    "VSS_35"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G20",
+   "ball": "1G20",
+   "functions": [
+    "VSS_36"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G21",
+   "ball": "1G21",
+   "functions": [
+    "VSS_37"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G22",
+   "ball": "1G22",
+   "functions": [
+    "VSS_38"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1G24",
+   "ball": "1G24",
+   "functions": [
+    "VSS_39"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H1",
+   "ball": "1H1",
+   "functions": [
+    "VSS_40"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H2",
+   "ball": "1H2",
+   "functions": [
+    "VSS_41"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H3",
+   "ball": "1H3",
+   "functions": [
+    "VSS_42"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H4",
+   "ball": "1H4",
+   "functions": [
+    "VSS_43"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H6",
+   "ball": "1H6",
+   "functions": [
+    "VSS_44"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H20",
+   "ball": "1H20",
+   "functions": [
+    "VSS_45"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J2",
+   "ball": "1J2",
+   "functions": [
+    "VSS_46"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J4",
+   "ball": "1J4",
+   "functions": [
+    "VSS_47"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K3",
+   "ball": "1K3",
+   "functions": [
+    "VSS_48"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K6",
+   "ball": "1K6",
+   "functions": [
+    "VSS_49"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L2",
+   "ball": "1L2",
+   "functions": [
+    "VSS_50"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L3",
+   "ball": "1L3",
+   "functions": [
+    "VSS_51"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L4",
+   "ball": "1L4",
+   "functions": [
+    "VSS_52"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L5",
+   "ball": "1L5",
+   "functions": [
+    "VSS_53"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L6",
+   "ball": "1L6",
+   "functions": [
+    "VSS_54"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M1",
+   "ball": "1M1",
+   "functions": [
+    "VSS_55"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M2",
+   "ball": "1M2",
+   "functions": [
+    "VSS_56"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M4",
+   "ball": "1M4",
+   "functions": [
+    "VSS_57"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M6",
+   "ball": "1M6",
+   "functions": [
+    "VSS_58"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N2",
+   "ball": "1N2",
+   "functions": [
+    "VSS_59"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N4",
+   "ball": "1N4",
+   "functions": [
+    "VSS_60"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N6",
+   "ball": "1N6",
+   "functions": [
+    "VSS_61"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P2",
+   "ball": "1P2",
+   "functions": [
+    "VSS_62"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P3",
+   "ball": "1P3",
+   "functions": [
+    "VSS_63"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P4",
+   "ball": "1P4",
+   "functions": [
+    "VSS_64"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P6",
+   "ball": "1P6",
+   "functions": [
+    "VSS_65"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P20",
+   "ball": "1P20",
+   "functions": [
+    "VSS_66"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P21",
+   "ball": "1P21",
+   "functions": [
+    "VSS_67"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P22",
+   "ball": "1P22",
+   "functions": [
+    "VSS_68"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1P24",
+   "ball": "1P24",
+   "functions": [
+    "VSS_69"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1R1",
+   "ball": "1R1",
+   "functions": [
+    "VSS_70"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1R2",
+   "ball": "1R2",
+   "functions": [
+    "VSS_71"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T3",
+   "ball": "1T3",
+   "functions": [
+    "VSS_72"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T5",
+   "ball": "1T5",
+   "functions": [
+    "VSS_73"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T6",
+   "ball": "1T6",
+   "functions": [
+    "VSS_74"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1T20",
+   "ball": "1T20",
+   "functions": [
+    "VSS_75"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1U2",
+   "ball": "1U2",
+   "functions": [
+    "VSS_76"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1U3",
+   "ball": "1U3",
+   "functions": [
+    "VSS_77"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1U4",
+   "ball": "1U4",
+   "functions": [
+    "VSS_78"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1U6",
+   "ball": "1U6",
+   "functions": [
+    "VSS_79"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1V2",
+   "ball": "1V2",
+   "functions": [
+    "VSS_80"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1V6",
+   "ball": "1V6",
+   "functions": [
+    "VSS_81"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W1",
+   "ball": "1W1",
+   "functions": [
+    "VSS_82"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W3",
+   "ball": "1W3",
+   "functions": [
+    "VSS_83"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W5",
+   "ball": "1W5",
+   "functions": [
+    "VSS_84"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1W6",
+   "ball": "1W6",
+   "functions": [
+    "VSS_85"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y2",
+   "ball": "1Y2",
+   "functions": [
+    "VSS_86"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y3",
+   "ball": "1Y3",
+   "functions": [
+    "VSS_87"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y4",
+   "ball": "1Y4",
+   "functions": [
+    "VSS_88"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y5",
+   "ball": "1Y5",
+   "functions": [
+    "VSS_89"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y6",
+   "ball": "1Y6",
+   "functions": [
+    "VSS_90"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA2",
+   "ball": "1AA2",
+   "functions": [
+    "VSS_91"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA4",
+   "ball": "1AA4",
+   "functions": [
+    "VSS_92"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA21",
+   "ball": "1AA21",
+   "functions": [
+    "VSS_93"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AA24",
+   "ball": "1AA24",
+   "functions": [
+    "VSS_94"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB2",
+   "ball": "1AB2",
+   "functions": [
+    "VSS_95"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB5",
+   "ball": "1AB5",
+   "functions": [
+    "VSS_96"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB6",
+   "ball": "1AB6",
+   "functions": [
+    "VSS_97"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC1",
+   "ball": "1AC1",
+   "functions": [
+    "VSS_98"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC2",
+   "ball": "1AC2",
+   "functions": [
+    "VSS_99"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC3",
+   "ball": "1AC3",
+   "functions": [
+    "VSS_100"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC4",
+   "ball": "1AC4",
+   "functions": [
+    "VSS_101"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC5",
+   "ball": "1AC5",
+   "functions": [
+    "VSS_102"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD3",
+   "ball": "1AD3",
+   "functions": [
+    "VSS_103"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE3",
+   "ball": "1AE3",
+   "functions": [
+    "VSS_104"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A1",
+   "ball": "2A1",
+   "functions": [
+    "VSS_105"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A3",
+   "ball": "2A3",
+   "functions": [
+    "VSS_106"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A6",
+   "ball": "2A6",
+   "functions": [
+    "VSS_107"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A9",
+   "ball": "2A9",
+   "functions": [
+    "VSS_108"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A11",
+   "ball": "2A11",
+   "functions": [
+    "VSS_109"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2A12",
+   "ball": "2A12",
+   "functions": [
+    "VSS_110"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B1",
+   "ball": "2B1",
+   "functions": [
+    "VSS_111"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B3",
+   "ball": "2B3",
+   "functions": [
+    "VSS_112"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B4",
+   "ball": "2B4",
+   "functions": [
+    "VSS_113"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B5",
+   "ball": "2B5",
+   "functions": [
+    "VSS_114"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B6",
+   "ball": "2B6",
+   "functions": [
+    "VSS_115"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B7",
+   "ball": "2B7",
+   "functions": [
+    "VSS_116"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B8",
+   "ball": "2B8",
+   "functions": [
+    "VSS_117"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B9",
+   "ball": "2B9",
+   "functions": [
+    "VSS_118"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B11",
+   "ball": "2B11",
+   "functions": [
+    "VSS_119"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2B12",
+   "ball": "2B12",
+   "functions": [
+    "VSS_120"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C1",
+   "ball": "2C1",
+   "functions": [
+    "VSS_121"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C6",
+   "ball": "2C6",
+   "functions": [
+    "VSS_122"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C10",
+   "ball": "2C10",
+   "functions": [
+    "VSS_123"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C11",
+   "ball": "2C11",
+   "functions": [
+    "VSS_124"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2C12",
+   "ball": "2C12",
+   "functions": [
+    "VSS_125"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D3",
+   "ball": "2D3",
+   "functions": [
+    "VSS_126"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D6",
+   "ball": "2D6",
+   "functions": [
+    "VSS_127"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D9",
+   "ball": "2D9",
+   "functions": [
+    "VSS_128"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E3",
+   "ball": "2E3",
+   "functions": [
+    "VSS_129"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E5",
+   "ball": "2E5",
+   "functions": [
+    "VSS_130"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E6",
+   "ball": "2E6",
+   "functions": [
+    "VSS_131"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E8",
+   "ball": "2E8",
+   "functions": [
+    "VSS_132"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E9",
+   "ball": "2E9",
+   "functions": [
+    "VSS_133"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F4",
+   "ball": "2F4",
+   "functions": [
+    "VSS_134"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F5",
+   "ball": "2F5",
+   "functions": [
+    "VSS_135"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2F6",
+   "ball": "2F6",
+   "functions": [
+    "VSS_136"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G4",
+   "ball": "2G4",
+   "functions": [
+    "VSS_137"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G7",
+   "ball": "2G7",
+   "functions": [
+    "VSS_138"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2G10",
+   "ball": "2G10",
+   "functions": [
+    "VSS_139"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H3",
+   "ball": "2H3",
+   "functions": [
+    "VSS_140"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2H5",
+   "ball": "2H5",
+   "functions": [
+    "VSS_141"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J1",
+   "ball": "2J1",
+   "functions": [
+    "VSS_142"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J5",
+   "ball": "2J5",
+   "functions": [
+    "VSS_143"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J8",
+   "ball": "2J8",
+   "functions": [
+    "VSS_144"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J11",
+   "ball": "2J11",
+   "functions": [
+    "VSS_145"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2J12",
+   "ball": "2J12",
+   "functions": [
+    "VSS_146"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K1",
+   "ball": "2K1",
+   "functions": [
+    "VSS_147"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K2",
+   "ball": "2K2",
+   "functions": [
+    "VSS_148"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K5",
+   "ball": "2K5",
+   "functions": [
+    "VSS_149"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K8",
+   "ball": "2K8",
+   "functions": [
+    "VSS_150"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K9",
+   "ball": "2K9",
+   "functions": [
+    "VSS_151"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K10",
+   "ball": "2K10",
+   "functions": [
+    "VSS_152"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2K12",
+   "ball": "2K12",
+   "functions": [
+    "VSS_153"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L1",
+   "ball": "2L1",
+   "functions": [
+    "VSS_154"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L3",
+   "ball": "2L3",
+   "functions": [
+    "VSS_155"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L4",
+   "ball": "2L4",
+   "functions": [
+    "VSS_156"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L5",
+   "ball": "2L5",
+   "functions": [
+    "VSS_157"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L6",
+   "ball": "2L6",
+   "functions": [
+    "VSS_158"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L7",
+   "ball": "2L7",
+   "functions": [
+    "VSS_159"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L8",
+   "ball": "2L8",
+   "functions": [
+    "VSS_160"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L9",
+   "ball": "2L9",
+   "functions": [
+    "VSS_161"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2L12",
+   "ball": "2L12",
+   "functions": [
+    "VSS_162"
+   ],
+   "type": "G",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AJ29",
+   "ball": "AJ29",
+   "functions": [
+    "AVSS_0"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK6",
+   "ball": "AK6",
+   "functions": [
+    "AVSS_1"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK14",
+   "ball": "AK14",
+   "functions": [
+    "AVSS_2"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AK25",
+   "ball": "AK25",
+   "functions": [
+    "AVSS_3"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL4",
+   "ball": "AL4",
+   "functions": [
+    "AVSS_4"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL8",
+   "ball": "AL8",
+   "functions": [
+    "AVSS_5"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL14",
+   "ball": "AL14",
+   "functions": [
+    "AVSS_6"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL25",
+   "ball": "AL25",
+   "functions": [
+    "AVSS_7"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "AL29",
+   "ball": "AL29",
+   "functions": [
+    "AVSS_8"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1Y20",
+   "ball": "1Y20",
+   "functions": [
+    "AVSS_9"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB20",
+   "ball": "1AB20",
+   "functions": [
+    "AVSS_10"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB21",
+   "ball": "1AB21",
+   "functions": [
+    "AVSS_11"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB22",
+   "ball": "1AB22",
+   "functions": [
+    "AVSS_12"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB23",
+   "ball": "1AB23",
+   "functions": [
+    "AVSS_13"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AB24",
+   "ball": "1AB24",
+   "functions": [
+    "AVSS_14"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC20",
+   "ball": "1AC20",
+   "functions": [
+    "AVSS_15"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC21",
+   "ball": "1AC21",
+   "functions": [
+    "AVSS_16"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AC24",
+   "ball": "1AC24",
+   "functions": [
+    "AVSS_17"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD20",
+   "ball": "1AD20",
+   "functions": [
+    "AVSS_18"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD23",
+   "ball": "1AD23",
+   "functions": [
+    "AVSS_19"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AD24",
+   "ball": "1AD24",
+   "functions": [
+    "AVSS_20"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE4",
+   "ball": "1AE4",
+   "functions": [
+    "AVSS_21"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE6",
+   "ball": "1AE6",
+   "functions": [
+    "AVSS_22"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE20",
+   "ball": "1AE20",
+   "functions": [
+    "AVSS_23"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE21",
+   "ball": "1AE21",
+   "functions": [
+    "AVSS_24"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1AE23",
+   "ball": "1AE23",
+   "functions": [
+    "AVSS_25"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M1",
+   "ball": "2M1",
+   "functions": [
+    "AVSS_26"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M4",
+   "ball": "2M4",
+   "functions": [
+    "AVSS_27"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M6",
+   "ball": "2M6",
+   "functions": [
+    "AVSS_28"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M9",
+   "ball": "2M9",
+   "functions": [
+    "AVSS_29"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M10",
+   "ball": "2M10",
+   "functions": [
+    "AVSS_30"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M11",
+   "ball": "2M11",
+   "functions": [
+    "AVSS_31"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2M12",
+   "ball": "2M12",
+   "functions": [
+    "AVSS_32"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N1",
+   "ball": "2N1",
+   "functions": [
+    "AVSS_33"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N6",
+   "ball": "2N6",
+   "functions": [
+    "AVSS_34"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N8",
+   "ball": "2N8",
+   "functions": [
+    "AVSS_35"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N9",
+   "ball": "2N9",
+   "functions": [
+    "AVSS_36"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2N12",
+   "ball": "2N12",
+   "functions": [
+    "AVSS_37"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P1",
+   "ball": "2P1",
+   "functions": [
+    "AVSS_38"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P6",
+   "ball": "2P6",
+   "functions": [
+    "AVSS_39"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P9",
+   "ball": "2P9",
+   "functions": [
+    "AVSS_40"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2P12",
+   "ball": "2P12",
+   "functions": [
+    "AVSS_41"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R1",
+   "ball": "2R1",
+   "functions": [
+    "AVSS_42"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R4",
+   "ball": "2R4",
+   "functions": [
+    "AVSS_43"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R5",
+   "ball": "2R5",
+   "functions": [
+    "AVSS_44"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R7",
+   "ball": "2R7",
+   "functions": [
+    "AVSS_45"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R8",
+   "ball": "2R8",
+   "functions": [
+    "AVSS_46"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R9",
+   "ball": "2R9",
+   "functions": [
+    "AVSS_47"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R10",
+   "ball": "2R10",
+   "functions": [
+    "AVSS_48"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R11",
+   "ball": "2R11",
+   "functions": [
+    "AVSS_49"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2R12",
+   "ball": "2R12",
+   "functions": [
+    "AVSS_50"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T1",
+   "ball": "2T1",
+   "functions": [
+    "AVSS_51"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T6",
+   "ball": "2T6",
+   "functions": [
+    "AVSS_52"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T8",
+   "ball": "2T8",
+   "functions": [
+    "AVSS_53"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2T11",
+   "ball": "2T11",
+   "functions": [
+    "AVSS_54"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U1",
+   "ball": "2U1",
+   "functions": [
+    "AVSS_55"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U2",
+   "ball": "2U2",
+   "functions": [
+    "AVSS_56"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U3",
+   "ball": "2U3",
+   "functions": [
+    "AVSS_57"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U4",
+   "ball": "2U4",
+   "functions": [
+    "AVSS_58"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U5",
+   "ball": "2U5",
+   "functions": [
+    "AVSS_59"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U6",
+   "ball": "2U6",
+   "functions": [
+    "AVSS_60"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U7",
+   "ball": "2U7",
+   "functions": [
+    "AVSS_61"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U9",
+   "ball": "2U9",
+   "functions": [
+    "AVSS_62"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U10",
+   "ball": "2U10",
+   "functions": [
+    "AVSS_63"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2U11",
+   "ball": "2U11",
+   "functions": [
+    "AVSS_64"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V1",
+   "ball": "2V1",
+   "functions": [
+    "AVSS_65"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V2",
+   "ball": "2V2",
+   "functions": [
+    "AVSS_66"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V3",
+   "ball": "2V3",
+   "functions": [
+    "AVSS_67"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V4",
+   "ball": "2V4",
+   "functions": [
+    "AVSS_68"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V5",
+   "ball": "2V5",
+   "functions": [
+    "AVSS_69"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V6",
+   "ball": "2V6",
+   "functions": [
+    "AVSS_70"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V7",
+   "ball": "2V7",
+   "functions": [
+    "AVSS_71"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V8",
+   "ball": "2V8",
+   "functions": [
+    "AVSS_72"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V9",
+   "ball": "2V9",
+   "functions": [
+    "AVSS_73"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V10",
+   "ball": "2V10",
+   "functions": [
+    "AVSS_74"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V11",
+   "ball": "2V11",
+   "functions": [
+    "AVSS_75"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2V12",
+   "ball": "2V12",
+   "functions": [
+    "AVSS_76"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "G29",
+   "ball": "G29",
+   "functions": [
+    "AVSS1_0"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "T28",
+   "ball": "T28",
+   "functions": [
+    "AVSS1_1"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "T29",
+   "ball": "T29",
+   "functions": [
+    "AVSS1_2"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H21",
+   "ball": "1H21",
+   "functions": [
+    "AVSS1_3"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1H24",
+   "ball": "1H24",
+   "functions": [
+    "AVSS1_4"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J21",
+   "ball": "1J21",
+   "functions": [
+    "AVSS1_5"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J22",
+   "ball": "1J22",
+   "functions": [
+    "AVSS1_6"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J23",
+   "ball": "1J23",
+   "functions": [
+    "AVSS1_7"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1J24",
+   "ball": "1J24",
+   "functions": [
+    "AVSS1_8"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K20",
+   "ball": "1K20",
+   "functions": [
+    "AVSS1_9"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K21",
+   "ball": "1K21",
+   "functions": [
+    "AVSS1_10"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1K24",
+   "ball": "1K24",
+   "functions": [
+    "AVSS1_11"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L20",
+   "ball": "1L20",
+   "functions": [
+    "AVSS1_12"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L21",
+   "ball": "1L21",
+   "functions": [
+    "AVSS1_13"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L22",
+   "ball": "1L22",
+   "functions": [
+    "AVSS1_14"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1L24",
+   "ball": "1L24",
+   "functions": [
+    "AVSS1_15"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M20",
+   "ball": "1M20",
+   "functions": [
+    "AVSS1_16"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M21",
+   "ball": "1M21",
+   "functions": [
+    "AVSS1_17"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M22",
+   "ball": "1M22",
+   "functions": [
+    "AVSS1_18"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1M24",
+   "ball": "1M24",
+   "functions": [
+    "AVSS1_19"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N20",
+   "ball": "1N20",
+   "functions": [
+    "AVSS1_20"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N21",
+   "ball": "1N21",
+   "functions": [
+    "AVSS1_21"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "1N24",
+   "ball": "1N24",
+   "functions": [
+    "AVSS1_22"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2D10",
+   "ball": "2D10",
+   "functions": [
+    "AVSS1_23"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  },
+  {
+   "pin": "2E10",
+   "ball": "2E10",
+   "functions": [
+    "AVSS1_24"
+   ],
+   "type": "AG",
+   "power_domain": "",
+   "voltage": "",
+   "mux": "f0",
+   "notes": "pull=-"
+  }
+ ]
+}

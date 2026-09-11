@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.0",
+  "kind": "rule_bundle",
+  "scope": "common/证据文件Schema",
+  "source": "raw/raw_rules/证据文件Schema规范.md",
+  "source_sha1": "d40ca59a9e00028941b5f129cc461720dea8e53f",
+  "generated_at": "2026-09-11T08:43:44+00:00",
+  "tokens_est": 9780,
+  "entries": [
+    {
+      "id": "SYN-001",
+      "title": "证据文件 JSON Schema 规范",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [
+        "所有硬件检查任务产出的 .json 证据文件必须遵循本规范。"
+      ],
+      "must_not": [],
+      "text": "\n> 所有硬件检查任务产出的 .json 证据文件必须遵循本规范。\n> Schema 版本: 2.0 | 生效: 2026-06-15\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 1,
+          "end_line": 7
+        }
+      ]
+    },
+    {
+      "id": "SYN-002",
+      "title": "一、通用要求",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 8,
+          "end_line": 9
+        }
+      ]
+    },
+    {
+      "id": "SYN-003",
+      "title": "1.1 根节点元信息",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [
+        "每个证据 JSON 文件根节点必须包含 `meta` 对象："
+      ],
+      "must_not": [],
+      "text": "\n每个证据 JSON 文件根节点必须包含 `meta` 对象：\n\n```json\n{\n  \"meta\": {\n    \"task_id\": \"T6\",\n    \"task_name\": \"连接器逐引脚分析\",\n    \"plan\": \"FL-24-E-MRF1-A-V10-check\",\n    \"generated_at\": \"2026-06-15T12:00:00Z\",\n    \"source_file\": \"parsed_v10.json\"\n  }\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `task_id` | string | ✅ | 任务编号，如 T1~T10, F1~F4 |\n| `task_name` | string | ✅ | 任务中文名称 |\n| `plan` | string | ✅ | 所属计划文件名 |\n| `generated_at` | string | ✅ | ISO 8601 时间戳 |\n| `source_file` | string | ✅ | 主要输入文件（EDN/JSON 路径） |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 10,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "SYN-004",
+      "title": "二、任务输出 Schema",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 36,
+          "end_line": 37
+        }
+      ]
+    },
+    {
+      "id": "SYN-005",
+      "title": "T1: IC 清单 — `v10_ic_inventory.csv`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\nCSV 格式，列定义：\n\n| 列名 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| 位号 | string | ✅ | U1000, U2, U5… |\n| cellRef | string | ✅ | EDN 符号名 |\n| Value(型号) | string | ✅ | 实际芯片型号，EDN 提取 |\n| 功能类别 | string | ✅ | SOC / PMIC / LDO / DC-DC / DRAM / LEVEL_SHIFTER |\n| datasheet_status | enum | ✅ | FOUND / MISSING / EDN-SOURCED |\n| datasheet_path | string | ✅ | 本地绝对路径 或 URL |\n| 备注 | string | — | EDN line ref、cellRef 不匹配警告等 |\n\n> ⚠️ `datasheet_status = EDN-SOURCED` 指型号从 EDN property 提取，\n> 无 BOM 交叉验证。不可写成 FOUND。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 38,
+          "end_line": 54
+        }
+      ]
+    },
+    {
+      "id": "SYN-006",
+      "title": "T1 附加: RK3576 参数 — `v10_rk3576_params.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"soc\": \"RK3576\",\n  \"package\": \"BGA698\",\n  \"vccio_domains\": [\n    {\"name\": \"PMUIO0\", \"typical_voltage\": \"1.8V\", \"note\": \"boot-required\"},\n    {\"name\": \"VCCIO0\", \"typical_voltage\": \"1.8V\", \"note\": \"eMMC domain\"}\n  ],\n  \"ddr\": {\n    \"type\": \"LPDDR4/LPDDR4X/LPDDR5\",\n    \"zq_value\": \"240Ω\",\n    \"zq_tolerance\": \"±1%\",\n    \"zq_connect_to\": \"DDRPHY_VDDQ_S0\"\n  },\n  \"pmic\": {\n    \"model\": \"RK806S-5\",\n    \"adjustable_bucks\": [\"FB6\",\"FB9\"],\n    \"buck_count\": 10,\n    \"nldo_count\": 6,\n    \"pldo_count\": 7\n  },\n  \"clock\": {\n    \"frequency\": \"24MHz\",\n    \"tolerance\": \"±20ppm\",\n    \"duty_cycle\": \"50%\",\n    \"xout_series_r\": \"22Ω\",\n    \"parallel_r\": \"10KΩ\"\n  },\n  \"reset\": {\n    \"npor_pin\": \"W28\",\n    \"min_pulse_width\": \"~4.17μs\",\n    \"debounce_cap\": \"100nF\"\n  },\n  \"boot\": {\n    \"saradc_pin\": \"SARADC_IN0_BOOT (A25)\",\n    \"config_modes\": 11,\n    \"sdmmc0_detn_pin\": \"U21\"\n  }\n}\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 55,
+          "end_line": 99
+        }
+      ]
+    },
+    {
+      "id": "SYN-007",
+      "title": "T4: VCCIO 域映射 — `v10_vccio_map.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"vccio_domains\": [\n    {\n      \"name\": \"PMUIO0\",\n      \"voltage\": \"1.8V\",\n      \"source_rail\": \"VCC_1V8_S3\",\n      \"source_ic\": \"U2300\",\n      \"source_pin\": \"VOUT8_A\",\n      \"gpio_banks\": [\"GPIO0_A\", \"GPIO0_D\"],\n      \"pin_count\": 15,\n      \"verified\": true\n    }\n  ],\n  \"supply_rails\": {\n    \"VCC_1V8_S3\": {\n      \"voltage\": \"1.8V\",\n      \"pmic_source\": \"U2300/VOUT8_A\",\n      \"fed_domains\": [\"PMUIO0\", \"VCCIO0\", \"VCCIO3\", \"VCCIO5\"]\n    }\n  },\n  \"critical_findings\": [\n    {\n      \"level\": \"CRITICAL\",\n      \"domain\": \"VCCIO6\",\n      \"description\": \"VCCIO6 有 9 个 GPIO 引脚但无供电轨连接\",\n      \"affected_pins\": 9\n    }\n  ]\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `vccio_domains[].name` | string | ✅ | 域名 |\n| `vccio_domains[].voltage` | string | ✅ | 带单位，如 \"1.8V\" |\n| `vccio_domains[].source_rail` | string | ✅ | EDN 供电网络名 |\n| `vccio_domains[].source_ic` | string | ✅ | 供电 IC 位号 |\n| `vccio_domains[].source_pin` | string | — | 供电 IC 输出引脚名 |\n| `vccio_domains[].gpio_banks` | string[] | ✅ | GPIO Bank 列表 |\n| `vccio_domains[].pin_count` | int | ✅ | 该域引脚总数 |\n| `vccio_domains[].verified` | bool | ✅ | 是否从 EDN 追踪到供电 |\n| `supply_rails.<net>.fed_domains` | string[] | ✅ | 该供电轨覆盖的域 |\n| `critical_findings[].level` | enum | ✅ | CRITICAL / WARNING |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 100,
+          "end_line": 148
+        }
+      ]
+    },
+    {
+      "id": "SYN-008",
+      "title": "T5: 供电网络 — `v10_power_rails.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"rails\": [\n    {\n      \"net\": \"VCC_3V3_S3\",\n      \"voltage\": \"3.3V\",\n      \"source_ic\": \"U2300\",\n      \"source_pin\": \"VOUT4_A\",\n      \"load_count\": 12,\n      \"verified\": true,\n      \"verification_note\": \"符合设计指南 §5.5 BUCK4 配置\"\n    }\n  ]\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `rails[].net` | string | ✅ | EDN 网名 |\n| `rails[].voltage` | string | ✅ | 带单位 |\n| `rails[].source_ic` | string | ✅ | 源端 IC 位号 |\n| `rails[].source_pin` | string | ✅ | 源端引脚 |\n| `rails[].load_count` | int | ✅ | 负载 IC 数量 |\n| `rails[].verified` | bool | ✅ | 电压是否从设计指南验证 |\n| `rails[].verification_note` | string | — | 验证依据 |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 149,
+          "end_line": 178
+        }
+      ]
+    },
+    {
+      "id": "SYN-009",
+      "title": "T6: 连接器 — `v10_connector_pinout.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [
+        "不得写 \"1.2V\"（该值是从信号名推测的 fallback，不是实测值）。"
+      ],
+      "text": "\n```json\n{\n  \"connectors\": {\n    \"J1\": [\n      {\n        \"pin\": \"&1\",\n        \"net\": \"GND\",\n        \"signal_type\": \"GND\",\n        \"signal_detail\": \"GND\",\n        \"direction\": \"GND\",\n        \"voltage\": \"0V\",\n        \"domain\": \"GND\",\n        \"source\": \"GND\",\n        \"dest\": \"GND\"\n      }\n    ]\n  },\n  \"summary\": {\n    \"total_connectors\": 8,\n    \"total_pins\": 247\n  }\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `pin` | string | ✅ | 连接器引脚号（如 &1, A） |\n| `net` | string | ✅ | EDN 网名 |\n| `signal_type` | enum | ✅ | GND / POWER / UART / I2C / SPI / MIPI / Ethernet / USB / Storage / Clock / Control / Camera / Other |\n| `signal_detail` | string | ✅ | 功能简述 |\n| `direction` | enum | ✅ | INPUT / OUTPUT / BIDIR / PWR / GND |\n| `voltage` | string | ✅ | 带单位，MIPI 等差分信号标注供电域而非信号摆幅 |\n| `domain` | string | ✅ | VCCIO 域或 \"GND\" / \"POWER\" |\n| `source` | string | ✅ | 驱动端 IC.引脚 |\n| `dest` | string | ✅ | 接收端标识 |\n\n> ⚠️ MIPI D-PHY 差分信号的 `voltage` 应标注 PHY 供电域（如 \"0.75V (VDDA_0V75_S0)\"），\n> 不得写 \"1.2V\"（该值是从信号名推测的 fallback，不是实测值）。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 179,
+          "end_line": 221
+        }
+      ]
+    },
+    {
+      "id": "SYN-010",
+      "title": "T7: DDR — `v10_ddr_check.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"checks\": {\n    \"chip_count\": {\n      \"status\": \"PASS\",\n      \"finding\": \"1 颗 LPDDR4 (U3800, BGA200)\"\n    },\n    \"zq_calibration\": {\n      \"status\": \"FAIL\",\n      \"finding\": \"R1200/R1201/R3802/R3804 全部标记 RESISTOR5_NC\",\n      \"level\": \"CRITICAL\"\n    },\n    \"ck_differential\": {\n      \"status\": \"PASS\",\n      \"finding\": \"CK_t/CK_c 极性正确，4 对差分\"\n    },\n    \"dqs_differential\": {\n      \"status\": \"PASS\",\n      \"finding\": \"DQS_t/DQS_c 极性正确，4 对差分\"\n    },\n    \"byte_lanes\": {\n      \"status\": \"PASS\",\n      \"finding\": \"4 lane × (8DQ + 1DQS + 1DM) 完整\"\n    },\n    \"ca_bus\": {\n      \"status\": \"PASS\",\n      \"finding\": \"CA[5:0] 每通道完整\"\n    },\n    \"csn_cke_reset\": {\n      \"status\": \"WARNING\",\n      \"finding\": \"RESET 仅 LPDDR4 侧可见，SOC 侧未在解析范围\"\n    },\n    \"supplies\": {\n      \"status\": \"PASS\",\n      \"finding\": \"VDD1=1.8V, VDD2=1.1V, VDDQ=0.61V (LPDDR4X) 全部正确\"\n    }\n  },\n  \"critical_issues\": [\n    {\n      \"id\": \"CRIT-01\",\n      \"title\": \"ZQ 电阻全部 NC\",\n      \"description\": \"SOC ZQ(R1200/R1201) + LPDDR4 ZQ(R3802/R3804) 全部标记 RESISTOR5_NC\",\n      \"impact\": \"DDR ZQ 校准完全失效，训练将失败\"\n    },\n    {\n      \"id\": \"CRIT-02\",\n      \"title\": \"SOC DDR PHY 信号页缺失\",\n      \"description\": \"69 条 LPDDR4 信号线仅见颗粒侧，SOC 侧在另一个 SPLIT_INST 页面未纳入解析\",\n      \"impact\": \"无法验证 SOC↔LPDDR4 物理连接顺序和完整性\"\n    }\n  ],\n  \"verification_summary\": {\n    \"total_checks\": 8,\n    \"passed\": 5,\n    \"failed\": 1,\n    \"warning\": 1,\n    \"incomplete\": 1,\n    \"overall_verdict\": \"FAIL\"\n  }\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `checks.<name>.status` | enum | ✅ | PASS / FAIL / WARNING / N/A / INCOMPLETE |\n| `checks.<name>.finding` | string | ✅ | 详细发现 |\n| `checks.<name>.level` | enum | — | CRITICAL / WARNING ，仅 FAIL 和 WARNING 时填 |\n| `critical_issues[].id` | string | ✅ | 编号，如 CRIT-01 |\n| `critical_issues[].title` | string | ✅ | 简短标题 |\n| `critical_issues[].description` | string | ✅ | 详细描述 |\n| `critical_issues[].impact` | string | ✅ | 影响说明 |\n| `verification_summary.overall_verdict` | enum | ✅ | PASS / FAIL / INCOMPLETE |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 222,
+          "end_line": 298
+        }
+      ]
+    },
+    {
+      "id": "SYN-011",
+      "title": "T8: 外设 — `v10_peripheral_check.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"i2c_groups\": [\n    {\n      \"bus_id\": \"I2C1\",\n      \"scl_net\": \"I2C1_SCL_M0_RK806\",\n      \"sda_net\": \"I2C1_SDA_M0_RK806\",\n      \"pull_up_scl\": {\"present\": true, \"value\": \"2.2K\", \"to_rail\": \"VCC_1V8_S3\"},\n      \"pull_up_sda\": {\"present\": true, \"value\": \"2.2K\", \"to_rail\": \"VCC_1V8_S3\"},\n      \"verdict\": \"OK\"\n    }\n  ],\n  \"uart_groups\": [\n    {\n      \"name\": \"UART5\",\n      \"tx_net\": \"UART5_TX_M0_3V3\",\n      \"rx_net\": \"UART5_RX_M0_3V3\",\n      \"crossover_ok\": true,\n      \"verdict\": \"OK\"\n    }\n  ],\n  \"spi_groups\": [\n    {\n      \"name\": \"SPI3\",\n      \"signals_present\": [\"CLK\", \"MOSI\"],\n      \"signals_missing\": [\"MISO\", \"CSN\"],\n      \"verdict\": \"WARNING\"\n    }\n  ],\n  \"level_shifter\": {\n    \"designator\": \"U5\",\n    \"model\": \"MS4553S\",\n    \"vcca\": \"3.3V\",\n    \"vccb\": \"3.3V\",\n    \"oe_state\": \"HIGH\",\n    \"oe_pull\": \"4.7KΩ to VCC_3V3\",\n    \"verdict\": \"OK\"\n  },\n  \"emmc\": {\n    \"cmd_pullup_present\": false,\n    \"recommendation\": \"建议 10KΩ 上拉到 VCCIO0\",\n    \"verdict\": \"WARNING\"\n  },\n  \"usb\": {\n    \"interface\": \"USB2_OTG0\",\n    \"dp_net\": \"USB2_OTG0_DP\",\n    \"dm_net\": \"USB2_OTG0_DM\",\n    \"verdict\": \"OK\"\n  },\n  \"jtag_swd\": {\n    \"routed\": false,\n    \"verdict\": \"INFERRED\"\n  }\n}\n```\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 299,
+          "end_line": 358
+        }
+      ]
+    },
+    {
+      "id": "SYN-012",
+      "title": "T9: 悬空引脚 — `v10_floating_pins.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"perChip\": {\n    \"SOC_RK3576\": {\n      \"connected\": 86,\n      \"nc_design\": 273,\n      \"floating\": 0\n    }\n  },\n  \"clock\": {\n    \"frequency\": \"24MHz\",\n    \"xout_series\": \"R1100\",\n    \"parallel\": \"R1101 (10KΩ)\",\n    \"load_caps\": \"C1100, C1101\",\n    \"verdict\": \"OK\"\n  },\n  \"reset\": {\n    \"signal\": \"NPOR_E\",\n    \"net\": \"RESET_L\",\n    \"pull_up\": \"R1105 → VCC_1V8_S3\",\n    \"debounce\": \"C1119 + C2366 → GND\",\n    \"source\": \"PMIC U2300/RESETB_C (via R9856)\",\n    \"verdict\": \"OK\"\n  }\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `perChip.<soc>.connected` | int | ✅ | 有源端连接的引脚数 |\n| `perChip.<soc>.nc_design` | int | ✅ | 设计预留 NC 引脚数 |\n| `perChip.<soc>.floating` | int | ✅ | 异常悬空引脚数，应为 0 |\n| `clock.verdict` | enum | ✅ | PASS / FAIL / WARNING |\n| `reset.verdict` | enum | ✅ | PASS / FAIL / WARNING |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 359,
+          "end_line": 397
+        }
+      ]
+    },
+    {
+      "id": "SYN-013",
+      "title": "T10: 芯片专属 — `v10_rk3576_specific.json`",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"saradc_in0_boot\": {\n    \"status\": \"WARNING\",\n    \"finding\": \"R1102 上拉到 1.8V, R1103 NC, 无分压 — 需查 Fig 2-22 确认启动模式\"\n  },\n  \"emmc\": {\n    \"status\": \"OK\",\n    \"finding\": \"CMD/CLK/DATA[7:0]/STRB/RST_n 均通过串联电阻连到 J1\"\n  },\n  \"jtag_swd\": {\n    \"status\": \"CRITICAL\",\n    \"finding\": \"SDMMC0_DETN 拉高选 JTAG 模式，但 TCK/TMS/TDI/TDO 均未路由\"\n  },\n  \"fspi\": {\n    \"status\": \"N/A\",\n    \"finding\": \"FSPI 未在此设计中使用\"\n  },\n  \"sdmmc0_detn\": {\n    \"status\": \"CRITICAL\",\n    \"finding\": \"R1121 拉到 VCC_1V8_S3 (HIGH=JTAG) 与 JTAG 未路由冲突\"\n  }\n}\n```\n\n| 字段 | 类型 | 必填 | 说明 |\n|------|------|:--:|------|\n| `<check>.status` | enum | ✅ | CRITICAL / WARNING / OK / N/A |\n| `<check>.finding` | string | ✅ | 详细发现和判定依据 |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 398,
+          "end_line": 431
+        }
+      ]
+    },
+    {
+      "id": "SYN-014",
+      "title": "三、枚举值定义",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| 枚举名 | 允许值 |\n|--------|------|\n| **检查等级** | `CRITICAL` `WARNING` `OK` `INFERRED` `UNVERIFIED` |\n| **检查状态** | `PASS` `FAIL` `WARNING` `N/A` `INCOMPLETE` |\n| **信号方向** | `INPUT` `OUTPUT` `BIDIR` `PWR` `GND` |\n| **Datasheet 状态** | `FOUND` `MISSING` `EDN-SOURCED` |\n| **信号分类** (T6) | `GND` `POWER` `UART` `I2C` `SPI` `MIPI` `Ethernet` `USB` `Storage` `Clock` `Control` `Camera` `Other` |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 432,
+          "end_line": 443
+        }
+      ]
+    },
+    {
+      "id": "SYN-015",
+      "title": "四、F2 报告代理的使用规范",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [
+        "⛔ **报告生成前，F2 代理必须首先读取本文件。",
+        "电压值必须是 `string` 类型（如 `\"1.8V\"`），不是 `number`",
+        "连接器表 **不允许截断**——所有引脚必须全部输出"
+      ],
+      "must_not": [
+        "字段不存在时 **必须报错**，不得静默跳过——空章节不可接受",
+        "MIPI CSI 差分信号的电压标注为 PHY 供电域（如 `\"0.75V (VDDA_0V75_S0)\"`），不得写推测值"
+      ],
+      "text": "\n> ⛔ **报告生成前，F2 代理必须首先读取本文件。**\n\n1. 按本 Schema 定义的字段名读取 JSON，**严禁猜测字段名**\n2. 字段不存在时 **必须报错**，不得静默跳过——空章节不可接受\n3. 电压值必须是 `string` 类型（如 `\"1.8V\"`），不是 `number`\n4. 连接器表 **不允许截断**——所有引脚必须全部输出\n5. MIPI CSI 差分信号的电压标注为 PHY 供电域（如 `\"0.75V (VDDA_0V75_S0)\"`），不得写推测值\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 444,
+          "end_line": 455
+        }
+      ]
+    },
+    {
+      "id": "SYN-016",
+      "title": "五、版本历史",
+      "stage": [
+        "PH-4",
+        "PH-5"
+      ],
+      "gate": "G4",
+      "params": {},
+      "must": [
+        "| 2.0 | 2026-06-15 | 正式成文：新增 meta 元信息、T6 方向枚举、T7 checks 结构统一、MIPI 电压标注规范、F2 字段不存在时必须报错 |"
+      ],
+      "must_not": [],
+      "text": "\n| 版本 | 日期 | 变更 |\n|------|------|------|\n| 1.0 | — | 初始（隐式，未成文） |\n| 2.0 | 2026-06-15 | 正式成文：新增 meta 元信息、T6 方向枚举、T7 checks 结构统一、MIPI 电压标注规范、F2 字段不存在时必须报错 |",
+      "refs": [
+        {
+          "src": "raw/raw_rules/证据文件Schema规范.md",
+          "line": 456,
+          "end_line": 461
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,436 @@
+{
+  "schema_version": "1.0",
+  "kind": "rule_bundle",
+  "scope": "common/接口电路",
+  "source": "raw/raw_rules/接口电路检查规则.md",
+  "source_sha1": "fb169bdb263b0ea6da3d685c673f6005a3dea2f3",
+  "generated_at": "2026-09-11T08:46:05+00:00",
+  "tokens_est": 6060,
+  "entries": [
+    {
+      "id": "PB-001",
+      "title": "第二部分：动态电路与隐性风险检查 (Dynamic & Integrity Checks)",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 26,
+          "end_line": 27
+        }
+      ]
+    },
+    {
+      "id": "PB-002",
+      "title": "2.1 电平转换芯片（Level Shifter）判定树",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [
+        "压差约束：根据器件手册检查 $V_{CCA} \\le V_{CCB}$ 等硬性要求（如 MS4553S 强制要求 A侧电压不得高于 B侧）。"
+      ],
+      "text": "\n当 AI 发现信号路径中存在电平转换器（如 TXS0102, MS4553S, 74LVC2T45）时，强制执行：\n\n供电匹配：核对 $V_{CCA}$ 与 SoC IO域电压是否一致；核对 $V_{CCB}$ 与外设接口电压是否一致。\n\n压差约束：根据器件手册检查 $V_{CCA} \\le V_{CCB}$ 等硬性要求（如 MS4553S 强制要求 A侧电压不得高于 B侧）。\n\n方向控制：若为带 DIR 引脚的器件，验证 DIR 电平是否与信号流向（TX/RX）严格匹配。\n\n掉电漏电（Back-powering）：检查器件是否支持 $I_{off}$ 特性，若外设有独立供电，防止倒灌 SoC 导致闩锁。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 28,
+          "end_line": 39
+        }
+      ]
+    },
+    {
+      "id": "PB-003",
+      "title": "2.2 默认电平与单点多驱检查",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "开漏/漏极开路（OD/OC）网络：针对 I2C、MDIO 等总线，必须查找外部上拉电阻。"
+      ],
+      "must_not": [],
+      "text": "\n开漏/漏极开路（OD/OC）网络：针对 I2C、MDIO 等总线，必须查找外部上拉电阻。若缺失则报错；若存在，需验证上拉电源网络电压 $\\equiv$ VCCIO 电压。\n\n单网多驱冲突：扫描是否有多个配置为“推挽输出”的 GPIO 引脚连接到了同一个物理网络上，若有则报“短路风险”。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 40,
+          "end_line": 45
+        }
+      ]
+    },
+    {
+      "id": "PB-004",
+      "title": "2.3 电源域耦合与上电时序",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n跨电源域直连：如果信号两端直连，且一端为 SoC 常供电，另一端为外设受控电（如 VCC_Sensor_EN 控制），且中间无电平转换或缓冲器，需抛出警告：“存在掉电倒灌风险，请人工确认”。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 46,
+          "end_line": 49
+        }
+      ]
+    },
+    {
+      "id": "PB-005",
+      "title": "第三部分：常见外设标准电路检查规则 (Peripheral Standard Rules)",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\nAI 在识别到特定接口协议时，需额外激活以下外围电路专属检查规则：\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 50,
+          "end_line": 53
+        }
+      ]
+    },
+    {
+      "id": "PB-006",
+      "title": "3.1 低速串行总线 (I2C / UART)",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 54,
+          "end_line": 55
+        }
+      ]
+    },
+    {
+      "id": "PB-011",
+      "title": "【I2C (IIC) 总线】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "SCL 和 SDA 网络上必须挂载上拉电阻（典型值 $2.2\\text{k}\\Omega \\sim 4.7\\text{k}\\Omega$，具体以器件手册为准）",
+        "上拉电阻连接的电源网络，必须与两端芯片的 IO 供电网络电压完全一致"
+      ],
+      "must_not": [
+        "禁止遗漏。",
+        "SCL 和 SDA 必须在同一个 I2C 控制器下（禁止 I2C1_SCL 搭配 I2C2_SDA）",
+        "**逐条输出独立结论**（🔴/🟡/🟢），禁止以\"全部 I2C OK\"概括。"
+      ],
+      "text": "\n> ⚡ **强制检查（自学习 K-T001）**：I2C 总线检查已在 3 个不同芯片平台（RK3588 / RK3576 / MP2975+FPGA）验证为高频遗漏点。以下流程为强制检查，不可跳过。\n\n**强制流程**：\n\n1. **枚举所有 I2C 总线**：从 EDN 网表中按 net 名特征（`*_SCL` / `*_SDA`）发现全部 I2C 总线，逐条列出。禁止遗漏。\n2. **每条总线独立验证**：\n   - SCL 和 SDA 必须在同一个 I2C 控制器下（禁止 I2C1_SCL 搭配 I2C2_SDA）\n   - SCL 和 SDA 网络上必须挂载上拉电阻（典型值 $2.2\\text{k}\\Omega \\sim 4.7\\text{k}\\Omega$，具体以器件手册为准）\n   - 上拉电阻连接的电源网络，必须与两端芯片的 IO 供电网络电压完全一致\n   - 多从设备同总线时，检查 I2C 地址冲突（从各自手册提取地址表对比）\n3. **逐条输出独立结论**（🔴/🟡/🟢），禁止以\"全部 I2C OK\"概括。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 56,
+          "end_line": 69
+        }
+      ]
+    },
+    {
+      "id": "PB-012",
+      "title": "【UART / 串口】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "交叉连接：必须验证交叉性。",
+        "SoC 的 TX 必须连到外设的 RX；",
+        "SoC 的 RX 必须连到外设的 TX。"
+      ],
+      "must_not": [],
+      "text": "\n交叉连接：必须验证交叉性。SoC 的 TX 必须连到外设的 RX；SoC 的 RX 必须连到外设的 TX。\n\n默认电平：UART 待机为高电平。如果中间经过光耦或长线传输隔离，需检查 RX 端是否有弱上拉电阻。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 70,
+          "end_line": 75
+        }
+      ]
+    },
+    {
+      "id": "PB-007",
+      "title": "3.2 工业接口转换 (RS232 / RS485 / RS422)",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 76,
+          "end_line": 77
+        }
+      ]
+    },
+    {
+      "id": "PB-013",
+      "title": "【RS232】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "芯片检查：必须存在 RS232 收发器（如 MAX3232）。",
+        "电容网络：收发器的电荷泵引脚（C1+, C1-, C2+, C2-, V+, V-）必须外接 $0.1\\text{\\mu F} \\sim 1\\text{\\mu F}$ 电容（极性/耐压需符合手册）。"
+      ],
+      "must_not": [],
+      "text": "\n芯片检查：必须存在 RS232 收发器（如 MAX3232）。\n\n电容网络：收发器的电荷泵引脚（C1+, C1-, C2+, C2-, V+, V-）必须外接 $0.1\\text{\\mu F} \\sim 1\\text{\\mu F}$ 电容（极性/耐压需符合手册）。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 78,
+          "end_line": 83
+        }
+      ]
+    },
+    {
+      "id": "PB-014",
+      "title": "【RS485】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "芯片检查：必须存在 RS485 收发器（如 SP3485）。",
+        "必须验证该控制脚存在。"
+      ],
+      "must_not": [],
+      "text": "\n芯片检查：必须存在 RS485 收发器（如 SP3485）。\n\n方向控制：收发器的 RE（接收使能，低有效）和 DE（发送使能，高有效）通常短接在一起，由 SoC 的一个 GPIO（或 UART_RTS）控制。必须验证该控制脚存在。\n\n总线偏置与匹配：A线需有上拉电阻，B线需有下拉电阻（Fail-Safe 偏置，通常 $4.7\\text{k}\\Omega$）；A/B 之间最远端应预留 $120\\Omega$ 终端匹配电阻。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 84,
+          "end_line": 91
+        }
+      ]
+    },
+    {
+      "id": "PB-015",
+      "title": "【RS422】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n四线制交叉：全双工。本地 TX+/TX- 连远端 RX+/RX-；本地 RX+/RX- 连远端 TX+/TX-。\n\n终端匹配：$120\\Omega$ 匹配电阻仅需放置在接收端（RX+, RX- 之间）。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 92,
+          "end_line": 97
+        }
+      ]
+    },
+    {
+      "id": "PB-008",
+      "title": "3.3 高速内存总线 (DDR3 / DDR4 / LPDDR4 / LPDDR5)",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n高速内存对拓扑、电源及信号线序要求极高，针对极易翻车的“信号接错/接反”场景，AI 需重点检查以下规则：\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 98,
+          "end_line": 101
+        }
+      ]
+    },
+    {
+      "id": "PB-016",
+      "title": "【致命接错与接反专项排查 (Fatal Wrong/Reversed Connections)】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "时钟：SoC 的 CLK_P 必须严格连到 DDR 颗粒的 CK_t (或 CK_p)，CLK_N 必须接 CK_c (或 CK_n)。",
+        "在双片 (Dual-Rank) 等多颗 DDR 设计中，片选 CS0#、时钟使能 CKE0、片上终端 ODT0 必须全部绑定到同一颗物理芯片 (Rank 0)。",
+        "必须连接至 SoC 的专用 DDR_RESET 引脚。",
+        "TEN (DDR4 专属边界扫描)：正常工作模式下必须下拉至 GND。",
+        "ALERT# (DDR4 专属)：必须上拉至 $V_{DDQ}$，并连接到 SoC，严禁悬空。",
+        "必须验证绑定关系：数据掩码 DM0 和数据选通 DQS0_P/N，必须且只能与 DQ[0:7] 连接到同一芯片的对应数据组引脚上。"
+      ],
+      "must_not": [
+        "绝对禁止跨 Byte 组的连线交换。"
+      ],
+      "text": "\n差分信号极性反接（最常见致死错误）：\n\n时钟：SoC 的 CLK_P 必须严格连到 DDR 颗粒的 CK_t (或 CK_p)，CLK_N 必须接 CK_c (或 CK_n)。绝对严禁 P/N 交叉，DDR 时钟反相无法通过软件调平（Training）挽救。\n\n数据选通：同理，DQS_P 必接 DQS_t，DQS_N 必接 DQS_c。\n\nAI 行为：通过正则表达式匹配网络名的后缀极性（P/N, T/C），若发现极性交叉，立即报 CRITICAL 错误。\n\n多片拓扑的控制信号错乱（Rank 级别交叉）：\n\n在双片 (Dual-Rank) 等多颗 DDR 设计中，片选 CS0#、时钟使能 CKE0、片上终端 ODT0 必须全部绑定到同一颗物理芯片 (Rank 0)。\n\n严禁出现 CS0# 搭配 CKE1 或 ODT1 连接到同一芯片。AI 需按组提取后缀索引（如后缀 0 归为一组，后缀 1 归为一组），核对是否“混搭”。\n\n特殊状态引脚电平接反/接错：\n\nRESET# (复位)：低电平有效。必须连接至 SoC 的专用 DDR_RESET 引脚。严禁直接上拉至高电平（某些 SoC 需要控制 DDR 上电复位时序，直连拉高会导致无法初始化）。\n\nTEN (DDR4 专属边界扫描)：正常工作模式下必须下拉至 GND。若误接高电平，DDR 将处于测试模式无法工作。\n\nALERT# (DDR4 专属)：必须上拉至 $V_{DDQ}$，并连接到 SoC，严禁悬空。\n\n高低字节组错位 (Byte Group Mismatch)：\n\n必须验证绑定关系：数据掩码 DM0 和数据选通 DQS0_P/N，必须且只能与 DQ[0:7] 连接到同一芯片的对应数据组引脚上。\n\n如果把 SoC 的 DQS0 连到了 DDR 负责控制高字节的 DQS1 引脚，或者把 DM0 连到了 DDR 的 DM1，会导致读写数据全错。绝对禁止跨 Byte 组的连线交换。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 102,
+          "end_line": 131
+        }
+      ]
+    },
+    {
+      "id": "PB-017",
+      "title": "【常规线序交换限制 (Signal Swapping Rules)】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "SoC 的 A0 必须接 DDR 的 A0。"
+      ],
+      "must_not": [
+        "地址/控制线 (Address/Command)：如 A0~A15, BA0~BA2, BG0~BG1 等，绝对禁止任何形式的交换。"
+      ],
+      "text": "\n地址/控制线 (Address/Command)：如 A0~A15, BA0~BA2, BG0~BG1 等，绝对禁止任何形式的交换。SoC 的 A0 必须接 DDR 的 A0。\n\n组内数据线交换 (Intra-Byte Lane Swapping)：数据线 DQ 仅允许在同一个 Byte Lane 内（如 DQ0~DQ7 内部）互换位置以优化 PCB 走线。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 132,
+          "end_line": 137
+        }
+      ]
+    },
+    {
+      "id": "PB-018",
+      "title": "【常规通则与电源检查】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "ZQ 校准：控制器和存储芯片的 ZQ 引脚必须各连接一个 $240\\Omega \\pm 1\\%$ 的高精度下拉电阻到 GND。",
+        "VTT 与 VREF (DDR3/4)：DDR3 VREF 必须=VDDQ/2。",
+        "地址/控制线的末端需接 $V_{TT}$ 匹配电阻，且 $V_{TT}$ 电源必须等于 VDDQ/2 且能吸/灌电流。"
+      ],
+      "must_not": [],
+      "text": "\nZQ 校准：控制器和存储芯片的 ZQ 引脚必须各连接一个 $240\\Omega \\pm 1\\%$ 的高精度下拉电阻到 GND。\n\n去耦电容：检查每一个内存芯片的 VDD、VDDQ 附近是否分配了充足的高频去耦电容（100nF, 1uF等）。\n\nVTT 与 VREF (DDR3/4)：DDR3 VREF 必须=VDDQ/2。地址/控制线的末端需接 $V_{TT}$ 匹配电阻，且 $V_{TT}$ 电源必须等于 VDDQ/2 且能吸/灌电流。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 138,
+          "end_line": 145
+        }
+      ]
+    },
+    {
+      "id": "PB-009",
+      "title": "3.4 视频与高速接口 (MIPI / DVP)",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 146,
+          "end_line": 147
+        }
+      ]
+    },
+    {
+      "id": "PB-019",
+      "title": "【MIPI (CSI/DSI) 高速串行视频】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [
+        "专用引脚约束：MIPI 信号必须映射到 SoC 的 MIPI PHY 专用硬件引脚，绝对禁止复用到普通 GPIO 引脚上。"
+      ],
+      "text": "\n专用引脚约束：MIPI 信号必须映射到 SoC 的 MIPI PHY 专用硬件引脚，绝对禁止复用到普通 GPIO 引脚上。\n\n串联器件：差分线（CLKP/N, D0P/N 等）上除了共模电感（Choke）和极小阻值的匹配电阻外，不应存在其他上拉/下拉/大电阻元件。\n\n极性与对调：一般 SoC 的 MIPI PHY 支持 Lane Swap（通道对换）和 P/N Inversion（差分极性翻转），但这需要通过软件寄存器配置。AI 若发现 P/N 接反，应报 WARNING 提醒“差分极性反接，请确保软件驱动支持 P/N 翻转配置”。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 148,
+          "end_line": 155
+        }
+      ]
+    },
+    {
+      "id": "PB-020",
+      "title": "【DVP 并行视频】",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "时钟敏感性：DVP 的 PCLK (Pixel Clock) 必须连接到 SoC 上具有 Clock Input 或 Timer/Capture 功能的硬件引脚，不可连到仅支持普通软件翻转的 GPIO。",
+        "电压域统一：PCLK, HSYNC, VSYNC, DATA 所有信号必须处于同一个 VCCIO 电压域，且与 Camera Sensor 的 DOVDD 电压完全一致。"
+      ],
+      "must_not": [],
+      "text": "\n时钟敏感性：DVP 的 PCLK (Pixel Clock) 必须连接到 SoC 上具有 Clock Input 或 Timer/Capture 功能的硬件引脚，不可连到仅支持普通软件翻转的 GPIO。\n\n阻抗匹配：PCLK 以及 D0~D11 等高速数据线上，近端通常需要串联 $22\\Omega \\sim 33\\Omega$ 的阻抗匹配电阻，需检查电阻是否存在且阻值合理。\n\n电压域统一：PCLK, HSYNC, VSYNC, DATA 所有信号必须处于同一个 VCCIO 电压域，且与 Camera Sensor 的 DOVDD 电压完全一致。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 156,
+          "end_line": 163
+        }
+      ]
+    },
+    {
+      "id": "PB-010",
+      "title": "第四部分：最终交付与异常判定逻辑输出",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "AI 检查完毕后，必须按以下格式输出判定结果："
+      ],
+      "must_not": [],
+      "text": "\nAI 检查完毕后，必须按以下格式输出判定结果：\n\n$$致命错误 CRITICAL$$\n\n：引脚电压不匹配、多源驱动短路、关键组件缺失（如 I2C 没上拉，DDR 没 ZQ 电阻）、方向芯片方向颠倒、高速信号错接到低速引脚、DDR 差分极性反接、DDR 控制线/地址线/字节组接错。\n\n$$隐患警告 WARNING$$\n\n：存在跨电源域直连漏电风险、缺失匹配电阻/去耦电容（不影响逻辑但影响信号完整性）。\n\n$$匹配确认 OK$$\n\n：Mux 正确、电压正确、上下拉完整、线序匹配合规、链路畅通。",
+      "refs": [
+        {
+          "src": "raw/raw_rules/接口电路检查规则.md",
+          "line": 164,
+          "end_line": 178
+        }
+      ]
+    }
+  ]
+}

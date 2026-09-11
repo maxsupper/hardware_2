@@ -1,0 +1,486 @@
+{
+ "schema_version": "1.0",
+ "kind": "platform_rules",
+ "scope": "platform/RK3576",
+ "source": "raw/raw_platmform/RK3576/hardware_check.md",
+ "source_sha1": "7848fa3754dc616e62f589ae768f19102c92ed55",
+ "generated_at": "2026-09-11T08:43:31+00:00",
+ "tokens_est": 2417,
+ "entries": [
+  {
+   "id": "PF-RK3576-001",
+   "title": "1. 时钟电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "- IOMUX 必须设为 CLK32K_IN，开漏 RTC 需关 GPIO 下拉",
+    "- 时钟 IO 电平必须与外设匹配，否则加电平转换"
+   ],
+   "must_not": [],
+   "text": "## 1. 时钟电路\n\n- 24MHz 有源晶振：电平 1.35~1.8V，占空比 50%，频偏 ≤20ppm\n- R1100 影响占空比，需实测调整\n- 32.768KHz：频率 32.768kHz ±30ppm，幅度 0.7×VDD~VDD\n- IOMUX 必须设为 CLK32K_IN，开漏 RTC 需关 GPIO 下拉\n- REF_CLK_OUT 支持 12/24/25/26/27/37.125/74.25/10/20/40/50/58.5/100MHz\n- CAM_CLK_OUT 支持 24MHz(默认)+27/37.125/74.25\n- 时钟 IO 电平必须与外设匹配，否则加电平转换\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 13,
+     "end_line": 22
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-002",
+   "title": "2. 复位/看门狗",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 2. 复位/看门狗\n\n- NPOR (Pin W28) 低有效，最短 4μs，需 100nF 去抖电容\n- RESET_L 上拉电源 = PMUIO0_VCC1V8\n- TSADC_CTRL_M0 输出硬件复位\n- 外部看门狗需开漏输出型\n- RK806S-5 RESETB 上电完成后释放低电平\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 23,
+     "end_line": 30
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-003",
+   "title": "3. 系统启动",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 3. 系统启动\n\n- 引导源：FSPI0/FSPI1/eMMC/UFS/SDMMC0/USB2.0/USB3.2\n- SARADC_IN0_BOOT (Pin A25) 11 种 Config 模式\n- SARADC_IN0_BOOT 专用引脚，不可他用\n- RK3576 不支持 PCIe BOOT\n- SDMMC0_DETN (Pin U21)：高=JTAG、低=SDMMC0，需 1nF 去抖\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 31,
+     "end_line": 38
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-004",
+   "title": "4. JTAG / UART Debug",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "- IO 电平必须匹配"
+   ],
+   "must_not": [],
+   "text": "## 4. JTAG / UART Debug\n\n- SWD 两线模式\n- JTAG_M0(VCCIO1, 与 SDMMC0 复用)\n- JTAG_M1(PMUIO1, 与 UART0_M0 复用，推荐预留)\n- **JTAG_TCK/TMS 串 100Ω + TVS**\n- UART0_M0 默认波特率 1500000 bps\n- **UART0_RX/TX 串 100Ω + TVS**\n- IO 电平必须匹配\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 39,
+     "end_line": 48
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-005",
+   "title": "5. DDR 电路（关键！）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 5. DDR 电路（关键！）\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 49,
+     "end_line": 50
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-006",
+   "title": "5.1 控制器",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 5.1 控制器\n\n支持 LPDDR4/LPDDR4X/LPDDR5，32bit=2×16bit，每通道 8GB，总 16GB\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 51,
+     "end_line": 54
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-007",
+   "title": "5.2 DDR PHY I/O Map（表 2-4，必须严格遵循）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "### 5.2 DDR PHY I/O Map（表 2-4，必须严格遵循）"
+   ],
+   "must_not": [],
+   "text": "### 5.2 DDR PHY I/O Map（表 2-4，必须严格遵循）\n\n| 球位 | LPDDR4 | LPDDR5 |\n|------|------|------|\n| W1 | LP4_DQ0_A | LP5_DQ0_A |\n| ... | ... | ... |\n| 1U5 | LP4_RESET | LP5_RESET |\n\n每个 BGA 球位对应 3 种内存类型的信号名不同。**DQ/CA 顺序全部不支持对调。**\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 55,
+     "end_line": 64
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-008",
+   "title": "5.3 ZQ（每颗必须检查）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "### 5.3 ZQ（每颗必须检查）"
+   ],
+   "must_not": [
+    "> 禁止仅凭 cellRef 中的 `_NC` 后缀判定为\"未焊接\"（2026-06-15，教训：FL-24-E-MRF1-A-V10 误判）。"
+   ],
+   "text": "### 5.3 ZQ（每颗必须检查）\n\n| 对象 | 连接 | 电阻 |\n|------|------|:---:|\n| RK3576 DDR PHY ZQ | → DDRPHY_VDDQ_S0 | 240Ω ±1% |\n| LPDDR4X/5 颗粒 ZQ | → DDRPHY_VDDQ_S0 | 240Ω ±1% |\n| LPDDR4 颗粒 ZQ | → VDD2_DDR_S3 | 240Ω ±1% |\n| LPDDR4/4X ODT_CA | → VDD2_DDR_S3 | — |\n\n> ⚠ **ZQ 电阻 cellRef 陷阱**：OrCAD 库中 ZQ 电阻常被命名为 `RESISTOR5_NC`。\n> `_NC` = No-Connect **引脚**（封装有未使用的引脚），**不是 DNP（不焊接）**。\n> 只要电阻在 EDN 中有 `portRef` 连接且两端分别连到 ZQ 引脚和 VDDQ 轨，即为正确焊接。\n> 禁止仅凭 cellRef 中的 `_NC` 后缀判定为\"未焊接\"（2026-06-15，教训：FL-24-E-MRF1-A-V10 误判）。\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 65,
+     "end_line": 78
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-009",
+   "title": "5.4 供电电压",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 5.4 供电电压\n\n| 电源 | LPDDR4/4X | LPDDR5 |\n|------|:---:|:---:|\n| DDRPHY_VDDQ | 0.61V | 0.51V |\n| DDRPHY_CK_VDDQ | 0.61V | 0.51V |\n| DDRPHY_CKE_VDDQ | 1.1V | 1.05V |\n| DDRPHY_PLL_DVDD | 0.75~0.85V | 0.75~0.85V |\n| DDRPHY_AVDD1V8 | 1.8V | 1.8V |\n| 颗粒 VDD1 | 1.8V | 1.8V |\n| 颗粒 VDD2/VDD2H | 1.1V | 1.05V |\n| 颗粒 VDDQ | 1.1V/0.61V | 0.51V |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 79,
+     "end_line": 91
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-010",
+   "title": "5.5 PMIC 设置",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "RK806S-5 FB6/FB9 分压电阻必须根据颗粒 VDDQ/VDD2 调整"
+   ],
+   "must_not": [],
+   "text": "### 5.5 PMIC 设置\n\nRK806S-5 FB6/FB9 分压电阻必须根据颗粒 VDDQ/VDD2 调整\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 92,
+     "end_line": 95
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-011",
+   "title": "5.6 LPDDR5 特殊信号",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### 5.6 LPDDR5 特殊信号\n\n- WCK 差分数据时钟（CK 频率的 2× 或 4×）\n- RDQS 差分读选通\n- CA[6:0] DDR 总线\n- 点对点拓扑，全部 ODT\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 96,
+     "end_line": 102
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-012",
+   "title": "6. eMMC 电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 6. eMMC 电路\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 103,
+     "end_line": 104
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-013",
+   "title": "6.1 接口设计（表 2-5）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "eMMC_CMD | **必须**外部 10kΩ 上拉"
+   ],
+   "must_not": [],
+   "text": "### 6.1 接口设计（表 2-5）\n\n| 信号 | 外部电路 |\n|------|------|\n| eMMC_D[7:0] | D0 预留 10kΩ 上拉 |\n| eMMC_CLK | RK3576 端串 0Ω；颗粒端预留 10pF→GND |\n| eMMC_CMD | **必须**外部 10kΩ 上拉 |\n| eMMC_STRB | 颗粒端串 0Ω；预留 47kΩ 下拉 |\n| eMMC_RST | RK3576 端串 0Ω+上拉；颗粒端 100nF→GND |\n\n- 支持 HS400ES/HS400/HS200/DDR50\n- VCCIO0_1V8 域，与 FSPI0 复用\n- GPIO 充足时 RST 须接颗粒 RST_n\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 105,
+     "end_line": 118
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-014",
+   "title": "7. 通用接口规则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 7. 通用接口规则\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 119,
+     "end_line": 120
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-015",
+   "title": "I2C：上拉 2.2k~4.7kΩ，RK3576 支持 I3C（兼容）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### I2C：上拉 2.2k~4.7kΩ，RK3576 支持 I3C（兼容）",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 121,
+     "end_line": 121
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-016",
+   "title": "SPI：支持 FSPI（Octal）",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### SPI：支持 FSPI（Octal）",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 122,
+     "end_line": 122
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-017",
+   "title": "UART：RS485 自动收发",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### UART：RS485 自动收发",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 123,
+     "end_line": 123
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-018",
+   "title": "CAN：RK3576 新增 CAN 2.0",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### CAN：RK3576 新增 CAN 2.0",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 124,
+     "end_line": 124
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-019",
+   "title": "MIPI CSI：CSI1/2(DPHY)+CSI3/4(DPHY)+DCPHY(C-PHY)",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### MIPI CSI：CSI1/2(DPHY)+CSI3/4(DPHY)+DCPHY(C-PHY)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 125,
+     "end_line": 125
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-020",
+   "title": "HDMI/eDP：Combo PHY，TX AC 耦合，HPD/CEC/DDC 隔离",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### HDMI/eDP：Combo PHY，TX AC 耦合，HPD/CEC/DDC 隔离",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 126,
+     "end_line": 126
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-021",
+   "title": "DP：DP1.4+USB3 Combo PHY，TX AC 耦合",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "### DP：DP1.4+USB3 Combo PHY，TX AC 耦合\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 127,
+     "end_line": 128
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-022",
+   "title": "8. PCB 设计",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 8. PCB 设计\n\n- 推荐 8 层板\n- 时钟串阻近源端，TX 串阻近源端，RX 串阻近接收端\n- ESD/耦合电容近连接器\n- DDR 各电源域独立 PDN + 背面去耦 + 回流地孔\n- 各接口独立 PCB 规范\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 129,
+     "end_line": 136
+    }
+   ]
+  },
+  {
+   "id": "PF-RK3576-023",
+   "title": "9. 检查优先级",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "## 9. 检查优先级\n\n| 优先级 | 检查项 |\n|:---:|------|\n| **P0** | DDR PHY I/O Map 引脚分配 |\n| **P0** | DDR ZQ 电阻连接 240Ω ±1% |\n| **P0** | DDR 电源电压 |\n| **P0** | eMMC CMD 上拉 10kΩ |\n| **P0** | NPOR 复位 100nF |\n| **P0** | SARADC_IN0_BOOT 配置 |\n| **P1** | DDR CA 顺序不可对调 |\n| **P1** | PMIC FB6/FB9 匹配 |\n| **P1** | eMMC STRB 下拉 47kΩ |\n| **P1** | JTAG/UART 100Ω 串阻 |\n| **P2** | 时钟输出电平匹配 |\n| **P2** | 各接口 PCB Layout |\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/RK3576/hardware_check.md",
+     "line": 137,
+     "end_line": 153
+    }
+   ]
+  }
+ ]
+}

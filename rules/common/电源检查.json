@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0",
+  "kind": "rule_bundle",
+  "scope": "common/电源检查",
+  "source": "raw/raw_rules/电源检查.md",
+  "source_sha1": "381e819814cb7f9dcfa38558d561d00bb4bfb42f",
+  "generated_at": "2026-09-11T08:44:43+00:00",
+  "tokens_est": 6150,
+  "entries": [
+    {
+      "id": "PO-001",
+      "title": "电源检查规则",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "⛔ **G0 前置依赖**：本规则中所有涉及 PMIC 内部参数的判定（EN 阈值、Vref、限流值、时序要求、推荐电路等）必须基于官方数据手册原文。",
+        "执行前必须已完成 `hardware-reviewer.md` 中定义的 Step 0（G0 手册搜索）。",
+        "手册 MISSING 的 PMIC 结论必须用 ⚫UNVERIFIED 标注。"
+      ],
+      "must_not": [],
+      "text": "\n> 适用场景：PMIC 供电方案验证，含上电时序、电源启动流程、PMIC 配置、上下拉模型、电容/电阻配置\n\n> ⛔ **G0 前置依赖**：本规则中所有涉及 PMIC 内部参数的判定（EN 阈值、Vref、限流值、时序要求、推荐电路等）必须基于官方数据手册原文。执行前必须已完成 `hardware-reviewer.md` 中定义的 Step 0（G0 手册搜索）。手册 MISSING 的 PMIC 结论必须用 ⚫UNVERIFIED 标注。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 1,
+          "end_line": 8
+        }
+      ]
+    },
+    {
+      "id": "PO-002",
+      "title": "一、上电时序检查",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> ⚡ **强制检查（自学习 K-T004）**：PMIC 上电时序 EN→PG 级联链路已在 3 个项目（RK806 / RK806S-5 / MP2975+MPQ7920）验证为 🔴CRITICAL 级风险点。覆盖 Rockchip 和 MPS 两个完全不同 PMIC 系列。以下流程为强制检查，不可跳过。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 9,
+          "end_line": 12
+        }
+      ]
+    },
+    {
+      "id": "PO-003",
+      "title": "1.1 时序约束来源",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n从 PMIC 和各受电器件（SoC/DDR/Flash 等）的手册中提取：\n\n| 参数 | 来源 | 含义 |\n|---|---|---|\n| tON | PMIC 手册 | 从 EN 有效到输出达到目标电压的时间 |\n| tOFF | PMIC 手册 | 从 EN 无效到输出放电完成的时间 |\n| tRAMP | PMIC 手册 | 输出电压的上升斜率 |\n| Power Sequence | SoC 手册 | 多轨之间的上电顺序约束（如 VDD_CORE → VDDQ → VDD_IO） |\n| Power Down Sequence | SoC 手册 | 下电顺序（通常与上电相反） |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 13,
+          "end_line": 24
+        }
+      ]
+    },
+    {
+      "id": "PO-004",
+      "title": "1.2 多轨启动顺序验证",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "SoC 的 VDD_CORE 必须先于 VDD_IO 稳定 → 若 PMIC 未配置此顺序 → 🔴 CRITICAL"
+      ],
+      "must_not": [],
+      "text": "\n```\n步骤：\n1. 从 EDN 提取所有 PMIC 输出轨 → 建立 {PMIC输出: 目标电压} 表\n2. 从各受电器件手册提取 Power Sequencing 要求 → 建立 {轨名: [依赖轨, ...] } 有向图\n3. 从 PMIC 手册提取每路输出的 tON / tRAMP / 级联方式（内部固定顺序 vs 外部级联）\n4. 对比：实际级联链路是否满足受电器件的时序约束\n```\n\n判定标准：\n- SoC 的 VDD_CORE 必须先于 VDD_IO 稳定 → 若 PMIC 未配置此顺序 → 🔴 CRITICAL\n- 多相控制器的各相启动是否同步 → 若失步 → 🟡 WARNING\n- 级联 PG→EN 链的延迟是否在手册允许范围内\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 25,
+          "end_line": 39
+        }
+      ]
+    },
+    {
+      "id": "PO-005",
+      "title": "1.3 tON / tOFF / tRAMP 参数核对",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n对每条电源轨：\n- 实际 tON（从 EN 到 Vout 稳定）是否 ≥ 手册最小值且 ≤ 手册最大值\n- tRAMP 是否匹配受电器件要求（部分 DDR 对 VDDQ 上升斜率敏感）\n- 软启动电容 (CSS) 值是否与手册推荐一致\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 40,
+          "end_line": 48
+        }
+      ]
+    },
+    {
+      "id": "PO-006",
+      "title": "二、电源启动流程",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 49,
+          "end_line": 50
+        }
+      ]
+    },
+    {
+      "id": "PO-007",
+      "title": "2.1 EN 链追踪",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n从 EDN 网表中追踪每个 PMIC 的 EN 引脚来源：\n\n```\nEN 引脚 → net → 来源器件（前级 PMIC 的 PG / SoC GPIO / 固定上拉 / 分压电阻）\n```\n\n检查项：\n- EN 是否浮空（无任何驱动源）→ 🔴 CRITICAL\n- EN 是否直接短接到 VIN（绕过时序控制）→ 🟡 WARNING\n- EN 由 SoC GPIO 控制时，GPIO 默认电平（上电瞬间）是否等于期望的 EN 有效电平\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 51,
+          "end_line": 63
+        }
+      ]
+    },
+    {
+      "id": "PO-008",
+      "title": "2.2 PG 级联验证",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n追踪 PG (Power Good) 信号的去向：\n\n```\nPMIC.PG → net → 下一级 PMIC.EN / SoC 复位逻辑 / 状态指示\n```\n\n检查项：\n- 每路 PG 是否实际连接到下一级的 EN（而非悬空）\n- PG 是开漏输出时，是否配置了外部上拉电阻\n- PG 的上拉电源是否在电源树中先于该 PG 产生（否则上电瞬间 PG 可能误触发）\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 64,
+          "end_line": 76
+        }
+      ]
+    },
+    {
+      "id": "PO-009",
+      "title": "2.3 保护机制确认",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| 保护类型 | 手册参数 | 检查项 |\n|---|---|---|\n| UVLO (欠压锁定) | VUVLO_R / VUVLO_F | 输入电压范围是否满足 |\n| OCP (过流保护) | ILIM / IOCP | 限流设定电阻值是否在手册推荐范围内 |\n| OTP (过温保护) | TSD / TSD_HYS | PMIC 是否靠近热源（参考 PCB 布局，仅标注不深入检查） |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 77,
+          "end_line": 86
+        }
+      ]
+    },
+    {
+      "id": "PO-010",
+      "title": "三、PMIC 配置验证",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 87,
+          "end_line": 88
+        }
+      ]
+    },
+    {
+      "id": "PO-011",
+      "title": "3.1 分压电阻计算",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n对每路可调输出：\n\n```\nVout = Vref × (1 + R1 / R2)\n\n核对步骤：\n1. 从 PMIC 手册提取 Vref（内部参考电压）\n2. 从 EDN 网表追踪 FB 引脚连接的分压电阻取值\n3. 计算实际输出电压 = Vref × (1 + R1/R2)\n4. 与目标电压对比\n```\n\n判定：\n- 偏差 > ±3% → 🔴 CRITICAL\n- R1/R2 取值不在手册推荐范围内（如 FB 偏置电流导致误差）→ 🟡 WARNING\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 89,
+          "end_line": 106
+        }
+      ]
+    },
+    {
+      "id": "PO-012",
+      "title": "3.2 FB 网络一致性",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n- FB 引脚是否直接连接到分压电阻中点（无中间器件）\n- FB 引脚下拉电阻接地是否良好（确认 net body 中有 GND portRef）\n- 前馈电容 (CFF) 配置是否与手册推荐一致\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 107,
+          "end_line": 112
+        }
+      ]
+    },
+    {
+      "id": "PO-013",
+      "title": "3.3 可编程寄存器默认值",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n对于 I²C/SPI 可编程的 PMIC：\n- 默认寄存器值（Power-On Reset 值）是否与实际电路匹配\n- 若默认值与目标电压不一致，BSP/固件是否在初始化中重新配置 → 标注为 ⚫UNVERIFIED（非原理图层面检查）\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 113,
+          "end_line": 120
+        }
+      ]
+    },
+    {
+      "id": "PO-014",
+      "title": "四、上下拉模型",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 121,
+          "end_line": 122
+        }
+      ]
+    },
+    {
+      "id": "PO-015",
+      "title": "4.1 EN 引脚默认态与外部配合",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [
+        "| 高阻 (无内部偏置) | 无默认态 | **必须**有外部上下拉，禁止浮空 |"
+      ],
+      "text": "\n| PMIC EN 引脚 | 内部结构 | 外部电路要求 |\n|---|---|---|\n| 内部上拉 (PU) | 弱上拉至内部 LDO | 外部下拉可用开漏 GPIO 或跳线控制；不可直接接强上拉 |\n| 内部下拉 (PD) | 弱下拉至 GND | 外部上拉可用 GPIO 或连接到前级 PG |\n| 高阻 (无内部偏置) | 无默认态 | **必须**有外部上下拉，禁止浮空 |\n\n检查项：\n- EN 内部有上拉 → 外部下拉控制时，GPIO 初始电平是否为低\n- EN 内部下拉 → 外部上拉连接到正确的前级 PG\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 123,
+          "end_line": 134
+        }
+      ]
+    },
+    {
+      "id": "PO-016",
+      "title": "4.2 开漏输出的上拉要求",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "必须外部上拉至有效逻辑电平（通常与 SoC VCCIO 域一致）"
+      ],
+      "must_not": [],
+      "text": "\nPG / FAULT / INT 等开漏输出引脚：\n- 必须外部上拉至有效逻辑电平（通常与 SoC VCCIO 域一致）\n- 上拉电阻值：1kΩ ~ 10kΩ（手册推荐范围）\n- 多个开漏输出共享同一上拉网络时，确认逻辑兼容（线与）\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 135,
+          "end_line": 141
+        }
+      ]
+    },
+    {
+      "id": "PO-017",
+      "title": "4.3 MODE/SYNC 配置引脚",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [
+        "配置引脚不得浮空"
+      ],
+      "text": "\nPMIC 的 MODE（工作模式选择）、SYNC（同步时钟）、FREQ（频率设定）等配置引脚：\n- 电平定义是否与手册一致（有的 MODE 引脚通过电阻分压设定多档）\n- 配置引脚不得浮空\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 142,
+          "end_line": 149
+        }
+      ]
+    },
+    {
+      "id": "PO-018",
+      "title": "五、电容配置",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 150,
+          "end_line": 151
+        }
+      ]
+    },
+    {
+      "id": "PO-019",
+      "title": "5.1 输入/输出电容手册要求",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n对每路 PMIC 输入/输出：\n\n| 参数 | 来源 | 检查项 |\n|---|---|---|\n| 最小/最大容值 | 手册推荐工作条件 | EDN 中该 net 上的电容是否在范围内 |\n| 耐压 | 手册 + 实际电压 | 电容耐压 ≥ 实际电压 × 1.2（降额） |\n| 介质类型 | 手册（通常要求 X5R/X7R） | BOM 中的电容型号是否匹配 |\n| ESR | 手册（部分 LDO 对 ESR 有范围要求） | 若使用 MLCC，ESR 极低，部分旧款 LDO 可能振荡 → 🟡 WARNING |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 152,
+          "end_line": 162
+        }
+      ]
+    },
+    {
+      "id": "PO-020",
+      "title": "5.2 去耦密度检查",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| 电源轨类型 | 建议去耦 |\n|---|---|\n| SoC VDD_CORE | ≥ 4 颗（10μF + 0.1μF × N） |\n| DDR VDDQ | 每颗粒 ≥ 2 颗（0.1μF + 1μF） |\n| PMIC 输入 | ≥ 1 颗 10μF + 1 颗 0.1μF |\n| 模拟电源 (PLL/ADC) | ≥ 1 颗 0.1μF + 铁氧体磁珠 |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 163,
+          "end_line": 171
+        }
+      ]
+    },
+    {
+      "id": "PO-021",
+      "title": "5.3 耐压与介质类型",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n- MLCC 直流偏置降额：在 DC 偏置下，MLCC 有效容值显著降低（X5R 在 80% 额定电压下可能只剩 20% 容值）\n- 若 BOM 中使用 Y5V 或 Z5U 介质，标记为 🟡 WARNING（温度稳定性差）\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 172,
+          "end_line": 178
+        }
+      ]
+    },
+    {
+      "id": "PO-022",
+      "title": "六、电阻配置",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 179,
+          "end_line": 180
+        }
+      ]
+    },
+    {
+      "id": "PO-023",
+      "title": "6.1 限流/频率设定电阻",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n| 电阻类型 | 手册参数 | 检查项 |\n|---|---|---|\n| ILIM（限流设定） | RILIM = f(ILIM) 公式或查表 | 实际值是否在手册允许范围内（通常 1kΩ ~ 100kΩ） |\n| RT/SYNC（频率设定） | RT = f(Fsw) | 实际阻值换算的开关频率是否在手册范围内 |\n| SS（软启动） | CSS = f(tSS) | 实际电容值的软启动时间是否满足时序约束 |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 181,
+          "end_line": 188
+        }
+      ]
+    },
+    {
+      "id": "PO-024",
+      "title": "6.2 电流采样电阻（Shunt）",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**Kelvin Shunt 追踪注意事项**：4-pin 分流器的电流引脚（&1/&4）和采样引脚（&2/&3）必须分别追踪到电源路径和检测 IC 的输入端，不可混淆。"
+      ],
+      "must_not": [],
+      "text": "\n对于电流监测 IC（如 INA219）或有电流采样的 PMIC：\n- 阻值：是否按手册公式计算（如 INA219：Rshunt = VFS / IMAX）\n- 功率：P = I²R，降额 50% 以上\n- Kelvin 连接：4-pin 分流器的电流引脚和采样引脚是否分别连接到正确的 net\n\n> **Kelvin Shunt 追踪注意事项**：4-pin 分流器的电流引脚（&1/&4）和采样引脚（&2/&3）必须分别追踪到电源路径和检测 IC 的输入端，不可混淆。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 189,
+          "end_line": 199
+        }
+      ]
+    },
+    {
+      "id": "PO-025",
+      "title": "七、交付检查清单",
+      "stage": [
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "图中必须标注每级电压、源端 IC/引脚、主要消费者、EN/PG 级联关系。"
+      ],
+      "must_not": [],
+      "text": "\n- [ ] 所有 PMIC 的输出电压已通过分压电阻公式验证\n- [ ] 上电时序已与 SoC/DDR 手册交叉核对\n- [ ] 每路 EN 的来源已追踪并确认无误\n- [ ] PG 级联链路完整（无断链、无悬空）\n- [ ] 所有开漏输出配有外部上拉\n- [ ] 输入/输出电容值、耐压、介质类型已核对\n- [ ] 限流电阻、频率设定电阻、Shunt 电阻值已核对\n- [ ] 每条 CRITICAL/WARNING 附 EDN 行号或 net body 证据\n- [ ] 每条参数判定附手册原文引用（页码/表格号）\n- [ ] **已产出临时文件 `.sisyphus/temp/power.msg`**（格式见 `hardware-reviewer.md` §前后级数据交接）\n- [ ] **已输出供电架构树状图（Power Tree）**，包含：输入源 → PMIC/DC-DC/LDO → 电源轨 → 主要负载 IC；图中必须标注每级电压、源端 IC/引脚、主要消费者、EN/PG 级联关系。",
+      "refs": [
+        {
+          "src": "raw/raw_rules/电源检查.md",
+          "line": 200,
+          "end_line": 212
+        }
+      ]
+    }
+  ]
+}

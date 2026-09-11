@@ -37,4 +37,4 @@ class Config:
         return Path(self.paths.get(key, key))
 
     def rule_bundle_tokens(self) -> int:
-        return int(self.budget.get("rule_bundle_tokens", 40000))
+        return int(self.budget.get("rule_bundle_tokens", 64000))

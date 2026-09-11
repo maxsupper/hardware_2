@@ -1,0 +1,1387 @@
+{
+  "schema_version": "1.0",
+  "kind": "rule_bundle",
+  "scope": "common/引脚核对",
+  "source": "raw/raw_rules/引脚核对规则.md",
+  "source_sha1": "e82f9870c8da387c4c25516d0839264960ec5fe1",
+  "generated_at": "2026-09-11T08:43:44+00:00",
+  "tokens_est": 17780,
+  "entries": [
+    {
+      "id": "IC-001",
+      "title": "引脚核对规则",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> 适用场景：原理图/网表信号与芯片引脚功能的交叉验证\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 1,
+          "end_line": 6
+        }
+      ]
+    },
+    {
+      "id": "IC-002",
+      "title": "定位：引脚检查的综述文件",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n**本文件是引脚级检查的唯一综合入口**，负责完成 \"接口信号 → 芯片引脚 → Bank 归属 → VCCIO 域 → 供电电压\" 的完整推断链。所有综合性判定（某个接口从哪个 Bank 引出，电压是多少）均在本文件解决。\n\n**子文件的关系**：\n\n| 子文件 | 继承本文件 | 本文件不覆盖的 |\n|---|---|---|\n| [引脚电平检查方案.md](./引脚电平检查方案.md) | VCCIO 表、追踪方法、Bank→电压推断结论 | 中间芯片电平转换验证、标注对比、五步流程 |\n| [引脚复用关系检查规则.md](./引脚复用关系检查规则.md) | VCCIO 表、追踪方法、portRef 解析 | Mux 冲突三种类型、BSP 配置一致性 |\n\n**子文件默认以本文件结论为前提，不再重复做接口→Bank→电平的综合推断。**\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 7,
+          "end_line": 21
+        }
+      ]
+    },
+    {
+      "id": "IC-003",
+      "title": "核心原则",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n**网名是标签，不是物理事实。先追踪，后对比。**\n\n原理图中的网络名称是设计者手工输入的字符串，可能因版本迭代、复制粘贴、多人协作等原因与实际连接不一致。不能以网名作为判断依据。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 22,
+          "end_line": 29
+        }
+      ]
+    },
+    {
+      "id": "IC-004",
+      "title": "正确流程",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 30,
+          "end_line": 31
+        }
+      ]
+    },
+    {
+      "id": "IC-005",
+      "title": "第一步：追踪物理连接",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {
+        "trace_max_hops": 6
+      },
+      "must": [
+        "**⛔ 跨无源器件追踪（2026-06-15 新增）**：",
+        "串联电阻/电感/磁珠会断开网名，必须跨器件继续追踪："
+      ],
+      "must_not": [
+        "**反例**：GMAC0_TXEN 仅搜了 \"GMAC0_TXEN\" net → 未找到 U6 → 标为 DEDICATED/3.3V ❌"
+      ],
+      "text": "\n从接口侧出发，沿信号路径追踪到芯片引脚：\n\n```\n接口引脚 → 网表网络 → 中间器件（电阻/电平转换等）→ 芯片引脚\n```\n\n**工具**：使用 EDIF/网表文本解析，逐段追溯每个 `portRef`。\n\n```\n示例：\n  J5.2 → net \"UART3_TX\" → U9.B1 → U9.A1 → net \"UART3_TX_3V3\" → U1000(GPIO2_A3_D_J)\n```\n\n**⛔ 跨无源器件追踪（2026-06-15 新增）**：\n\n串联电阻/电感/磁珠会断开网名，必须跨器件继续追踪：\n\n```\nGMAC0_TXEN 信号：\n  J1.56 → net \"GMAC0_TXEN\" → R11.&1\n                               ↓ 跨电阻\n  R11.&2 → net \"GMAC0_TXEN_SOC\" → U6.GPIO2_C0_d_H\n```\n\n**规则**：\n1. 如果连接器引脚所在 net 未找到 U6 portRef，查该 net 上所有无源器件（RESISTOR/INDUCTOR/FERRITE）\n2. 对每个无源器件，查其对端所在的 net → 递归搜索 U6 portRef\n3. 最多递归 2 层（串联电阻→U6，串联电阻→电平转换器→U6）\n4. 找到 U6 GPIO 后继续执行反向供电校验\n\n**反例**：GMAC0_TXEN 仅搜了 \"GMAC0_TXEN\" net → 未找到 U6 → 标为 DEDICATED/3.3V ❌\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 32,
+          "end_line": 67
+        }
+      ]
+    },
+    {
+      "id": "IC-006",
+      "title": "连接器引脚输出格式",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "每个连接器引脚必须包含以下 8 列，所有列必须有值："
+      ],
+      "must_not": [
+        "Voltage：反向校验确认的 I/O 电压（如 3.3V, 1.8V），不得为 unknown"
+      ],
+      "text": "\n> ⚡ **强制检查（自学习 K-T005）**：连接器逐引脚追踪已在 3 个项目累计 571 引脚验证为最易遗漏的检查项。以下流程为强制检查，不可跳过。\n\n每个连接器引脚必须包含以下 8 列，所有列必须有值：\n\n| Pin | Net | Signal | Direction | Voltage | Domain | Source | Dest |\n|-----|-----|--------|-----------|---------|--------|--------|------|\n| 引脚编号 | 网络名 | 信号功能描述 | Output/Input/Bidirectional/PWR/GND | 实际电压值 | VCCIO域 | 源端IC+引脚 | 目的端IC+引脚 |\n\n- Pin：连接器引脚号（如 1, A, B…）\n- Net：EDIF 网表中的物理网络名\n- Signal：该引脚承载的信号功能（如 UART3_TX, VCC5V, GND）\n- Direction：信号方向（Output=SoC→外设, Input=外设→SoC, Bidirectional, PWR=电源输入, GND=地）\n- Voltage：反向校验确认的 I/O 电压（如 3.3V, 1.8V），不得为 unknown\n- Domain：该信号在 SoC 侧归属的 VCCIO 域（如 VCCIO3, EMMCIO_1V8）\n- Source：驱动端 IC 位号 + 引脚（如 U6.GPIO2_C0_d_H）\n- Dest：接收端 IC 位号或连接器标识（如 J1.Pin56）\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 68,
+          "end_line": 86
+        }
+      ]
+    },
+    {
+      "id": "IC-007",
+      "title": "第二步：确认芯片引脚功能",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n在芯片引脚复用表中查找该引脚的全部功能：\n\n```\nGPIO2_A3_D_J:\n  Mux0: UART3_TX\n  Mux1: FEPHY_LEDLINK\n  Mux2: PWM0_CH2_M2\n  ...\n```\n\n验证接口需要的功能是否存在于该引脚的复用选项中。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 87,
+          "end_line": 100
+        }
+      ]
+    },
+    {
+      "id": "IC-008",
+      "title": "第三步：确认 VCCIO 域电压",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n从网表中追踪芯片供电引脚的实际电压：\n\n```\nVCCIO2_VCC_J → net \"VCC_3V3\" → 3.3V\nVCCIO1_VCC_I → net \"VCC_1V8\" → 1.8V\n```\n\n根据芯片引脚的域后缀（_I/_J/_K 等）查表得电压。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 101,
+          "end_line": 111
+        }
+      ]
+    },
+    {
+      "id": "IC-009",
+      "title": "第四步：反向验证标签",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n将前三步的物理事实与原理图标签对比，记录差异：\n\n| 验证项 | 来源 | 方法 |\n|--------|------|------|\n| GPIO Bank 号 | 芯片引脚名 | 解析 portRef 中的 GPIOx_* 字段 |\n| 功能正确性 | 芯片复用表 | 检查功能是否在 Mux 列表中 |\n| 电压电平 | VCCIO 域供电 | 追溯供电网络 |\n| 信号方向 | 中间器件方向 | 电平转换器方向/缓冲器方向 |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 112,
+          "end_line": 124
+        }
+      ]
+    },
+    {
+      "id": "IC-010",
+      "title": "禁止事项",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "| 忽略磁珠/电感/分流器等功率无源器件 | FB/L/PR 也是中间器件，必须逐段追踪其两端（2026-06-01 新增） |"
+      ],
+      "must_not": [
+        "| ❌ 禁止 | ✅ 应做 |"
+      ],
+      "text": "\n| ❌ 禁止 | ✅ 应做 |\n|--------|--------|\n| 以网名判断 GPIO Bank 号 | 追踪网表到芯片引脚，从引脚名提取 Bank |\n| 以网名判断电压 | 追踪 VCCIO 域的实际供电网络 |\n| 以网名判断功能 | 在芯片复用表中确认该功能存在 |\n| 跳过中间器件直接推断 | 逐段追踪：接口→电阻→转换器→芯片 |\n| 相信单一的 VCCIO 电压假设 | 逐个追踪每个 VCCIO 引脚的实际网络 |\n| 只验证功能类别存在 | **验证编号/数值精度匹配**（如 CIF_D1 vs DATA0） |\n| 有串联电阻就跳过 | 追踪电阻另一端连接的完整网络名 |\n| 功率路径中途停止（见网名即结论） | 追到芯片电源引脚（VDD/VDDQ/VDD_CORE 等）才算终点（2026-06-01 新增） |\n| 忽略磁珠/电感/分流器等功率无源器件 | FB/L/PR 也是中间器件，必须逐段追踪其两端（2026-06-01 新增） |\n| 未穿透分流器（Kelvin Shunt） | 4-pin 分流器的电流引脚（&2/&4）和采样引脚（&1/&3）分别追踪（2026-06-01 新增） |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 125,
+          "end_line": 141
+        }
+      ]
+    },
+    {
+      "id": "IC-011",
+      "title": "实战案例",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> 以下案例来自某 RV1126B 项目的实际审查，用于演示方法论。具体芯片型号、引脚名、接口编号因项目而异，但追踪方法和判定逻辑是通用的。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 142,
+          "end_line": 145
+        }
+      ]
+    },
+    {
+      "id": "IC-012",
+      "title": "案例：接口 \"GPIO1-3V3\" 的核实",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n**错误做法**：看到网名 `GPIO1-3V3` → 查 GPIO1 的 VCCIO1 = 1.8V → 结论 \"3.3V 标错了\"\n\n**正确做法**：\n\n```\n1. 追踪物理连接：\n   J3.5 → net \"GPIO1-3V3\" → U1000 portRef:\n   \"UART4_RX_M3  UART3_RTSN_M0  SDMMC0_CLK  GPIO2_A4_D_J\"\n\n2. 提取芯片引脚：GPIO2_A4_D_J\n   GPIO Bank = GPIO2（不是 GPIO1！）\n   域后缀 = _J\n\n3. 查 VCCIO 域：\n   VCCIO2_VCC_J → VCC_3V3 = 3.3V ✓\n\n4. 对比标签：\n   网名 GPIO\"1\"-3V3 → 实际 GPIO\"2\"_A4 → Bank 号错，电压对\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 146,
+          "end_line": 167
+        }
+      ]
+    },
+    {
+      "id": "IC-013",
+      "title": "案例：J3.9 \"GPIO0-1V8\" 的核实",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\n1. 追踪：J3.9 → net \"GPIO0-1V8\" → U1000:\n   \"DSMC_INT2  UART3_CTSN_M1  PWM1_CH0_M1  SPI1_MISO_M2  VO_LCDC_CLK  GPIO5_D3_D_L\"\n\n2. 芯片引脚：GPIO5_D3_D_L\n   GPIO Bank = GPIO5（不是 GPIO0！）\n   域后缀 = _L → VCCIO5 = 1.8V\n\n3. 电压 1.8V ✓，Bank 号错（GPIO0 → GPIO5）\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 168,
+          "end_line": 180
+        }
+      ]
+    },
+    {
+      "id": "IC-014",
+      "title": "案例：DVP VI0_DATA0/1 CIF 编号互换",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "仅检查\"有 CIF 功能\"不够，必须比对编号。"
+      ],
+      "must_not": [],
+      "text": "\n```\nJ5.15 标号 \"VI0_DATA0\"\n → 追踪 EDN: J5.15 → net VI0_DATA0 → U1000 portRef:\n   \"SARADC1_IN0  ETH_TXD1_M0  SAI0_SDO2_M1  VI_CIF_D1_M0  ...  GPIO6_A1_D_M\"\n → CIF 功能: VI_CIF_D1_M0（编号 D1 ≠ 标号 DATA0）\n → GPIO: GPIO6_A1\n\nJ5.20 标号 \"VI0_DATA1\"\n → 追踪 EDN: J5.20 → net VI0_DATA1 → U1000 portRef:\n   \"... VI_CIF_D0_M0 ... GPIO6_A0_D_M\"\n → CIF 功能: VI_CIF_D0_M0（编号 D0 ≠ 标号 DATA1）\n → GPIO: GPIO6_A0\n```\n\n**发现**：D0 和 D1 的 CIF 功能编号互换了。仅检查\"有 CIF 功能\"不够，必须比对编号。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 181,
+          "end_line": 200
+        }
+      ]
+    },
+    {
+      "id": "IC-015",
+      "title": "精确值校验规则（No-Shortcut Rule）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 201,
+          "end_line": 202
+        }
+      ]
+    },
+    {
+      "id": "IC-016",
+      "title": "问题根源",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n只验证\"功能类别存在\"（有 CIF ✅）而未验证\"编号精确匹配\"（CIF_D1 ≠ DATA0）。\n\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 203,
+          "end_line": 207
+        }
+      ]
+    },
+    {
+      "id": "IC-017",
+      "title": "❌ 浅层检查 — 仅验证类别存在",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "if 'CIF' in func:  →  \"通过\"",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 208,
+          "end_line": 209
+        }
+      ]
+    },
+    {
+      "id": "IC-018",
+      "title": "遗漏了: CIF_D1 vs 标号 DATA0 不一致",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 210,
+          "end_line": 211
+        }
+      ]
+    },
+    {
+      "id": "IC-019",
+      "title": "✅ 深层检查 — 验证编号精确匹配",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "cif_num = extract_number(cif_func)      # D1 → 1\nlabel_num = extract_number(net_name)    # DATA0 → 0\nif cif_num != label_num:  flag MISMATCH\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 212,
+          "end_line": 217
+        }
+      ]
+    },
+    {
+      "id": "IC-020",
+      "title": "适用场景",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "以下接口必须做**编号级别的精确校验**："
+      ],
+      "must_not": [],
+      "text": "\n以下接口必须做**编号级别的精确校验**：\n\n| 接口类型 | 需精确校验的编号 | 示例 |\n|----------|------|------|\n| DVP 并行视频 | DATA[0:15] ↔ CIF_D[0:15] | D0→D0, D1→D1, ... |\n| SDMMC | DATA[0:3] ↔ SDMMC_D[0:3] | D0→D0 |\n| SPI | CS[0:N] ↔ CSx | CS0→CS0 |\n| I2C | SCL/SDA ↔ 同编号控制器 | I2C1_SCL + I2C1_SDA |\n| UART | TX/RX ↔ 同编号控制器 | UART3_TX + UART3_RX |\n| GPIO | Bank+Pin ↔ 一致 | GPIO2_A4, not GPIO1 |\n| DDR | DQ[0:31] ↔ 顺序对应 | DQ0→DQL0 |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 218,
+          "end_line": 231
+        }
+      ]
+    },
+    {
+      "id": "IC-021",
+      "title": "禁止事项（补充）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [
+        "| ❌ 禁止 | ✅ 应做 |"
+      ],
+      "text": "\n| ❌ 禁止 | ✅ 应做 |\n|--------|--------|\n| 仅验证功能类别（有 CIF） | **验证编号精确匹配**（CIF_D1 vs DATA0） |\n| 仅验证\"连着 SoC\" | 验证连到了正确编号的 SoC 引脚 |\n| 批量检查时跳过数值对比 | 对有编号的信号逐位编号对比 |\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 232,
+          "end_line": 241
+        }
+      ]
+    },
+    {
+      "id": "IC-022",
+      "title": "网表解析技巧",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 242,
+          "end_line": 243
+        }
+      ]
+    },
+    {
+      "id": "IC-023",
+      "title": "EDIF 格式 portRef 提取",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 244,
+          "end_line": 246
+        }
+      ]
+    },
+    {
+      "id": "IC-024",
+      "title": "提取网络中所有连接",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "portRef &5 (instanceRef J3)                     # 接口侧\nportRef GPIO2_A4_D_J (instanceRef U1000)        # 芯片侧（多功能合并）\nportRef UART4_RX_M3 UART3_RTSN_M0 ... U1000)    # 芯片侧（展开所有复用功能）\n```\n\n关键字段：\n- 第一个标识符是**引脚编号**（如 `&5`, `A1`）\n- 多功能引脚包含管道符分隔的功能列表\n- GPIO 名格式：`GPIO{Bank}_{Pin}_{Dir}_{Domain}`\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 247,
+          "end_line": 257
+        }
+      ]
+    },
+    {
+      "id": "IC-025",
+      "title": "GPIO 域后缀与 VCCIO 映射",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**特别注意**：`_J` 后缀同时对应 VCCIO2 和 VCCIO3，必须从网表中追踪具体引脚所在 BANK 的实际供电网络，不能直接假设电压。"
+      ],
+      "must_not": [],
+      "text": "\n| 后缀 | VCCIO 域 | 需从网表确认实际电压 |\n|:---:|:--------:|:---:|\n| `_H` | PMUIO | 追踪 PMUIO_VCC 网络 |\n| `_I` | VCCIO1 | 追踪 VCCIO1_VCC 网络 |\n| `_J` | VCCIO2/3 | **注意：同后缀对应两个不同域** |\n| `_K` | VCCIO4 | 追踪 VCCIO4_VCC 网络 |\n| `_L` | VCCIO5 | 追踪 VCCIO5_VCC 网络 |\n| `_M` | VCCIO6 | 追踪 VCCIO6_VCC 网络 |\n| `_F` | MIPI PHY | 追踪 MIPI_AVDD 网络 |\n\n**特别注意**：`_J` 后缀同时对应 VCCIO2 和 VCCIO3，必须从网表中追踪具体引脚所在 BANK 的实际供电网络，不能直接假设电压。\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 258,
+          "end_line": 273
+        }
+      ]
+    },
+    {
+      "id": "IC-026",
+      "title": "自动化脚本自我审查规则（Script Self-Audit）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 274,
+          "end_line": 275
+        }
+      ]
+    },
+    {
+      "id": "IC-027",
+      "title": "问题根源",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n自动化检查脚本自身的**截断、简化、假设**是漏检的首要原因。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 276,
+          "end_line": 279
+        }
+      ]
+    },
+    {
+      "id": "IC-028",
+      "title": "案例 1：`net_body` 行数截断 → I2C2 上拉漏检",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 280,
+          "end_line": 282
+        }
+      ]
+    },
+    {
+      "id": "IC-029",
+      "title": "❌ 有截断风险的写法",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "for j in range(i, min(len(lines), i+50)):  # 固定 50 行\n    body.append(lines[j])\n    ...",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 283,
+          "end_line": 286
+        }
+      ]
+    },
+    {
+      "id": "IC-030",
+      "title": "网络较长 → U1000 portRef 在第 55 行 → 被截断 → has_u1000=False",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 287,
+          "end_line": 287
+        }
+      ]
+    },
+    {
+      "id": "IC-031",
+      "title": "→ 误判为 \"no U1000, assumed external\" → 跳过上拉检查 !!",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "```\n\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 288,
+          "end_line": 291
+        }
+      ]
+    },
+    {
+      "id": "IC-032",
+      "title": "✅ 正确的写法 — 扫描到网络结束符",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "depth = 0\nfor j in range(i, len(lines)):\n    body.append(lines[j])\n    if lines[j].strip().startswith('(net ') and j > i:  # 遇到下一个 net\n        break\n    if lines[j].strip() == ')':\n        depth -= 1\n        if depth <= 0:\n            break\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 292,
+          "end_line": 303
+        }
+      ]
+    },
+    {
+      "id": "IC-033",
+      "title": "案例 2：仅验证功能类别 → DVP D0/D1 编号漏检",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 304,
+          "end_line": 306
+        }
+      ]
+    },
+    {
+      "id": "IC-034",
+      "title": "❌ 浅层检查",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "if 'CIF' in func:  # 有 CIF 功能 → 通过\n    pass          # 未比较 CIF_D1 vs DATA0 !!\n```\n\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 307,
+          "end_line": 312
+        }
+      ]
+    },
+    {
+      "id": "IC-035",
+      "title": "✅ 深层检查",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "cif_num = extract_number(cif_func)    # D1 → 1\nlabel_num = extract_number(sig_name)  # DATA0 → 0\nassert cif_num == label_num\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 313,
+          "end_line": 318
+        }
+      ]
+    },
+    {
+      "id": "IC-036",
+      "title": "案例 3：只搜 portRef 已连接引脚 → U3200 ZQ 悬空漏检",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 319,
+          "end_line": 321
+        }
+      ]
+    },
+    {
+      "id": "IC-037",
+      "title": "❌ 只搜 portRef（网络连接的引脚）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "ports = re.findall(r'portRef\\s+(\\S+)\\s+\\(instanceRef U3200\\)', content)",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 322,
+          "end_line": 323
+        }
+      ]
+    },
+    {
+      "id": "IC-038",
+      "title": "→ 结果: VSS/ZQ_U(DDP) 等已连接引脚",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 324,
+          "end_line": 324
+        }
+      ]
+    },
+    {
+      "id": "IC-039",
+      "title": "→ ZQ 引脚悬空 → 没有 portRef → 永远搜不到！",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 325,
+          "end_line": 325
+        }
+      ]
+    },
+    {
+      "id": "IC-040",
+      "title": "→ 搜到 VSS/ZQ_U 含 \"ZQ\" 子串 → 误判为 ZQ → 停止",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "```\n\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 326,
+          "end_line": 329
+        }
+      ]
+    },
+    {
+      "id": "IC-041",
+      "title": "✅ 对比 portInstance（符号定义） vs portRef（网络连接）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 330,
+          "end_line": 330
+        }
+      ]
+    },
+    {
+      "id": "IC-042",
+      "title": "1. 从 instance 定义提取全部引脚",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "inst_pins = re.findall(r'portInstance\\s+(\\S+)', instance_body)",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 331,
+          "end_line": 332
+        }
+      ]
+    },
+    {
+      "id": "IC-043",
+      "title": "→ ['DML_n', 'DQSL_P', ..., 'ZQ', ..., 'VSS/ZQ_U(DDP)']",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 333,
+          "end_line": 333
+        }
+      ]
+    },
+    {
+      "id": "IC-044",
+      "title": "2. 从网络提取已连接的引脚",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "wired_pins = re.findall(r'portRef\\s+(\\S+)\\s+\\(instanceRef U3200\\)', content)",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 334,
+          "end_line": 335
+        }
+      ]
+    },
+    {
+      "id": "IC-045",
+      "title": "→ ['DML_n/DBIL_n', ..., 'VSS/ZQ_U(DDP)']  # 没有 ZQ！",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 336,
+          "end_line": 336
+        }
+      ]
+    },
+    {
+      "id": "IC-046",
+      "title": "3. 对比 → ZQ 在 inst_pins 但不在 wired_pins → 悬空！",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "floating = inst_pins - wired_pins\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 337,
+          "end_line": 340
+        }
+      ]
+    },
+    {
+      "id": "IC-047",
+      "title": "悬空引脚检测规则",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n> ⚠ **2026-05-27 修订**：增加\"按芯片，不按引脚类型\"原则。原规则以引脚功能为枚举维度，但正确的枚举维度是**芯片实例 × 引脚功能**。仅按功能枚举会导致对非主芯片（DRAM、PMIC、eMMC 等）漏检。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 341,
+          "end_line": 344
+        }
+      ]
+    },
+    {
+      "id": "IC-048",
+      "title": "芯片范围规则（新增，不可跳过）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "以下芯片必须执行全量 portInstance-vs-portRef 对比：",
+        "| **主 SoC** | 必须 | 漏检 U1000 功能引脚 |",
+        "| **DDR 颗粒**（每颗独立） | 必须 | 漏检 ZQ/VREF/RESET 悬空 |",
+        "| **PMIC** | 必须 | 漏检电源输出/使能悬空 |",
+        "| **eMMC / Flash** | 必须 | 漏检 CMD/CLK/RST 悬空 |"
+      ],
+      "must_not": [],
+      "text": "\n以下芯片必须执行全量 portInstance-vs-portRef 对比：\n\n| 芯片类型 | 判定门槛 | 未 diff 则 |\n|----------|:---:|------|\n| **主 SoC** | 必须 | 漏检 U1000 功能引脚 |\n| **DDR 颗粒**（每颗独立） | 必须 | 漏检 ZQ/VREF/RESET 悬空 |\n| **PMIC** | 必须 | 漏检电源输出/使能悬空 |\n| **eMMC / Flash** | 必须 | 漏检 CMD/CLK/RST 悬空 |\n| **PHY 芯片**（ETH/MIPI） | 建议 | 漏检关键信号 |\n| **电平转换器** | 建议 | 漏检 VCCA/VCCB/OE |\n\n**执行流程**（对每个芯片独立执行）：\n\n```\nfor each 关键芯片:\n    1. 从 instance 定义提取 portInstance 全量列表 → ALL_PINS\n    2. 从网表提取 portRef 全量列表（已连接引脚） → WIRED_PINS\n    3. FLOATING = ALL_PINS − WIRED_PINS\n    4. 对 FLOATING 中的每个引脚，按功能类型判级：\n       功能引脚(ZQ/VREF/RESET/CKE…) → 🔴 CRITICAL\n       电源引脚(VDD/VDDQ)            → 🔴 CRITICAL\n       GND 引脚(VSS/VSSQ)            → 🟡 WARNING（可能通过基板连接）\n       NC 引脚                       → 🟢 OK\n       专用功能引脚(CLK/CMD/DQ…)     → 🔴 CRITICAL\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 345,
+          "end_line": 372
+        }
+      ]
+    },
+    {
+      "id": "IC-049",
+      "title": "实战教训",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\nU3200 (DDR4) 的 `ZQ` 引脚（pin 55）在 portInstance 中定义，但不在任何 net 的 portRef 中，导致悬空。初检仅验证了 SoC 端的 DDR_RZQ 和已连接的 R3207(VSS/ZQ)，未对 U3200 执行全量 diff，故漏检。\n\n**漏检根因**：不是不知道要查 ZQ——知道、也查了 R3210 和 R3207。而是查了\"已连接的那几个 ZQ 信号\"就停了，没有先做全量 diff 再分类。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 373,
+          "end_line": 378
+        }
+      ]
+    },
+    {
+      "id": "IC-050",
+      "title": "原规则（保留，按引脚功能分类）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "对于以下关键功能引脚，必须检查符号定义与网络连接的一致性：",
+        "| 引脚类型 | 必须连接 | 检测方法 |"
+      ],
+      "must_not": [],
+      "text": "\n对于以下关键功能引脚，必须检查符号定义与网络连接的一致性：\n\n| 引脚类型 | 必须连接 | 检测方法 |\n|----------|:---:|------|\n| DDR ZQ | 240Ω→GND | portInstance 有 ZQ 且 portRef 存在且接电阻 |\n| DDR VREF | 接 VREF 电路或 GND | portInstance 有 VREF 且 portRef 存在 |\n| DDR RESET | 接 SoC + 上拉 | portRef 存在 |\n| 电源引脚(VDD/VDDQ) | 接电源网络 | portRef 存在 |\n| GND 引脚(VSS/VSSQ) | 接 GND | portRef 存在 |\n| NC 引脚 | 可悬空 | 无 portRef 属正常 |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 379,
+          "end_line": 391
+        }
+      ]
+    },
+    {
+      "id": "IC-051",
+      "title": "脚本自审清单",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n写脚本时，对每个自动化检查函数执行以下自审：\n\n| 审查项 | 问题 | 修复 |\n|--------|------|------|\n| **边界条件** | 固定行数截断是否遗漏数据？ | 改为内容感知的边界检测 |\n| **正则跨网** | `re.DOTALL` 是否跨多个 net？ | 先提取 net body，再在 body 内匹配 |\n| **分支路径** | 信号经串联电阻是否追踪到另一端？ | 追踪电阻另一端的网络 |\n| **比较精度** | 只验证类别还是验证编号？ | 逐位比较编号 |\n| **\"assumed OK\"** | 未找到数据时默认通过还是上报？ | 默认上报异常，不假设正常 |\n| **portRef vs portInstance** | 只搜已连接引脚 → 悬空脚漏检 | 提取 portInstance 全量列表与 portRef 对比 |\n| **子串匹配** | \"ZQ\" 匹配到 \"VSS/ZQ_U\" → 假阳性 | 精确匹配端口全名 |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 392,
+          "end_line": 405
+        }
+      ]
+    },
+    {
+      "id": "IC-052",
+      "title": "错误处理规则",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```python",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 406,
+          "end_line": 408
+        }
+      ]
+    },
+    {
+      "id": "IC-053",
+      "title": "❌ 沉默跳过",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "if not found:\n    return  # 默认正常 ← 错误！\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 409,
+          "end_line": 412
+        }
+      ]
+    },
+    {
+      "id": "IC-054",
+      "title": "✅ 显式上报",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "if not found:\n    add_issue('WARNING', f'{name}: trace incomplete - manual check required')\n    return\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 413,
+          "end_line": 418
+        }
+      ]
+    },
+    {
+      "id": "IC-055",
+      "title": "验证策略层级",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```\nLevel 1: 连接存在性 (has portRef?)      ← 基础\nLevel 2: 功能类别匹配 (has CIF/UART?)   ← 中层\nLevel 3: 编号精确匹配 (CIF_D1 == DATA1?) ← 深层 ← 不可跳过！\nLevel 4: 电气匹配 (VCCIO电压? 上拉?)     ← 完整\n```\n\n**Level 1-2 通过 ≠ 实现正确。Level 3-4 是必检项。**\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 419,
+          "end_line": 431
+        }
+      ]
+    },
+    {
+      "id": "IC-056",
+      "title": "检查员自审清单（Inspector Self-Audit）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "不依赖自动化脚本，人工检查也必须执行。"
+      ],
+      "must_not": [],
+      "text": "\n> 适用场景：完成任何硬件检查后，交付报告前，逐项自审。不依赖自动化脚本，人工检查也必须执行。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 432,
+          "end_line": 435
+        }
+      ]
+    },
+    {
+      "id": "IC-057",
+      "title": "一、枚举先行原则（Enumerate Before Evaluate）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "必须先拉清单，后逐项核验。"
+      ],
+      "must_not": [
+        "**禁止**边发现边判断。",
+        "❌ 错误做法：发现 I2C0 有上拉 → 产生 \"I2C 应该都有\" 的印象 → 跳过我 I2C1/I2C2",
+        "I2C1_SCL → 读 net body → 无 R → ❌ CRITICAL",
+        "I2C1_SDA → 读 net body → 无 R → ❌ CRITICAL",
+        "I2C2_SCL → 读 net body → 无 R → ❌ CRITICAL",
+        "I2C2_SDA → 读 net body → 无 R → ❌ CRITICAL"
+      ],
+      "text": "\n**禁止**边发现边判断。必须先拉清单，后逐项核验。\n\n```\n❌ 错误做法：发现 I2C0 有上拉 → 产生 \"I2C 应该都有\" 的印象 → 跳过我 I2C1/I2C2\n\n✅ 正确做法：\n  第一步：拉清单（只发现，不判断）\n    本设计共有 3 组 I2C：I2C0 / I2C1 / I2C2\n    每组 2 个信号 → 共 6 个信号需要检查上拉\n\n  第二步：逐项核验（按清单依次，不可跳跃）\n    I2C0_SCL → 读 net body → 找到 R2308 → ✅\n    I2C0_SDA → 读 net body → 找到 R2307 → ✅\n    I2C1_SCL → 读 net body → 无 R → ❌ CRITICAL\n    I2C1_SDA → 读 net body → 无 R → ❌ CRITICAL\n    I2C2_SCL → 读 net body → 无 R → ❌ CRITICAL\n    I2C2_SDA → 读 net body → 无 R → ❌ CRITICAL\n```\n\n**适用接口类型**：I2C、UART、SPI、SDMMC、DVP、MIPI 等一切多实例总线。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 436,
+          "end_line": 458
+        }
+      ]
+    },
+    {
+      "id": "IC-058",
+      "title": "二、逐 net body 硬读（Hard-Read Net Body）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "每个待检信号必须实际打开 net body，不可凭经验推断。",
+        "| net body 只有两行就不读了 | 两行也必须打开读 |"
+      ],
+      "must_not": [
+        "| ❌ 凭经验跳过 | ✅ 硬读确认 |"
+      ],
+      "text": "\n每个待检信号必须实际打开 net body，不可凭经验推断。\n\n| ❌ 凭经验跳过 | ✅ 硬读确认 |\n|---|---|\n| \"连着 SoC，连着 J3，应该没问题\" | 打开 net body，确认 portRef 列表中有 `Rxxxx` |\n| \"I2C 一般都有上拉\" | 逐总线、逐信号确认 |\n| net body 只有两行就不读了 | 两行也必须打开读 |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 459,
+          "end_line": 468
+        }
+      ]
+    },
+    {
+      "id": "IC-059",
+      "title": "三、自审门禁（Go/No-Go Gates）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "**完整的 G0-G5 门禁定义见 [hardware-reviewer.md](./hardware-reviewer.md) §⛔ 启动门禁：Step 0 及 §Self-Audit Gates**"
+      ],
+      "must_not": [],
+      "text": "\n> **完整的 G0-G5 门禁定义见 [hardware-reviewer.md](./hardware-reviewer.md) §⛔ 启动门禁：Step 0 及 §Self-Audit Gates**\n>\n> 本章保留的是方法论层面的检查清单（脚本自审清单、枚举先行、硬读 net body），与门禁系统互补但不重复。所有门禁检查项的唯一定义在 hardware-reviewer.md，如有不一致以 hardware-reviewer.md 为准。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 469,
+          "end_line": 474
+        }
+      ]
+    },
+    {
+      "id": "IC-060",
+      "title": "四、经典漏检模式速查",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 475,
+          "end_line": 476
+        }
+      ]
+    },
+    {
+      "id": "IC-061",
+      "title": "四、经典漏检模式速查",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "以下组合极易被跳过，检查时必须额外警戒："
+      ],
+      "must_not": [],
+      "text": "\n以下组合极易被跳过，检查时必须额外警戒：\n\n| 漏检模式 | 典型场景 | 为什么容易被跳 |\n|----------|----------|---------------|\n| **首项正确 → 尾项跳过** | I2C0 有上拉 → 判定 I2C1/I2C2 也有 | 正例产生认知惯性 |\n| **低优先级标签 → 降低检查深度** | \"只是 debug 口\" \"预留接口\" | 人为降级 |\n| **简单总线 → 轻视** | I2C 只有两根线 → \"不可能出错\" | 低估风险 |\n| **大量重复 → 检查疲劳** | DVP 16 条 DATA 线 | 第 5 条后开始走捷径 |\n| **net body 短 → 不打开** | 只有 J3→U1000 直连 | 臆断\"没有中间器件\" |\n| **🔴 规则文档替代手册原文** | 规则文档写了\"MS4553S 自动方向检测\"→ 不再查阅 MS4553S.pdf | 二手信息不会被质疑，且遗漏封装不匹配(§4.11) |\n| **🔴 手册可得但未读取** | PDF 在本地 D:\\Refbook，但检查时未打开 | \"已有描述\"产生\"已确认\"的错觉(违反 G5-2) |\n| **🔴 推论链当事实写入** | 看到 `_J` 后缀→知道 VCCIO2/3 分叉→联想规则文档中的标注错误案例→推断\"此处标注可能也不对\"→在未核实 EDN 的情况下写入\"标注含3.3V\" | 规则文档的案例产生锚定效应，推论未经 EDN 验证直接成为\"结论\" |\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 477,
+          "end_line": 491
+        }
+      ]
+    },
+    {
+      "id": "IC-062",
+      "title": "五、纠正措施",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n当自审发现漏检时：\n\n1. **立即停止当前判定**，不要基于已有印象补充结论\n2. **回到枚举清单**，对该类接口从头逐项重新检查\n3. **更新检查结果**，明确标注\"补充检查\"及遗漏原因\n4. **记录漏检模式**，下次同类接口检查前预先警戒\n\n---\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 492,
+          "end_line": 502
+        }
+      ]
+    },
+    {
+      "id": "IC-063",
+      "title": "输出要求：VCCIO 域→电压映射表（数据交接）",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [
+        "⛔ **强制执行**：完成本文件的接口→Bank→VCCIO→电压追踪后，必须产出两份文件："
+      ],
+      "must_not": [
+        "后续步骤**禁止**重新到 EDN 追踪电压，一律读取 `.sisyphus/temp/vccio.msg`。"
+      ],
+      "text": "\n> ⛔ **强制执行**：完成本文件的接口→Bank→VCCIO→电压追踪后，必须产出两份文件：\n> 1. **临时文件** `.sisyphus/temp/vccio.msg` — 紧凑 minified JSON，供后续步骤机器读取（格式见 `hardware-reviewer.md` §前后级数据交接）\n> 2. **证据文件** `.sisyphus/evidence/vccio_map.json` — 人类可读 JSON，供报告引用\n>\n> 后续步骤**禁止**重新到 EDN 追踪电压，一律读取 `.sisyphus/temp/vccio.msg`。\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 503,
+          "end_line": 510
+        }
+      ]
+    },
+    {
+      "id": "IC-064",
+      "title": "JSON Schema",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n```json\n{\n  \"source\": \"引脚核对规则.md Step 1-3 追踪输出\",\n  \"generated_at\": \"ISO8601\",\n  \"edn_file\": \"原始 EDN 文件名\",\n  \"vccio_domains\": {\n    \"PMUIO\": {\n      \"suffix\": \"_H\",\n      \"power_pins\": [\"PMUIO0_VCC3V3\", \"PMUIO1_VCC\"],\n      \"power_net\": \"VCC3V3_SYS\",\n      \"voltage\": 3.3,\n      \"voltage_source\": \"PMIC_3V3.Buck1\",\n      \"evidence_edn_line\": 1234\n    },\n    \"VCCIO1\": {\n      \"suffix\": \"_I\",\n      \"power_pins\": [\"VCCIO1_VCC_I\"],\n      \"power_net\": \"VCC_1V8\",\n      \"voltage\": 1.8,\n      \"voltage_source\": \"PMIC_1V8.LDO\",\n      \"evidence_edn_line\": 567\n    }\n  },\n  \"pins\": [\n    {\n      \"interface\": \"Jx.y\",\n      \"net_name\": \"UART3_TX\",\n      \"chip_pin\": \"GPIO2_A3_D_J\",\n      \"gpio_bank\": \"GPIO2\",\n      \"vccio_domain\": \"VCCIO2\",\n      \"vccio_suffix\": \"_J\",\n      \"voltage\": 3.3,\n      \"evidence_edn_line\": 890\n    }\n  ]\n}\n```\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 511,
+          "end_line": 550
+        }
+      ]
+    },
+    {
+      "id": "IC-065",
+      "title": "输出步骤",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n1. 按 `§GPIO 域后缀与 VCCIO 映射` 表建立 `{后缀 → VCCIO 域名}` 映射\n2. 对每个 VCCIO 域，在 EDN 中追踪其电源引脚（如 `VCCIO2_VCC_J`）所在的 net\n3. 沿 net 追踪到供电来源（PMIC/LDO/Buck 的输出），提取实际电压值\n4. 对每个已追踪的接口信号，记录其所属芯片引脚、VCCIO 域后缀、最终电压\n5. 写入 `.sisyphus/evidence/vccio_map.json`\n",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 551,
+          "end_line": 558
+        }
+      ]
+    },
+    {
+      "id": "IC-066",
+      "title": "验证",
+      "stage": [
+        "PH-2",
+        "PH-3"
+      ],
+      "gate": "G3",
+      "params": {},
+      "must": [],
+      "must_not": [],
+      "text": "\n- [ ] `vccio_domains` 表覆盖 EDN 中存在的所有 VCCIO 域后缀\n- [ ] 每个域的 `voltage` 值为实际追踪结果，非假设值\n- [ ] 每条关键结论的 `evidence_edn_line` 可回溯到 EDN 原文",
+      "refs": [
+        {
+          "src": "raw/raw_rules/引脚核对规则.md",
+          "line": 559,
+          "end_line": 563
+        }
+      ]
+    }
+  ]
+}

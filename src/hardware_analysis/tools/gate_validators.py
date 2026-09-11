@@ -19,9 +19,135 @@ REQUIRED_PREP = ["global_components.json", "global_nets.json",
                  "signal_chains.json", "merge_report.json",
                  "bom_entries.json", "refdes_function_map.json"]
 
+# PF-004 官方引脚覆盖率阈值（可被 config.json 的 conventions.platform_coverage_min 覆盖）
+PLATFORM_COVERAGE_MIN = 0.5
+
 
 def _check(checks, cid, status: GateStatus, expected, actual):
     checks.append(GateCheck(id=cid, status=status, expected=expected, actual=actual))
+
+
+# ---------------- 平台一致性（P4-C：PF-001/003/004 接入 G3） ----------------
+def _platform_coverage_min() -> float:
+    """PF-004 阈值：conventions.platform_coverage_min 可覆盖，默认 PLATFORM_COVERAGE_MIN。"""
+    try:
+        return float(CONV.cfg.get("platform_coverage_min", PLATFORM_COVERAGE_MIN))
+    except (TypeError, ValueError):
+        return PLATFORM_COVERAGE_MIN
+
+
+def _find_rules_index(ws: Path) -> Path | None:
+    """定位 rules/index.json：优先包根（与 platform_check.ROOT 一致），再从工作区向上回退。"""
+    cands = [Path(__file__).resolve().parents[3] / "rules" / "index.json"]
+    cands += [p / "rules" / "index.json" for p in (ws, *ws.parents)]
+    seen = set()
+    for c in cands:
+        if c in seen:
+            continue
+        seen.add(c)
+        if c.exists():
+            return c
+    return None
+
+
+def _platform_keys(ws: Path) -> set[str]:
+    """rules/index.json 的 platform 键集合（缺失/非法一律空集，不抛错）。"""
+    idx = _find_rules_index(ws)
+    if not idx:
+        return set()
+    try:
+        d = json.loads(idx.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    pl = d.get("platform")
+    return set(pl.keys()) if isinstance(pl, dict) else set()
+
+
+def _find_platform_check(e_dir: Path, prep_dir: Path) -> Path | None:
+    """PF-003/PF-004 产物定位：先 PH-3_深度分析/，再 PH-2_网表解析/。"""
+    for c in (e_dir / "platform_check.json", prep_dir / "platform_check.json"):
+        if c.exists() and c.stat().st_size > 0:
+            return c
+    return None
+
+
+def _append_platform_checks(checks, e_dir: Path) -> None:
+    """PF-001 平台识别 / PF-003 官方核对无 FAIL / PF-004 覆盖率门限（+ PF-005 官方表缺口）。
+
+    WARNING 不影响 G3 整体（_finalize 仅 FAIL 致门禁 FAIL）；缺产物/缺 platform 一律优雅降级。
+    """
+    ws = e_dir.parent
+    prep_dir = ws / "PH-2_网表解析"
+
+    meta_platform = ""
+    gp = prep_dir / "netlist_graph.json"
+    if gp.exists():
+        try:
+            meta_platform = str((json.loads(gp.read_text(encoding="utf-8")).get("meta") or {})
+                                .get("platform") or "").strip()
+        except Exception:
+            meta_platform = ""
+
+    pc_path = _find_platform_check(e_dir, prep_dir)
+    pc = None
+    if pc_path is not None:
+        try:
+            pc = json.loads(pc_path.read_text(encoding="utf-8"))
+        except Exception:
+            pc = None
+    keys = _platform_keys(ws)
+
+    # ---- PF-001 主控平台已识别（netlist_graph.meta.platform 非空且在 rules/index.json 中）----
+    if meta_platform and meta_platform in keys:
+        _check(checks, "PF-001", GateStatus.PASS, "主控平台已识别",
+               f"{meta_platform}(来源=netlist_graph.meta.platform)")
+    else:
+        _check(checks, "PF-001", GateStatus.WARNING, "主控平台已识别",
+               meta_platform or "NO_PLATFORM_MATCH")
+
+    # ---- PF-003 官方引脚核对产物存在且无 FAIL ----
+    if pc is None:
+        _check(checks, "PF-003", GateStatus.WARNING,
+               "官方引脚核对产物存在且无 FAIL", "无官方引脚核对产物")
+    else:
+        findings = pc.get("findings") or []
+        fails = [f for f in findings if str(f.get("severity", "")).upper() == "FAIL"]
+        loc = f"{pc_path.parent.name}/platform_check.json"
+        if fails:
+            f0 = fails[0] if isinstance(fails[0], dict) else {}
+            _check(checks, "PF-003", GateStatus.FAIL,
+                   "官方引脚核对产物存在且无 FAIL",
+                   f"{loc} FAIL={len(fails)} 示例={f0.get('check','?')}@{f0.get('object','?')}")
+        else:
+            _check(checks, "PF-003", GateStatus.PASS,
+                   "官方引脚核对产物存在且无 FAIL",
+                   f"{loc} findings={len(findings)} FAIL=0")
+
+    # ---- PF-004 覆盖率门限 +（缺口>0 额外 WARNING，说明官方表有缺口而非设计错误）----
+    thr = _platform_coverage_min()
+    if pc is None:
+        _check(checks, "PF-004", GateStatus.WARNING,
+               f"官方引脚覆盖率 ≥ {thr:g}", "无覆盖数据")
+        return
+    cov = pc.get("coverage") or {}
+    st = pc.get("stats") or {}
+    rate = cov.get("fill_rate")
+    checked = cov.get("items_checked", st.get("pins_total", 0))
+    expected = cov.get("items_expected", 0)
+    missing = int(st.get("missing_in_pinout", 0) or 0)
+    dom = int(st.get("domain_mismatch", 0) or 0)
+    tgt = f"{pc.get('platform','') or '-'}/{pc.get('device','') or cov.get('target','') or '-'}"
+    if isinstance(rate, (int, float)):
+        detail = f"{tgt} 覆盖 {checked}/{expected}={float(rate):.3f} 缺口={missing} 域不一致={dom}"
+        status = GateStatus.PASS if float(rate) >= thr else GateStatus.FAIL
+    else:
+        detail = f"{tgt} 无 fill_rate 缺口={missing} 域不一致={dom}"
+        status = GateStatus.WARNING
+    _check(checks, "PF-004", status, f"官方引脚覆盖率 ≥ {thr:g}", detail)
+    if missing > 0:
+        _check(checks, "PF-005", GateStatus.WARNING,
+               "官方引脚表缺口已记录(非设计错误)",
+               f"{tgt} 官方表缺 {missing} 脚（WARNING，非设计错误）")
 
 
 # ---------------- G1 prep_validate ----------------
@@ -101,6 +227,7 @@ def validate_evidence(e_dir: Path) -> GateResult:
                    f"{s.name} 契约合规(finding/severity/≤5KB)", f"{size}B findings={len(findings)} 非法={len(bad_status)}")
         except Exception as e:
             _check(checks, "G2X-003", GateStatus.FAIL, f"{s.name} 可读", str(e)[:60])
+    _append_platform_checks(checks, e_dir)   # P4-C: PF-001/003/004（+PF-005 官方表缺口）
     return _finalize("G3", "g2x_validate", checks)
 
 
@@ -237,6 +364,27 @@ def validate_netlist(b_prep_dir: Path) -> GateResult:
                       if lk.get("upstream") or lk.get("downstream") or "via" in lk)
         _check(checks, "NG-006", GateStatus.PASS if emb == 0 else GateStatus.FAIL,
                "单一真源：links 不内嵌邻接（无 upstream/downstream/via）", f"embedded={emb}")
+        # NG-010：同网络内 side 必须一致（残余混合 side = 0；raw 冲突已归并）
+        sc = v.get("side_conflicts", {})
+        sc_count = sc.get("count") if isinstance(sc, dict) else sc
+        sc_count = 0 if sc_count is None else sc_count
+        sc_norm = sc.get("normalized") if isinstance(sc, dict) else None
+        _check(checks, "NG-010", GateStatus.PASS if sc_count == 0 else GateStatus.FAIL,
+               "同网络内 side 一致（无混合 side）",
+               f"side_conflicts={sc_count} 归并={sc_norm}")
+        # NG-011：最大跨器件层数 trace_max_hops 内（DEPTH_EXCEEDED = 0）
+        paths = d.get("paths", [])
+        depth_exceeded = sum(1 for p in paths if p.get("depth_exceeded"))
+        minv = meta.get("trace_limits", {})
+        depth_exceeded = max(depth_exceeded, int(minv.get("depth_exceeded", 0) or 0))
+        obs_hops = max((len(p.get("path", [])) - 1 for p in paths), default=0)
+        _check(checks, "NG-011", GateStatus.PASS if depth_exceeded == 0 else GateStatus.FAIL,
+               "追踪深度 ≤ trace_max_hops（depth_exceeded=0）",
+               f"depth_exceeded={depth_exceeded} 实测最大层数={obs_hops}")
+        # NG-012：差分对成员视为同一逻辑信号（差分引发的 OSCILLATION = 0）
+        osc = sum(1 for p in paths if p.get("oscillation") or p.get("reason") == "OSCILLATION")
+        _check(checks, "NG-012", GateStatus.PASS if osc == 0 else GateStatus.FAIL,
+               "差分对不原地打转（OSCILLATION=0）", f"oscillation={osc}")
         # NG-007：规模守门——防 O(k²) 重复内嵌（体积不随网格平方膨胀）
         mb = p.stat().st_size / 1048576
         _check(checks, "NG-007", GateStatus.PASS if mb <= 5 else GateStatus.FAIL,

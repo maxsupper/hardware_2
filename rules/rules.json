@@ -30,7 +30,8 @@
    "gate": "G2",
    "rules": [
     "PREP-*",
-    "NG-*"
+    "NG-*",
+    "PF-001*"
    ],
    "batch_boundary": false
   },
@@ -48,7 +49,8 @@
     "LS-*",
     "PB-*",
     "IF-*",
-    "CL-*"
+    "CL-*",
+    "PF-*"
    ],
    "batch_boundary": true
   },
@@ -2070,6 +2072,86 @@
    "end_line": 0,
    "chars": 63,
    "kind": "NG"
+  },
+  "NG-010": {
+   "title": "方向语义与权威来源：links[].side∈{up,down,bi,pwr,nc}，同网络内 side 必须一致（冲突须显式标注待核）；电源/地判定必须使用 conventions 权威配置(power_net_regex)，禁止在工具代码内自造正则",
+   "source": "v4_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 126,
+   "kind": "NG"
+  },
+  "NG-011": {
+   "title": "追踪规则：起点=接插件脚，止于有源落点；可跨越件=2脚R/L/BEAD/FB/FERR/JMP/0R 且两端网非电源地(conventions.is_series_passive)；最大跨器件层数 trace_max_hops=6；先判本网有源落点→已抵达不再跨件；访问集防绕圈(同一(板,网)只进一次)；超出记 DEPTH_EXCEEDED、绕圈记 OSCILLATION",
+   "source": "v4_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 187,
+   "kind": "NG"
+  },
+  "NG-012": {
+   "title": "差分对语义：识别 _P/_N、P/N、H/L、+/- 命名（conventions.diff_pair_key）；差分对成员网视为同一逻辑信号，跨到配对搭档=原地打转→不前进；追到任一端芯片即视为抵达",
+   "source": "v4_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 100,
+   "kind": "NG"
+  },
+  "NG-013": {
+   "title": "双向验证：正向止于有源落点(芯片)、反向止于起点接插件(对称停止)；正反路径集合一致且两端互达→OK；否则 MISMATCH 必须带原因分类(OSCILLATION/DEPTH_EXCEEDED/NO_ACTIVE_END/REVERSE_NOT_HOME/PATH_DIFF/POWER_BRIDGE)；落点非芯片→N/A",
+   "source": "v4_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 162,
+   "kind": "NG"
+  },
+  "NG-014": {
+   "title": "落点判定：CHIP=落点有源(U*)脚；TO_CONNECTOR=落点接插件(J*/CN*/P*)；POWER=落电源/地轨；OPEN_END=本网无其他成员；STUB=仅到无源件未达有源",
+   "source": "v4_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 94,
+   "kind": "NG"
+  },
+  "PF-001": {
+   "title": "平台识别：PH-2 须按 rules/index.json 的 platform.detect 规则（型号正则+最小引脚数）识别主控平台，写入 netlist_graph.meta.platform；无法匹配须记 WARNING 并允许后续人工指定",
+   "source": "v4_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 124,
+   "kind": "PF"
+  },
+  "PF-002": {
+   "title": "平台规则加载：PH-3 须按 rules/index.json 的 load_policy 加载 common/*.json + platform/<芯片>/rules.json 注入 LLM；引脚数据 pinout.json 不进 LLM，由 platform_check 工具按需查询单条",
+   "source": "v4_design::PH-3::G3",
+   "line": 0,
+   "end_line": 0,
+   "chars": 146,
+   "kind": "PF"
+  },
+  "PF-003": {
+   "title": "官方引脚核对：SoC/DDR/PMIC/eMMC 的引脚功能与电平域必须以 platform/<芯片>/pinout.json 官方表为权威(IC-007/IC-008)；不一致记 FAIL，无官方表记 WARNING",
+   "source": "v4_design::PH-3::G3",
+   "line": 0,
+   "end_line": 0,
+   "chars": 109,
+   "kind": "PF"
+  },
+  "PF-004": {
+   "title": "核对覆盖率：G3 须报告引脚核对覆盖率=已核对脚数/应核对脚数；覆盖率低于阈值或存在未解释不一致 → 门禁不得 PASS",
+   "source": "v4_design::PH-3::G3",
+   "line": 0,
+   "end_line": 0,
+   "chars": 60,
+   "kind": "PF"
+  },
+  "PF-005": {
+   "title": "规则束预算：PH-3 全量规则束(common+platform)必须在 rule_bundle_tokens 预算内(≥58K)完整注入；发生截断时必须在日志与提示词中显式列出被丢弃规则 ID，禁止静默截断；若预算不足须先扩容而非裁剪规则",
+   "source": "v4_design::PH-3::G3",
+   "line": 0,
+   "end_line": 0,
+   "chars": 120,
+   "kind": "PF"
   }
  },
  "platform": {
@@ -2154,6 +2236,29 @@
     "G2:NG-006",
     "G2:NG-007"
    ]
+  },
+  "v4_applied": {
+   "rules": [
+    "NG-010",
+    "NG-011",
+    "NG-012",
+    "NG-013",
+    "NG-014",
+    "PF-001",
+    "PF-002",
+    "PF-003",
+    "PF-004",
+    "PF-005"
+   ],
+   "dev_rules": [
+    "DEV-009",
+    "DEV-010",
+    "DEV-011"
+   ],
+   "gate_enforced": [
+    "G2:NG-010..014",
+    "G3:PF-002/003/004"
+   ]
   }
  },
  "dev_rules": {
@@ -2199,6 +2304,21 @@
    {
     "id": "DEV-008",
     "rule": "大图按需访问：图产物>10MB 必须提供索引化/按需访问（GraphIndex），禁止『一次全量解析』为唯一消费方式。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-009",
+    "rule": "规范先行：规范(rules)是唯一权威，代码必须服从规范；实现与规范不一致时改代码而非改规范；规范缺参数化条款时须先补规范再实现。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-010",
+    "rule": "权威来源不重复定义：同一判定(电源/地、透明件、差分对等)只允许一处权威定义(conventions)，任何工具不得自造等价逻辑。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-011",
+    "rule": "md→json 转换须过 Pydantic 校验、带 source_sha1 增量、带 tokens_est 预算护栏(单文件>20k tokens 须再拆分)，并登记 src/tools.md。",
     "enforce": true
    }
   ]

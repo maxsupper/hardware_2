@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 RULES_JSON = ROOT / "rules" / "rules.json"
-CHECKLIST_MD = ROOT / "rules" / "check_list.md"
+CHECKLIST_MD = ROOT / "docs" / "check_list.md"
 
 # ---- 1) 规则文本（进 rules[]；PH-2 规则模式 NG-* 自动纳入）----
 NEW_RULES = {

@@ -1,0 +1,961 @@
+{
+ "schema_version": "1.0",
+ "kind": "platform_rules",
+ "scope": "platform/E2000",
+ "source": "raw/raw_platmform/E2000/数据手册.md",
+ "source_sha1": "6e5df1a82f0b2c8c2208a6c36500a381b04b602f",
+ "generated_at": "2026-09-11T08:43:56+00:00",
+ "tokens_est": 11715,
+ "entries": [
+  {
+   "id": "PF-E2000-176",
+   "title": "3.4.2.4 S3→S0",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "3.4.2.4 S3→S0\r\n1.CPLD 处理方式\r\n当主机从S3 恢复到S0 状态时，主板的CPLD 控制单元会通过S3_OK 向CPU 发送主\r\n板当前的是否满足S3→S0 状态的S3_OK 信号。S3_OK 信号为高电平时候，表示可以正常\r\n恢复到S0。S3_OK 信号为低时，通知CPU 主板出现异常状态（内存掉电等情况），系统\r\n将重新启动，而不是从S3 恢复。\r\n如下图所示，当CPLD 收到S3_OK_Clear 信号后，开始释放该引脚，不会影响后续\r\n的正常功能使用。\r\n图3-8\r\nS3_OK 和S3_OK_Clear 信号链路\r\n2.EC 处理方式\r\n当主机从S3 恢复到S0 状态时，EC 提前将指示是否正常唤醒的标志写入EC-RAM 中\r\n地址为0x0B 的空间（以下简称EC-0B），详细操作参考《飞腾平台EC 接口规范》相关\r\n描述。EC-0B 为0x55 或0xAA 时，表示可以正常恢复到S0。EC-0B 为其他值时，通知CPU\r\n主板出现异常状态（内存掉电等情况），系统将重新启动，而不是从S3 恢复。\r\n如图3-9 为场景一S3→S0 唤醒时序图，时序控制请参考表3-9。如图3-10 为场\r\n景二S3→S0 唤醒时序图，时序控制请参考表3-10。\r\n\r\n3 电源管理\r\n\r\n图3-9\r\nS3 场景一S3→S0 唤醒时序图\r\n表3-9\r\nS3 场景一S3→S0 唤醒上电时序控制表\r\n序号\r\nT-wait\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\n备注\r\nt1\r\n-\r\nms\r\nt2\r\n-\r\nms\r\nt3\r\n-\r\nms\r\nt4\r\n-\r\nms\r\nt5\r\n-\r\nms\r\nt6\r\n-\r\nms\r\nt7\r\n-\r\n-\r\nms\r\nPOR 拉高之前拉高S3_OK 信号\r\nt8\r\n-\r\nms\r\nt9\r\n/\r\n/\r\n/\r\nms\r\n该时间非可控，拉高POR 之后需要持续监测\r\nPWR_CTR0/1\r\nt10\r\n/\r\n/\r\nms\r\nt11\r\n/\r\n/\r\nms\r\n\r\n3 电源管理\r\n\r\n序号\r\nT-wait\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\n备注\r\nt12\r\n/\r\n/\r\nms\r\nt13\r\n-\r\n-\r\nms\r\nt14\r\n-\r\nms\r\n注[1]：如果通过FTLM 走控制流程，则不需要关注S3_OK、PWR_CTR0、PWR_CTR1 三个信号的处理。\r\n注[2]：VDDQ 为CPU 和DDR 颗粒共用电源，VPP/VREFCA、VTT 为DDR 颗粒电源。\r\n图3-10\r\nS3 场景二S3→S0 唤醒时序图\r\n表3-10\r\nS3 场景二S3→S0 唤醒上电时序控制表\r\n序号\r\nT-wait\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\n备注\r\nt1\r\n-\r\nms\r\nt2\r\n-\r\nms\r\nt3\r\n-\r\nms\r\n\r\n3 电源管理\r\n\r\n序号\r\nT-wait\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\n备注\r\nt4\r\n-\r\nms\r\nt5\r\n-\r\nms\r\nt6\r\n-\r\n-\r\nms\r\nPOR 拉高之前拉高S3_OK 信号\r\nt7\r\n-\r\nms\r\nt8\r\n/\r\n/\r\n/\r\nms\r\n该时间非可控，拉高POR 之后需要持续监测\r\nPWR_CTR0/1\r\nt9\r\n/\r\n/\r\nms\r\nt10\r\n/\r\n/\r\nms\r\nt11\r\n/\r\n/\r\nms\r\nt12\r\n-\r\n-\r\nms\r\n注[1]：如果通过FTLM 走控制流程，则不需要关注S3_OK、PWR_CTR0、PWR_CTR1 三个信号的处理。\r\n注[2]：VDDQ 为CPU 和DDR 颗粒共用电源，VPP/VREFCA、VTT 为DDR 颗粒电源。\r\n注[3]：CPU_REF_50M 推荐跟随VDDIO_0 上下电输出和截止，上图以VDDIO_0(3V3)示例。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9321,
+     "end_line": 9485
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-177",
+   "title": "3.4.2.5 电源状态方案",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "3.4.2.5 电源状态方案\r\nCPU 使用PWR_CTR[1:0]充当软件关机、重启、S3_OK_Clear 功能的引脚。系统启动\r\n后，PWR_CTR[1:0]会置为{0，0}，然后CPLD 或者主板独立控制器通过下图所示的通信\r\n协议进行相关操作。\r\n图3-11\r\n时序图\r\n表3-11\r\n电源管理协议\r\n命令\r\nCPLD\r\nEC\r\n描述\r\nPWR_CTR0\r\nPWR_CTR1\r\n[1]\r\nReboot\r\n[2]\r\n4 个上升沿\r\n-\r\n重启操作\r\n发送S3_OK_Clear\r\n1 个上升沿\r\n参考《飞腾平台\r\nEC 接口规范》\r\n给CPLD 发送\r\nS3_OK_Clear 信号\r\nS0\r\n-\r\n正常工作状态，保持\r\n\r\n3 电源管理\r\n\r\nPWR_CTR0 为0\r\nS0→S3\r\n8 个上升沿\r\nSuspend to RAM\r\nS0→S4/S5\r\n12 个上升沿\r\nSuspend to Disk、\r\nshutdown\r\n注[1]：在PWR_CTR0=1 期间，计数脉冲数。在PWR_CTR0 下降沿表示命令发送完成；\r\n注[2]：在PWR_CTR0=1 期间，发送软重启信号，计数4 个脉冲后；先按照图3-5 依次完成相关电\r\n源下电，再按照图3-4 依次完成相关电源上电。\r\n表3-12\r\n时序要求\r\nT\r\nMin\r\nTyp\r\nMax\r\nunit\r\nt2-t1\r\nms\r\nt3-t2\r\n0.5\r\nms\r\nt4-t3\r\n0.5\r\nms\r\nt6-t5\r\nms\r\n注：为保证软件能进行正常的关机与重启，需将PWR_CTR[1:0]接入CPLD 或者主板独立控制器，并\r\n配合相关逻辑代码实现。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9486,
+     "end_line": 9547
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-178",
+   "title": "3.5 IO 供电说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "VDDIO_x 接3.3V 电源前，SMCORE 必须接"
+   ],
+   "must_not": [],
+   "text": "3.5 IO 供电说明\r\nE2000Q IO 共分为六组BANK，除BANK5 IO 电平固定1.8V，其余五组BANK BANK0~BANK4\r\n均支持1.8V 或者3.3V 电平可选，用户可根据实际应用选择BANK 的工作电平。\r\nBANK0~BANK4 有对应的电平控制信号SMCORE_x，具体对应关系见下表，其中1 表示\r\nSMCORE_x 接E2000Q 核心电压VDD，0 表示SMCORE_x 接地。VDDIO18 为各BANK IO 保持\r\n电源及BANK5 IO 电源,需要保持常供电状态。VDDIO_x 接3.3V 电源前，SMCORE 必须接\r\n地，上下电过程中须保证VDDIO_x(3.3V)和VDDIO18 的电压压差在1.98V 以内，否则有\r\n可靠性问题。\r\n表3-13\r\nSMCORE_x 与GPIO 电源VDDIO_x 的对应关系\r\nSMCORE_x\r\nVDDIO_x\r\n3.3V\r\n1.8V\r\n\r\n3 电源管理\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9548,
+     "end_line": 9564
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-179",
+   "title": "3.6 推荐电容配置",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "3.6 推荐电容配置\r\n为了减少E2000Q 电源域的波动，满足芯片电源完整性要求，需要在芯片板级的背\r\n面放置一定数量的去耦电容，各电源域推荐的电容配置详见表3-14。考虑芯片工作的\r\n环境温度可能较高，建议根据实际应用选择电容的温度规格。\r\n表3-14\r\nE2000Q 各个电源域推荐的电容配置\r\nE2000Q 电源域\r\n电容描述\r\n数量\r\n备注\r\nVDD\r\n22uF/16V/X5R/0603\r\n22uF 电容放置位置详见参考板PCB 布局\r\n4.7uF 和1uF 电容建议交错放置。\r\n4.7uF/6.3V/X5R/0402\r\n1uF/16V/X5R/0402\r\nVDDQ\r\nVDDQ_CK\r\n4.7uF/6.3V/X5R/0402\r\n4.7uF 和1uF 电容建议交错放置\r\n1uF/16V/X5R/0402\r\nAVDDH\r\n4.7uF/6.3V/X5R/0402\r\n1uF/16V/X5R/0402\r\nAVDDL\r\n4.7uF/6.3V/X5R/0402\r\n4.7uF 和1uF 电容建议交错放置\r\n1uF/16V/X5R/0402\r\nAVDD_CLK\r\n4.7uF/6.3V/X5R/0402\r\n4.7uF 和1uF 电容建议交错放置\r\n1uF/16V/X5R/0402\r\nUSB2_VDDA_0\r\n1uF/16V/X5R/0402\r\nUSB2_VDDA_1\r\n1uF/16V/X5R/0402\r\nUSB2_VCCA18_0\r\n1uF/16V/X5R/0402\r\nUSB2_VCCA18_1\r\n1uF/16V/X5R/0402\r\nUSB2_VCCA33_0\r\n1uF/16V/X5R/0402\r\nUSB2_VCCA33_1\r\n1uF/16V/X5R/0402\r\nPLL_DVDDL_0\r\n1uF/16V/X5R/0402\r\nPLL_DVDDL_1\r\n1uF/16V/X5R/0402\r\nPLL_AVDDL\r\n1uF/16V/X5R/0402\r\nPLL_AVDDH_0\r\n1uF/16V/X5R/0402\r\nPLL_AVDDH_1\r\n1uF/16V/X5R/0402\r\nVDDIO_0\r\n4.7uF/6.3V/X5R/0402\r\n1uF/16V/X5R/0402\r\nVDDIO_1\r\n4.7uF/6.3V/X5R/0402\r\n1uF/16V/X5R/0402\r\nVDDIO_2\r\n4.7uF/6.3V/X5R/0402\r\n1uF/16V/X5R/0402\r\nVDDIO_3\r\n1uF/6.3V/X5R/0402\r\n\r\n3 电源管理\r\n\r\nVDDIO_4\r\n4.7uF/6.3V/X5R/0402\r\n1uF/6.3V/X5R/0402\r\nVDDIO18\r\n4.7uF/6.3V/X5R/0402\r\n1uF/16V/X5R/0402\r\nVDDA\r\n1uF/16V/X5R/0402\r\nVDD33\r\n1uF/16V/X5R/0402\r\nE2000Q 的去耦电容位于芯片的背面，为了减少路径上的寄生电感，建议电容靠近引\r\n脚放置，如图3-12 所示。\r\n图3-12\r\nE2000Q 去耦电容放置示意图\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9565,
+     "end_line": 9647
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-180",
+   "title": "4 时钟管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "4 时钟管理\r\n时钟管理\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9648,
+     "end_line": 9649
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-181",
+   "title": "4.1 时钟频率配置",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "4.1 时钟频率配置\r\nclk_cluster0、clk_cluster1 和clk_noc 支持双PLL 切换的动态调频和基于CG 的动态调\r\n频（基于CG 的动态调频得到的时钟不是50%占空比），时钟频率配置如表4-1。\r\n表4-1\r\n频率配置范围\r\n名称\r\n时钟频率范围\r\nFTC663 内核时钟\r\n50MHz-2GHz\r\nFTC310 内核时钟\r\n50MHz-1.5GHz\r\nFTC663 核L2 Cache 时钟\r\n50MHz-2GHz\r\nFTC310 核L2 Cache 时钟\r\n50MHz-1.5GHz\r\n内部网络主时钟\r\n1.2GHz\r\nDDR 控制器时钟\r\n600MHz\r\nPCIe 主时钟\r\n300MHz\r\nRGMII 接口时钟\r\n250MHz\r\nUSB2.0 主时钟\r\n100MHz\r\nSATA 主时钟\r\n150MHz\r\n\r\n4 时钟管理\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9650,
+     "end_line": 9678
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-182",
+   "title": "4.2 LSD 时钟说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "4.2 LSD 时钟说明\r\n图4-1\r\nLSD 时钟结构图\r\nUART：控制器主时钟为clk_cfg(100MHz),具体分频配置参考《飞腾腾珑E2000 系列处理\r\n器软件编程手册》UART 控制器初始化配置章节；\r\nCAN ：控制器主时钟为clk_lmc(200MHz) ，具体传输速率配置寄存器为\r\nCAN_ARB_RATE_CTRL/CAN_DAT_RATE_CTRL；\r\nLocalBus：控制器的主时钟为clk_lmc(200MHz)，输出时钟由该时钟分频得到，分频配\r\n置寄存器为LBC_CCR；\r\nSD/SDIO/eMMC ：控制器主时钟包括clk_lmc(200MHz) 和clk_samp(1.2GHz) ，\r\nclk_lmc(200MHz)是总线时钟，输出给设备的时钟信号由clk_samp(1.2GHz)分频得到，\r\n具体分频配置参考《飞腾腾珑E2000 系列处理器软件编程手册》SD/SDIO/eMMC 控制器\r\n时钟配置；\r\nNANDFlash ：控制器主时钟包括clk_nand(600MHz) 和clk_samp(1.2GHz) ，\r\nclk_samp(1.2GHz)为同步模式输入数据的采样时钟，输出给设备的时钟信号由\r\nclk_lsd(600MHz)分频得到，异步模式下由于没有时钟，频率由异步时序参数决定，\r\n各参数调节寄存器为Nf_timing0-5reg，Nf_timing13-18reg；同步模式下，对应的频\r\n率配置寄存器为Nf_timing7-8reg，其中tCK 参数表示时钟频率；\r\n\r\n4 时钟管理\r\nI2S：控制器主时钟包括clk_nand(600MHz)和clk_sio(50MHz)，输出给设备的时钟信号\r\n由clk_nand(600MHz)分频得到。通过配置FDP(0xc00),EDP(0xc04)寄存器实现MCLK\r\n和SCLK 的分频，具体分频配置参考《飞腾腾珑E2000 系列处理器软件编程手册》I2S\r\n寄存器说明中的相关描述；\r\nGPIO：控制器主时钟为clk_sio(50MHz)；\r\nJTAG Master：控制器主时钟为clk_sio(50MHz),输出时钟由该时钟分频得到，具体分频\r\n配置参考《飞腾腾珑E2000 系列处理器软件编程手册》JTAG Master 控制器时钟控制\r\n章节；\r\nKEYPAD：控制器主时钟为clk_sio(50MHz)；\r\nMIO：控制器主时钟为clk_sio(50MHz)，UART/I2C 模式下主时钟都为该频率，具体分频\r\n配置参考《飞腾腾珑E2000 系列处理器软件编程手册》UART 控制器初始化配置、\r\nI2C/SMBUS/PMBUS 接口频率调整；\r\nPWM：控制器主时钟为clk_sio(50MHz)；\r\nSPI Master：控制器主时钟为clk_sio(50MHz),输出给设备的时钟信号由该时钟分频得\r\n到，通过配置BAUDR(0x14)寄存器实现时钟分频，具体分频配置参考《飞腾腾珑E2000\r\n系列处理器软件编程手册》SPI 控制器操作说明中的波特率配置；\r\nWDT：控制器主时钟为clk_sio(50MHz)。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9679,
+     "end_line": 9715
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-183",
+   "title": "4.3 时钟需求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "4.3 时钟需求\r\n表4-2\r\n主时钟要求\r\n时钟\r\n频率\r\n占空比\r\n频差\r\nRMS jitter\r\n电压\r\nTr 或上升沿斜率\r\nTf 或下降沿斜率\r\nclk_ref\r\n50MHz\r\n45%~55%\r\n<=50ppm\r\n<=1.8ps\r\n1.8V/\r\n3.3V\r\n0.6~4.0V/ns\r\n(10%~90%)\r\n0.6~4.0V/ns\r\n(10%~90%)\r\n表4-3\r\nSerDes 参考时钟要求\r\n时钟\r\n频率\r\n占空比\r\n频差\r\nRMS\r\njitter\r\n差分输入\r\n高电压VIH\r\n差分输入\r\n低电压VIL\r\nTr 或上升沿\r\n斜率\r\nTf 或下降沿\r\n斜率\r\nPCIE_REFCLK_P/N\r\nSGMII_REFCLKP/N\r\n100M\r\nHz\r\n40%~60%\r\n±\r\n300ppm\r\n≤1ps\r\n≥150mV\r\n≤-150mV\r\n0.6~4.0V/ns\r\n（-150mV~15\r\n0mV）\r\n0.6~4.0V/ns\r\n（-150mV~15\r\n0mV）\r\n注1：SerDes 参考时钟类型为HCSL。\r\n注2：在特殊应用场景，线速要求非常高时, 可将输入时钟适当上偏，以满足线速要求；使用飞腾参考板验证，要\r\n达到大包传输1G/2.5G 线速，输入时钟适配的上偏参数为25ppm，但应注意该参数并不适配所有项目设计。\r\n\r\n4 时钟管理\r\n表4-4\r\nUSXGMII 参考时钟要求\r\n时钟\r\n频率\r\n占空比\r\n频差\r\nRMS\r\njitter\r\n差分输入高\r\n电压VIH\r\n差分输入\r\n低电压VIL\r\nTr 或上升沿\r\n斜率\r\nTf 或下降沿\r\n斜率\r\nUSXGMII_REF\r\nCLK_P/N\r\n156.25M\r\nHz\r\n40%~60%\r\n±100ppm\r\n≤0.8ps\r\n≥150mV\r\n≤-150mV\r\n0.6~4.0V/n\r\ns（20%~80%）\r\n0.6~4.0V/n\r\ns（20%~80%）\r\n注1：USXGMII 参考时钟类型为HCSL。\r\n注2：在特殊应用场景，线速要求非常高时, 可将输入时钟适当上偏，以满足线速要求；使用飞腾参考板验证，要达\r\n到大包传输10Gbps 线速，输入时钟适配的上偏参数为25ppm，但应注意该参数并不适配所有项目设计。\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9716,
+     "end_line": 9807
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-184",
+   "title": "5 信号电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5 信号电气特性\r\n\r\n信号电气特性\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9808,
+     "end_line": 9810
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-185",
+   "title": "5.1 绝对最大额定值",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.1 绝对最大额定值\r\n表5-1\r\n绝对最大额定值\r\n参数\r\n符号\r\n极限电压范围\r\n核心电源\r\nVDD\r\n-0.3-1.2V\r\nDDR4 接口电源\r\nVDDQ\r\nVDDQ_CK\r\n-0.3-1.44V\r\nSerdes 模拟高压电源\r\nAVDDH\r\n-0.3-1.44V\r\nSerdes 模拟低压电源\r\nAVDDL\r\n-0.3-0.96V\r\nSerdes 高速时钟电源\r\nAVDD_CLK\r\n-0.3-0.96V\r\nUSB2 电源\r\nUSB2_VDDA_0\r\nUSB2_VDDA_1\r\n-0.3-1.04V\r\nUSB2 电源\r\nUSB2_VCCA18_0\r\nUSB2_VCCA18_1\r\n-0.3-2.16V\r\nUSB2 电源\r\nUSB2_VCCA33_0\r\nUSB2_VCCA33_1\r\n-0.3-3.96V\r\nPLL 数字电源\r\nPLL_DVDDL_0\r\nPLL_DVDDL_1\r\n-0.3-1.04V\r\nPLL 模拟低压电源\r\nPLL_AVDDL\r\n-0.3-1.04V\r\nPLL 模拟高压电源\r\nPLL_AVDDH_0\r\nPLL_AVDDH_1\r\n-0.3-2.16V\r\n1.8V IO 电源\r\nVDDIO_x\r\nVDDIO18\r\n-0.3-1.98V\r\n3.3V IO 电源\r\nVDDIO_x\r\n-0.3-3.63V\r\n\r\n5 信号电气特性\r\n温度传感器电源\r\nVDDA\r\n-0.3-2.16V\r\n注：参数值是通过在该器件上进行实验以及故障和损坏机制的理论建模获得，表中所列范围以外的\r\n条件可能会导致器件永久性损坏。此外，若延长器件以最大绝对定额值运行的时间周期，则可能对\r\n器件产生不良影响。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9811,
+     "end_line": 9870
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-186",
+   "title": "5.2 ESD 特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.2 ESD 特性\r\n表5-2 ESD 绝对最大额定值\r\n符号\r\n参数\r\n最小值\r\n最大值\r\n单位\r\nVESD(HBM)\r\n静电放电电压（人体模式）\r\n--\r\n1000\r\nVESD(CDM)\r\n静电放电电压（充电设备模式）\r\n--\r\n表5-3\r\n电气敏感性\r\n符号\r\n参数\r\n条件\r\n分类\r\nLU\r\n静态闩锁\r\nTa=25℃、85℃，Tjmax=85℃，\r\n符合JESD78E-2016 标准\r\nA 类\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9871,
+     "end_line": 9895
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-187",
+   "title": "5.3 通用引脚DC 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.3 通用引脚DC 电气特性\r\n除DDR、PCIe、SATA、USB3.0、SGMII 等SerDes 专用信号引脚外，其他信号引脚均\r\n为CMOS 结构的通用引脚，其电气特性如表5-4、表5-5 所示，主要包括输入敏感电压，\r\n输出驱动电压等信息。\r\n表5-4\r\n通用pad 引脚电气特性(1.8V)\r\n符号\r\n符号描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nVDDIO[1]\r\nI/O 电压\r\n1.71\r\n1.8\r\n1.89\r\nVDDIO18\r\nIO 保持电压及BANK5 供\r\n电电压\r\n1.71\r\n1.8\r\n1.89\r\nVIH\r\n高电平输入电压\r\n0.65*VDDIO\r\n-\r\nVDDIO+0.3\r\nVIL\r\n低电平输入电压\r\n-0.3\r\n-\r\n0.35*VDDIO\r\nVT+\r\n施密特低到高翻转点\r\n0.895\r\n0.999\r\n1.103\r\nVT-\r\n施密特高到低翻转点\r\n0.715\r\n0.804\r\n0.890\r\nVOH\r\n高电平输出电压\r\nVDDIO-0.45\r\n-\r\n-\r\nVOL\r\n低电平输出电压\r\n-\r\n0.45\r\nIL\r\n输入漏电电流\r\n-\r\n-\r\n±10\r\nµA\r\nIOZ\r\n输出Z 态漏电流\r\n-\r\n-\r\n±10\r\nµA\r\n\r\n5 信号电气特性\r\nIOL\r\n低电平输入电流\r\n2.233\r\n-\r\nmA\r\nIOH\r\n高电平输出电流\r\n2.412\r\n-\r\nmA\r\nRPU\r\n上拉电阻\r\nKΩ\r\nRPD\r\n下拉电阻\r\nKΩ\r\n注[1]：VDDIO 对应各BANK 供电电源VDDIO_X。\r\n表5-5\r\n通用pad 引脚电气特性(3.3V)\r\n符号\r\n符号描述\r\n最小值\r\n典型值\r\n最大值\r\n单位\r\nVDDIO[1]\r\nI/O 电压\r\n3.135\r\n3.3\r\n3.465\r\nVDDIO18\r\nIO 保持电压及BANK5 供\r\n电电压\r\n1.71\r\n1.8\r\n1.89\r\nVIH\r\n高电平输入电压\r\n--\r\nVDDIO+0.3\r\nVIL\r\n低电平输入电压\r\n-0.3\r\n--\r\n0.8\r\nVT+\r\n施密特低到高翻转点\r\n1.218\r\n1.403\r\n1.606\r\nVT-\r\n施密特高到低翻转点\r\n0.957\r\n1.150\r\n1.366\r\nVOH\r\n高电平输出电压\r\n2.4\r\n--\r\n-\r\nVOL\r\n低电平输出电压\r\n--\r\n0.4\r\nIL\r\n输入漏电电流\r\n--\r\n--\r\n±10\r\nµA\r\nIOZ\r\n输出Z 态漏电流\r\n--\r\n--\r\n±10\r\nµA\r\nIOL\r\n低电平输入电流\r\n2.209\r\n--\r\nmA\r\nIOH\r\n高电平输出电流\r\n2.368\r\n--\r\nmA\r\nRPU\r\n上拉电阻\r\nKΩ\r\nRPD\r\n下拉电阻\r\nKΩ\r\n注[1]：VDDIO 对应各BANK 供电电源VDDIO_X。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9896,
+     "end_line": 10054
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-188",
+   "title": "5.4 通用引脚AC 特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.4 通用引脚AC 特性\r\n表5-6\r\n通用Pad 交流参数(1.8 V)\r\n参数\r\n描述\r\n典型\r\n最大\r\n单位\r\n测试条件\r\nPAD 输出输转换时间(上升/下降)\r\nTr/Tf\r\n-\r\nns\r\nCL=22pF ；TC=25℃\r\nVdd=1.8\r\n\r\n5 信号电气特性\r\n表5-7\r\n通用Pad 交流参数(3.3V)\r\n参数\r\n描述\r\n典型\r\n最大\r\n单位\r\n测试条件\r\nPAD 输出输转换时间(上升/下降)\r\nTr/Tf\r\n-\r\nns\r\nCL=22pF ；TC=25℃\r\nVdd=3.3\r\n图5-1\r\nPAD 输出负载电路\r\n图5-2\r\nPAD 输出波形\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10055,
+     "end_line": 10089
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-189",
+   "title": "5.5 SerDes 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.5 SerDes 电气特性\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10090,
+     "end_line": 10090
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-190",
+   "title": "5.5.1 外部参考时钟电平规范",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.5.1 外部参考时钟电平规范\r\n表5-8\r\n外部参考时钟电平规范\r\n名称\r\n最小\r\n典型\r\n最大\r\n单位\r\n描述\r\nZREFCLK\r\nΩ\r\n参考时钟差分阻抗\r\nIINEXT\r\nmA\r\n输入信号电流\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10091,
+     "end_line": 10105
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-191",
+   "title": "5.5.2 发送模块电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.5.2 发送模块电气特性\r\n表5-9\r\n发送模块电气特性\r\n名称\r\n最小\r\n典型\r\n最大\r\n单位\r\n描述\r\nVTX_out_normal_mode\r\n0.8\r\n1.2\r\n正常模式下的输出电压峰峰值\r\nVTX_out_low_power_mode\r\n0.4\r\n低功耗模式下的输出电压峰峰值\r\nZTX_cal\r\nΩ\r\n正常模式时，校准后的差分驱动阻抗\r\n\r\n5 信号电气特性\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10106,
+     "end_line": 10126
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-192",
+   "title": "5.5.3 接收模块电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.5.3 接收模块电气特性\r\n表5-10\r\n接收模块电气特性\r\n名称\r\n最小\r\n典型\r\n最大\r\n单位\r\n描述\r\nZRX_cal\r\nΩ\r\n正常模式下，校准后的接收端差分阻抗\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10127,
+     "end_line": 10138
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-193",
+   "title": "5.5.4 公共模块电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.5.4 公共模块电气特性\r\n表5-11\r\n公共模块电气特性\r\n名称\r\n最小\r\n典型\r\n最大\r\n单位\r\n描述\r\nFREFEXT_PCIe_SSC\r\n99.97\r\n100.03\r\nMHz\r\n扩频时钟模式下，PCIe 参考时钟频率\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10139,
+     "end_line": 10153
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-194",
+   "title": "6 温度管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "6 温度管理\r\n\r\n温度管理\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10154,
+     "end_line": 10156
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-195",
+   "title": "6.1 热参数",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "6.1 热参数\r\nE2000Q 热设计要求详情请参见《飞腾腾珑E2000 系列热设计指南》。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10157,
+     "end_line": 10158
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-196",
+   "title": "6.2 温度传感器",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "6.2 温度传感器\r\nE2000Q 内部集成1 个温度传感器，可以设置超温阈值，检测到超温后，通过SCPI\r\n命令通知操作系统进行相应的处理。处理器核在安全态下可以直接访问TS 控制器，配\r\n置TS 模式和参数，读取温度值，精度为±5°C。\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10159,
+     "end_line": 10163
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-197",
+   "title": "7 通用PCB 设计指导",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7 通用PCB 设计指导\r\n\r\n通用PCB 设计指导\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10164,
+     "end_line": 10166
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-198",
+   "title": "7.1 阻抗要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "高速信号布线必须严格满足阻抗要求，以保证信号质量能满足设计要求。"
+   ],
+   "must_not": [],
+   "text": "7.1 阻抗要求\r\n高速信号布线必须严格满足阻抗要求，以保证信号质量能满足设计要求。BGA 区域\r\n的扇出走线和外设芯片或连接器引脚的走线，可根据空间适当放宽要求。\r\n如下列举DDR 单端45Ω和差分75Ω信号的阻抗要求，以供参考。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10167,
+     "end_line": 10170
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-199",
+   "title": "7.1.1 单端微带线",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.1.1 单端微带线\r\n图7-1\r\n单端微带线\r\n表7-1\r\n单端微带线\r\n微带线\r\n介电常数\r\nDk\r\n介质厚度\r\nH/mils\r\n走线宽度\r\nW/mils\r\n走线厚度\r\nT/oz\r\n走线间距\r\nS/mils\r\n单端阻抗\r\nΩ\r\n单端线\r\n3.7\r\n3.0\r\n5.8\r\n0.3+plating\r\n17.4\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10171,
+     "end_line": 10194
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-200",
+   "title": "7.1.2 差分微带线",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.1.2 差分微带线\r\n图7-2\r\n差分微带线\r\n\r\n7 通用PCB 设计指导\r\n表7-2\r\n差分微带线\r\n微带线\r\n介电常数\r\nDk\r\n介质厚度\r\nH/mils\r\n走线宽度\r\nW/mils\r\n差分线间距\r\nP/mils\r\n走线厚度\r\nT/oz\r\n走线间距\r\nS/mils\r\n差分阻抗\r\nΩ\r\n差分线\r\n3.7\r\n3.0\r\n0.3+plating\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10195,
+     "end_line": 10220
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-201",
+   "title": "7.1.3 单端带状线",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.1.3 单端带状线\r\n图7-3\r\n单端带状线\r\n表7-3\r\n单端带状线\r\n带状线\r\n介电常数\r\nDk1\r\n介质厚度\r\nH1/mils\r\n介电常数\r\nDk2\r\n介质厚度\r\nH2/mils\r\n走线宽度\r\nW/mils\r\n走线厚度\r\nT/oz\r\n走线间距\r\nS/mils\r\n单端阻抗\r\nΩ\r\n差分线\r\n3.7\r\n5.12\r\n3.8\r\n5.52\r\n1.0\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10221,
+     "end_line": 10248
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-202",
+   "title": "7.1.4 差分带状线",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.1.4 差分带状线\r\n图7-4\r\n差分带状线\r\n表7-4\r\n差分带状线\r\n带状线\r\n介电常数\r\nDk1\r\n介质厚度\r\nH1/mils\r\n介电常数\r\nDk2\r\n介质厚度\r\nH2/mils\r\n走线宽度\r\nW/mils\r\n走线厚度\r\nT/oz\r\n差分线间距\r\nP/mils\r\n走线间距\r\nS/mils\r\n差分阻抗\r\nΩ\r\n差分线\r\n3.7\r\n5.12\r\n3.8\r\n5.52\r\n5.5\r\n4.5\r\n16.5\r\n阻抗数值是根据叠层厚度、介电常数以及线宽进行计算得到，表格中数值仅供参\r\n考，建议按照实际叠层及线宽控制阻抗。\r\n微带线由于表面覆盖绿油的原因，会导致实际阻抗较计算值小，且每个板厂的影\r\n响不同，建议联系相应板厂进行调整，该表中给出阻抗是已考虑绿油影响下的\r\n\r\n7 通用PCB 设计指导\r\n阻抗。\r\n信号线需保证完整的参考平面，且不可出现跨越参考平面的情况。\r\n信号线打孔换层时，需保证换层后参考平面仍保持一致，如果不一致则需用回流\r\n孔将换层前后的参考平面连接起来。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10249,
+     "end_line": 10290
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-203",
+   "title": "7.2 布线区域划分",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.2 布线区域划分\r\n图7-5\r\n布线区域划分示意图\r\n如图7-5 所示，信号布线划分为三个区域：L1 BGA 扇出区域走线、L2 扇出线到其\r\n他模块间的整组走线、L3 连接器或IC 管脚区域走线。不同区域布线约束要求不同。\r\nL1 芯片扇出部分走线阻抗可不做严格控制，但是建议尽量缩短扇出线部分的走线长\r\n度。L1 扇出线的线宽和线间距不建议低于4 mil 以满足板厂加工工艺要求，同时布线长\r\n度不建议超过700mil，当空间允许时应立即切换到L2 正常走线。\r\n图7-6\r\nL1 芯片扇出线示意图\r\nL2 正常走线为L1 末端到其他模块间的整组走线，该走线首先需满足阻抗要求的线\r\n宽和线间距，同时保证与其他走线或铜皮保持不低于5H 的间距(H 为走线距离最近参考\r\n平面的高度)，L2 走线在等长绕线时需保证走线自身间距不低于5H。\r\nL3 引脚间走线为L2 末端到芯片或连接器间的走线，该走线根据布线情况可适当减\r\n小线宽线间距，以保证走线能够布通。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10291,
+     "end_line": 10305
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-204",
+   "title": "7.3 差分信号布线",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "L2 差分走线必须严格按照差分形式布线，禁止差分信号间放置过孔和焊盘，对于耦"
+   ],
+   "must_not": [
+    "L2 差分走线必须严格按照差分形式布线，禁止差分信号间放置过孔和焊盘，对于耦"
+   ],
+   "text": "7.3 差分信号布线\r\n对于高速信号差分走线，差分对P 和N 两条走线总长度之差不能超过4mil。建议在\r\n芯片扇出时，对较短的走线进行一定的等长补偿，两种等长绕线的参考如下图所示。L1\r\n和L3 差分走线由于空间有限无法按阻抗要求线宽线距布线，可以忽略阻抗要求，采用\r\n\r\n7 通用PCB 设计指导\r\n4mil 线宽和线间距布线，当空间满足时应立即按照阻抗要求布线。\r\nL2 差分走线必须严格按照差分形式布线，禁止差分信号间放置过孔和焊盘，对于耦\r\n合电容应按照图所示尽量靠近并对齐摆放。\r\n图7-7\r\n等长绕线参考示意图一\r\n图7-8\r\n等长绕线参考示意图二\r\n图7-9\r\n耦合电容摆放参考\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10306,
+     "end_line": 10320
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-205",
+   "title": "7.4 信号回流孔",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.4 信号回流孔\r\n信号如果需要打孔换层，建议在换层孔附近添加回流孔，回流孔尽量靠近信号孔。\r\n如果使用过孔换层，需考虑过孔残桩，同时注意两信号过孔不要放置在平面分割处，如\r\n下图所示提供了两种回流孔参考设计，可根据布线需要进行选择。\r\n图7-10\r\n回流孔摆放参考一\r\n\r\n7 通用PCB 设计指导\r\n图7-11\r\n回流孔摆放参考二\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10321,
+     "end_line": 10330
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-206",
+   "title": "7.5 参考平面设计",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.5 参考平面设计\r\n高速走线需保证参考平面完整，尽量保证没有跨平面分割的情况。如果设计中无法\r\n避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连接起来。\r\n信号走线与参考平面边缘需保持5H 间距(H 为走线距最近参考平面的高度)。\r\n图7-12\r\n跨平面参考处理\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10331,
+     "end_line": 10336
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-207",
+   "title": "7.6 高速信号残桩",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.6 高速信号残桩\r\n由于残桩会引起信号反射，对于高速信号过长的残桩会带来严重的信号质量问题，\r\n因此在高速信号布线时需注意残桩的长度。信号残桩有两种类型，一种是信号换层时的\r\n过孔残桩，另一种是信号走线的残桩。\r\n为减小过孔残桩改善信号质量，PCB 设计时可以将信号过孔和连接器通孔的内层无\r\n用焊盘去除，必要时还可以对高速信号过孔使用背钻或盲埋孔工艺。\r\n如下图以八层板为例提供了四种换层过孔示意图，孔A 当走线在L1-L8 换层时无残\r\n桩；孔B 当走线在L1-L6 换层时残桩长度较小；孔C 当走线在L3-L6 换层时残桩长度稍\r\n大；孔D 当走线在L1-L3 换层时残桩长度最大，高速信号走线避免使用此类换层方式。\r\n\r\n7 通用PCB 设计指导\r\n图7-13\r\n信号换层过孔残桩示意图\r\n对于信号走线的残桩，首先在PCB设计时可以使用规则检查将无用的走线残桩去除，\r\n其次如下图所示，在高速差分信号上存在下拉电阻，此时若采用图7-14 所示的布局布\r\n线方式会存在一截走线残桩，推荐使用图7-15 的布局布线方式将走线的残桩最小化。\r\n图7-14\r\n信号走线的残桩示意图一\r\n图7-15\r\n信号走线的残桩示意图二\r\n\r\n7 通用PCB 设计指导\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10337,
+     "end_line": 10358
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-208",
+   "title": "7.7 信号串扰",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.7 信号串扰\r\n由于信号速率越来越快和走线密度越来越高，串扰成为高速电路设计中最常见的问\r\n题，对于减小信号串扰有以下几点建议：\r\n增大走线间距是减小信号串扰最有效手段；\r\n可以通过以下措施来减小串扰如：减小平行走线长度、相邻层正交走线、优先使\r\n用带状线、对敏感信号包地处理等。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10359,
+     "end_line": 10364
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-209",
+   "title": "7.8 阻抗不连续",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "线，若必须走微带线就要注意不要在高速信号走线上放置异物。"
+   ],
+   "must_not": [],
+   "text": "7.8 阻抗不连续\r\n在高速电路设计中，阻抗不连续不仅会引起信号自身的反射，还会放大其他方面的\r\n影响。\r\nPCB 设计中有以下几种常见的阻抗不连续情况：走线自身宽度的变化；串接在走线\r\n上的器件和过孔焊盘及过孔尺寸；介电常数变化引起的阻抗不连续；走线分支等；\r\n走线自身宽度的变化引起的阻抗不连续，按照7.2 章节，L1 和L3 由于空间限制可\r\n能无法按阻抗要求布线，可以忽略阻抗要求，减小线宽和线间距布线，当空间满足时应\r\n立即按照阻抗要求布线。\r\n串接在走线上的器件和过孔焊盘及过孔尺寸，走线上的焊盘会带来较大的阻抗降低，\r\n首先可以优化焊盘尺寸，其次可以对焊盘区域下的相邻层平面镂空处理，增大到参考平\r\n面的距离来适当补偿阻抗；对于过孔导致的阻抗变化，可以通过减小过孔焊盘和孔径，\r\n删除内层无用焊盘，同样也可以对焊盘下的相邻层平面镂空处理等方式来减小阻抗变化。\r\n介电常数变化引起的阻抗不连续，该情况一般是发生在表底层走线上，微带线上方\r\n的丝印、标签纸、金属件等异物都会对走线阻抗带来影响，首先高速信号尽量采用带状\r\n线，若必须走微带线就要注意不要在高速信号走线上放置异物。\r\n走线分支结构也会带来阻抗不连续，在分支点处阻抗会降低。在PCB 设计时除了尽\r\n量减小分支走线长度，还可以适当增大分支走线的阻抗来补偿节点处的阻抗变化。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10365,
+     "end_line": 10381
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-210",
+   "title": "7.9 低速接口PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.9 低速接口PCB 设计建议\r\n对于单端低速信号除特殊要求外，一般需按50Ω控制走线阻抗。\r\nCAN 信号单端走线按50Ω阻抗控制，过收发器后走线需按差分耦合形式走线。\r\n整组的信号布线使用过孔数量保持一致。\r\n尽量保证走线参考平面完整，参考平面为地。\r\n低速接口上CLOCK 信号与其他信号需保持5H 间距，避开噪声区域必要时可以包地\r\n处理。\r\n低速信号布线也需要尽量缩短走线长度，远离开关电源、晶振等噪声源，以保证\r\n\r\n7 通用PCB 设计指导\r\n信号质量。\r\nESD 器件要紧挨接口放置，走线要先经过ESD 器件再到外部接口。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10382,
+     "end_line": 10393
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-211",
+   "title": "7.10 电源PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.10 电源PCB 设计建议\r\n建议VDD 和VDDQ 电源平面相邻层有完整地平面，以保证电源有较短的回流路径。\r\n大电流电源如VCORE，需要将VRM 电源反馈信号接到距离VRM 最远的电源平面末\r\n端位置，反馈信号+/-走线采用类差分对走线方式，反馈信号换层过孔不能与其\r\n他平面上铜皮相连，以保证VRM 能采样到电源平面最末端实际电压。\r\n图7-16\r\n电源反馈信号走线示意图\r\n大电流电源需要在电源层采用铺平面方式进入芯片，小电流电源可以采用较粗走\r\n线方式进入芯片，芯片所有电源和地引脚均需扇出到相应平面上，加粗电源和\r\n地引脚扇出线线宽。\r\n图7-17\r\n电源信号BGA 扇出示意图\r\n\r\n7 通用PCB 设计指导\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10394,
+     "end_line": 10407
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-212",
+   "title": "7.11 PCB 叠层设计",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.11 PCB 叠层设计\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10408,
+     "end_line": 10408
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-213",
+   "title": "7.11.1 推荐八层板叠层",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.11.1 推荐八层板叠层\r\n表7-5\r\n推荐八层板叠层设计\r\n层\r\n材料\r\n厚度(mil)\r\nDk(1GHz)\r\n阻焊\r\n0.50\r\n3.00\r\nL1_TOP\r\n0.3oz+Plating 铜\r\n1.30\r\nPP IT180A 1080H*1\r\n3.28\r\n3.8\r\nL2_GND1\r\n1oz 铜\r\n1.30\r\nCore IT180A 2116*1\r\n5.12\r\n4.25\r\nL3_SIG2\r\n1oz 铜\r\n1.30\r\nPP IT180A 2116*2+2116H*1\r\n15.32\r\n4.2\r\nL4_PWR\r\n1oz 铜\r\n1.30\r\nCore IT180A 2116*1\r\n5.12\r\n4.25\r\nL5_GND2\r\n1oz 铜\r\n1.30\r\nPP IT180A 2116*2+2116H*1\r\n15.32\r\n4.2\r\nL6_SIG3\r\n1oz 铜\r\n1.30\r\nCore IT180A 2116*1\r\n5.12\r\n4.25\r\nL7_GND3\r\n1oz 铜\r\n1.30\r\nPP IT180A 1080H*1\r\n3.28\r\n3.8\r\nL8_BOTTOM\r\n0.3oz+Plating 铜\r\n1.30\r\n阻焊\r\n0.50\r\n3.00\r\n板厚：\r\n1.60(±0.16)mm\r\n63(±6.30)mil\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10409,
+     "end_line": 10469
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-214",
+   "title": "7.11.2 推荐六层板叠层",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.11.2 推荐六层板叠层\r\n表7-6\r\n推荐六层板叠层设计\r\n层\r\n材料\r\n厚度(mil)\r\nDk(1GHz)\r\n阻焊\r\n0.50\r\n3.00\r\nL1_TOP\r\n0.3oz+Plating 铜\r\n1.30\r\nPP IT180A 3313H*1\r\n4.06\r\nL2_GND1\r\n1oz 铜\r\n1.30\r\nCore IT180A 2116*1\r\n4.55\r\nL3_SIG2\r\n1oz 铜\r\n1.30\r\n\r\n7 通用PCB 设计指导\r\nPP IT180A 1080*1+2116*1\r\n光板IT180A 0.6\r\nPP IT180A 1080*1+2116*1\r\nL4_PWR\r\n1oz 铜\r\n1.30\r\nCore IT180A 2116*1\r\n4.55\r\nL5_GND2\r\n1oz 铜\r\n1.30\r\nPP IT180A 3313H*1\r\n4.06\r\nL6_BOTTOM\r\n0.3oz+Plating 铜\r\n1.30\r\n阻焊\r\n0.50\r\n3.00\r\n板厚：\r\n1.60(±0.16)mm\r\n63(±6.30)mil\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10470,
+     "end_line": 10516
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-215",
+   "title": "7.12 IO 配置电流推荐值",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7.12 IO 配置电流推荐值\r\n通过调整pad 复用寄存器的驱动能力配置，可以调整GPIO 的电流输出能力，具体\r\n的寄存器描述请参考《飞腾腾珑E2000 系列处理器软件编程手册》5.34.3 章节。电流等\r\n级与配置值的对应关系如下表所示。\r\n表7-7\r\nIO 配置电流推荐值\r\n序号\r\n寄存器值\r\n驱动能力\r\nI/O 电压值1.8V\r\nI/O 电压值3.3V\r\n0x0000\r\n2.412mA\r\n2.209mA\r\n0x0001\r\n4.824mA\r\n4.418mA\r\n0x0010\r\n7.237mA\r\n6.627mA\r\n0x0011\r\n9.649mA\r\n8.837mA\r\n0x0100\r\n12.06mA\r\n11.05mA\r\n0x0101\r\n14.47mA\r\n13.26mA\r\n0x0110\r\n16.89mA\r\n15.46mA\r\n0x0111\r\n19.30mA\r\n17.67mA\r\n0x1000\r\n21.71mA\r\n19.88mA\r\n0x1001\r\n24.12mA\r\n22.09mA\r\n0x1010\r\n26.53mA\r\n24.30mA\r\n0x1011\r\n28.95mA\r\n26.51mA\r\n0x1100\r\n31.36mA\r\n28.72mA\r\n0x1101\r\n33.77mA\r\n30.93mA\r\n0x1110\r\n36.18mA\r\n33.14mA\r\n0x1111\r\n38.60mA\r\n35.35mA\r\n\r\n7 通用PCB 设计指导\r\n注：由于I/O 电流值依赖于主板系统设计，因此该表数据仅供设计参考，具体电流大小以实测为准。\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10517,
+     "end_line": 10579
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-216",
+   "title": "8 封装特性说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "8 封装特性说明\r\n\r\n封装特性说明\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10580,
+     "end_line": 10582
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-217",
+   "title": "8.1 封装尺寸",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "8.1 封装尺寸\r\nE2000Q 系列的封装机械尺寸如图8-1。\r\n图8-1\r\nE2000Q 系列机械尺寸图\r\n\r\n8 封装特性说明\r\n表8-1\r\nE2000Q 系列机械尺寸数据\r\n标记\r\n最小值\r\n推荐值\r\n最大值\r\n单位\r\nA\r\n2.456\r\n2.606\r\n2.756\r\nmm\r\nA1\r\n0.300\r\n0.350\r\n0.400\r\nmm\r\nA2\r\n0.766\r\n0.856\r\n0.946\r\nmm\r\nA3\r\n1.300\r\n1.400\r\n1.500\r\nmm\r\nb\r\n0.400\r\n0.450\r\n0.500\r\nmm\r\nD/E\r\n25.000\r\nmm\r\nD1/E1\r\n23.200\r\nmm\r\ng/f\r\n0.900\r\nmm\r\nSD/SE\r\n0.400\r\ne1\r\n0.800\r\nmm\r\ne2\r\n1.000\r\nmm\r\naaa\r\n0.200\r\nmm\r\nccc\r\n0.250\r\nmm\r\nddd\r\n0.200\r\nmm\r\neee\r\n0.200\r\nmm\r\nfff\r\n0.080\r\nmm\r\nN\r\n个\r\n公差：\r\n小数位\r\n角度\r\nx.x\r\n±0.1\r\n±1°\r\nx.xx\r\n±0.05\r\nx.xxx\r\n±0.050\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10583,
+     "end_line": 10664
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-218",
+   "title": "8.2 扣合力",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "8.2 扣合力\r\nE2000Q 散热器最大静态扣合力推荐压力值为10.3kgf。\r\n\r\n8 封装特性说明\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10665,
+     "end_line": 10668
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-219",
+   "title": "8.3 PCB 封装设计推荐",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "8.3 PCB 封装设计推荐\r\n图8-2\r\nE2000Q 系列PCB 封装设计推荐\r\n注1：尺寸单位为mm。\r\n注2：“b”是指锡球平行于基准C 的最大测量直径。\r\n注3：装配的锡球直径为0.45mm。\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10669,
+     "end_line": 10674
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-220",
+   "title": "8.4 推荐装焊曲线",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "8.4 推荐装焊曲线\r\n图8-3\r\n推荐装焊温度曲线\r\n表8-2\r\n推荐装焊温度数据\r\n节点\r\n推荐值\r\n最大值\r\n最小值\r\nA\r\n预热开始节点\r\n150℃\r\n—\r\n—\r\nB\r\n预热结束节点\r\n180℃\r\n—\r\n—\r\nA-B\r\n预热处理时间\r\n80s\r\n100s\r\n60s\r\n\r\n8 封装特性说明\r\nC\r\n峰值温度节点\r\n240℃\r\n245℃\r\n235℃\r\nD\r\n温度220℃以上持续时间\r\n60s\r\n90s\r\n30s\r\n注1：SAC305 锡膏不同生产厂商推荐的焊接曲线可能略有差异，一般按中心值设定管理。均能\r\n保证焊接效果。\r\n注2：测温板请按照实物板合理布局(CPU 位置建议从PCB 底部钻孔，将Senser 埋入CPU 焊球\r\n区域，以确保测试状态与实际焊接状态一致)。\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10675,
+     "end_line": 10715
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-221",
+   "title": "9 产品标识",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "9 产品标识\r\n\r\n产品标识\r\n图9-1\r\nMarking\r\n表9-1\r\nMarking 丝印说明\r\nNote 1\r\nPin 点\r\nNote 2\r\n公司LOGO\r\nNote 3\r\n芯片产品名\r\nNote 4\r\nQ\r\nQ 系列\r\nB809\r\n封装球数\r\nXX-XX\r\nB4-C\r\n腾珑E2000Q 标准版\r\nB4-IA\r\n腾珑E2000Q 工业级A\r\nB4-IB\r\n腾珑E2000Q 工业级B\r\nNote 5\r\n芯片生产批次\r\nNote 6\r\n芯片二维码作为芯片唯一追溯码，可扫描出15 位数字，记录封装工厂、封装日\r\n期和流水号。\r\n\r",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10716,
+     "end_line": 10746
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-222",
+   "title": "10 术语和缩略语",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "10 术语和缩略语\r\n\r\n术语和缩略语\r\n表10-1\r\n术语和缩略语\r\n术语\r\n全称\r\n解释\r\nCAN\r\nController Area Network\r\n控制器局域网络\r\nCAN-FD\r\nCAN with Flexible Data-Rate\r\n具有灵活数据速率的控制器局域网络\r\nCPU\r\nCentral Processing Unit\r\n中央处理器\r\nDDR\r\nDouble Data Rate SDRAM\r\n双倍速率同步动态随机存储器\r\nDk\r\nDielectric Constant\r\n介电常数\r\nDP\r\nDisplayPort\r\n显示接口\r\nECC\r\nError Correcting Code\r\n错误检查和纠正\r\neDP\r\nEmbedded DisplayPort\r\n嵌入式显示接口\r\neMMC\r\nEmbedded Multi Media Card\r\n内嵌式多媒体存储卡\r\nESD\r\nElectro-Static discharge\r\n静电释放\r\nFEC\r\nForward Error Correction\r\n前向纠错\r\nGND\r\nGround\r\n接地端\r\nGPIO\r\nGeneral-Purpose Input/Output\r\n通用输入/输出接口\r\nI2C\r\nInter-Integrated Circuit\r\n两线式串行总线\r\nI2S\r\nInter-IC Sound\r\n集成电路内置音频总线\r\nJTAG\r\nJoint Test Action Group\r\n联合测试工作组\r\nLBC\r\nLocal Bus Controller\r\n局部总线转接收器\r\nLPDDR\r\nLow Power Double Data Rate SDRAM\r\n低功耗双倍速率同步动态随机存储器\r\nLSO\r\nLarge Send offload\r\n合并发送\r\nLVCMOS\r\nLow-Voltage Complementary Metal\r\nOxide Semicondutor\r\n低电压互补金属氧化物半导体电平\r\nMIO\r\nMultiple Input/Output\r\n多功能输入/输出接口\r\nNA\r\nNot Applicable\r\n不适用\r\n\r\n10 术语和缩略语\r\n术语\r\n全称\r\n解释\r\nNAND Flash\r\nNAND Flash\r\nNAND 闪存\r\nONFI\r\nOpen NAND Flash Interface\r\n开放式NAND 闪存接口\r\nOTG\r\nOn-The-Go\r\n便携式\r\nPCIe\r\nPeripheral Component Interconnect\r\nExpress\r\n高速串行计算机扩展总线标准\r\nPFC\r\nPriority-Based Control\r\n基于优先级的流量控制\r\nPWM\r\nPulse-Width Modulation\r\n脉冲宽度调制\r\nQSPI\r\nQuad Serial Peripheral Interface\r\n四线式串行外设接口\r\nRGMII\r\nReduced Gigabit Media Independent\r\nInterface\r\n吉比特千兆媒体独立接口\r\nRSC\r\nReceive Side Coalescing\r\n接收侧合并\r\nSATA\r\nSerial Advanced Technology\r\nAttachment\r\n串行硬件驱动器接口\r\nSD\r\nSecure Digital Memory Card\r\n安全数字存储\r\nSDIO\r\nSerial Digital Input/Outp\r\n串行数字输入输出\r\nSDRAM\r\nSynchronous Dynamic Random Access\r\nMemory\r\n同步动态随机存取存储器\r\nSE\r\nsystem engine\r\n系统管理引擎\r\nSGMII\r\nSerial Gigabit Media Independent\r\nInterface\r\n串行千兆媒体独立接口\r\nSPI\r\nSerial Peripheral Interface\r\n串行外设接口\r\nTBD\r\nTo Be Determined\r\n待确定\r\nTDP\r\nThermal Design Power\r\n散热设计功耗\r\nUART\r\nUniversal Asynchronous\r\nReceiver/Transmitter\r\n通用异步收发器\r\nUSB\r\nUniversal Serial Bus\r\n通用串行总线\r\nUSB PD\r\nUSB Power Delivery\r\nUSB 功率传输协议\r\nUSXGMII\r\nUniversal Serial 10GE Media\r\nIndependent Interface\r\n通用串行10GE 媒体独立接口\r\n术语和缩略语的顺序按照英文或拼音首字母顺序（A-Z）进行排序，首字母相同的，英文术语和缩略\r\n语在前，中文术语和缩略语在后。\r\n",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10747,
+     "end_line": 10902
+    }
+   ]
+  }
+ ]
+}

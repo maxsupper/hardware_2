@@ -9,8 +9,8 @@
 |---|---|---|---|---|---|
 | PH-0 | 输入准备 | human+flow | - | - |  |
 | PH-1 | 手册检索+BOM预检(由BOM清单) | hw_search | G1 | G0-*、RG0-*、MI-* | ✔ |
-| PH-2 | 网表解析(netlist_graph+子agent分发) | hw_prep | G2 | PREP-*、NG-* |  |
-| PH-3 | 深度分析(芯片级并行<=5,只读netlist_graph+复核+回环) | hw_analyze | G3 | IC-*、PO-*、CN-*、DR-*、PE-*、LS-*、PB-*、IF-*、CL-* | ✔ |
+| PH-2 | 网表解析(netlist_graph+子agent分发) | hw_prep | G2 | PREP-*、NG-*、PF-001* |  |
+| PH-3 | 深度分析(芯片级并行<=5,只读netlist_graph+复核+回环) | hw_analyze | G3 | IC-*、PO-*、CN-*、DR-*、PE-*、LS-*、PB-*、IF-*、CL-*、PF-* | ✔ |
 | PH-4 | 报告合成(report.json+渲染.md) | hw_write | G4 | RF-*、CT-* |  |
 | PH-5 | 审计复核 | hw_auditor | G5 | SA-*、Q-* | ✔ |
 | PH-6 | 闭环交付 | flow | G6 | - |  |
@@ -24,7 +24,7 @@
 - **G5**（审计门）@ PH-5：SA-1..8自审 + 证据链三方对照(确定性+审计输出)
 - **G6**（闭环交付门）@ PH-6：未决项清空/定版/final+渲染.md
 
-## 规则编目（按规范 ID，由 raw 清册迭代生成，共 231 条）
+## 规则编目（按规范 ID，由 raw 清册迭代生成，共 241 条）
 
 | ID | 标题 | 源位置 | 行 |
 |---|---|---|---|
@@ -189,6 +189,11 @@
 | NG-006 | 单一真源：器件间连接仅由 devices[].pins 与 nets[].joi | v3_design::PH-2::G2 | 0 |
 | NG-007 | 规模守门：netlist_graph.json ≤5MB（防重复内嵌导致平方膨胀 | v3_design::PH-2::G2 | 0 |
 | NG-008 | 等值可证：图结构变更须提供等值证据（verify_adjacency：派生邻接  | v3_design::PH-2::G2 | 0 |
+| NG-010 | 方向语义与权威来源：links[].side∈{up,down,bi,pwr,n | v4_design::PH-2::G2 | 0 |
+| NG-011 | 追踪规则：起点=接插件脚，止于有源落点；可跨越件=2脚R/L/BEAD/FB/F | v4_design::PH-2::G2 | 0 |
+| NG-012 | 差分对语义：识别 _P/_N、P/N、H/L、+/- 命名（convention | v4_design::PH-2::G2 | 0 |
+| NG-013 | 双向验证：正向止于有源落点(芯片)、反向止于起点接插件(对称停止)；正反路径集合 | v4_design::PH-2::G2 | 0 |
+| NG-014 | 落点判定：CHIP=落点有源(U*)脚；TO_CONNECTOR=落点接插件(J | v4_design::PH-2::G2 | 0 |
 | PART-001 | §0 快速导航 (人类阅读) | raw_roles/hardware-reviewer.md::L3 | 3 |
 | PART-002 | §1 角色定义与架构 | raw_roles/hardware-reviewer.md::L14 | 14 |
 | PART-003 | §2 审核流程 | raw_roles/hardware-reviewer.md::L218 | 218 |
@@ -204,6 +209,11 @@
 | PB-008 | 3.3 高速内存总线 (DDR3 / DDR4 / LPDDR4 / LPDDR | raw_rules/接口电路检查规则.md::L98 | 98 |
 | PB-009 | 3.4 视频与高速接口 (MIPI / DVP) | raw_rules/接口电路检查规则.md::L146 | 146 |
 | PB-010 | 第四部分：最终交付与异常判定逻辑输出 | raw_rules/接口电路检查规则.md::L164 | 164 |
+| PF-001 | 平台识别：PH-2 须按 rules/index.json 的 platform | v4_design::PH-2::G2 | 0 |
+| PF-002 | 平台规则加载：PH-3 须按 rules/index.json 的 load_p | v4_design::PH-3::G3 | 0 |
+| PF-003 | 官方引脚核对：SoC/DDR/PMIC/eMMC 的引脚功能与电平域必须以 pl | v4_design::PH-3::G3 | 0 |
+| PF-004 | 核对覆盖率：G3 须报告引脚核对覆盖率=已核对脚数/应核对脚数；覆盖率低于阈值或 | v4_design::PH-3::G3 | 0 |
+| PF-005 | 规则束预算：PH-3 全量规则束(common+platform)必须在 rul | v4_design::PH-3::G3 | 0 |
 | PO-001 | 电源检查规则 | raw_rules/电源检查.md::L1 | 1 |
 | PO-002 | 一、上电时序检查 | raw_rules/电源检查.md::L9 | 9 |
 | PO-003 | 1.1 时序约束来源 | raw_rules/电源检查.md::L13 | 13 |

@@ -1,0 +1,128 @@
+{
+ "schema_version": "1.0",
+ "kind": "rules_index",
+ "generated_at": "2026-09-11T08:46:31+00:00",
+ "common": {
+  "引脚核对": {
+   "file": "common/引脚核对规则.json",
+   "prefix": "IC-",
+   "stages": [
+    "PH-2",
+    "PH-3"
+   ],
+   "tokens_est": 24173
+  },
+  "引脚电平检查": {
+   "file": "common/引脚电平检查方案.json",
+   "prefix": "IC-",
+   "stages": [
+    "PH-3"
+   ],
+   "tokens_est": 8021
+  },
+  "电源检查": {
+   "file": "common/电源检查.json",
+   "prefix": "IC-",
+   "stages": [
+    "PH-3"
+   ],
+   "tokens_est": 8522
+  },
+  "接口电路检查": {
+   "file": "common/接口电路检查规则.json",
+   "prefix": "IC-",
+   "stages": [
+    "PH-3"
+   ],
+   "tokens_est": 8156
+  },
+  "引脚复用关系": {
+   "file": "common/引脚复用关系检查规则.json",
+   "prefix": "IC-",
+   "stages": [
+    "PH-3"
+   ],
+   "tokens_est": 6780
+  },
+  "证据schema": {
+   "file": "common/证据文件Schema规范.json",
+   "prefix": "IC-",
+   "stages": [
+    "PH-2",
+    "PH-3"
+   ],
+   "tokens_est": 11471
+  }
+ },
+ "platform": {
+  "RK3588": {
+   "rules": "platform/RK3588/rules.json",
+   "pinout": "platform/RK3588/pinout.json",
+   "pinout_index": "platform/RK3588/pinout.index.json",
+   "tokens_est": 7430,
+   "pins": 1088,
+   "detect": {
+    "model_regex": "RK3588",
+    "min_pins": 544
+   }
+  },
+  "RK3576": {
+   "rules": "platform/RK3576/rules.json",
+   "pinout": "platform/RK3576/pinout.json",
+   "pinout_index": "platform/RK3576/pinout.index.json",
+   "tokens_est": 2417,
+   "pins": 698,
+   "detect": {
+    "model_regex": "RK3576",
+    "min_pins": 349
+   }
+  },
+  "RV1126B": {
+   "rules": "platform/RV1126B/rules.json",
+   "pinout": "platform/RV1126B/pinout.json",
+   "pinout_index": "platform/RV1126B/pinout.index.json",
+   "tokens_est": 11169,
+   "pins": 489,
+   "detect": {
+    "model_regex": "RV1126B",
+    "min_pins": 244
+   }
+  },
+  "E2000": {
+   "rules": [
+    "platform/E2000/rules_01.json",
+    "platform/E2000/rules_02.json",
+    "platform/E2000/rules_03.json",
+    "platform/E2000/rules_04.json"
+   ],
+   "pinout": "platform/E2000/pinout.json",
+   "pinout_index": "platform/E2000/pinout.index.json",
+   "tokens_est": 69555,
+   "pins": 163,
+   "detect": {
+    "model_regex": "E2000",
+    "min_pins": 81
+   }
+  }
+ },
+ "load_policy": {
+  "PH-2": {
+   "common": [
+    "引脚核对"
+   ],
+   "platform_rules": true,
+   "pinout": false
+  },
+  "PH-3": {
+   "common": [
+    "引脚核对",
+    "引脚电平检查",
+    "电源检查",
+    "接口电路检查",
+    "引脚复用关系"
+   ],
+   "platform_rules": true,
+   "pinout": "on_demand"
+  }
+ }
+}

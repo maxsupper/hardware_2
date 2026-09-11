@@ -28,16 +28,20 @@ BRIEF_ROLE = {
 
 
 def llm_json(agent: str, prompt: str, model_cls, cfg: Config | None = None,
-             timeout: int = 60, system_footer: str = "") -> tuple:
+             timeout: int = 60, system_footer: str = "", rules_text: str = "") -> tuple:
     """直连 llm.call 一次，返回 (normalized_obj, errors, seconds)。
-    启用环境变量 HARDWARE_MOCK=1 时走模板 mock（快速验证，不调网关）。"""
+    启用环境变量 HARDWARE_MOCK=1 时走模板 mock（快速验证，不调网关）。
+    rules_text：本阶段规则束渲染文本（默认空 → 行为与旧版完全一致），置于 BRIEF_ROLE 之后、system_footer 之前。"""
     import os
     if os.environ.get("HARDWARE_MOCK") == "1":
         return _mock(agent, model_cls), [], 0.0
     cfg = cfg or Config()
     # 直接 HTTP 调用 OpenAI 兼容接口（不经 crewai.LLM：它在长 system 提示下会返回空 content）
     max_tok = int(cfg.llm.get("max_tokens", 4096))
-    sys_msg = BRIEF_ROLE.get(agent, "输出 JSON 结果。") + " 只输出 JSON，不要任何解释或 Markdown 围栏。" + system_footer
+    sys_msg = BRIEF_ROLE.get(agent, "输出 JSON 结果。") + " 只输出 JSON，不要任何解释或 Markdown 围栏。"
+    if rules_text:
+        sys_msg += "\n\n【本阶段规则束（必须遵守）】\n" + rules_text
+    sys_msg += system_footer
     t = time.time()
     try:
         raw = _http_chat(cfg, [{"role": "system", "content": sys_msg},

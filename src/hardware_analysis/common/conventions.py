@@ -13,15 +13,22 @@ DEFAULTS: dict = {
     "testpoint_prefixes": ["TP"],                               # 测试点
     "passive_prefixes": ["R", "C", "L", "FB", "D", "Q", "Y", "X", "F", "BEAD", "LED", "SW"],
     "transparent_prefixes": ["R", "L", "BEAD", "FB", "FERR", "TP", "JMP", "JUMP", "0R"],
-    "power_net_regex": r"^(GND|AGND|DGND|VSS|VCC|VDD|VBAT|VIN|VBUS|\+|-)\d*",
-    "diff_pair_regex": r"^(.*?)[_\-]?([PN])$",
+    "power_net_regex": r"^((GND|AGND|DGND|PGND|VSS|VCC|VDD|VBAT|VIN|VBUS|VREF|AVDD|DVDD|IOVDD|[+-]\d|\d+V\d*))",
+    "diff_pair_regex": r"^(.*?)[_\-]?([PNHL])$",      # 主：_P/_N  P/N  H/L
+    "diff_pair_plusminus_regex": r"^(.*?)$",            # 辅：+/- 尾缀（与上式配合，见 diff_pair_key）
     "board_regex": r"-([A-Z])_V\d",            # 主；回退见 board_fallback_regex
     "board_fallback_regex": r"-([A-Z])_",
     "board_unknown": "X",
     # 可调阈值（魔法数字集中处）
     "connector_pair_min_signal": 3,           # 连接器配对所需最少信号命中
     "fanout_min_neighbors": 3,                # >此值判 FANOUT
-    "trace_guard": 60,                        # 追踪防环上限（跳）
+    "trace_guard": 60,                        # 追踪防环上限（绝对保险，NG-011 另有 trace_max_hops）
+    # NG-011：追踪规则（可被 config.json 的 conventions 段覆盖）
+    "trace_max_hops": 6,                      # 最大跨器件层数（用户确认：6）
+    "series_passive_prefixes": ["R", "L", "BEAD", "FB", "FERR", "JMP", "JUMP", "0R"],  # 可跨越的真串联件
+    "series_passive_max_pins": 2,             # 串联件必须只有 2 脚
+    "stop_at_active_net": True,               # 先本网有源落点→ 已抵达，不再跨无源件
+    "diff_pair_equivalent": True,             # 差分对成员网视为同一逻辑信号（跨到搭档=原地打转）
 }
 
 
@@ -58,8 +65,23 @@ class Conventions:
         return bool(self._pwr.match(str(net or "").strip()))
 
     def diff_pair_key(self, net: str):
-        m = self._diff.match(str(net or ""))
-        return (m.group(1), m.group(2)) if m else None
+        """差分对键 — 支持 `_P/_N`、`P/N`、`H/L`、`+/-`（NG-012）。返回 (base, tag) 或 None。"""
+        s = str(net or "").strip()
+        if s.endswith("+") or s.endswith("-"):
+            return (s[:-1], "PM")
+        m = self._diff.match(s)
+        if m and not m.group(1).endswith(("_", "-")):
+            return (m.group(1), m.group(2))
+        return None
+
+    def is_series_passive(self, refdes: str, pins: dict) -> bool:
+        """真串联件（NG-011）：2 脚且两端网络均非电源/地，且位号属可跨越前缀。"""
+        r = str(refdes or "").upper()
+        if not any(r.startswith(p) for p in self.cfg["series_passive_prefixes"]):
+            return False
+        if len(pins or {}) != self.cfg["series_passive_max_pins"]:
+            return False
+        return not any(self.is_power_net(n) for n in pins.values())
 
     # ---- 板号 ----
     def board_of(self, name: str) -> str:
