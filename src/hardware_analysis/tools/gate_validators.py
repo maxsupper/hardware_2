@@ -249,7 +249,7 @@ def validate_netlist(b_prep_dir: Path) -> GateResult:
 # ---------------- v2: G5 audit_validate（PH-5 审计） ----------------
 def validate_audit(ws_dir: Path) -> GateResult:
     checks = []
-    ad = ws_dir / "PH-5_audit" / "audit.json"
+    ad = ws_dir / "PH-5_审计复核" / "audit.json"
     ok = ad.exists() and ad.stat().st_size > 0
     _check(checks, "G5-000", GateStatus.PASS if ok else GateStatus.FAIL,
            "audit.json 存在（PH-5 审计产出）", "ok" if ok else "缺失")
@@ -265,13 +265,13 @@ def validate_audit(ws_dir: Path) -> GateResult:
         except Exception as e:
             _check(checks, "G5-001", GateStatus.FAIL, "audit.json 可解析", str(e)[:60])
     # 证据链三方：evidence + summary + report
-    e = ws_dir / "PH-3_analyze"
+    e = ws_dir / "PH-3_深度分析"
     evs = sorted(set(e.glob("*.evidence.json")) | set(e.glob("*_evidence.json"))) if e.exists() else []
     sues = sorted(e.glob("*_summary.json")) if e.exists() else []
     _check(checks, "G5-003", GateStatus.PASS if evs else GateStatus.FAIL, "有 evidence", f"{len(evs)}")
     _check(checks, "G5-004", GateStatus.PASS if sues else GateStatus.FAIL, "有 summary", f"{len(sues)}")
-    _check(checks, "G5-005", GateStatus.PASS if (ws_dir / "PH-4_report" / "report.json").exists() else GateStatus.FAIL,
-           "report.json 存在（证据链完整性）", "ok" if (ws_dir / "PH-4_report" / "report.json").exists() else "缺失")
+    _check(checks, "G5-005", GateStatus.PASS if (ws_dir / "PH-4_报告合成" / "report.json").exists() else GateStatus.FAIL,
+           "report.json 存在（证据链完整性）", "ok" if (ws_dir / "PH-4_报告合成" / "report.json").exists() else "缺失")
     return _finalize("G5", "audit_validate", checks)
 
 
@@ -287,12 +287,12 @@ def validate_delivery(ws_dir: Path) -> GateResult:
               and json.loads((gp / f"{g}.json").read_text(encoding="utf-8")).get("status") != "PASS"]
     _check(checks, "G6-001", GateStatus.PASS if not failed else GateStatus.FAIL,
            "前序门禁 G1..G5 全 PASS", f"FAIL={failed}")
-    rp = ws_dir / "PH-4_report" / "report.json"
+    rp = ws_dir / "PH-4_报告合成" / "report.json"
     _check(checks, "G6-002", GateStatus.PASS if rp.exists() else GateStatus.FAIL,
            "report.json 存在", "ok" if rp.exists() else "缺失")
-    _check(checks, "G6-003", GateStatus.PASS if (ws_dir / "PH-6_delivery" / "final_report.json").exists() else GateStatus.FAIL,
+    _check(checks, "G6-003", GateStatus.PASS if (ws_dir / "PH-6_闭环交付" / "final_report.json").exists() else GateStatus.FAIL,
            "定版 final_report.json 存在（PH-6 产物）",
-           "ok" if (ws_dir / "PH-6_delivery" / "final_report.json").exists() else "缺失")
+           "ok" if (ws_dir / "PH-6_闭环交付" / "final_report.json").exists() else "缺失")
     crit = []
     if rp.exists():
         try:
@@ -328,10 +328,10 @@ def main_gate_cli(ws_dir, gate):
 
 def _GATE_FNS() -> dict:
     """v2 门禁映射：G1=手册+BOM G2=网表 G3=分析 G4=报告 G5=审计 G6=交付。"""
-    return {"G1": ("PH-1_manual", validate_manual_bom),
-            "G2": ("PH-2_netlist", validate_netlist),
-            "G3": ("PH-3_analyze", validate_evidence),
-            "G4": ("PH-4_report", validate_report),
+    return {"G1": ("PH-1_手册检索", validate_manual_bom),
+            "G2": ("PH-2_网表解析", validate_netlist),
+            "G3": ("PH-3_深度分析", validate_evidence),
+            "G4": ("PH-4_报告合成", validate_report),
             "G5": (".", validate_audit),
             "G6": (".", validate_delivery)}
 
@@ -339,7 +339,7 @@ def _GATE_FNS() -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("gate", choices=["G1", "G2", "G3", "G4", "G5", "G6"])
-    ap.add_argument("workspace_dir", help="产品工作区（其下 PH-1_manual/PH-3_netlist/PH-4_analyze/PH-5_report）")
+    ap.add_argument("workspace_dir", help="产品工作区（其下 PH-1_手册检索/PH-2_网表解析/PH-3_深度分析/PH-4_报告合成）")
     ap.add_argument("--out", default=None, help="写 gates/G<n>.json")
     args = ap.parse_args()
     ws = Path(args.workspace_dir)

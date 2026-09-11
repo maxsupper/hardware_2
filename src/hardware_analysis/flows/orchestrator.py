@@ -48,13 +48,13 @@ class Orchestrator:
         self.state["gates"][gate] = status
         self.ws.write_state(self.state)
 
-    def _p0(self, *p) -> Path: return self.ws.dir / "PH-0_input" / Path(*p)
-    def _p1(self, *p) -> Path: return self.ws.dir / "PH-1_manual" / Path(*p)
-    def _p2(self, *p) -> Path: return self.ws.dir / "PH-2_netlist" / Path(*p)
-    def _p3(self, *p) -> Path: return self.ws.dir / "PH-3_analyze" / Path(*p)
-    def _p4(self, *p) -> Path: return self.ws.dir / "PH-4_report" / Path(*p)
-    def _p5(self, *p) -> Path: return self.ws.dir / "PH-5_audit" / Path(*p)
-    def _p6(self, *p) -> Path: return self.ws.dir / "PH-6_delivery" / Path(*p)
+    def _p0(self, *p) -> Path: return self.ws.dir / "PH-0_输入准备" / Path(*p)
+    def _p1(self, *p) -> Path: return self.ws.dir / "PH-1_手册检索" / Path(*p)
+    def _p2(self, *p) -> Path: return self.ws.dir / "PH-2_网表解析" / Path(*p)
+    def _p3(self, *p) -> Path: return self.ws.dir / "PH-3_深度分析" / Path(*p)
+    def _p4(self, *p) -> Path: return self.ws.dir / "PH-4_报告合成" / Path(*p)
+    def _p5(self, *p) -> Path: return self.ws.dir / "PH-5_审计复核" / Path(*p)
+    def _p6(self, *p) -> Path: return self.ws.dir / "PH-6_闭环交付" / Path(*p)
 
     # ---------- PH-0 输入准备 ----------
     def _act_ph0(self):

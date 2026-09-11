@@ -5,7 +5,7 @@
   反向验证：从落点芯片引脚回追，两路径必须一致；否则 BIDIR_MISMATCH。
   终点判定: CHIP(芯片引脚) / TO_CONNECTOR(到另一接插件) / OPEN_END(悬空) / STUCK(卡住)
 电源例外: 轨 → PMIC SW/输出（另passthrough，这里先做接口主线）。
-用法: python -m hardware_analysis.tools.tracer <PH-3_netlist_dir>
+用法: python -m hardware_analysis.tools.tracer <PH-2_网表解析_dir>
 """
 from __future__ import annotations
 import argparse, json, sys

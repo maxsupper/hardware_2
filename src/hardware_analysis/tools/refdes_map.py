@@ -1,11 +1,11 @@
 """位号↔BOM↔功能映射 — 阶段3a 产物 D（v2：按板配对 + DNP 标注）.
 
-输入: PH-3_netlist/global_components.json(板级: "板::位号") + bom_entries.json(含 board)
+输入: PH-2_网表解析/global_components.json(板级: "板::位号") + bom_entries.json(含 board)
 规则(用户确认):
   - 身份 = (板, 位号)；A_EDN ↔ A_BOM、B_EDN ↔ B_BOM
   - EDN 有、该板 BOM 无 → 不装(DNP)，populated=False，不算缺项
   - EDN 符号名(cellRef) 与 BOM 料号是不同标识，不判冲突
-用法: python -m hardware_analysis.tools.refdes_map <PH-3_netlist_dir>
+用法: python -m hardware_analysis.tools.refdes_map <PH-2_网表解析_dir>
 """
 from __future__ import annotations
 import argparse, json, sys

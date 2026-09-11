@@ -1,15 +1,15 @@
 """workspace 管理器 — 创建产品 run 工作区 + run_manifest。
 
 目录（对齐 rules.json path_map）:
-  storge/project/<产品>/PH-0_input .. PH-6_delivery + gates .run(temp+log)
+  storge/project/<产品>/PH-0_输入准备 .. PH-6_闭环交付 + gates .run(temp+log)
 """
 from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-STAGE_DIRS = ["PH-0_input", "PH-1_manual", "PH-2_netlist", "PH-3_analyze",
-              "PH-4_report", "PH-5_audit", "PH-6_delivery", "gates", ".run/temp"]
+STAGE_DIRS = ["PH-0_输入准备", "PH-1_手册检索", "PH-2_网表解析", "PH-3_深度分析",
+              "PH-4_报告合成", "PH-5_审计复核", "PH-6_闭环交付", "gates", ".run/temp"]
 
 
 class RunWorkspace:

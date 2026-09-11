@@ -54,13 +54,13 @@ HARDWARE_MOCK=1 .venv/bin/python -m hardware_analysis.cli run --product FL-25-E-
 
 | 阶段 | 产物（目录 = 阶段号，一一对应） |
 |---|---|
-| PH-0 输入准备 | `PH-0_input/step_0a.json` |
-| PH-1 手册检索 | `PH-1_manual/`：`bom_entries.json`、`manual_index.json`（位号→手册路径 + ic_type）、`precheck.json` |
-| PH-2 网表解析 | `PH-2_netlist/netlist_graph.json`（**核心**：devices/nets/paths/cross_board_links）＋ `global_*`、`trace_inventory.json` |
-| PH-3 深度分析 | `PH-3_analyze/*_summary.json`、`*_evidence.json`、`clarify_*(requests/resolutions).jsonl` |
-| PH-4 报告 | `PH-4_report/report.json` |
-| PH-5 审计 | `PH-5_audit/audit.json` |
-| PH-6 交付 | `PH-6_delivery/final_report.json`（定版）+ `delivery.json` |
+| PH-0 输入准备 | `PH-0_输入准备/step_0a.json` |
+| PH-1 手册检索 | `PH-1_手册检索/`：`bom_entries.json`、`manual_index.json`（位号→手册路径 + ic_type）、`precheck.json` |
+| PH-2 网表解析 | `PH-2_网表解析/netlist_graph.json`（**核心**：devices/nets/paths/cross_board_links）＋ `global_*`、`trace_inventory.json` |
+| PH-3 深度分析 | `PH-3_深度分析/*_summary.json`、`*_evidence.json`、`clarify_*(requests/resolutions).jsonl` |
+| PH-4 报告 | `PH-4_报告合成/report.json` |
+| PH-5 审计 | `PH-5_审计复核/audit.json` |
+| PH-6 交付 | `PH-6_闭环交付/final_report.json`（定版）+ `delivery.json` |
 | 门禁 | `gates/G1..G6.json`（PASS/FAIL + 逐条检查） |
 | 日志 | `.run/run.log.jsonl`、`run.state.json`（web 用） |
 
