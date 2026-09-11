@@ -136,6 +136,16 @@ def manual_gaps(product: str):
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+@app.post("/api/manual/upload")
+async def manual_upload(file: UploadFile = File(...)):
+    """人工补充手册：上传文件 → 存档 storge/datasheet/，返回路径。"""
+    dest_dir = BASEDIR / "storge" / "datasheet"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / _safe_name(file.filename or "upload.bin")
+    dest.write_bytes(await file.read())
+    return {"ok": True, "path": str(dest), "name": dest.name}
+
+
 @app.get("/api/problem/{product}")
 def problem_dir(product: str):
     """故障分析产物(一期预留)。"""

@@ -84,31 +84,42 @@
     const box=$('modal'), body=$('m-body'), act=$('m-actions');
     if(box.classList.contains('hidden')===false) return;
     act.innerHTML=''; body.innerHTML='';
-    // 手册缺失确认（PH-1）：逐项 忽视 / 兼容型号 / 补充文件
+    // 手册缺失确认（PH-1）：逐项 上传 / 缺省 / 替换
     if((st.pause_reason||'').includes('手册缺失')){
       $('m-title').textContent='【待你处理】手册缺失确认';
       const g=await fetch('/api/manual_gaps/'+encodeURIComponent(product)).then(r=>r.json()).catch(()=>({gaps:[]}));
       const hint=document.createElement('div'); hint.className='dim';
-      hint.textContent='以下 IC 未找到手册，请逐项选择：忽视(→UNVERIFIED) / 指定兼容型号 / 补充文件路径'; body.appendChild(hint);
-      const decisions={};
+      hint.textContent='以下 IC 未找到手册，请逐项选择：上传(补充文件) / 缺省(→UNVERIFIED) / 替换(按兼容型号)'; body.appendChild(hint);
+      const rows=[];
       (g.gaps||[]).forEach(it=>{
         const row=document.createElement('div'); row.className='agent-card';
         const nm=document.createElement('span'); nm.innerHTML=`<b>${it.refdes}</b> <span class="dim">${it.model}</span> `;
         const sel=document.createElement('select');
-        [['IGNORE','忽视(UNVERIFIED)'],['COMPATIBLE','兼容型号'],['PROVIDE_FILE','补充文件']].forEach(([v,t])=>{
+        [['IGNORE','缺省'],['PROVIDE_FILE','上传'],['COMPATIBLE','替换']].forEach(([v,t])=>{
           const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); });
-        const inp=document.createElement('input'); inp.placeholder='兼容型号 或 文件路径'; inp.style.display='none';
-        decisions[it.refdes]={action:'IGNORE'};
-        const sync=()=>{ inp.style.display=sel.value==='IGNORE'?'none':'inline-block';
-          if(sel.value==='COMPATIBLE') decisions[it.refdes]={action:'COMPATIBLE',compatible_model:inp.value};
-          else if(sel.value==='PROVIDE_FILE') decisions[it.refdes]={action:'PROVIDE_FILE',file:inp.value};
-          else decisions[it.refdes]={action:'IGNORE'}; };
-        sel.onchange=sync; inp.oninput=sync;
-        row.appendChild(nm); row.appendChild(sel); row.appendChild(inp); body.appendChild(row);
+        const finp=document.createElement('input'); finp.type='file'; finp.style.display='none';
+        const tinp=document.createElement('input'); tinp.placeholder='兼容型号'; tinp.style.display='none';
+        sel.onchange=()=>{ finp.style.display=sel.value==='PROVIDE_FILE'?'inline-block':'none';
+                           tinp.style.display=sel.value==='COMPATIBLE'?'inline-block':'none'; };
+        row.appendChild(nm); row.appendChild(sel); row.appendChild(finp); row.appendChild(tinp); body.appendChild(row);
+        rows.push({ref:it.refdes, sel, finp, tinp});
       });
-      const b1=document.createElement('button'); b1.className='btn primary'; b1.textContent='提交并继续';
-      b1.onclick=()=>{ POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions}); box.classList.add('hidden'); };
-      const b2=document.createElement('button'); b2.className='btn'; b2.textContent='全部忽视';
+      const submit=async()=>{
+        const decisions={};
+        for(const r of rows){
+          if(r.sel.value==='COMPATIBLE'){ decisions[r.ref]={action:'COMPATIBLE',compatible_model:r.tinp.value.trim()}; }
+          else if(r.sel.value==='PROVIDE_FILE'){
+            const f=r.finp.files[0];
+            if(!f){ decisions[r.ref]={action:'IGNORE'}; continue; }
+            const fd=new FormData(); fd.append('file',f);
+            const up=await fetch('/api/manual/upload',{method:'POST',body:fd}).then(x=>x.json()).catch(()=>({}));
+            decisions[r.ref]= up.path? {action:'PROVIDE_FILE',file:up.path} : {action:'IGNORE'};
+          } else { decisions[r.ref]={action:'IGNORE'}; }
+        }
+        POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions}); box.classList.add('hidden');
+      };
+      const b1=document.createElement('button'); b1.className='btn primary'; b1.textContent='提交并继续'; b1.onclick=submit;
+      const b2=document.createElement('button'); b2.className='btn'; b2.textContent='全部缺省';
       b2.onclick=()=>{ const d={}; (g.gaps||[]).forEach(it=>d[it.refdes]={action:'IGNORE'});
         POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions:d}); box.classList.add('hidden'); };
       act.appendChild(b1); act.appendChild(b2);
