@@ -1,6 +1,6 @@
 # 硬件原理图自动审查 + 故障分析系统
 
-基于 **CrewAI** 的 EDN 网表自动审查工具：**PH-0..7 门禁流水线**（输出 `netlist_graph.json` 网表 json 化 + 审查报告）
+基于 **CrewAI** 的 EDN 网表自动审查工具：**PH-0..6 门禁流水线**（输出 `netlist_graph.json` 网表 json 化 + 审查报告）
 + 故障分析顾问 + Web 调试面板。真实验证项目：`FL-25-E-MR203`（A/B 双板，RK3588 + 安路 EG4X20）。
 
 > 版本：v2（2026-09-11）：阶段换位（手册→预检→网表解析→深度分析）、`netlist_graph` v2.2、回环协议、板级隔离。
@@ -20,7 +20,7 @@ HARDWARE_MOCK=1 .venv/bin/python -m hardware_analysis.cli run --product FL-25-E-
 ```
 - `HARDWARE_MOCK=1` ＝ 用假 LLM，只验 **流程/门禁/产物** 是否通；
 - `--auto-pass` ＝ 批次边界自动继续；
-- 期望输出：`current: DONE`、`gates` 全 `PASS`（G1–G7）。
+- 期望输出：`current: DONE`、`gates` 全 `PASS`（G1–G6）。
 
 ### ② 真实模式（调真 LLM，慢——单次约 44s，全量很久）
 ```bash
@@ -52,15 +52,16 @@ HARDWARE_MOCK=1 .venv/bin/python -m hardware_analysis.cli run --product FL-25-E-
 
 ## 三、产出（都在 `storge/project/<产品>/`）
 
-| 阶段 | 产物 |
+| 阶段 | 产物（目录 = 阶段号，一一对应） |
 |---|---|
-| PH-1 手册检索 | `PH-1_manual/manual_index.json`（位号→手册路径 + ic_type）、`bom_entries.json` |
-| PH-3 网表解析 | `PH-3_netlist/netlist_graph.json`（**核心**：devices/nets/paths/cross_board_links）＋ `global_*`、`trace_inventory.json` |
-| PH-4 深度分析 | `PH-4_analyze/*_summary.json`、`*_evidence.json`、`clarify_*(requests/resolutions).jsonl` |
-| PH-5 报告 | `PH-5_report/report.json`（+ 渲染 .md） |
-| PH-6 审计 | `PH-6_audit/audit.json` |
-| PH-7 交付 | `PH-7_delivery/final_report.json`（定版）+ `delivery.json` |
-| 门禁 | `gates/G1..G7.json`（PASS/FAIL + 逐条检查） |
+| PH-0 输入准备 | `PH-0_input/step_0a.json` |
+| PH-1 手册检索 | `PH-1_manual/`：`bom_entries.json`、`manual_index.json`（位号→手册路径 + ic_type）、`precheck.json` |
+| PH-2 网表解析 | `PH-2_netlist/netlist_graph.json`（**核心**：devices/nets/paths/cross_board_links）＋ `global_*`、`trace_inventory.json` |
+| PH-3 深度分析 | `PH-3_analyze/*_summary.json`、`*_evidence.json`、`clarify_*(requests/resolutions).jsonl` |
+| PH-4 报告 | `PH-4_report/report.json` |
+| PH-5 审计 | `PH-5_audit/audit.json` |
+| PH-6 交付 | `PH-6_delivery/final_report.json`（定版）+ `delivery.json` |
+| 门禁 | `gates/G1..G6.json`（PASS/FAIL + 逐条检查） |
 | 日志 | `.run/run.log.jsonl`、`run.state.json`（web 用） |
 
 中间文件（`.run/temp/*.timestamp.components|nets.json`）**即用即清**，最终零残留。
@@ -129,4 +130,4 @@ config.json    本地配置（不入库）            .venv/        依赖（pyt
 
 ## 状态
 
-v2（2026-09-11）：**mock 全流程 DONE、G1–G7 全 PASS、自检 9/9 PASS**；真实验证项目 FL-25-E-MR203 与真人"国产化分析报告"抽查一致（RK3588/EG4X20/LPDDR4/2×72pin 连接器配对 144 脚等）。详见 `docs/plans/2026-09-10-hardware-analysis-design.md`。
+v2（2026-09-11）：**mock 全流程 DONE、G1–G6 全 PASS、自检 9/9 PASS**；真实验证项目 FL-25-E-MR203 与真人"国产化分析报告"抽查一致（RK3588/EG4X20/LPDDR4/2×72pin 连接器配对 144 脚等）。详见 `docs/plans/2026-09-10-hardware-analysis-design.md`。

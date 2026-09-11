@@ -13,7 +13,7 @@
   },
   {
    "stage": "PH-1",
-   "name": "手册检索(由BOM清单)",
+   "name": "手册检索+BOM预检(由BOM清单)",
    "owner": "hw_search",
    "gate": "G1",
    "rules": [
@@ -25,20 +25,9 @@
   },
   {
    "stage": "PH-2",
-   "name": "数据预检(Wave0)",
-   "owner": "flow",
-   "gate": "G2",
-   "rules": [
-    "W0-*",
-    "RW1-*"
-   ],
-   "batch_boundary": false
-  },
-  {
-   "stage": "PH-3",
    "name": "网表解析(netlist_graph+子agent分发)",
    "owner": "hw_prep",
-   "gate": "G3",
+   "gate": "G2",
    "rules": [
     "PREP-*",
     "NG-*"
@@ -46,10 +35,10 @@
    "batch_boundary": false
   },
   {
-   "stage": "PH-4",
+   "stage": "PH-3",
    "name": "深度分析(芯片级并行<=5,只读netlist_graph+复核+回环)",
    "owner": "hw_analyze",
-   "gate": "G4",
+   "gate": "G3",
    "rules": [
     "IC-*",
     "PO-*",
@@ -64,10 +53,10 @@
    "batch_boundary": true
   },
   {
-   "stage": "PH-5",
+   "stage": "PH-4",
    "name": "报告合成(report.json+渲染.md)",
    "owner": "hw_write",
-   "gate": "G5",
+   "gate": "G4",
    "rules": [
     "RF-*",
     "CT-*"
@@ -75,10 +64,10 @@
    "batch_boundary": false
   },
   {
-   "stage": "PH-6",
+   "stage": "PH-5",
    "name": "审计复核",
    "owner": "hw_auditor",
-   "gate": "G6",
+   "gate": "G5",
    "rules": [
     "SA-*",
     "Q-*"
@@ -86,48 +75,43 @@
    "batch_boundary": true
   },
   {
-   "stage": "PH-7",
+   "stage": "PH-6",
    "name": "闭环交付",
    "owner": "flow",
-   "gate": "G7",
+   "gate": "G6",
    "rules": [],
    "batch_boundary": false
   }
  ],
  "gates": {
   "G1": {
-   "name": "manual_validate",
+   "name": "manual_bom_validate",
    "after": "PH-1",
-   "note": "manual_index 覆盖全部U*；无手册者显式MISSING/UNVERIFIED；ic_type合法"
+   "note": "manual_index 覆盖全部U* + BOM解析无错误/条目非空/板号可识别"
   },
   "G2": {
-   "name": "bom_validate",
-   "after": "PH-2",
-   "note": "BOM解析无错误/条目非空/板号可识别（Wave0确定性预检）"
-  },
-  "G3": {
    "name": "netlist_validate",
-   "after": "PH-3",
+   "after": "PH-2",
    "note": "netlist_graph完备性：dangling=0/uncovered=0/devices全覆盖/跨板连续"
   },
-  "G4": {
+  "G3": {
    "name": "g2x_validate",
-   "after": "PH-4",
+   "after": "PH-3",
    "note": "evidence契约/填充率>=80%/接口覆盖(确定性)+复核回环<=3轮(计数独立)"
   },
-  "G5": {
+  "G4": {
    "name": "报告审核门",
-   "after": "PH-5",
+   "after": "PH-4",
    "note": "确定性结构校验 + LLM内容审核(规则+要求+内容,有界2轮)"
   },
-  "G6": {
+  "G5": {
    "name": "审计门",
-   "after": "PH-6",
+   "after": "PH-5",
    "note": "SA-1..8自审 + 证据链三方对照(确定性+审计输出)"
   },
-  "G7": {
+  "G6": {
    "name": "闭环交付门",
-   "after": "PH-7",
+   "after": "PH-6",
    "note": "未决项清空/定版/final+渲染.md"
   }
  },
@@ -2009,7 +1993,7 @@
   },
   "NG-001": {
    "title": "netlist_graph：devices 覆盖全部 (板,位号)，pins 为全量引脚",
-   "source": "v2_design::PH-3::G3",
+   "source": "v2_design::PH-2::G2",
    "line": 0,
    "end_line": 0,
    "chars": 44,
@@ -2017,7 +2001,7 @@
   },
   "NG-002": {
    "title": "links 覆盖每个非串联器件引脚（uncovered=0）；纯芯片间网 side=bi",
-   "source": "v2_design::PH-3::G3",
+   "source": "v2_design::PH-2::G2",
    "line": 0,
    "end_line": 0,
    "chars": 44,
@@ -2025,7 +2009,7 @@
   },
   "NG-003": {
    "title": "跨板仅经 cross_board_links（连接器按脚号一一配对，禁 GND 塌缩）",
-   "source": "v2_design::PH-3::G3",
+   "source": "v2_design::PH-2::G2",
    "line": 0,
    "end_line": 0,
    "chars": 43,
@@ -2033,7 +2017,7 @@
   },
   "NG-004": {
    "title": "0Ω 两端归 alias_group；差分对 _P/_N 归 diff_pairs；电源环路 side=pwr",
-   "source": "v2_design::PH-3::G3",
+   "source": "v2_design::PH-2::G2",
    "line": 0,
    "end_line": 0,
    "chars": 55,
@@ -2041,7 +2025,7 @@
   },
   "NG-005": {
    "title": "dangling_joins=0（每个 join 的位号存在于 devices）；BOM/EDN 冲突以 BOM 为准",
-   "source": "v2_design::PH-3::G3",
+   "source": "v2_design::PH-2::G2",
    "line": 0,
    "end_line": 0,
    "chars": 59,
@@ -2049,7 +2033,7 @@
   },
   "CL-001": {
    "title": "PH-4↔PH-3 回环 request/resolution 为 JSON、有界≤3 轮、计数独立；3 轮未决→UNVERIFIED 进待核清单",
-   "source": "v2_design::PH-4::G4",
+   "source": "v2_design::PH-3::G3",
    "line": 0,
    "end_line": 0,
    "chars": 73,
@@ -2057,7 +2041,7 @@
   },
   "CL-002": {
    "title": "PH-4 不得读原始 EDN/xlsx，仅读 netlist_graph.json（除走回环定向复查）",
-   "source": "v2_design::PH-4::G4",
+   "source": "v2_design::PH-3::G3",
    "line": 0,
    "end_line": 0,
    "chars": 51,
@@ -2130,7 +2114,8 @@
   "v2_applied": "2026-09-11: process换位/gates重排/agents更新 + 新增 MI/NG/CL 10 条（既有218条内容未改）",
   "platform_bundles_merged": "2026-09-11: 4×bundle.json 并入 platform 段（去冗余文件）",
   "dev_rules_added": "2026-09-11: 新增 dev_rules 段（6条，代码生成硬性要求）",
-  "stage_dirs_renamed": "2026-09-11: 阶段目录改为 PHx_<用途>（PH1_manual/PH3_netlist/PH4_analyze/PH5_report/PH6_audit），删空壳 C_search/D_validate"
+  "stage_dirs_renamed": "2026-09-11: 阶段目录改为 PHx_<用途>（PH1_manual/PH3_netlist/PH4_analyze/PH5_report/PH6_audit），删空壳 C_search/D_validate",
+  "ph2_merged": "2026-09-11: PH-2(预检)并入 PH-1；阶段 8→7，门禁 7→6 重编号"
  },
  "dev_rules": {
   "schema_version": "1.0",

@@ -28,7 +28,7 @@ def main() -> None:
 
     r = sub.add_parser("run"); add_product(r); r.add_argument("--auto-pass", action="store_true")
     for name, fn in [("prep", "PH-1"), ("validate", "G3"), ("search", "PH-2"),
-                     ("analyze", "PH-4"), ("write", "PH-5"), ("audit", "PH-6"), ("finalize", "PH-7")]:
+                     ("analyze", "PH-3"), ("write", "PH-4"), ("audit", "PH-5"), ("finalize", "PH-6")]:
         s = sub.add_parser(name)
         add_product(s)
 

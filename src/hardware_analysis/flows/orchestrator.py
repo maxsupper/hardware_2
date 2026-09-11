@@ -3,7 +3,7 @@
 硬件_review=确定性 Flow（裁判）。v2 阶段序（已确认）：
   PH-0 输入准备 → PH-1 手册检索(由BOM, G1) → PH-2 数据预检Wave0(G2) →
   PH-3 网表解析/ netlist_graph + 子agent分发(G3) → PH-4 深度分析(只读netlist_graph+复核+回环,G4) →
-  PH-5 报告合成(G5) → PH-6 审计复核(G6) → PH-7 闭环交付(G7)
+  PH-4 报告合成(G4) → PH-5 审计复核(G5) → PH-6 闭环交付(G6)
 中间文件（.run/temp 下带时间戳）即用即清，收尾 cleanup。
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ from hardware_analysis.workspace.manager import RunWorkspace
 from hardware_analysis.flows.rule_loader import load_stage_bundle
 
 # v2：批次暂停点 = 手册缺失确认(PH-1) / 分析批次(PH-4) / 审计(PH-6)
-BATCH_BOUNDARY = {"PH-1": "G1", "PH-4": "G4", "PH-6": "G6"}
+BATCH_BOUNDARY = {"PH-1": "G1", "PH-3": "G3", "PH-5": "G5"}
 TEMP_PATTERNS = ("*.components.json", "*.nets.json")   # edn_parse 中间产物（带时间戳）
 
 
@@ -32,7 +32,7 @@ class Orchestrator:
         self.ws = RunWorkspace(self.projects_dir, product)
         self.state = {"product": product, "current": "IDLE",
                       "phases": {f"PH-{i}": "PENDING" for i in range(8)},
-                      "gates": {f"G{i}": "PENDING" for i in range(1, 8)},
+                      "gates": {f"G{i}": "PENDING" for i in range(1, 7)},
                       "errors": [], "paused": False, "pause_reason": ""}
         self.auto_pass = False
 
@@ -50,12 +50,11 @@ class Orchestrator:
 
     def _p0(self, *p) -> Path: return self.ws.dir / "PH-0_input" / Path(*p)
     def _p1(self, *p) -> Path: return self.ws.dir / "PH-1_manual" / Path(*p)
-    def _p2(self, *p) -> Path: return self.ws.dir / "PH-2_check" / Path(*p)
-    def _p3(self, *p) -> Path: return self.ws.dir / "PH-3_netlist" / Path(*p)
-    def _p4(self, *p) -> Path: return self.ws.dir / "PH-4_analyze" / Path(*p)
-    def _p5(self, *p) -> Path: return self.ws.dir / "PH-5_report" / Path(*p)
-    def _p6(self, *p) -> Path: return self.ws.dir / "PH-6_audit" / Path(*p)
-    def _p7(self, *p) -> Path: return self.ws.dir / "PH-7_delivery" / Path(*p)
+    def _p2(self, *p) -> Path: return self.ws.dir / "PH-2_netlist" / Path(*p)
+    def _p3(self, *p) -> Path: return self.ws.dir / "PH-3_analyze" / Path(*p)
+    def _p4(self, *p) -> Path: return self.ws.dir / "PH-4_report" / Path(*p)
+    def _p5(self, *p) -> Path: return self.ws.dir / "PH-5_audit" / Path(*p)
+    def _p6(self, *p) -> Path: return self.ws.dir / "PH-6_delivery" / Path(*p)
 
     # ---------- PH-0 输入准备 ----------
     def _act_ph0(self):
@@ -71,7 +70,7 @@ class Orchestrator:
         if not self.auto_pass:
             self._pause("等待人工确认 step_0a（manual_dir/extra_checks）")
 
-    # ---------- PH-1 手册检索（由 BOM 清单） ----------
+    # ---------- PH-1 手册检索 + BOM 预检 ----------
     def _act_ph1(self):
         boms = (sorted(self.input_dir.glob("*.xlsx")) + sorted(self.input_dir.glob("*.XLSX"))
                 + sorted(self.input_dir.glob("*.docx")) + sorted(self.input_dir.glob("*.DOCX"))
@@ -81,7 +80,15 @@ class Orchestrator:
         self._r(f"bom_parse {' '.join(map(str, boms))} --out {self._p1('bom_entries.json')}")
         self._r(f"manual_index {self._p1('bom_entries.json')} --out {self._p1('manual_index.json')} "
                 f"--refbook storge/refbook --product {self.product}")
-        self._log("ph1_done", boms=[b.name for b in boms])
+        # BOM 预检（原 PH-2 并入 PH-1）：产出 precheck.json，由 G1 一并校验
+        boms_j = json.loads(self._p1("bom_entries.json").read_text(encoding="utf-8"))
+        entries = boms_j.get("entries", {})
+        pre = {"kind": "precheck", "stage": "PH-1", "status": "PASS",
+               "bom_refdes": len(entries),
+               "boards": sorted({v.get("board", "?") for v in entries.values()}),
+               "bom_errors": boms_j.get("errors", [])}
+        (self._p1("precheck.json")).write_text(json.dumps(pre, ensure_ascii=False, indent=1), encoding="utf-8")
+        self._log("ph1_done", boms=[b.name for b in boms], bom_refdes=pre["bom_refdes"])
         self._ic_type_llm()      # LLM 判定 ic_type 并回写 manual_index.json（mock 走 SINK）
 
     def _ic_type_llm(self):
@@ -112,19 +119,8 @@ class Orchestrator:
                 e["ic_type"] = seen.get(e.get("model"), "SINK")
         p.write_text(json.dumps(mi, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    # ---------- PH-2 数据预检（Wave0，确定性；门禁 G2 在 run 中校验） ----------
+    # ---------- PH-2 网表解析（netlist_graph + 子 agent 分发） ----------
     def _act_ph2(self):
-        """PH-2 数据预检（Wave0，确定性）：产出预检报告。"""
-        boms = json.loads(self._p1("bom_entries.json").read_text(encoding="utf-8")) if self._p1("bom_entries.json").exists() else {"entries": {}}
-        entries = boms.get("entries", {})
-        boards = sorted({v.get("board", "?") for v in entries.values()})
-        pre = {"kind": "precheck", "stage": "PH-2", "status": "PASS",
-               "bom_refdes": len(entries), "boards": boards, "bom_errors": boms.get("errors", [])}
-        (self._p2("precheck.json")).write_text(json.dumps(pre, ensure_ascii=False, indent=1), encoding="utf-8")
-        self._log("ph2_done", **{k: pre[k] for k in ("bom_refdes", "boards")})
-
-    # ---------- PH-3 网表解析（netlist_graph + 子 agent 分发） ----------
-    def _act_ph3(self):
         edns = sorted(self.input_dir.glob("*.EDN")) + sorted(self.input_dir.glob("*.edn"))
         if not edns:
             raise RuntimeError(f"project/{self.product} 下无 EDN 输入")
@@ -133,25 +129,25 @@ class Orchestrator:
         for e in edns:
             self._r(f"edn_parse {e} --out {temp}")
             self._log("edn_parsed", file=e.name)
-        self._r(f"edn_global_merge {temp} {self._p3()}")
+        self._r(f"edn_global_merge {temp} {self._p2()}")
         self.cleanup_temp()                       # 即用即清：合并后删中间文件
-        self._r(f"refdes_map {self._p3()} --bom {self._p1('bom_entries.json')}")
-        self._r(f"tracer {self._p3()}")
-        self._r(f"netlist_graph {self._p3()} --groups 0 --product {self.product} "
+        self._r(f"refdes_map {self._p2()} --bom {self._p1('bom_entries.json')}")
+        self._r(f"tracer {self._p2()}")
+        self._r(f"netlist_graph {self._p2()} --groups 0 --product {self.product} "
                 f"--manual-index {self._p1('manual_index.json')}")
-        self._log("ph3_done", edns=[e.name for e in edns])
+        self._log("ph2_done", edns=[e.name for e in edns])
 
-    # ---------- PH-4 深度分析（只读 netlist_graph.json + 复核 + 回环） ----------
-    def _act_ph4(self):
+    # ---------- PH-3 深度分析（只读 netlist_graph.json + 复核 + 回环） ----------
+    def _act_ph3(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import SummaryDoc, EvidenceDoc, Finding
-        g = self._p3("netlist_graph.json")
+        g = self._p2("netlist_graph.json")
         if not g.exists():
-            raise RuntimeError("PH-4 需要 netlist_graph.json（PH-3 未产出）")
+            raise RuntimeError("PH-3 需要 netlist_graph.json（PH-2 未产出）")
         doc = json.loads(g.read_text(encoding="utf-8"))
         ics = [d for d in doc["devices"] if d["kind"] == "IC" and d["source"].get("populated")]
-        e = self._p4(); e.mkdir(parents=True, exist_ok=True)
-        notes = self._p4("clarify_requests.jsonl")
+        e = self._p3(); e.mkdir(parents=True, exist_ok=True)
+        notes = self._p3("clarify_requests.jsonl")
         for d in ics:
             # slice：本 IC + 相关 nets/paths + 手册前置
             slice_ = {"task": "analyze_ic", "device": d,
@@ -183,54 +179,54 @@ class Orchestrator:
         try:
             from hardware_analysis.tools import clarify
             req = e / "clarify_requests.jsonl"
-            clarify.emit_requests(self._p3(), req)
-            res = clarify.resolve(self.product, self._p3(), req, e / "clarify_resolutions.jsonl")
+            clarify.emit_requests(self._p2(), req)
+            res = clarify.resolve(self.product, self._p2(), req, e / "clarify_resolutions.jsonl")
             self._log("clarify_done", requests=len(res))
         except Exception as ex:
             self._log("clarify_err", err=str(ex)[:120])
 
-    # ---------- PH-5 报告合成 ----------
-    def _act_ph5(self):
+    # ---------- PH-4 报告合成 ----------
+    def _act_ph4(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import ReportDoc
-        e = self._p4()
+        e = self._p3()
         sums = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in e.glob("*_summary.json")}
         obj, errs, sec = llm_json("hw_write",
             "汇总 summary 为 report：findings[](check,severity,detail)/tables[](title,columns,rows完整不截断)"
             "/narrative{}" + ("；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"),
             ReportDoc)
-        f = self._p5(); f.mkdir(parents=True, exist_ok=True)
+        f = self._p4(); f.mkdir(parents=True, exist_ok=True)
         (f / "report.json").write_text(json.dumps(
             obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
             ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("write_done", sec=sec, ok=obj is not None)
 
-    # ---------- PH-6 审计 ----------
-    def _act_ph6(self):
+    # ---------- PH-5 审计 ----------
+    def _act_ph5(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import GateResult
         obj, errs, sec = llm_json("hw_auditor",
-            "对 evidence/report 执行 SA-1..8 自审+证据链核对，只审不改。输出 GateResult(gate=G6,status,checks[])",
+            "对 evidence/report 执行 SA-1..8 自审+证据链核对，只审不改。输出 GateResult(gate=G5,status,checks[])",
             GateResult)
-        f = self._p6(); f.mkdir(parents=True, exist_ok=True)
+        f = self._p5(); f.mkdir(parents=True, exist_ok=True)
         (f / "audit.json").write_text(json.dumps(
             obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
             ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("audit_done", sec=sec, ok=obj is not None)
 
-    # ---------- PH-7 闭环交付 ----------
-    def _act_ph7(self):
-        rp = self._p5("report.json")
-        (self._p7()).mkdir(parents=True, exist_ok=True)
-        final = self._p7("final_report.json")
+    # ---------- PH-6 闭环交付 ----------
+    def _act_ph6(self):
+        rp = self._p4("report.json")
+        (self._p6()).mkdir(parents=True, exist_ok=True)
+        final = self._p6("final_report.json")
         if rp.exists():
             import shutil
-            shutil.copy(rp, final)                   # 定版产物（G7 校验依据）
-        sp = self._p7("delivery.json")
+            shutil.copy(rp, final)                   # 定版产物（G6 校验依据）
+        sp = self._p6("delivery.json")
         sp.write_text(json.dumps({
             "kind": "delivery", "product": self.product, "status": "DELIVERED",
             "final_report": str(final), "unresolved": []}, ensure_ascii=False, indent=1), encoding="utf-8")
-        self._log("ph7_done")
+        self._log("ph6_done")
 
     # ---------- 基础设施 ----------
     def _r(self, cmd: str):
@@ -273,13 +269,12 @@ class Orchestrator:
             self._act_ph0()
             self.state["phases"]["PH-0"] = "DONE"
             for ph, act, gate, gatefn in [
-                ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_index(self._p1())),
-                ("PH-2", self._act_ph2, "G2", lambda: gv.validate_bom(self._p1())),
-                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_netlist(self._p3())),
-                ("PH-4", self._act_ph4, "G4", lambda: gv.validate_evidence(self._p4())),
-                ("PH-5", self._act_ph5, "G5", lambda: gv.validate_report(self._p5())),
-                ("PH-6", self._act_ph6, "G6", lambda: gv.validate_audit(self.ws.dir)),
-                ("PH-7", self._act_ph7, "G7", lambda: gv.validate_delivery(self.ws.dir)),
+                ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_bom(self._p1())),
+                ("PH-2", self._act_ph2, "G2", lambda: gv.validate_netlist(self._p2())),
+                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_evidence(self._p3())),
+                ("PH-4", self._act_ph4, "G4", lambda: gv.validate_report(self._p4())),
+                ("PH-5", self._act_ph5, "G5", lambda: gv.validate_audit(self.ws.dir)),
+                ("PH-6", self._act_ph6, "G6", lambda: gv.validate_delivery(self.ws.dir)),
             ]:
                 self._set("current", ph); self.state["phases"][ph] = "RUNNING"
                 act()

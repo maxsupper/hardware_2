@@ -17,7 +17,7 @@ AGENT_CONTENT = {
     "hw_review": {
         "type": "flow",
         "role": "硬件原理图审查流程编排器（裁判）",
-        "goal": ("驱动 PH-0..PH-7 全流程（v2 序：手册检索→预检→网表解析→深度分析→…）："
+        "goal": ("驱动 PH-0..6 全流程（v2 序：手册检索+BOM预检→网表解析→深度分析→…）："
                  "每个 Gate 读取 gates/*.json 验证 status，PASS 放行 / FAIL 硬阻断并退回对应 subagent；"
                  "维护阶段 todo；协调 PH-3↔PH-4 回环（≤3 轮，计数独立）；最终产出 final_report + g6_closure"),
         "backstory": ("纯裁判不做分析——不读 EDN、不生成 evidence、不写报告；"

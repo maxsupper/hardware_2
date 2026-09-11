@@ -28,29 +28,26 @@ NEW_RULES = {
 
 PROCESS = [
     {"stage": "PH-0", "name": "输入准备", "owner": "human+flow", "gate": None, "rules": [], "batch_boundary": False},
-    {"stage": "PH-1", "name": "手册检索(由BOM清单)", "owner": "hw_search", "gate": "G1",
+    {"stage": "PH-1", "name": "手册检索+BOM预检(由BOM清单)", "owner": "hw_search", "gate": "G1",
      "rules": ["G0-*", "RG0-*", "MI-*"], "batch_boundary": True},
-    {"stage": "PH-2", "name": "数据预检(Wave0)", "owner": "flow", "gate": "G2",
-     "rules": ["W0-*", "RW1-*"], "batch_boundary": False},
-    {"stage": "PH-3", "name": "网表解析(netlist_graph+子agent分发)", "owner": "hw_prep", "gate": "G3",
+    {"stage": "PH-2", "name": "网表解析(netlist_graph+子agent分发)", "owner": "hw_prep", "gate": "G2",
      "rules": ["PREP-*", "NG-*"], "batch_boundary": False},
-    {"stage": "PH-4", "name": "深度分析(芯片级并行<=5,只读netlist_graph+复核+回环)", "owner": "hw_analyze", "gate": "G4",
+    {"stage": "PH-3", "name": "深度分析(芯片级并行<=5,只读netlist_graph+复核+回环)", "owner": "hw_analyze", "gate": "G3",
      "rules": ["IC-*", "PO-*", "CN-*", "DR-*", "PE-*", "LS-*", "PB-*", "IF-*", "CL-*"], "batch_boundary": True},
-    {"stage": "PH-5", "name": "报告合成(report.json+渲染.md)", "owner": "hw_write", "gate": "G5",
+    {"stage": "PH-4", "name": "报告合成(report.json+渲染.md)", "owner": "hw_write", "gate": "G4",
      "rules": ["RF-*", "CT-*"], "batch_boundary": False},
-    {"stage": "PH-6", "name": "审计复核", "owner": "hw_auditor", "gate": "G6",
+    {"stage": "PH-5", "name": "审计复核", "owner": "hw_auditor", "gate": "G5",
      "rules": ["SA-*", "Q-*"], "batch_boundary": True},
-    {"stage": "PH-7", "name": "闭环交付", "owner": "flow", "gate": "G7", "rules": [], "batch_boundary": False},
+    {"stage": "PH-6", "name": "闭环交付", "owner": "flow", "gate": "G6", "rules": [], "batch_boundary": False},
 ]
 
 GATES = {
-    "G1": {"name": "manual_validate", "after": "PH-1", "note": "manual_index 覆盖全部U*；无手册者显式MISSING/UNVERIFIED；ic_type合法"},
-    "G2": {"name": "bom_validate", "after": "PH-2", "note": "BOM解析无错误/条目非空/板号可识别（Wave0确定性预检）"},
-    "G3": {"name": "netlist_validate", "after": "PH-3", "note": "netlist_graph完备性：dangling=0/uncovered=0/devices全覆盖/跨板连续"},
-    "G4": {"name": "g2x_validate", "after": "PH-4", "note": "evidence契约/填充率>=80%/接口覆盖(确定性)+复核回环<=3轮(计数独立)"},
-    "G5": {"name": "报告审核门", "after": "PH-5", "note": "确定性结构校验 + LLM内容审核(规则+要求+内容,有界2轮)"},
-    "G6": {"name": "审计门", "after": "PH-6", "note": "SA-1..8自审 + 证据链三方对照(确定性+审计输出)"},
-    "G7": {"name": "闭环交付门", "after": "PH-7", "note": "未决项清空/定版/final+渲染.md"},
+    "G1": {"name": "manual_bom_validate", "after": "PH-1", "note": "manual_index 覆盖全部U* + BOM解析无错误/条目非空/板号可识别"},
+    "G2": {"name": "netlist_validate", "after": "PH-2", "note": "netlist_graph完备性：dangling=0/uncovered=0/devices全覆盖/跨板连续"},
+    "G3": {"name": "g2x_validate", "after": "PH-3", "note": "evidence契约/填充率>=80%/接口覆盖(确定性)+复核回环<=3轮(计数独立)"},
+    "G4": {"name": "报告审核门", "after": "PH-4", "note": "确定性结构校验 + LLM内容审核(规则+要求+内容,有界2轮)"},
+    "G5": {"name": "审计门", "after": "PH-5", "note": "SA-1..8自审 + 证据链三方对照(确定性+审计输出)"},
+    "G6": {"name": "闭环交付门", "after": "PH-6", "note": "未决项清空/定版/final+渲染.md"},
 }
 
 
@@ -70,11 +67,15 @@ def apply(rj: dict) -> dict:
         "bootstrap": ["CT-*", "IC-*", "PO-*", "CN-*", "DR-*", "PE-*", "LS-*", "PB-*", "IF-*", "CL-*"],
         "tools": ["netlist_slice", "subgraph_extractor_d2", "manual_lookup", "power_tree_merger"],
         "note": "PH-4 只读 netlist_graph.json；兼做 tracer 判定复核；不清晰走回环(≤3轮)请求 PH-3 重核"})
-    a["hw_review"]["note"] = ("Flow 确定性裁判：PH-0..7 新序(G1手册/G2预检/G3网表/G4分析/G5报告/G6审计/G7交付)；"
-                             "Gate FAIL 单向阻断；协调 PH-3↔PH-4 回环(≤3轮,计数独立)")
+    a["hw_review"]["note"] = ("Flow 确定性裁判：PH-0..6 新序(G1手册+BOM/G2网表/G3分析/G4报告/G5审计/G6交付)；"
+                             "Gate FAIL 单向阻断；协调 PH-2↔PH-3 回环(≤3轮,计数独立)")
     for cid, (title, stage, gate) in NEW_RULES.items():
         rj["rules"][cid] = {"title": title, "source": f"v2_design::{stage}::{gate}",
                             "line": 0, "end_line": 0, "chars": len(title), "kind": cid.split("-")[0]}
+    for cid, st in (("NG-001", "PH-2"), ("NG-002", "PH-2"), ("NG-003", "PH-2"), ("NG-004", "PH-2"),
+                    ("NG-005", "PH-2"), ("CL-001", "PH-3"), ("CL-002", "PH-3")):
+        if cid in rj["rules"]:
+            rj["rules"][cid]["source"] = f"v2_design::{st}::{'G2' if st == 'PH-2' else 'G3'}"
     aud = rj.setdefault("_audit", {})
     aud["v2_applied"] = "2026-09-11: process换位/gates重排/agents更新 + 新增 MI/NG/CL " \
                         f"{len(NEW_RULES)} 条（既有218条内容未改）"

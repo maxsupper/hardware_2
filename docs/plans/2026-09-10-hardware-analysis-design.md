@@ -5,7 +5,7 @@
 ## 0. 目标与边界
 - 基于 CrewAI 的硬件原理图（EDN 网表）自动化审查 + 故障分析工具。
 - `raw/` = 唯一事实源（角色规则/检查规则/平台数据），**全程只读、绝不修改**。
-- 一期实现审查闭环（PH-0..7）+ 故障咨询（hw_master）+ 调试 web；二期做自学习 learn/ 回写。
+- 一期实现审查闭环（PH-0..6）+ 故障咨询（hw_master）+ 调试 web；二期做自学习 learn/ 回写。
 
 ## 1. 模型与配置（config.json 单一配置）
 - LLM 默认 `spark-dsv4 / deepseek-v4-flash-0731`（内网网关 `222.128.103.10:18080/api/v1`，OpenAI-completions），可配置升级 `pro: deepseek-v4-pro`。
@@ -34,8 +34,8 @@ config.json    （不入 git；有 config.example.json）
 - 开发法：脚本资产化（scripts/prepare_rules 幂等可重跑）；`src/tools.md` 注册门禁（新增脚本未注册=不可合入）。
 
 ## 4. 流程与门禁（重编号）
-- 阶段 **PH-0..7**：PH-0 输入准备(Step0a) / PH-1 hw_prep(多EDN全局合并+完整信号链) / PH-2 hw_search(手册检索) / PH-3 数据预检(确定性) / PH-4 hw_analyze(深度分析,芯片级并行≤5,LLM补盲) / PH-5 hw_write(报告 JSON+.md) / PH-6 hw_auditor(审计) / PH-7 闭环交付。
-- 门禁 **G1..G7**：G1 prep_validate / G2 手册缺失确认(人机A/B/C) / G3 数据完整性(确定性) / G4 g2x_validate / **G5 报告门 = 确定性结构校验 + LLM 内容审核（提交 规则+要求+内容 → 需改清单 → 修订 → 有界2轮）** / G6 审计门(SA-1..8+证据链) / G7 闭环。
+- 阶段 **PH-0..6（v2 最新）**：PH-0 输入准备 / PH-1 手册检索+BOM预检 / PH-2 网表解析 / PH-3 深度分析 / PH-4 报告合成 / PH-5 审计复核 / PH-6 闭环交付。（下文 §4 为早期版本，以 §12 v2 与 rules.json 为准）
+- 门禁 **G1..G6**：G1 prep_validate / G2 手册缺失确认(人机A/B/C) / G3 数据完整性(确定性) / G4 g2x_validate / **G5 报告门 = 确定性结构校验 + LLM 内容审核（提交 规则+要求+内容 → 需改清单 → 修订 → 有界2轮）** / G6 审计门(SA-1..8+证据链) / G7 闭环。
 - **Flow（=hardware_review）确定性裁判**：Gate 单一门控 PASS 放行 / FAIL 硬阻断+退回；批次边界自动停等人工。
 - 信号追踪：图遍历+终止规则+双向验证+mux落地（端到端可脚本校验）；LLM 补盲共用 D2 子图打包器 + 分类缓存；判不出→UNVERIFIED。
 - 人工解决问题点（6 类）：规则冲突仲裁 / G2 缺失A-B-C / G6 未决项归档 / 故障实测闭环 / 终稿签字 / (二期)自学习建议。
@@ -86,9 +86,9 @@ config.json    （不入 git；有 config.example.json）
 | PH-4 深度分析 | LLM 芯片级并行≤5，**只读 netlist_graph.json**+复核 tracer 判定+回环 | hw_analyze | G4 | netlist_graph | PH-4_analyze/*.json |
 | PH-5 报告合成 | report.json + .md | hw_write | G5 | PH-4_analyze | report |
 | PH-6 审计复核 | SA-1..8+证据链 | hw_auditor | G6 | — | audit.json |
-| PH-7 闭环交付 | 定版 | flow | G7 | — | final |
+| PH-6 闭环交付 | 定版 | flow | G6 | — | final |
 
-> 门禁语义重排：**G1=手册门，G2=预检门，G3=网表门，G4=深度分析门，G5=报告门，G6=审计门，G7=交付门**。
+> 门禁语义（v2 最新）：**G1=手册+BOM门，G2=网表门，G3=深度分析门，G4=报告门，G5=审计门，G6=交付门**。
 
 ### 12.2 netlist_graph.json（v2.2 数据结构）
 - 顶层：`meta / devices[] / nets[] / paths[] / cross_board_links[]`。
@@ -107,4 +107,4 @@ config.json    （不入 git；有 config.example.json）
 - 3 轮未决 → link 标 UNVERIFIED 进报告"待核清单"，不阻塞。
 
 ### 12.5 待用户批准的 rules.json 变更（实施已就绪，规则内容不改）
-- process 换位、gates G1..G7 语义重排、agents 职责/工具更新；新增规则条目：PH-1 manual_index 必填、PH-3 netlist_graph 完备性、回环协议。详见 `docs/rules_change_request.md`。
+- process 换位、gates G1..G6 语义重排、agents 职责/工具更新；新增规则条目：PH-1 manual_index 必填、PH-3 netlist_graph 完备性、回环协议。详见 `docs/rules_change_request.md`。

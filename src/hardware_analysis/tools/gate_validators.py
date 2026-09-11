@@ -1,4 +1,4 @@
-"""Gate 校验器 — 阶段3b 确定性门禁（G1/G3/G4/G5；G2 人机/ G6/G7 在 Flow 阶段编排）.
+"""Gate 校验器 — 确定性门禁（G1 手册+BOM / G2 网表 / G3 分析 / G4 报告 / G5 审计 / G6 交付）。
 
 全部 PASS/FAIL 由确定性脚本判定（不进 LLM）；产出 gates/G{n}.json（GateResult 契约）。
 用法: python -m hardware_analysis.tools.gate_validators <gate> <workspace_dir>
@@ -79,7 +79,7 @@ def validate_data(b_prep_dir: Path) -> GateResult:
     return _finalize("G3", "数据完整性(Wave0)", checks)
 
 
-# ---------------- G4 g2x_validate（evidence 契约） ----------------
+# ---------------- v2: G3 g2x_validate（PH-3 evidence 契约） ----------------
 def validate_evidence(e_dir: Path) -> GateResult:
     checks = []
     evs = sorted(set(e_dir.glob("*.evidence.json")) | set(e_dir.glob("*_evidence.json"))) if e_dir.exists() else []
@@ -101,15 +101,15 @@ def validate_evidence(e_dir: Path) -> GateResult:
                    f"{s.name} 契约合规(finding/severity/≤5KB)", f"{size}B findings={len(findings)} 非法={len(bad_status)}")
         except Exception as e:
             _check(checks, "G2X-003", GateStatus.FAIL, f"{s.name} 可读", str(e)[:60])
-    return _finalize("G4", "g2x_validate", checks)
+    return _finalize("G3", "g2x_validate", checks)
 
 
-# ---------------- G5 报告门（结构层；LLM 内容审核由 Flow 阶段编排） ----------------
+# ---------------- v2: G4 报告门（PH-4；LLM 内容审核由 Flow 阶段编排） ----------------
 def validate_report(f_dir: Path) -> GateResult:
     checks = []
     rp = f_dir / "report.json"
     if not rp.exists():
-        return _finalize("G5", "report_gate(结构)", [
+        return _finalize("G4", "report_gate(结构)", [
             GateCheck(id="RF-001", status=GateStatus.FAIL, expected="report.json 存在", actual="缺失")])
     try:
         d = json.loads(rp.read_text(encoding="utf-8"))
@@ -124,7 +124,7 @@ def validate_report(f_dir: Path) -> GateResult:
                "表格无截断(行/列一致)", f"异常表 {len(trunc)} 个")
     except Exception as e:
         _check(checks, "RF-001", GateStatus.FAIL, "report.json 可解析", str(e)[:80])
-    return _finalize("G5", "report_gate(结构层)", checks)
+    return _finalize("G4", "report_gate(结构层)", checks)
 
 
 # ---------------- v2: G1 manual_validate（PH-1 手册索引） ----------------
@@ -174,7 +174,48 @@ def validate_bom(b_prep_dir: Path) -> GateResult:
     return _finalize("G2", "bom_validate", checks)
 
 
-# ---------------- v2: G3 netlist_validate（PH-3 netlist_graph 完备性） ----------------
+# ---------------- v2: G1 manual_bom_validate（PH-1 手册检索+BOM预检，合并原 G1+G2） ----------------
+def validate_manual_bom(b_prep_dir: Path) -> GateResult:
+    """G1：manual_index 覆盖 + BOM 解析健康。"""
+    checks = []
+    p = b_prep_dir / "manual_index.json"
+    ok = p.exists() and p.stat().st_size > 0
+    _check(checks, "MI-000", GateStatus.PASS if ok else GateStatus.FAIL,
+           "manual_index.json 存在且非空", "ok" if ok else "缺失/空")
+    if ok:
+        d = json.loads(p.read_text(encoding="utf-8"))
+        entries = d.get("entries", {})
+        bp = b_prep_dir / "bom_entries.json"
+        boms = json.loads(bp.read_text(encoding="utf-8")).get("entries", {}) if bp.exists() else {}
+        u_keys = [k for k, v in boms.items() if CONV.is_active(v.get("refdes", ""))]
+        missing = [k for k in u_keys if k not in entries]
+        _check(checks, "MI-001", GateStatus.PASS if not missing else GateStatus.WARNING,
+               "manual_index 覆盖 BOM 全部 U*", f"缺 {len(missing)}/{len(u_keys)}")
+        bad = [k for k, e in entries.items()
+               if not e.get("manual_path") and e.get("status") not in ("MISSING", "TRULY_MISSING", "UNVERIFIED")]
+        _check(checks, "MI-002", GateStatus.PASS if not bad else GateStatus.FAIL,
+               "无手册者须显式 MISSING/TRULY_MISSING/UNVERIFIED", f"违规 {len(bad)}")
+        bad2 = [k for k, e in entries.items()
+                if e.get("ic_type") not in ("SINK", "PASS_THRU", "POWER_SRC", "UNKNOWN", "UNVERIFIED")]
+        _check(checks, "MI-003", GateStatus.PASS if not bad2 else GateStatus.FAIL,
+               "ic_type ∈ {SINK,PASS_THRU,POWER_SRC,UNKNOWN,UNVERIFIED}", f"违规 {len(bad2)}")
+    bp = b_prep_dir / "bom_entries.json"
+    bok = bp.exists() and bp.stat().st_size > 0
+    _check(checks, "BOM-000", GateStatus.PASS if bok else GateStatus.FAIL,
+           "bom_entries.json 存在", "ok" if bok else "缺失")
+    if bok:
+        bd = json.loads(bp.read_text(encoding="utf-8"))
+        entries2, errs = bd.get("entries", {}), bd.get("errors", [])
+        _check(checks, "BOM-001", GateStatus.PASS if not errs else GateStatus.FAIL,
+               "BOM 解析无错误", f"errors={len(errs)}")
+        _check(checks, "BOM-002", GateStatus.PASS if entries2 else GateStatus.FAIL,
+               "BOM 条目非空", f"entries={len(entries2)}")
+        _check(checks, "BOM-003", GateStatus.PASS if entries2 else GateStatus.FAIL,
+               "板号可识别", f"boards={sorted({v.get('board','X') for v in entries2.values()})}")
+    return _finalize("G1", "manual_bom_validate", checks)
+
+
+# ---------------- v2: G2 netlist_validate（PH-2 netlist_graph 完备性） ----------------
 def validate_netlist(b_prep_dir: Path) -> GateResult:
     checks = []
     p = b_prep_dir / "netlist_graph.json"
@@ -202,56 +243,56 @@ def validate_netlist(b_prep_dir: Path) -> GateResult:
             xl = len(d.get("cross_board_links", []))
             _check(checks, "NG-005", GateStatus.PASS if xl > 0 else GateStatus.WARNING,
                    "多板时跨板连续已建立", f"cross_board_links={xl}")
-    return _finalize("G3", "netlist_validate", checks)
+    return _finalize("G2", "netlist_validate", checks)
 
 
-# ---------------- v2: G6 audit_validate（PH-6 审计） ----------------
+# ---------------- v2: G5 audit_validate（PH-5 审计） ----------------
 def validate_audit(ws_dir: Path) -> GateResult:
     checks = []
-    ad = ws_dir / "PH-6_audit" / "audit.json"
+    ad = ws_dir / "PH-5_audit" / "audit.json"
     ok = ad.exists() and ad.stat().st_size > 0
-    _check(checks, "G6-000", GateStatus.PASS if ok else GateStatus.FAIL,
-           "audit.json 存在（PH-6 审计产出）", "ok" if ok else "缺失")
+    _check(checks, "G5-000", GateStatus.PASS if ok else GateStatus.FAIL,
+           "audit.json 存在（PH-5 审计产出）", "ok" if ok else "缺失")
     if ok:
         try:
             d = json.loads(ad.read_text(encoding="utf-8"))
             st = d.get("status")
-            _check(checks, "G6-001", GateStatus.PASS if st == "PASS" else GateStatus.FAIL,
+            _check(checks, "G5-001", GateStatus.PASS if st == "PASS" else GateStatus.FAIL,
                    "审计状态 PASS", f"status={st}")
             fails = [c for c in d.get("checks", []) if c.get("status") == "FAIL"]
-            _check(checks, "G6-002", GateStatus.PASS if not fails else GateStatus.FAIL,
+            _check(checks, "G5-002", GateStatus.PASS if not fails else GateStatus.FAIL,
                    "审计无 FAIL 检查（SA-1..8）", f"fail 检查 {len(fails)}")
         except Exception as e:
-            _check(checks, "G6-001", GateStatus.FAIL, "audit.json 可解析", str(e)[:60])
+            _check(checks, "G5-001", GateStatus.FAIL, "audit.json 可解析", str(e)[:60])
     # 证据链三方：evidence + summary + report
-    e = ws_dir / "PH-4_analyze"
+    e = ws_dir / "PH-3_analyze"
     evs = sorted(set(e.glob("*.evidence.json")) | set(e.glob("*_evidence.json"))) if e.exists() else []
     sues = sorted(e.glob("*_summary.json")) if e.exists() else []
-    _check(checks, "G6-003", GateStatus.PASS if evs else GateStatus.FAIL, "有 evidence", f"{len(evs)}")
-    _check(checks, "G6-004", GateStatus.PASS if sues else GateStatus.FAIL, "有 summary", f"{len(sues)}")
-    _check(checks, "G6-005", GateStatus.PASS if (ws_dir / "PH-5_report" / "report.json").exists() else GateStatus.FAIL,
-           "report.json 存在（证据链完整性）", "ok" if (ws_dir / "PH-5_report" / "report.json").exists() else "缺失")
-    return _finalize("G6", "audit_validate", checks)
+    _check(checks, "G5-003", GateStatus.PASS if evs else GateStatus.FAIL, "有 evidence", f"{len(evs)}")
+    _check(checks, "G5-004", GateStatus.PASS if sues else GateStatus.FAIL, "有 summary", f"{len(sues)}")
+    _check(checks, "G5-005", GateStatus.PASS if (ws_dir / "PH-4_report" / "report.json").exists() else GateStatus.FAIL,
+           "report.json 存在（证据链完整性）", "ok" if (ws_dir / "PH-4_report" / "report.json").exists() else "缺失")
+    return _finalize("G5", "audit_validate", checks)
 
 
-# ---------------- v2: G7 delivery_validate（PH-7 闭环交付） ----------------
+# ---------------- v2: G6 delivery_validate（PH-6 闭环交付） ----------------
 def validate_delivery(ws_dir: Path) -> GateResult:
     checks = []
-    prior = [f"G{i}" for i in range(1, 7)]
+    prior = [f"G{i}" for i in range(1, 6)]
     gp = ws_dir / "gates"
     missing = [g for g in prior if not (gp / f"{g}.json").exists()]
-    _check(checks, "G7-000", GateStatus.PASS if not missing else GateStatus.FAIL,
-           "前序门禁文件 G1..G6 齐全", f"缺 {missing}")
+    _check(checks, "G6-000", GateStatus.PASS if not missing else GateStatus.FAIL,
+           "前序门禁文件 G1..G5 齐全", f"缺 {missing}")
     failed = [g for g in prior if (gp / f"{g}.json").exists()
               and json.loads((gp / f"{g}.json").read_text(encoding="utf-8")).get("status") != "PASS"]
-    _check(checks, "G7-001", GateStatus.PASS if not failed else GateStatus.FAIL,
-           "前序门禁 G1..G6 全 PASS", f"FAIL={failed}")
-    rp = ws_dir / "PH-5_report" / "report.json"
-    _check(checks, "G7-002", GateStatus.PASS if rp.exists() else GateStatus.FAIL,
+    _check(checks, "G6-001", GateStatus.PASS if not failed else GateStatus.FAIL,
+           "前序门禁 G1..G5 全 PASS", f"FAIL={failed}")
+    rp = ws_dir / "PH-4_report" / "report.json"
+    _check(checks, "G6-002", GateStatus.PASS if rp.exists() else GateStatus.FAIL,
            "report.json 存在", "ok" if rp.exists() else "缺失")
-    _check(checks, "G7-003", GateStatus.PASS if (ws_dir / "PH-7_delivery" / "final_report.json").exists() else GateStatus.FAIL,
-           "定版 final_report.json 存在（PH-7 产物）",
-           "ok" if (ws_dir / "PH-7_delivery" / "final_report.json").exists() else "缺失")
+    _check(checks, "G6-003", GateStatus.PASS if (ws_dir / "PH-6_delivery" / "final_report.json").exists() else GateStatus.FAIL,
+           "定版 final_report.json 存在（PH-6 产物）",
+           "ok" if (ws_dir / "PH-6_delivery" / "final_report.json").exists() else "缺失")
     crit = []
     if rp.exists():
         try:
@@ -259,9 +300,9 @@ def validate_delivery(ws_dir: Path) -> GateResult:
             crit = [f for f in r.get("findings", []) if f.get("severity") == "CRITICAL"]
         except Exception:
             crit = []
-    _check(checks, "G7-004", GateStatus.PASS if not crit else GateStatus.WARNING,
+    _check(checks, "G6-004", GateStatus.PASS if not crit else GateStatus.WARNING,
            "无 CRITICAL 未决项", f"critical={len(crit)}")
-    return _finalize("G7", "delivery_validate", checks)
+    return _finalize("G6", "delivery_validate", checks)
 
 
 def _finalize(gate, name, checks) -> GateResult:
@@ -286,19 +327,18 @@ def main_gate_cli(ws_dir, gate):
 
 
 def _GATE_FNS() -> dict:
-    """v2 门禁映射：G1=手册 G2=预检 G3=网表 G4=分析 G5=报告 G6=审计 G7=交付。"""
-    return {"G1": ("PH-1_manual", validate_manual_index),
-            "G2": ("PH-1_manual", validate_bom),
-            "G3": ("PH-3_netlist", validate_netlist),
-            "G4": ("PH-4_analyze", validate_evidence),
-            "G5": ("PH-5_report", validate_report),
-            "G6": (".", validate_audit),
-            "G7": (".", validate_delivery)}
+    """v2 门禁映射：G1=手册+BOM G2=网表 G3=分析 G4=报告 G5=审计 G6=交付。"""
+    return {"G1": ("PH-1_manual", validate_manual_bom),
+            "G2": ("PH-2_netlist", validate_netlist),
+            "G3": ("PH-3_analyze", validate_evidence),
+            "G4": ("PH-4_report", validate_report),
+            "G5": (".", validate_audit),
+            "G6": (".", validate_delivery)}
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("gate", choices=["G1", "G2", "G3", "G4", "G5", "G6", "G7"])
+    ap.add_argument("gate", choices=["G1", "G2", "G3", "G4", "G5", "G6"])
     ap.add_argument("workspace_dir", help="产品工作区（其下 PH-1_manual/PH-3_netlist/PH-4_analyze/PH-5_report）")
     ap.add_argument("--out", default=None, help="写 gates/G<n>.json")
     args = ap.parse_args()
