@@ -343,8 +343,10 @@ class Orchestrator:
         if self.auto_pass:
             self._log("batch_auto_continue", at=self.state["current"])
             return True
-        self._set("paused", True); self._set("pause_reason", "批次边界，等待人工确认继续")
-        self._log("batch_pause", at=self.state["current"])
+        # 保留阶段内设置的更具体原因（如"手册缺失确认"），否则用通用批次提示
+        reason = self.state.get("pause_reason") or "批次边界，等待人工确认继续"
+        self._set("paused", True); self._set("pause_reason", reason)
+        self._log("batch_pause", at=self.state["current"], reason=reason)
         return False
 
 
