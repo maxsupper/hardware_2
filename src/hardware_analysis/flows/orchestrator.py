@@ -102,10 +102,13 @@ class Orchestrator:
             return
         self._log("manual_gaps", count=gaps["total"],
                   items=[f"{g['refdes']}({g['model']})" for g in gaps["gaps"]][:50])
-        print(f"\n【手册缺失确认】{gaps['total']} 项待补手册：")
-        for g in gaps["gaps"][:30]:
-            print(f"  - {g['refdes']}  {g['model']}")
-        print("  处理方式：补文件(上传/add) / 忽视(→UNVERIFIED) / 指定兼容型号\n")
+        print(f"\n【手册缺失确认】{gaps['total']} 个位号 / 按型号分组：")
+        by_model: dict = {}
+        for g in gaps["gaps"]:
+            by_model.setdefault(g["model"], []).append(g["refdes"])
+        for model, refs in by_model.items():
+            print(f"  - {model:24s} ({', '.join(refs)})")
+        print("  处理方式（按型号一次决定）：补文件(上传) / 缺省(→UNVERIFIED) / 替换(兼容型号)\n")
         dec_path = self.ws.dir / "gates" / "human_manual.json"
         decisions = {}
         if dec_path.exists():

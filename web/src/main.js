@@ -89,16 +89,21 @@
     lastModalReason=reason;
     box.classList.add('hidden');        // 先隐藏，允许按新原因重绘
     act.innerHTML=''; body.innerHTML='';
-    // 手册缺失确认（PH-1）：逐项 上传 / 缺省 / 替换
+    // 手册缺失确认（PH-1）：按“芯片型号”分组，同一型号只需提交一次（如 U4/U13/U33 均为 ETA3417S2F）
     if((st.pause_reason||'').includes('手册缺失')){
       $('m-title').textContent='【待你处理】手册缺失确认';
       const g=await fetch('/api/manual_gaps/'+encodeURIComponent(product)).then(r=>r.json()).catch(()=>({gaps:[]}));
+      const byModel={};                              // 型号 -> [位号...]
+      (g.gaps||[]).forEach(it=>{ (byModel[it.model]=byModel[it.model]||[]).push(it.refdes); });
+      const models=Object.keys(byModel);
       const hint=document.createElement('div'); hint.className='dim';
-      hint.textContent='以下 IC 未找到手册，请逐项选择：上传(补充文件) / 缺省(→UNVERIFIED) / 替换(按兼容型号)'; body.appendChild(hint);
+      hint.textContent=`共 ${models.length} 个型号（${(g.gaps||[]).length} 个位号），按型号选择：上传(补充文件) / 缺省(→UNVERIFIED) / 替换(按兼容型号)`;
+      body.appendChild(hint);
       const rows=[];
-      (g.gaps||[]).forEach(it=>{
+      models.forEach(model=>{
+        const refs=byModel[model];
         const row=document.createElement('div'); row.className='agent-card';
-        const nm=document.createElement('span'); nm.innerHTML=`<b>${it.refdes}</b> <span class="dim">${it.model}</span> `;
+        const nm=document.createElement('span'); nm.innerHTML=`<b>${model}</b> <span class="dim">(${refs.join(', ')})</span> `;
         const sel=document.createElement('select');
         [['IGNORE','缺省'],['PROVIDE_FILE','上传'],['COMPATIBLE','替换']].forEach(([v,t])=>{
           const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); });
@@ -107,26 +112,28 @@
         sel.onchange=()=>{ finp.style.display=sel.value==='PROVIDE_FILE'?'inline-block':'none';
                            tinp.style.display=sel.value==='COMPATIBLE'?'inline-block':'none'; };
         row.appendChild(nm); row.appendChild(sel); row.appendChild(finp); row.appendChild(tinp); body.appendChild(row);
-        rows.push({ref:it.refdes, sel, finp, tinp});
+        rows.push({refs, sel, finp, tinp});
       });
+      const expand=(act)=>{ const d={}; rows.forEach(r=>r.refs.forEach(ref=>{ d[ref]=act(r); })); return d; };
       const submit=async()=>{
         const decisions={};
         for(const r of rows){
-          if(r.sel.value==='COMPATIBLE'){ decisions[r.ref]={action:'COMPATIBLE',compatible_model:r.tinp.value.trim()}; }
+          if(r.sel.value==='COMPATIBLE'){ const v={action:'COMPATIBLE',compatible_model:r.tinp.value.trim()}; r.refs.forEach(ref=>decisions[ref]=v); }
           else if(r.sel.value==='PROVIDE_FILE'){
             const f=r.finp.files[0];
-            if(!f){ decisions[r.ref]={action:'IGNORE'}; continue; }
+            if(!f){ r.refs.forEach(ref=>decisions[ref]={action:'IGNORE'}); continue; }
             const fd=new FormData(); fd.append('file',f);
             const up=await fetch('/api/manual/upload',{method:'POST',body:fd}).then(x=>x.json()).catch(()=>({}));
-            decisions[r.ref]= up.path? {action:'PROVIDE_FILE',file:up.path} : {action:'IGNORE'};
-          } else { decisions[r.ref]={action:'IGNORE'}; }
+            const v= up.path? {action:'PROVIDE_FILE',file:up.path} : {action:'IGNORE'};
+            r.refs.forEach(ref=>decisions[ref]=v);
+          } else { r.refs.forEach(ref=>decisions[ref]={action:'IGNORE'}); }
         }
         POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions}); box.classList.add('hidden');
       };
       const b1=document.createElement('button'); b1.className='btn primary'; b1.textContent='提交并继续'; b1.onclick=submit;
       const b2=document.createElement('button'); b2.className='btn'; b2.textContent='全部缺省';
-      b2.onclick=()=>{ const d={}; (g.gaps||[]).forEach(it=>d[it.refdes]={action:'IGNORE'});
-        POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions:d}); box.classList.add('hidden'); };
+      b2.onclick=()=>{ POST('/api/human/confirm',{product,kind:'manual',answer:'continue',
+        decisions:expand(()=>({action:'IGNORE'}))}); box.classList.add('hidden'); };
       act.appendChild(b1); act.appendChild(b2);
       box.classList.remove('hidden');
       return;
