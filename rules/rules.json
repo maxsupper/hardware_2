@@ -2146,11 +2146,19 @@
    "kind": "PF"
   },
   "PF-005": {
-   "title": "规则束预算：PH-3 全量规则束(common+platform)必须在 rule_bundle_tokens 预算内(≥58K)完整注入；发生截断时必须在日志与提示词中显式列出被丢弃规则 ID，禁止静默截断；若预算不足须先扩容而非裁剪规则",
+   "title": "规则束预算：PH-3 全量规则束(common+platform)必须在预算内完整注入（预算按最大平台束核定，当前 100K，须 < input_hard_cap）；发生截断必须在日志与提示词中显式列出被丢弃规则 ID，禁止静默截断；预算不足须先扩容而非裁剪规则",
    "source": "v4_design::PH-3::G3",
    "line": 0,
    "end_line": 0,
-   "chars": 120,
+   "chars": 131,
+   "kind": "PF"
+  },
+  "PF-006": {
+   "title": "数据手册类平台规则提炼：以整本数据手册为规则来源的平台（如 E2000），必须先按目录分章、再分批交 LLM 判定章节是否硬件约束；只保留硬件约束章节；丢弃理由仅限噪声白名单(revision_history/toc/toc_entry/terminology/ordering/packaging/legal/figure_caption/cover)且必须逐章留痕于 filter_manifest.json；标题含硬件关键词(特性/电气/指标/参数/时序/复用/拓扑/布线/PCB/阻抗/等长/引脚/信号/电源/时钟/复位/ESD/EMC/温度/热/校准/绝对最大/推荐工作/限制/约束/处理方式/使用/建议/指导/准则/要求)的章节不得丢弃；判定须缓存(prompt_version+章节 sha1)保证可重复；同标题章节判定必须一致",
+   "source": "v4_design::PH-3::G3",
+   "line": 0,
+   "end_line": 0,
+   "chars": 371,
    "kind": "PF"
   }
  },
@@ -2248,7 +2256,8 @@
     "PF-002",
     "PF-003",
     "PF-004",
-    "PF-005"
+    "PF-005",
+    "PF-006"
    ],
    "dev_rules": [
     "DEV-009",

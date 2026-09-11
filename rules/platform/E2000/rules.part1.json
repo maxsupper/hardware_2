@@ -1,0 +1,1291 @@
+{
+ "schema_version": "1.0",
+ "kind": "platform_rules",
+ "scope": "platform/E2000",
+ "source": "raw/raw_platmform/E2000/数据手册.md",
+ "source_sha1": "4ecdbf79b9df081187190c79278f64e9d954ca61",
+ "generated_at": "2026-09-11T09:17:02+00:00",
+ "tokens_est": 19790,
+ "entries": [
+  {
+   "id": "PF-E2000-001",
+   "title": "1 简介",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "主频": "2.0GHz、1.5GHz",
+    "内核电压": "0.85V",
+    "封装": "25*25mm FCBGA",
+    "工作结温": "0~85°C",
+    "ESD_HBM": "1000V"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "内核电压 0.85V\nDDR 1 个72bits DDR4/LPDDR4-2400\nPCIe 1 个x4 和2 个x1 PCIe3.0\n工作结温(Tj) 0~85°C\nESD(HBM) 1000V",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 773,
+     "end_line": 881
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-002",
+   "title": "1.1 技术指标",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "L2_Cache": "2MB+256KB",
+    "PCIe": "1个x4和2个x1 PCIe3.0",
+    "DDR": "1个72bits DDR4/LPDDR4-2400"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "兼容ARM V8 指令系统，支持A64 和A32 指令集\n集成2 个FTC664 核和2 个FTC310 核\n集成2 个WDT\n集成1 个温度传感器，可实时监测片内温度\n集成1 个DDR4/LPDDR4-2400 控制器，支持72bit 数据，包含64bit 数据和8bit 开关可配置带外ECC。支持降位宽为36 位，其中32bit 数据和4bit 带外ECC\n集成6 Lanes PCIe 3.0 接口，可拆分成1 路X4+2 路X1 或1 路X2+4 路X1 或6 路X1\n集成4 个千兆以太网控制器，支持2 路SGMII 接口和2 路SGMII/RGMII 接口\n集成3 路USB2.0(OTG)和2 路USB3.0(兼容2.0)\n集成1 个QSPI Flash 控制器，支持4 个片选\n集成16 个MIO 控制器，可配置为UART 接口或I2C 接口",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 882,
+     "end_line": 946
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-003",
+   "title": "1.2 电源管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "支持片内多个电源域单独管理的控制\n支持以SE 为主的最小核心的电源模式\n支持USB，GPIO 中断，以太网等设备的唤醒",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 947,
+     "end_line": 950
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-004",
+   "title": "1.4 封装",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "引脚数目": "809",
+    "封装尺寸": "25mm×25mm"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "采用FCBGA 封装，E2000Q 引脚数目为809，封装尺寸25mm×25mm",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 954,
+     "end_line": 957
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-005",
+   "title": "2.1 引脚列表",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.1 引脚列表",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 966,
+     "end_line": 966
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-006",
+   "title": "2.1.1 通用信号引脚信息",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "注1：SPIM0、MDC/MDIO0-3、PCIE2_PRSNT0、PCIE2_PRSNT1、PCIE2_PRSNT2、PCIE2_PRSNT3、PCIE0_PRSNT、PCIE1_PRSNT 存在第二复用位置；\n注2：RFU 信号未添加DOWN 后缀的，在芯片应用中保持管脚悬空处理；添加DOWN 后缀的信号，在应用中将该管脚接地处理。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 967,
+     "end_line": 1981
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-007",
+   "title": "2.1.2 电源引脚信息",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "SENSEVDD、SENSEGND 可接入VDD 供电芯片作为反馈点，若不需要使用，将管脚悬空即可。\nSMCORE_x 为BANK 电压配置管脚，具体使用见第3.5 章节。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 1982,
+     "end_line": 2090
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-008",
+   "title": "2.1.3 不使用时处理方式",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "对于飞腾腾珑E2000Q 芯片的引脚，除表2-3 中特殊说明的，均可浮空处理。\nRFU_BA47_DOWN（引脚BA47）不使用时处理方式：接地。\nRFU_AW47_DOWN（引脚AW47）不使用时处理方式：接地。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 2091,
+     "end_line": 2103
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-009",
+   "title": "2.1.4 复用引脚说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "板级设计时需明确复用关系，并根据实际应用场景和特定用途决定用哪些功能接口。\n可以对通用引脚的电气特性，比如驱动能力、传输延迟、上下拉等特性进行配置。\n表中功能0 到功能6 表示同一个引脚复用的7 个功能，复位后默认功能为功能0。\nPAD 复用进行配置时，禁止将各IO 引脚的寄存器配置到不存在的功能上；特别注意复用恢复默认设置时，BANK5 内引脚N55\\L55\\G47\\J47\\J49 需将复用功能从FUNC0 配走，否则GPIO2_3\\GPIO2_4\\GPIO2_8\\GPIO2_9\\GPIO2_10 功能使用异常。\n片内上下拉：'SEL'表示该引脚支持片内电阻上下拉设置；'UP'/'DOWN'表示该引脚片内电阻默认上拉/下拉设置，且默认设置适用于功能0，其余功能需要做相应配置更改。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 2104,
+     "end_line": 3589
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-010",
+   "title": "2.1.5 Pin Map",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "图 2-2  E2000Q BGA MAP 结构图\nPCIE2_RE FCLKP\nSGMII0_RXN\nDP1_AUX_N\nGPIO1_13\nCAN0_TX\nUART2_RXD\nUSB2_P4_VBUSDET\nSD1_VOLT\nDDR_DQ10\nDDR_DQS_T10\nFJTAG_NTRST\nCLK_REF_50M\nSE_CFG4\nCPU_POR_N\nQSPI_SCK\nEFUSE_VQPS",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 3590,
+     "end_line": 4644
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-011",
+   "title": "2.2 DDR 内存接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2 DDR 内存接口",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4645,
+     "end_line": 4645
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-012",
+   "title": "2.2.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "DDR4_voltage": "1.2V",
+    "LPDDR4_voltage": "1.1V",
+    "DDR4_rank_max": 4,
+    "LPDDR4_rank_max": 2,
+    "DDR4_capacity": "1GB~64GB",
+    "LPDDR4_capacity": "512MB~16GB",
+    "LPDDR4_2rank_max_rate": "2133MT/s",
+    "other_max_rate": "2400MT/s"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "支持DDR4、LPDDR4 协议；\n支持的器件类型：DDR4：X8、X16；LPDDR4：X16、X32；\n支持的接口电压：DDR4——1.2V；LPDDR4——1.1V；\nDDR4 最多支持4Rank、LPDDR4 支持2Rank；\nDDR4 容量范围为1GB~64GB，LPDDR4 容量范围为512MB~16GB；\n64 位2Rank LPDDR4 最大支持2133MT/s，其余最大支持2400MT/s；",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4646,
+     "end_line": 4736
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-013",
+   "title": "2.2.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "DDR_A0 O DDR4 地址和控制命令信号，包括BankAddress、BankGroup 等\nDDR_ZN_SENSE I/O 阻抗校准接口信号\nDDR_ALERT_N 警告信号\nDDR_RESET_N O DDR4 复位信号\nDDR_CLK_T[3:0] O DDR4 通道的差分时钟\nDDR_DQ[63:0] I/O DDR4 64 位数据",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4737,
+     "end_line": 4952
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-014",
+   "title": "2.2.3 引脚分布",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.2.3 引脚分布\nE2000Q 芯片DDR 通道的引脚分布如图2-3 所示，红色部分表示内存信号有关引脚。\n\n2 接口说明\n\n图2-3\nE2000Q DDR 引脚分布(顶视图)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4953,
+     "end_line": 4959
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-015",
+   "title": "2.2.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 采用五颗16 位DDR4 SDRAM 单RANK 颗粒的拓扑结构(带ECC)。\n用作存储ECC数据的颗粒未使用的信号处理方式多样，请查阅具体使用的颗粒规格书进行正确处理；若使用颗粒含BG1 信号，处理方式参考BG0。\nE2000Q 采用两颗32 位LPDDR4 SDRAM 单RANK 颗粒的拓扑结构，每个32 位LPDDR4 颗粒包含A 和B 两个Channel，其中DQ/DM/DQS/CS 信号与E2000Q 点对点直连，AC/CLK 信号采用FLY-BY 拓扑连接，多RANK 模式同一RANK CKE 信号使用同一个CKE 信号。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4960,
+     "end_line": 4982
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-016",
+   "title": "2.2.5 交换准则",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "若用户需要ECC 功能，Slice[8]必须连接至X16 颗粒的低八位或内存槽对应的Slice。"
+   ],
+   "must_not": [
+    "Slice[8]为ECC 用途，不能与其他Slice 交换。"
+   ],
+   "text": "DQ 交换：在进行X8、X16 兼容内存的设计时，同个slice 内部的8 位DQ 可以自由互换。\nSlice 交换：Slice[7:0]之间可以任意交换，Slice[8]为ECC 用途，不能与其他Slice 交换。\n若用户需要ECC 功能，Slice[8]必须连接至X16 颗粒的低八位或内存槽对应的Slice，若确认无需使用ECC 功能，可将Slice[8]的信号悬空。\n每个Group 可以整体交换，在每个Group 内部L_Channel_A 与U_Channel_B 可以整体交换，每个Channel 内部两个Slice 可以整体交换，每个Slice 内部8bit DQ 数据可以相互交换线序。\n若LPDDR4 的线序有所调整，则PHY 的寄存器也需要重新配置，需更新相应固件。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 4983,
+     "end_line": 5064
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-017",
+   "title": "2.2.6 校准电阻要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "cal_resistance": "240Ω 1%"
+   },
+   "must": [
+    "采用240Ω 1%精度的外部校准电阻与地连接，要求尽可能靠近引脚。"
+   ],
+   "must_not": [],
+   "text": "内存DDR_ZN_SENSE 采用240Ω 1%精度的外部校准电阻与地连接，要求尽可能靠近引脚，避免外部干扰。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5065,
+     "end_line": 5069
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-018",
+   "title": "2.2.7 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "DQ/DM/DQS 信号走线需参考GND 网络，AC(Address Command)、CLK、MISC(alert reset) 信号走线优先参考GND，其次参考VDDQ(需保证另一面参考为GND)，保证参考平面完整，保证没有跨平面分割的情况\n建议VDDQ 电源和其它电源引脚都能扇出对应引脚数量或者更多数量的过孔，比如有7 个VDDQ 的PIN，则要求CPU 区域扇出7 个及以上的VDDQ 过孔\nCLK 信号通过39Ω电阻和10nF 电容端接到GND，AC 信号通过39Ω排阻端接到VTT 电源，同时每两个信号的VTT 上拉处需就近放置一个对地的100nF 去耦电容\n校准电阻 240Ω 1%\nAC 单端阻抗控制：主干45Ω，颗粒间50Ω，扇出线50Ω，末端端接走线50Ω；CLK 差分阻抗控制：主干75Ω，颗粒间80Ω，扇出线80Ω，末端端接走线80Ω；DQS 差分阻抗控制：75Ω；DQ/MD 单端阻抗控制：45Ω；MISC(alert/reset)单端阻抗控制：40~60Ω",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5070,
+     "end_line": 5359
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-019",
+   "title": "2.3.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 的PCIe 控制器支持PCIe3.0 规范，兼容PCIe2.0 和PCIe1.0\n支持Root Complex 和End Point 两种模式，软件可配置\n支持热插拔功能，热插拔信号检测在位为1，不在位为0\n支持链路翻转和极性翻转，以及速率降级\n支持单个控制器的关断和掉电\n支持VGA 空间的访问",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5361,
+     "end_line": 5368
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-020",
+   "title": "2.3.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q PCIe 需要提供100MHz 的差分时钟输入，时钟输入信号分别为 PCIE0_REFCLKP/N、PCIE1_REFCLKP/N、PCIE2_REFCLKP/N\nPCIE0_TXP/PCIE0_TXN 上/下行链路数据发送差分信号 220nF 电容耦合连接\nPCIE0_REFCLKP/PCIE0_REFCLKN 参考时钟差分信号 100nF 电容耦合连接或直连\nPCIE0_REXT 外部校准电阻输入信号，外接3.01KΩ 1%电阻到地\nPCIE0_PRSNT 控制器热拔插信号，高有效 0：外设拔出，1：外设插入",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5369,
+     "end_line": 5466
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-021",
+   "title": "2.3.3 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "PCIe 所有lane 均支持P、N 极性翻转，其中PCIE2 的X4 控制器还支持链路翻转\nPCIE2 包含一个X4 和3 个X1 控制器，所以可以用作1 个X4、1 个X2+2 个X1 或4 个X1 使用\nPCIE2 的X4 链路翻转后向下兼容X2、X1 使用\nE2000Q 系列芯片PCIe 链路中有一路PCIE1 与SATA0 存在复用关系，当用于连接M.2 接口类型的SSD 时，支持协议自适应\n设备必须在系统上电前接入E2000Q 的指定接口；该类型接口不支持热插拔，系统启动后无法再自适应插入设备；检测逻辑为：当检测到PEDET 为高时，接口为PCIe 功能；当检测到PEDET 为低时，接口为SATA 功能；在不使用自适应功能时，软件可强制配置接口类型，不再使用SP_DET 信号",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5467,
+     "end_line": 5491
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-022",
+   "title": "2.3.4 AC 电容、校准电阻要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "输出端到接收端之间，PCIe 采用交流耦合的方式。PCIe 链路AC 耦合电容：最小值176nF，最大值265nF，建议值220nF，精度10%\nE2000Q 的PCIe 控制器需外接阻值为3.01KΩ精度为1%的校准电阻\n外部校准电阻要求尽可能靠近芯片引脚，走线避开高速信号等干扰源",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5492,
+     "end_line": 5507
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-023",
+   "title": "2.3.5 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "阻抗控制数据信号 85Ω±10%差分\n阻抗控制时钟信号 100Ω±10%差分\n数据信号AC 耦合电容 220nF 10%，时钟信号AC 耦合电容 100nF 10%\n校准电阻 3.01KΩ 1%，最大允许插入损耗@4GHz 16dB\nLane 间长度差≤180mm，差分对内等长≤0.05mm，差分对间距离≥5H，与其它信号间距≥5H，自身间距≥7H，与参考平面边缘间距≥5H，建议过孔数量≤4 个",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5508,
+     "end_line": 5568
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-024",
+   "title": "2.4.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "支持802.1as 协议，支持巨帧(Jumbo 帧)，最大帧长度为16KB\n控制器0 支持千兆SGMII（最高到2.5G）、USXGMII（10G）、1000BASE-X、10GBASE-R、10GBASE-KR，支持8 队列\n控制器1 支持千兆SGMII（最高到2.5G）、USXGMII（10G）、1000BASE-X、10GBASE-R、10GBASE-KR，支持4 队列\n控制器2、3 支持SGMII 接口（最高到2.5G）、1000BASE-X、RGMII 接口，支持4 队列\n链路可以按照10GBASE-KR 使用，但不支持AN 自协商和硬件训练机制，由于Serdes 驱动能力问题插损支持受限（参考表2-33）",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5570,
+     "end_line": 5589
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-025",
+   "title": "2.4.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 有4 路SGMII 接口，使用时需要提供100MHz 的差分时钟输入\nE2000Q 另有2 路USXGMII 接口，使用时需要提供156.25MHz 的差分时钟输入\nSGMII2 与RGMII0、SGMII3 与RGMII1 分别共用同一个控制器及同一路MDIO 接口，不能同时使用\nMDIO 接口与SGMII、RGMII 有对应关系，使用时需注意\nSGMII0_TXP 数据发送差分信号 100nF 电容耦合连接",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5590,
+     "end_line": 5609
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-026",
+   "title": "3 电源管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "SGMII0_TXP 数据发送差分信号 100nF 电容耦合连接\nSGMII0_REXT 外部校准电阻输入信号，外接3.01KΩ 1%电阻到地\nMDC0 管理接口时钟信号 源端串接22Ω电阻\nSGMII0_REFCLKP/SGMII0_REFCLKN 参考时钟差分信号 100nF 电容耦合连接或直连\nRGMII0_TXD0 发送数据位0 MAC 端串接22Ω电阻",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5610,
+     "end_line": 5869
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-027",
+   "title": "2.4.3 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "MDC_clock_period": "- ns",
+    "MDIO_output_deviation": "+/-0 ns",
+    "tR": "max 0.75 ns",
+    "tF": "max 0.75 ns",
+    "SGMII_Ro_tolerance": "10%",
+    "SGMII_Vi_typ": "1725 mV",
+    "SGMII_JD_max": "0.17 UI",
+    "SGMII_JT_max": "0.35 UI",
+    "SGMII_UI": "800-100ppm ~ 800+100ppm ps",
+    "USXGMII_Dj_max": "16.90 ps",
+    "USXGMII_eye_width_min": "67.87 ps",
+    "10GBASE-KR_Vtx_dff_typ": "1200 mV",
+    "10GBASE-KR_Vrx_dff_typ": "1200 mV",
+    "10GBASE-KR_baud": "10.3125 GBd ±100ppm",
+    "10GBASE-KR_Dj_max": "0.155 UI",
+    "10GBASE-KR_Tj_max": "0.3 UI",
+    "10GBASE-KR_Rj_max": "0.130 UI",
+    "10GBASE-KR_Dco_max": "0.035 UI"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "MDC 时钟周期 (T)：定义 MDIO 接口的 MDC 时钟周期要求\nMDIO 信号输出时相对MDC 下降沿的偏差（+/-）0：输出偏差为 0\nMDIO 信号输入时的建立时间 T2 和保持时间 T3：需满足建立/保持时间要求\nRGMII 接口 AC 电气特性：信号电平由低到高跳变时间（20%-80%）t R 最大 0.75 ns，由高到低跳变时间 t F 最大 0.75 ns，时钟占空比 tD 有要求\nRGMII 接口时序特性：TX_CLK 时钟周期 T1、TX_CLK 与TXD、TX_CTL 偏差 T2、RX_CLK 时钟周期 T3、RXD、RX_CTL 的hold T4、setup T5，需满足时序要求\n注：支持 RGMII 接口延迟设置，在进行 PCB 设计时可以一定程度降低对时序的要求，通过延迟配置满足时序要求\nSGMII 引脚 DC 电气特性：输出振铃 Vring、阻抗匹配偏差 ΔRo 典型 10%、输入电压范围 Vi 典型 1725 mV\nSGMII 发送/接收模块 AC 电特性：确定性抖动 JD 最大 0.17 UI，总抖动 JT 最大 0.35 UI，UI 范围 800-100ppm 到 800+100ppm ps\nUSXGMII 引脚 AC 电气特性：确定性抖动 Dj 最大 16.90 ps，眼宽最小 67.87 ps\n10GBASE-KR 发送/接收 DC 电特性：输出差分电压 Vtx-dff 典型 1200 mV，输入差分电压 Vrx-dff 典型 1200 mV，差分阻抗 Rrd 有要求\n10GBASE-KR 发送/接收 AC 电特性：发送/接收波特率 10.3125 GBd ±100ppm，确定性抖动 Dj 最大 0.155 UI，总抖动 Tj 最大 0.3 UI，随机抖动 Rj 最大 0.130 UI，占空比失真 Dco 最大 0.035 UI，总抖动 Tj 最大 1.0 UI",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 5870,
+     "end_line": 6160
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-028",
+   "title": "2.4.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "MDIO_pullup_resistance": "1.5K"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "SGMII 接口与PHY 芯片交流耦合连接即可\nMDIO 接口需要注意有对应关系\nMDIO 需外接1.5K 电阻上拉，图示上拉电平VDDIO 需用户按实际应用确定\nUSXGMII 接口与光模块连接器直接连接即可\nRGMII 接口连接方式如图，MDIO 接口需要注意有对应关系，其中MDIO 信号需外接1.5K 电阻上拉，图示上拉电平VDDIO 需用户按实际应用确定",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6161,
+     "end_line": 6175
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-029",
+   "title": "2.4.5 校准电阻要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "calibration_resistor": "3.01KΩ 1%"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "使用SGMII、USXGMII 时，对应的控制器需外接阻值为3.01KΩ精度为1%的校准电阻\n外部校准电阻要求尽可能靠近芯片引脚\n走线避开高速信号等干扰源",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6176,
+     "end_line": 6184
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-030",
+   "title": "2.4.6 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "SGMII_impedance": "100Ω±10% differential",
+    "SGMII_max_IL": "9dB@1562.5MHz",
+    "USXGMII_max_IL_SFI": "6.5dB@5GHz",
+    "USXGMII_max_IL_XFI": "6.0dB@5GHz",
+    "USXGMII_max_IL_10GBASE-KR": "15dB@5GHz",
+    "RGMII_impedance": "50Ω±10% single-ended",
+    "RGMII_max_trace_length": "150mm",
+    "RGMII_skew": "-2.5mm to 2.5mm"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "SGMII 布线要求：阻抗控制 100Ω±10%差分，AC 耦合电容 100nF 10%，校准电阻 3.01KΩ 1%，最大允许插入损耗 9dB@1562.5MHz，差分对内等长 ≤0.07mm，差分对间距离 ≥5H，TX 和RX 间距离 ≥7H，与其它信号间距 ≥5H，与参考平面边缘最小间距 ≥5H，建议过孔数量 ≤2 个\nUSXGMII 布线要求：阻抗控制 100Ω±10%差分，时钟信号AC 耦合电容 100nF 10%，校准电阻 3.01KΩ 1%，最大允许插入损耗 6.5dB@5GHz（SFI）/6.0dB@5GHz（XFI）/15dB@5GHz（10GBASE-KR），差分对内等长 ≤0.05mm，差分对间距离 ≥5H，与其它信号间距 ≥5H，自身间距 ≥7H，与参考平面边缘最小间距 ≥5H，建议过孔数量 ≤2 个\nRGMII 布线要求：阻抗控制 50Ω±10%单端，最大走线长度 150mm，信号等长要求 -2.5mm≤L(TXCLK- TXD[3:0]、TX_CTL)≤2.5mm，-2.5mm≤L(RXCLK- RXD[3:0]、RX_CTL)≤2.5mm，信号间最小距离 ≥3H，时钟信号与其它信号间距 ≥5H，与参考平面边缘最小间距 ≥5H，建议过孔数量 ≤3 个\n设计要点：尽量缩短走线长度，尽量远离开关电源、晶振等噪声源；USXGMII、SGMII 信号走线必须按100Ω±10%阻抗差分走线；RGMII 信号走线必须按50Ω±10%阻抗走线\n建议在换层孔附近添加回流孔，尽量减少换层过孔数量；信号走线参考GND，保证参考平面完整，不建议存在跨平面分割的情况。如果设计中无法避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连接起来\nSGMII 信号100nF 耦合电容建议靠近接收端并对称放置；SGMII 接口TX/RX 信号之间走线无需等长处理，同层走线时，建议保证7H 间距\nUSXGMII 接口TX/RX 信号之间走线无需等长处理，TX 和RX 建议走在不同层，或者同层隔开尽可能远的距离（至少保持7H）；USXGMII 接口建议在扇出时对差分对内P 和N 较短的走线进行一定的等长补偿\nRGMII 走线TX 信号组内等长、RX 信号组内等长，TX 和RX 间无需等长",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6185,
+     "end_line": 6273
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-031",
+   "title": "2.5.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "max_USB_devices": "16"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "USB2.0 OTG 控制器支持如下功能：兼容USB2.0 规范；可工作在Host 或Device 模式；支持挂载单个设备，不支持HUB 设备\nUSB2_P3 和USB2_P4 控制器支持USB 唤醒功能；支持USB2.0 L0/L1/L2 电源管理；支持SRP 会话请求协议；每个方向最大支持6 个端点\nUSB3.0 控制器支持如下功能：兼容USB3.0 规范，向下兼容USB2.0 规范；兼容xHCI1.1 规范；包含一个USB2.0 端口和一个USB3.0 端口；USB3.0 端口兼容PIPE 接口\n支持USB2.0 L0/L1/L2 电源管理；支持USB3.0 U0/U1/U2.U3 电源管理；支持超速、高速、全速和低速模式；最大支持挂载USB 设备不超过16 个，包含USB HUB 设备",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6275,
+     "end_line": 6297
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-032",
+   "title": "2.5.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "reference_clock": "100MHz differential",
+    "USB2.0_REXT": "200Ω 1% to ground",
+    "USB3.0_REXT": "3.01KΩ 1% to ground",
+    "VBUS_detect": "divide to 1.8V"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 含有两个带复用功能的USB3.0 接口(兼容USB2.0 接口，USB2_P0/P1)，使用时需要提供100MHz 的差分时钟输入，时钟输入信号分别为PCIE0_REFCLKP/N、PCIE1_REFCLKP/N\nE2000Q 还集成了3 个USB2.0 接口USB2_P2/P3/P4，均支持OTG 功能\nPCIE0_REFCLKP/N：USB3.0 PORT0、PCIE0 100MHz 参考时钟差分信号，推荐100nF 电容耦合连接或直连\nUSB3_P0_TXP/N：USB3.0 数据发送差分信号，推荐100nF 电容耦合连接；USB3_P0_RXP/N：USB3.0 数据接收差分信号，推荐直连\nUSB2_P0_DP/DM：USB2.0 数据输入输出差分信号，用于USB3 向下兼容，推荐直连\nUSB2_P0_REXT：USB2.0 PORT0 外部校准电阻输入信号，外接200Ω 1%电阻到地\nPCIE0_REXT：USB3.0 PORT0、PCIE0 外部校准电阻输入信号，外接3.01KΩ 1%电阻到地\nUSB2_P2_ID：OTG 识别管脚，HOST 时为低，Device 时为高，内部有上拉电阻到1.8V；USB2_P2_VBUSDET：VBUS 检测管脚，推荐VBUS分压到1.8V接入",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6298,
+     "end_line": 6421
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-033",
+   "title": "2.5.3 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VIH": "0.7VDDX ~ VDDX",
+    "VIL": "max 0.2 V",
+    "VOH": "0.8VDDX ~ VDDX",
+    "VOL": "max 0.2 V",
+    "VDDX": "VDDA=0.8V±5%, VCCA18=1.8V±5%, VCCA33=3.3V±5%",
+    "VDIFF": "-0.4 ~ 0.4 V",
+    "VDIFF-PP": "0.8 ~ 1.2 V",
+    "VCM": "0 ~ 2.2 V",
+    "VTX_out_normal_mode": "0.8 ~ 1.2 V",
+    "VTX_out_low_power_mode": "0.4 ~ 1.2 V",
+    "ZTX_PD": "9K Ω",
+    "ZRX_PD_POS": "10K(0~200mV) ~ 20K(>200mV) Ω",
+    "ZRX_PD_NEG": "1K(<0V) Ω",
+    "FREFEXT_SSC": "99.97 ~ 100.03 MHz"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "USB2.0 接口电气特性：VIH 最小 0.7VDDX，最大 VDDX；VIL 最大 0.2；VOH 最小 0.8VDDX，最大 VDDX；VOL 最大 0.2；注[1]：VDDX=VDDA，VCCA18 或VCCA33；VDDA = 0.8V±5% ，VCCA18 = 1.8V±5% ，VCCA33 = 3.3V±5%\nUSB3.0 接口电气特性：差分电压VDIFF 范围 -0.4 到 0.4 V；差分电压摆幅VDIFF-PP 范围 0.8 到 1.2 V；共模电压VCM 范围 0 到 2.2 V\nVTX_out_normal_mode 正常模式下的输出电压峰峰值 0.8 到 1.2 V；VTX_out_low_power_mode 低功耗模式下的输出电压峰峰值 0.4 到 1.2 V\nZTX_PD 设置输出为高阻时的阻抗 9K Ω；ZRX_PD_POS 复位或关电期间直流共模输入阻抗 10K(0~200mV) 到 20K(>200mV) Ω；ZRX_PD_NEG 复位或关电期间直流共模输入阻抗 1K(<0V) Ω\n+FREFEXT_SSC 扩频时钟模式下，参考时钟频率 99.97 到 100.03 MHz",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6422,
+     "end_line": 6522
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-034",
+   "title": "2.5.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "USB 接口过流保护连接拓扑如图2-26 所示，USB 5V 电源需通过过流保护芯片接入连接器\nE2000Q 通过VBUS_EN 引脚输出高电平使能过流保护芯片，当外部设备短路或电流超过过流保护芯片阈值时，该芯片输出低电平给OC_N 引脚，E2000Q 收到过流信号后进行相应逻辑处理最终关闭该端口并通知用户该端口存在故障\n图2-26 所示上拉电平VDDIO 需用户按实际应用确定",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6523,
+     "end_line": 6537
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-035",
+   "title": "2.5.5 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "90Ω±10% differential, 50Ω±10% single-ended",
+    "AC_coupling": "100nF 10%",
+    "USB3.0_cal_res": "3.01KΩ 1%",
+    "USB2.0_cal_res": "200Ω 1%",
+    "USB3.0_IL": "9dB@2.5GHz",
+    "max_trace_length": "24mm",
+    "intra_pair_skew_USB2.0": "≤1.2mm",
+    "intra_pair_skew_USB3.0": "≤0.1mm",
+    "pair_to_pair_USB3.0": "≥7H",
+    "pair_to_pair_USB2.0": "≥5H",
+    "via_count": "≤2"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "USB 布线要求：阻抗控制 90Ω±10%差分、50Ω±10%单端，AC 耦合电容 100nF 10%，USB3.0 校准电阻 3.01KΩ 1%，USB2.0 校准电阻 200Ω 1%，USB3.0 最大允许插入损耗@2.5GHz 9dB\n最大走线长度共模电感到连接器(USB2.0 信号) 24mm，差分组内等长(USB2.0 信号) ≤1.2mm，差分组内等长(USB3.0 信号) ≤0.1mm，差分对间距离(USB3.0Gne1 5Gbps) ≥7H，差分对间距离(USB2.0 信号) ≥5H\n与其它信号间距 ≥5H，与参考平面边缘间距 ≥5H，建议过孔数量 ≤2 个\n设计要点：USB 信号走线参考GND，保证参考平面完整，尽量保证没有跨平面分割的情况；如果设计中无法避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连接起来\n尽量缩短走线长度，尽量远离开关电源、晶振等噪声源，以保证信号质量；建议在换层孔附近添加回流孔，尽量减少换层过孔数量\n根据USB3.0 规范要求，USB-A 接口电力传输为5V 900mA，USB-C 接口可高达100W(20V 5A)，建议VBUS 电源采用铺平面方式接入，建议提高电源通路的通流能力达到规范要求的1.5 倍\nTX 与RX 信号之间走线无需等长处理；TX 信号上串接的100nF 耦合电容尽量靠近USB 座并对称放置；USB 座上机壳地与数字地完全分开单点连接；USB 信号ESD 防护和过流保护器件靠近USB 座放置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6538,
+     "end_line": 6587
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-036",
+   "title": "2.6.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "max_audio_channels": "8",
+    "max_sample_bit_width": "24 bit",
+    "max_color_depth": "16 bit per component",
+    "max_link_rate": "HBR2 5.4Gbps",
+    "max_resolution": "1920x1080@60Hz (8bit); 1920x1200@60Hz (CVT Reduced Blank)",
+    "hardware_cursor": "32x32"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 集成的DisplayPort1.4 控制器主要支持如下特性：兼容DisplayPort1.4/Embedded DisplayPort1.4 协议\n支持音频数据通道：最高支持8 声道；最高支持采样位宽24 bit；支持44.1/48KHz 音频速率\n支持SST 模式；最高支持每个颜色通道16 bit 宽度；支持1 lane mode\nDP/eDP 支持最高HBR2（5.4Gbps）链路速率，RGB 每个颜色通道8bit 色深情况下，支持最大分辨率1920x1080@60Hz\n支持32bpp@30f/s，最大支持色深48bit，即RGB 每个颜色分量的色深为16bit；在32bpp@30f/s 下，支持分辨率最高为1920x1080。在DP 链路输出带宽不超出5.4Gbps 下，使用“CVT Reduced Blank”模式，实测可支持的最高分辨率为1920x1200@60Hz\n支持硬件光标，硬件光标为32x32；支持AUX 通道；支持热插拔检测：HPD 事件、HPD 中断请求\n注1：DisplayPort 接口直接连接显示器时，受DisplayPort 连接线材质、连接紧密程度等影响，连接速率可能出现降速到HBR1（即2.7Gbps/Lane）的情况。降速后的连接带宽将无法支持额定最高分辨率的显示",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6589,
+     "end_line": 6615
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-037",
+   "title": "2.6.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "reference_clock": "100MHz differential",
+    "REXT": "3.01KΩ 1% to ground"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 含有两个独立带复用功能的DP1.4 接口，使用时需要提供100MHz 的差分时钟输入，时钟输入信号分别为SGMII2_REFCLKP/N、SGMII3_REFCLKP/N\nSGMII2_REFCLKP/N：DP0、SGMII2 100MHz 参考时钟差分信号，推荐100nF 电容耦合连接或直连\nDP0_L0_P/N：Lane0 数据发送差分信号，推荐100nF 电容耦合连接\nDP0_AUX_P/N：辅助通道差分信号，推荐100nF 电容耦合连接\nSGMII2_REXT：DP0、SGMII2 外部校准电阻输入信号，外接3.01KΩ 1%电阻到地\nDP0_HPD：DP0 热插拔检测信号",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6616,
+     "end_line": 6675
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-038",
+   "title": "2.6.3 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.6.3 拓扑结构\n图2-28\nDisplayPort 连接拓扑",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6676,
+     "end_line": 6678
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-039",
+   "title": "2.6.4 PCB 设计建议",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "100Ω±10% differential, 50Ω±10% single-ended",
+    "AC_coupling": "100nF 10%",
+    "cal_res": "3.01KΩ 1%",
+    "max_IL": "8dB@2.7GHz",
+    "intra_pair_skew": "≤0.05mm",
+    "pair_to_pair": "≥5H",
+    "to_other_signals": "≥5H",
+    "self_spacing": "≥7H",
+    "to_plane_edge": "≥5H",
+    "via_count": "≤4"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "DisplayPort 布线要求：阻抗控制 100Ω±10%差分、50Ω±10%单端，AC 耦合电容 100nF 10%，校准电阻 3.01KΩ 1%，最大允许插入损耗@2.7GHz 8dB\n差分对内等长 ≤0.05mm，差分对间距离 ≥5H，与其它信号间距 ≥5H，自身间距 ≥7H，与参考平面边缘最小间距 ≥5H，建议过孔数量 ≤4 个\n设计要点：尽量缩短走线长度，尽量远离开关电源、晶振等噪声源；DisplayPort 信号走线必须按100Ω±10%阻抗差分走线\n建议在换层孔附近添加回流孔，尽量减少换层过孔数量；DisplayPort 信号走线参考GND，保证参考平面完整，尽量保证没有跨平面分割的情况。如果设计中无法避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连接起来\nDisplayPort 信号100nF 耦合电容尽量靠近DisplayPort 座并对称放置；DisplayPort 座上机壳地与数字地完全分开单点连接；DisplayPort 信号ESD 防护和过流保护器件靠近DisplayPort 座放置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6679,
+     "end_line": 6720
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-040",
+   "title": "2.7.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "SATA_rate": "1.5/3.0/6.0 Gb/s",
+    "read_bandwidth": "500MB/s at 6.0Gb/s",
+    "write_bandwidth": "470MB/s at 6.0Gb/s"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 集成的SATA 控制器兼容SATA3.0 规范的接口，支持连接1.5Gb/s、3.0Gb/s、6.0Gb/s 的SATA 设备\n工作在6.0Gb/s 速率模式时连续顺序读带宽可达500MB/s，连续顺序写带宽可达470MB/s\n本控制器寄存器兼容AHCI1.3 的HBA MEMORY 寄存器部分，但无HBA CONFIGURATION 寄存器部分(pci 部分)，主机软件在访问寄存器接口时遵循相关的标准和约定，并遵循标准的命令协议约定\n支持的主要功能：电源管理、错误检测、NCQ 操作、DMA 数据传输、PIO 数据传输、热拔插、Command Completetion Coalescing、速率自动协商、活动状态LED 指示\n不支持功能：RAID；SATA Legacy Mode(IDE Mode)；未适配的AHCI 驱动(本sata 控制器属于平台设备非pci 类设备)",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6722,
+     "end_line": 6745
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-041",
+   "title": "2.7.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "reference_clock": "100MHz differential",
+    "AC_coupling": "10nF",
+    "REXT": "3.01KΩ 1% to ground"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 含有两个带复用功能的SATA3.0 接口，使用时需要提供100MHz 的差分时钟输入，时钟输入信号分别为PCIE1_REFCLKP/N、SGMII1_REFCLKP/N\nPCIE1_REFCLKP/N：SATA0、PCIE1、USB3.0 PORT1 100MHz 参考时钟差分信号，推荐100nF 电容耦合连接或直连\nSGMII1_REFCLKP/N：SATA1、SGMII1 100MHz 参考时钟差分信号，推荐100nF 电容耦合连接或直连\nSATA0_TXP/N：数据发送差分信号，推荐10nF 电容耦合连接；SATA0_RXP/N：数据接收差分信号，推荐10nF 电容耦合连接\nPCIE1_REXT：SATA0、PCIE1、USB3.0 PORT1 外部校准电阻输入信号，外接3.01KΩ 1%电阻到地\nSGMII1_REXT：SATA1、SGMII1 外部校准电阻输入信号，外接3.01KΩ 1%电阻到地\nSATA[1:0]_LED：SATA 状态指示灯信号，0：无数据传输，1：有数据传输，外接LED 指示灯",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6746,
+     "end_line": 6803
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-042",
+   "title": "2.7.3 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VIMAX_Gen3i": "1000 mVppd"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "电气特性符合SATA3.0 协议规范，详细可参考规范文档\nSATA TX/RX 信号组DC 电气特性：VIMAX_Gen3i 6.0Gb/s 速率最大输入电压值 1000 mVppd",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6804,
+     "end_line": 6849
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-043",
+   "title": "2.7.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "100Ω±10% differential",
+    "AC_coupling": "10nF 10%",
+    "cal_res": "3.01KΩ 1%",
+    "max_IL": "5dB@3GHz",
+    "intra_pair_skew": "≤0.07mm",
+    "pair_to_pair": "≥5H",
+    "TX_RX_spacing": "≥7H",
+    "to_other_signals": "≥5H",
+    "to_plane_edge": "≥5H",
+    "via_count": "≤2"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "SATA 连接拓扑如图2-30 所示\nSATA 布线要求：阻抗控制 100Ω±10%差分，AC 耦合电容 10nF 10%，校准电阻 3.01KΩ 1%，最大允许插入损耗@3GHz 5dB\n差分对内等长 ≤0.07mm，差分对间距离 ≥5H，TX 和RX 间距离 ≥7H，与其它信号间距 ≥5H，与参考平面边缘最小间距 ≥5H，建议过孔数量 ≤2 个\n设计要点：尽量缩短走线长度，尽量远离开关电源、晶振等噪声源；SATA 信号走线必须按100Ω±10%阻抗差分走线\n建议在换层孔附近添加回流孔，尽量减少换层过孔数量；SATA 信号走线参考GND，保证参考平面完整，不建议存在跨平面分割的情况。如果设计中无法避免跨平面参考，建议在跨平面分割处用旁路电容将回流信号连接起来\nTX/RX 信号之间走线无需等长处理；TX/RX 信号同层走线时，建议保证7H 间距；SATA 信号10nF 耦合电容尽量靠近SATA 座并对称放置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6850,
+     "end_line": 6897
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-044",
+   "title": "2.8.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "max_NOR_Flash": "4",
+    "max_clock_frequency": "37.5MHz",
+    "max_page_program": "512B"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 集成的QSPI 控制器支持如下功能：支持同时外接4 个NOR Flash，不支持SPI NAND Flash\n支持NOR Flash 闪存的命令集；Flash 连接模式：支持单/双/四线模式；支持SDR 模式；不支持DDR 模式；同一时刻只能对一个NOR Flash 进行操作\n总线的最高时钟频率为37.5MHz；片选和写保护的建立和保持时间可编程调节\n当不处于四线模式或QPI 模式时，支持写保护模式；使能四线模式或QPI 模式时，软件应禁用此功能\n最大支持512B 的页编程；读取闪存时支持芯片内执行XIP(需软件配置模式位)，支持数据块连续读完，支持器件ID 内容全部读出(不限大小)\n支持硬件查询状态寄存器的WIP 位(通过软件配置)；支持动态修改不同指令对应的频率；支持设置安全片选访问；支持设置两个安全区域；支持擦除命令过滤\n不支持加速模式，当#WP(即IO2)输入接9v 左右的电压时，flash 的编程和擦除将被加速，目前不支持这一模式；不支持hold 功能",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6899,
+     "end_line": 6921
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-045",
+   "title": "2.8.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "QSPI_SCK_default_level": "高",
+    "QSPI_CSN_default_level": "高"
+   },
+   "must": [
+    "QSPI_SCK 源端串接22Ω电阻"
+   ],
+   "must_not": [],
+   "text": "QSPI_SCK 时钟信号推荐连接方式：源端串接22Ω电阻\nQSPI_SO_IO0 SPI:MOSI数据信号，QSPI:IO0双向IO0，直连\nQSPI_SI_IO1 SPI:MISO数据信号，QSPI:IO1双向IO1，直连\nQSPI_WP_IO2 SPI:WP写保护，QSPI:IO2双向IO2，直连\nQSPI_CSN[3:0] 片选信号0~3，直连，默认电平高",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6922,
+     "end_line": 6968
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-046",
+   "title": "2.8.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "FSCK_read_default": "9.375MHz",
+    "FSCK_write_default": "2.34MHz",
+    "FSCK_min": "1.17MHz",
+    "FSCK_max": "37.5MHz",
+    "PSCK_min": "26.7ns",
+    "PSCK_max": "853.3ns",
+    "tCSS_min": "13.3ns",
+    "tCSH_min": "13.3ns",
+    "tWPS_min": "3.3ns",
+    "tWPH_min": "3.3ns",
+    "tsu_min": "4.3ns",
+    "CPU_QSPI_default_output_freq_no_firmware": "1.56MHz"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "数据传输时钟频率FSCK 默认9.375MHz(读)/2.34MHz(写)，最小1.17MHz，最大37.5MHz\n数据传输时钟周期PSCK 默认1/FSCK，最小26.7ns，最大853.3ns\nQSPI_SCK 高电平时间tCH=50%PSCK，低电平时间tCL=50%PSCK\nQSPI_CSN 信号建立时间tCSS 默认233.3ns，最小13.3ns，最大1279.95ns\nQSPI_CSN 信号保持时间tCSH 默认233.3ns，最小13.3ns，最大1279.95ns\nQSPI_WP 信号建立时间tWPS 默认53.3ns，最小3.3ns，最大853.3ns\nQSPI_WP 信号保持时间tWPH 最小3.3ns，最大853.3ns\nQSPI 输入数据建立时间tsu 最小4.3ns",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 6969,
+     "end_line": 7071
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-047",
+   "title": "2.8.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "2.8.4 拓扑结构\n图2-35\nQSPI 单从设备拓扑\n图2-36\nQSPI 多从设备拓扑\n\n2 接口说明",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7072,
+     "end_line": 7079
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-048",
+   "title": "2.8.5 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "50Ω±10% single-ended",
+    "max_trace_length": "<150mm",
+    "signal_length_matching": "-5mm≤L(SCK-DATA)≤5mm",
+    "min_signal_spacing": "≥3H",
+    "clock_to_other_spacing": "≥5H"
+   },
+   "must": [
+    "QSPI 接口连接多个器件时采用fly-by 拓扑结构，将CSN0 上BIOS FLASH 放到fly-by 最末端"
+   ],
+   "must_not": [],
+   "text": "阻抗控制：50Ω±10%单端\n最大走线长度：<150mm\n信号等长：-5mm≤L(SCK-DATA)≤5mm\n信号间最小距离：≥3H\n时钟信号与其他信号间距：≥5H\nQSPI 接口连接多个器件时，采用fly-by 拓扑结构，保证stub 线尽量短，将CSN0 上BIOS FLASH 放到fly-by 最末端",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7080,
+     "end_line": 7096
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-049",
+   "title": "2.9.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "max_chip_selects": "4",
+    "data_length_per_request": "4~16 bits",
+    "phase_polarity_modes": "4"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "支持主模式\n可编程接收串行数据位(rxd)采样延迟时间\n最大支持4 片选，片选可由寄存器单独控制\nSPI 时钟频率可配\n单次请求的数据长度为4 到16 位\n支持4 种相位极性\n每路支持时钟关断",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7098,
+     "end_line": 7107
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-050",
+   "title": "2.9.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "SPIMx_SCLK_default_level": "低",
+    "SPIMx_TXD_default_level": "低",
+    "SPIMx_CSN_default_level": "高"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "SPIMx_SCLK 时钟信号，推荐直连，默认电平低\nSPIMx_TXD 数据信号：主机输出，从机输入，默认电平低\nSPIMx_RXD 数据信号：主机输入，从机输出，默认电平NA\nSPIMx_CSN[3:0] SPIM0 片选信号0~3，低有效，默认电平高",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7108,
+     "end_line": 7135
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-051",
+   "title": "2.9.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "SCK 时钟周期tclk\nCSN 下降沿相对SCK 上升沿的建立时间tcss\nCSN 上升沿相对SCK 时钟的保持时间tcsh\nRXD 输入数据相对SCK 时钟的建立时间tsis\nRXD 输入数据相对SCK 时钟的保持时间tsih\nTXD 输出数据相对SCK 时钟的延迟时间todly",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7136,
+     "end_line": 7170
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-052",
+   "title": "2.10.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "SD0_HS200_max_clock": "100MHz",
+    "SD0_UHS-I_max_clock": "100MHz",
+    "SD1_UHS-I_max_clock": "100MHz",
+    "SD0_bus_width": "1/4/8bit",
+    "SD1_bus_width": "1/4bit"
+   },
+   "must": [
+    "SD0 HS200 模式下设备端时钟运行频率最大不超过100MHz"
+   ],
+   "must_not": [],
+   "text": "SD0 兼容SD3.0、SDIO3.0 协议规范\nSD0 兼容eMMC Electrical Standard 5.0 协议规范\nSD0 支持接口线宽1/4/8bit 软件可配\nSD0 支持UHS-I 模式，最高时钟频率100MHz\nSD0 HS200 模式下设备端时钟运行频率最大不超过100MHz\nSD1 兼容SD3.0、SDIO3.0 协议规范\nSD1 支持接口线宽1/4bit 软件可配\nSD1 支持UHS-I 模式，最高时钟频率100MHz",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7172,
+     "end_line": 7192
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-053",
+   "title": "2.10.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "SD0_CMD_default_level": "高",
+    "SD0_RST_N_default_level": "高",
+    "SD0_CLK_default_level": "低",
+    "SD0_PWR_EN_default_level": "低",
+    "SD1_CLK_default_level": "低"
+   },
+   "must": [
+    "SD0_CLK 和 SD1_CLK 源端串接22Ω电阻"
+   ],
+   "must_not": [],
+   "text": "SD0_DATA[7:0] 数据信号，直连，默认NA\nSD0_CMD 命令信号，直连，默认高\nSD0_CLK 时钟信号，源端串接22Ω电阻，默认低\nSD0_RST_N 复位信号输出，直连，默认高\nSD0_DET_N 卡在位检测信号，低有效，直连，默认NA\nSD0_VOLT0/VOLT1 电平选择管脚，配合实现SD卡切换电压功能，直连，默认低\nSD0_WP_N 写保护使能，直连，默认NA\nSD0_PWR_EN 外部电源使能信号，直连，默认低\nSD1_CLK 时钟信号，源端串接22Ω电阻，默认低\nSDx_CARD_VOLT0 为高时，SD卡外部供电选择为1.8V，反之外部供电选择为3.3V",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7193,
+     "end_line": 7312
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-054",
+   "title": "2.10.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "fOD_min": "0KHz",
+    "fOD_max": "100KHz",
+    "tIH_SD-SDR50_min": "0.8ns",
+    "Ccard_max": "10pF",
+    "CL_max": "40pF"
+   },
+   "must": [
+    "Ccard≤10pF,(1card),CL=CBUS+CHOST+CCARD≤40pF"
+   ],
+   "must_not": [],
+   "text": "标准模式时钟频率(识别模式)fOD 0/100KHz\n标准/高速/SDR模式注:Ccard≤10pF,(1card),CL=CBUS+CHOST+CCARD≤40pF\n高速模式数据传输时钟频率fpp\nSDR模式输入保持时间(SD-SDR50)tIH 最小0.8ns",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7313,
+     "end_line": 7435
+    }
+   ]
+  }
+ ]
+}

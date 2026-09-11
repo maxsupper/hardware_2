@@ -37,4 +37,8 @@ class Config:
         return Path(self.paths.get(key, key))
 
     def rule_bundle_tokens(self) -> int:
-        return int(self.budget.get("rule_bundle_tokens", 64000))
+        return int(self.budget.get("rule_bundle_tokens", 100000))
+
+    def input_hard_cap(self) -> int:
+        """输入硬顶（不可突破）；缺省 400000。"""
+        return int(self.budget.get("input_hard_cap", 400000))

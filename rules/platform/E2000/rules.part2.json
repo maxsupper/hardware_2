@@ -1,0 +1,1680 @@
+{
+ "schema_version": "1.0",
+ "kind": "platform_rules",
+ "scope": "platform/E2000",
+ "source": "raw/raw_platmform/E2000/数据手册.md",
+ "source_sha1": "4ecdbf79b9df081187190c79278f64e9d954ca61",
+ "generated_at": "2026-09-11T09:17:02+00:00",
+ "tokens_est": 19960,
+ "entries": [
+  {
+   "id": "PF-E2000-055",
+   "title": "2.10.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "SD_DATA0~3 每根数据线都需要上拉",
+    "SD_DATA0~7 每根数据线都需要上拉",
+    "CMD 管脚需要较强大的驱动能力，上拉电阻阻值稍小"
+   ],
+   "must_not": [],
+   "text": "SD_DATA0~3 每根数据线都需要上拉，WP 管脚是否需要使用视卡类型而定\nSD_DATA0~7 每根数据线都需要上拉，CMD 管脚需要较强大的驱动能力，上拉电阻阻值稍小即可",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7436,
+     "end_line": 7446
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-056",
+   "title": "2.10.5 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "50Ω±10% single-ended",
+    "max_trace_length": "100mm",
+    "signal_length_matching": "-2.5mm≤L(CLK-DATA)≤2.5mm",
+    "min_signal_spacing": "≥3H",
+    "clock_to_other_spacing": "≥5H"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "阻抗控制：50Ω±10%单端\n最大走线长度：100mm\n信号等长要求：-2.5mm≤L(CLK-DATA)≤2.5mm\n信号间最小距离：≥3H\n时钟信号与其他信号间距：≥5H",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7447,
+     "end_line": 7461
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-057",
+   "title": "2.11.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "max_nand_devices": "4",
+    "page_size_support": "512B/2KB/4KB/8KB/16KB",
+    "data_width": "8-bit/16-bit",
+    "ECC": "2/4/8 bits per 512B BCH",
+    "async_8bit_bandwidth": "20MB/s",
+    "sync_bandwidth": "80MB/s"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "支持ONFI 2.2 及以下接口协议，在ONFI 协议中支持异步和同步两种传输模式\n支持同时外接4 个NAND Flash 设备\n支持多层单元闪存(MLC)、单层单元闪存(SLC)\n支持的页大小：512B，2KB，4KB，8KB，16KB\n支持8-bit 和16-bit NAND Flash 数据位宽\nECC 校验：2bits/512B、4bits/512B、8bit/512B 纠错能力，BCH 校验算法\n异步8 位宽模式下传输带宽为20MB/s，同步模式下传输带宽80MB/s",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7463,
+     "end_line": 7479
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-058",
+   "title": "2.11.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "NF_CE_N_default_level": "高",
+    "NF_REN_WRN_default_level": "低",
+    "NF_WEN_CLK_default_level": "低",
+    "NF_CLE_default_level": "低",
+    "NF_ALE_default_level": "低",
+    "NF_WP_N_default_level": "高"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "NF_CE_N[3:0] 片选信号0~3，直连，默认高\nNF_RB_N[3:0] Ready/Busy 状态指示接收信号0~3，低为Busy，默认NA\nNF_REN_WRN 读使能信号与读写方向信号，默认低\nNF_WEN_CLK 写使能信号与时钟信号，默认低\nNF_CLE 命令锁存信号，默认低\nNF_ALE 地址锁存信号，默认低\nNF_DQS 数据选通(True)，默认NA\nNF_WP_N 写保护使能信号，默认高\nNF_D[15:0] 16 位地址、数据、命令信号，默认NA",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7480,
+     "end_line": 7482
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-059",
+   "title": "2.11.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "片选信号拉低到NF_CLE 拉高A0\nNF_CLE 拉高到NF_WEN_CLK 拉低A1\nNF_WEN_CLK 拉低到NF_WEN_CLK 拉高A2\nNF_WEN_CLK 拉高到数据保持结束A3\nNF_CLE 拉低到片选信号拉高A4\n数据结束到NF_CLE 拉低A5\n数据提前输出A6\nNF_WEN_CLK 拉高到片选信号拉高A7\nNF_RBN 拉高到NF_REN_WRN 拉低A8\nNF_REN_WRN 高电平保持A9\n读数据周期A10\n地址周期与写数据周期之间的间隔A11",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7483,
+     "end_line": 7604
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-060",
+   "title": "2.11.4 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "NF_RB_N 信号需外接上拉电阻"
+   ],
+   "must_not": [],
+   "text": "NF_RB_N 信号需外接上拉电阻，图示上拉电平VDDIO 需用户按实际应用确定",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7605,
+     "end_line": 7611
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-061",
+   "title": "2.11.5 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "50Ω±10% single-ended",
+    "max_trace_length": "100mm",
+    "signal_length_matching": "≤5mm",
+    "min_signal_spacing": "≥3H",
+    "clock_to_other_spacing": "≥5H"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "阻抗控制：50Ω±10%单端\n最大走线长度：100mm\n信号等长：≤5mm\n信号间最小距离：≥3H\n时钟信号与其他信号间距：≥5H",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7612,
+     "end_line": 7626
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-062",
+   "title": "2.12.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "system_main_clock": "200MHz",
+    "divider": "2,3,4…64",
+    "max_external_clock": "100MHz",
+    "max_address_bits": "28bits",
+    "data_width": "8/16bits",
+    "non-mux_8bit_max_address": "20bits",
+    "max_memory": "256MB"
+   },
+   "must": [
+    "启动设备仅支持异步NOR Flash，默认启动片选为0"
+   ],
+   "must_not": [],
+   "text": "启动设备仅支持异步NOR Flash 默认启动片选为0\n系统主时钟为200MHz，支持2、3、4…64 的时钟分频，可提供最大100MHz 的外部时钟\n最大支持28bits 地址线；支持8、16bits 的数据位宽\n数据与地址不复用模式，8bit 数据位宽下，最大地址位宽支持20bits\n支持最大256MB 的存储器\n不支持地址偏移，只支持字节对齐\n外部写保护接口支持寄存器配置其使能\n无访问时，数据线默认输入\n支持从CS 片选使能到开始采外部Ready/Busy 的时间可配置\nBoot 的片选(CS0)在系统复位时可用\n支持奇偶校验位，可配置关闭\n支持读写合一信号LBTCL，并支持高读低写和高写低读寄存器可配置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7628,
+     "end_line": 7666
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-063",
+   "title": "2.12.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "LBC_CS_N_default_level": "低",
+    "LBC_ALE_default_level": "低"
+   },
+   "must": [
+    "LocalBus 接口的AD 双向信号线上必须串接33Ω电阻"
+   ],
+   "must_not": [],
+   "text": "LBC_AD[15:0] NOR/GPCM 双向数据总线，复用模式下传输地址，推荐串接33Ω电阻\nLocalBus 接口的AD 双向信号线上必须串接33Ω电阻，防止双向互驱造成IO 损坏\nLBC_ADDR[27:16] 非多路复用的地址总线，直连\nLBC_CS_N[7:0] 片选信号，可默认从CS[0]启动，直连，默认低\nLBC_ALE 外部地址锁存器的控制信号，高有效，直连，默认低\nLBC_PSS Port size switch，复位时可设置booting 片选的数据端口大小，高电平为8bits，低电平为16bits",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7667,
+     "end_line": 7788
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-064",
+   "title": "2.12.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "tIBIXKH_min": "1.5ns",
+    "tIBKLOV_max": "±1.5ns"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "ALE 与DATA 信号同时发送，ALE 拉高的时间与Data 总线上地址数据的保持时间均通过Teadc 参数进行配置\n为使外部对接设备能准确根据ALE 信号采样Data Bus 上的地址数据，需要参考《飞腾腾珑E2000 系列处理器勘误手册》相关说明进行处理\nInput hold tIBIXKH 最小1.5ns\nOutput delay tIBKLOV 最大±1.5ns",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7789,
+     "end_line": 7839
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-065",
+   "title": "2.12.4 NOR flash 控制器时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "主要用于对接异步和同步NOR flash 设备，同步NOR flash 设备也支持异步时序，且只支持burst 读数据\n异步NOR 读时序与burst 读时序中各时序参数均可在寄存器中配置\n异步NOR 写时序与burst 写时序中各时序参数均可在寄存器中配置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7840,
+     "end_line": 7857
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-066",
+   "title": "2.12.5 GPCM 控制器时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "burst 模式下，下一个数据和下一个地址在一个TWP 周期(地址/数据周期之间的时间量)之后发送\nGPCM 读操作时序图中各时序参数均可在寄存器中配置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7858,
+     "end_line": 7885
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-067",
+   "title": "2.12.6 拓扑结构",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "启动设备仅支持异步NOR Flash 地址小端模式"
+   ],
+   "must_not": [],
+   "text": "启动设备仅支持异步NOR Flash 地址小端模式",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7886,
+     "end_line": 7895
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-068",
+   "title": "2.12.7 布线要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "impedance": "50Ω±10% single-ended",
+    "max_trace_length": "150mm",
+    "signal_length_matching": "≤10mm",
+    "min_signal_spacing": "≥3H",
+    "clock_to_other_spacing": "≥5H"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "阻抗控制：50Ω±10%单端\n最大走线长度：150mm\n信号等长：≤10mm\n信号间最小距离：≥3H\n时钟信号与其他信号间距：≥5H",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7896,
+     "end_line": 7915
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-069",
+   "title": "2.13.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "max_channels": "4",
+    "channels_per_channel": "2",
+    "sampling_resolution": "8/16/20/24bit",
+    "sampling_freq": "44.1/48KHz",
+    "serial_clock": "2.8224MHz/3.072MHz",
+    "bandwidth": "15Mbps"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "支持最大通道数目：4\n单通道支持声道数目：2\n支持采样分辨率：8/16/20/24bit\n支持采样频率：44.1/48KHz\n串行时钟频率：2.8224MHz/3.072MHz\n传输带宽：15Mbps\n支持部件时钟关断",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7917,
+     "end_line": 7925
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-070",
+   "title": "2.13.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "I2S_LRCK_default_level": "低",
+    "I2S_BCLK_default_level": "低",
+    "I2S_SDO_default_level": "低"
+   },
+   "must": [
+    "I2S_MCLK 源端串接33Ω电阻"
+   ],
+   "must_not": [],
+   "text": "I2S_MCLK 主时钟/系统时钟，推荐源端串接33Ω电阻\nI2S_LRCK 帧时钟，左右声道区分，默认低\nI2S_BCLK 串行时钟/位时钟，默认低\nI2S_SDO[3:0] 数据输出0~3，默认低\nI2S_SDI[3:0] 数据输入0~3，默认NA",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7926,
+     "end_line": 7953
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-071",
+   "title": "2.13.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "MCLK_max": "51.2MHz",
+    "tslr_min": "-10ns"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "MCLK 频率最大51.2MHz\nMCLK 占空比%\nLRCK 频率\nBCLK 频率\nBCLK 下降沿到LRCK 边沿tslr 最小-10ns\nSDIN 的建立时间tsdis\nSDIN 的保持时间tsdih",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 7954,
+     "end_line": 8009
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-072",
+   "title": "2.14.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "CAN_baudrate": "5Kbps~1Mbps",
+    "CANFD_arbitration_baudrate": "5Kbps~1Mbps",
+    "CANFD_data_baudrate": "5Kbps~5Mbps"
+   },
+   "must": [
+    "配置波特率时需满足仲裁场波特率小于或等于数据场波特率"
+   ],
+   "must_not": [],
+   "text": "CAN 控制器兼容CAN2.0 标准协议和ISO 11898-1(2015)CAN FD 标准协议\nCAN 模式下波特率支持5Kbps 至1Mbps 配置\nCAN FD 模式下仲裁场波特率支持5Kbps 至1Mbps 配置，数据场波特率支持5Kbps 至5Mbps 配置\n配置波特率时需满足仲裁场波特率小于或等于数据场波特率",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8011,
+     "end_line": 8017
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-073",
+   "title": "2.14.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "CANx_TX_default_level": "高"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "CANx_TX 数据发送，直连，默认高\nCANx_RX 数据接收，直连，默认NA",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8018,
+     "end_line": 8037
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-074",
+   "title": "2.14.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "T_min": "1000ns",
+    "T_max": "200000ns"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "rx 和tx 周期(波特率的倒数)T 最小1000ns，最大200000ns\nrx 和tx 低电平时间tL=T\nrx 和tx 高电平时间tH",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8038,
+     "end_line": 8058
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-075",
+   "title": "2.15.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "divider": "65535-2",
+    "frequency_range": "762Hz-25MHz",
+    "fifo_depth": "32",
+    "fifo_data_width": "32bits(plus control 40bits)"
+   },
+   "must": [],
+   "must_not": [
+    "不支持小数分频"
+   ],
+   "text": "兼容有无JTAGM_NTRST 信号线的4/5pin 的JTAG 总线通信\n支持对输出JTAGM_TCK 的频率配置，整数分频系数：65535-2，频率范围：762Hz-25MHz，不支持小数分频\n输入JTAGM_TDO 信号的在一个JTAGM_TCK 周期中，包括上升沿，一共有四个采样点可配置\n驱动和采样数据信号时，最低有效位或最高有效位开始可配置，默认为低有效位开始\n对于IR，和写DR 的请求，支持32 深度，32 位数据位宽(加上控制位共40 位)的IR/DR 输出fifo 队列\nIR 和DR 的有效位宽，由寄存器配置决定，硬件上没有进行上限设置",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8060,
+     "end_line": 8088
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-076",
+   "title": "2.15.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "JTAGM_TCK_default_level": "低",
+    "JTAGM_TMS_default_level": "高",
+    "JTAGM_TDI_default_level": "低",
+    "JTAGM_NTRST_default_level": "低"
+   },
+   "must": [
+    "JTAGM_TCK 源端串接22Ω电阻"
+   ],
+   "must_not": [],
+   "text": "JTAGM_TCK 总线时钟信号，源端串接22Ω电阻，默认低\nJTAGM_TMS 模式选择信号，直连，默认高\nJTAGM_TDI 主机输出指令和数据信号，直连，默认低\nJTAGM_TDO 来自从机的数据输入信号，直连，默认NA\nJTAGM_NTRST 复位信号，直连，默认低",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8089,
+     "end_line": 8126
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-077",
+   "title": "2.15.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "Tck_max": "1300000ns",
+    "Tq_max": "1/2Tck-5ns"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "JTAGM_TCK 一个时钟周期，分频系数可配置，频率最高25MHz(40ns)，最低762Hz(1.3ms)，Tck最大1300000ns\n输入JTAGM_TDO 建立时间Tsu\n输入JTAGM_TDO 保持时间Thd\nJTAGM_TDI 和JTAGM_TMS 相对时钟下降沿的输出延迟Tq 最大1/2Tck-5ns",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8127,
+     "end_line": 8154
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-078",
+   "title": "2.16.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "UART_max_rate": "3Mbps"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 的MIO 接口可配置为UART 或I2C，具体时序特性要求需满足复用功能的时序特性要求\n仅配置为UART 接口时最高速率3Mbps\n当需要使用对应的功能时，需要软件进行相应配置，具体配置流程请参考《飞腾腾珑E2000 系列处理器软件编程手册》",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8156,
+     "end_line": 8159
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-079",
+   "title": "2.16.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "I2C 功能：MIO[15:0]_A 对应I2C_SCL 时钟信号，MIO[15:0]_B 对应I2C_SDA 数据信号\nUART 功能：MIO[15:0]_A 对应UART_RXD 数据输入，MIO[15:0]_B 对应UART_TXD 数据输出",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8160,
+     "end_line": 8181
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-080",
+   "title": "2.17.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "最高速率": "6Mbps",
+    "数据缓存深度": "32-byte"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 集成了9 线UART 控制器和5 线UART 控制器和3 线控制器，其中3 线控制器均由MIO 配置实现。\n支持发送和接收数据缓存，深度32-byte；\n可编程波特率大小；\n支持8bits 数据位、1bit 校验位的帧格式；\n9 线UART 支持调制解调控制功能CTS、DCD、DSR、RTS、DTR、RI，支持硬件流控；\n最高速率6Mbps。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8186,
+     "end_line": 8200
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-081",
+   "title": "2.17.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "UART0_CTS_N 清除发送，推荐连接方式直连；\nUART0_RTS_N O 发送数据请求，默认电平高；\nUART0_DTR_N O 数据终端准备就绪，默认电平高；\nUART0_TXD O 数据发送，默认电平高；\nUARTx_RXD 数据接收，默认电平NA；\n注：x=1、2、3；其中UART1 默认为CPU 调试串口。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8201,
+     "end_line": 8251
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-082",
+   "title": "2.17.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "rxd 和txd 低电平时间 tL；\nrxd 和txd 高电平时间 tH；\n当rts_n 有效（低），从机保持正常接收状态持续进行数据接收；当从机接收达到触发阈值后rts_n 变高，从机在收完当前笔数据后停止数据接收；\n当cts_n 有效（低），主机保持正常发送状态持续进行数据发送；当cts_n 变高后，主机将当前笔数据发送完成后不会发送下一笔数据；当cts_n 由高变低后，主机会再次开始发送数据；\n除3 线外的UART 控制器都有硬件流控功能，需要用到的信号有CTS、RTS、DSR、DTR 等。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8252,
+     "end_line": 8301
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-083",
+   "title": "2.18.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "标准模式频率": "0~100Kb/s",
+    "快速模式频率": "<=400Kb/s",
+    "高速模式频率": "<=2Mb/s",
+    "接收缓存深度": "8-byte"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 中的I2C 控制器均由MIO 配置实现；\n支持master/slave 模式；\n支持三种传输模式，频率可编程调节：标准模式(0~100Kb/s)；快速模式(<=400Kb/s)；高速模式(<=2Mb/s)；\n支持7-bit 或10-bit 设备地址；\n支持发送和接收缓存，深度8-byte；\n可编程调节的SDA 建立/保持时间；\nSE 系统管理引擎下SE_SCL 和SE_SDA 为I2C slave 接口，可用于读取芯片温度传感器的温度信息。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8303,
+     "end_line": 8316
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-084",
+   "title": "2.18.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "I2C_SCL I/O I2C 接口clock 信号，默认方向NA，默认电平NA；\nI2C_SDA I/O I2C 接口data 信号，默认方向NA，默认电平NA。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8317,
+     "end_line": 8332
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-085",
+   "title": "2.18.3 接口时序",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "tc(SCL) 最小": "0.51 μs",
+    "tw(SCLL) 最小": "0.2 μs",
+    "tw(SCLH) 最小": "0.31 μs"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "周期时间，SCL tc(SCL) 最小0.51 μs；\n建立时间，SCL 为高之前SDA 低(对重启动的START 条件) tsu(SCLH-SDAL) 最小0.1 μs；\n保持时间，SCL 为低之后SDA 低(对START 和重启动的START 条件) th(SCLL-SDAL) 最小0.1 μs；\n脉冲持续时间，SCL 低 tw(SCLL) 最小0.2 μs；\n脉冲持续时间，SCL 高 tw(SCLH) 最小0.31 μs。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8333,
+     "end_line": 8466
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-086",
+   "title": "2.19.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "通道数": "2",
+    "分频系数": "1~4096",
+    "FIFO深度": "8",
+    "FIFO位宽": "32bits"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 集成的PWM 控制器支持典型的PWM 功能，有2 个完全独立的Compare 输出通道；\n支持可灵活配置的成对死区，内部集成2 个独立的PWM 子模块；\n支持可配置的信号对格式：Active high(AH)；Active low(AL)；Active high complementary(AHC)；Active low complementary(ALC)；\n支持modulo 或up and down 计数模式；\n内部PWM 子模块支持时钟分频计数，分频系数为1~4096，支持动态分频系数调整；\nCompare 模式下，输出period 的控制可以动态更新，输出占空比配置数值支持FIFO(8 深度，32bits)或寄存器两种方式。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8468,
+     "end_line": 8487
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-087",
+   "title": "2.19.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "PWMx O PWM 信号输出，推荐连接方式直连，默认电平NA；\nTACHx Tachometer 信号输入，默认电平NA；\n注：x=0~3。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8488,
+     "end_line": 8508
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-088",
+   "title": "2.20.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "最大矩阵键盘": "8×8"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 集成的8*8 KEYPAD 控制器支持如下特性；\n矩阵键盘行列可配，最大支持8×8 的外置矩阵键盘；\n列可配开漏输出；\n多按键检测；\n长按键检测。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8510,
+     "end_line": 8515
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-089",
+   "title": "2.20.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "KEY_ROW[7:0] 行输入信号，推荐连接方式直连，默认电平高；\nKEY_COL[7:0] O 列输出信号，默认电平高。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8516,
+     "end_line": 8533
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-090",
+   "title": "2.21.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "保护电阻": "22Ω"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 共集成6 个GPIO 控制器，每个控制器提供16 路GPIO 接口，均支持外部中断功能，GPIO0~2 的每位中断单独上报，控制器GPIO3~5 的中断由模块内合成一个中断上报；\n支持的中断触发类型：高电平、低电平、上升沿、下降沿；\nGPIO 接口用作双向总线情况下，在进行总线方向切换时，可能存在电源到地的短路路径，可在片外或与接口芯片间设置22Ω保护电阻。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8535,
+     "end_line": 8545
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-091",
+   "title": "2.21.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "GPIOx_[0:15] I/O CPU 通用输入输出信号管脚，默认电平NA。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8546,
+     "end_line": 8557
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-092",
+   "title": "2.22.1 接口特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "最大总线速率": "100KHz, 400KHz, 1MHz"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "SE_SMBUS 是一种三线接口，为系统和电源管理相关的任务提供控制总线；\n支持三种最大总线速率：100KHz，400KHz，1MHz；\n支持读写数据32bits 和64bits；\n支持超时检测；\n支持主从设备的时钟扩展检测；\n支持SMBUS 协议规定的命令。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8559,
+     "end_line": 8567
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-093",
+   "title": "2.22.2 信号描述",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "SE_SMBCLK O 时钟信号，推荐连接方式直连，默认电平NA；\nSE_SMBDAT I/O 数据信号，默认电平NA；\nSE_SMBALT 请求仲裁信号，默认电平NA。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8568,
+     "end_line": 8588
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-094",
+   "title": "2.23 调试接口",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "FJTAG_TCK 串联电阻": "22Ω"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "FJTAG_TCK 时钟信号，推荐连接方式源端串接22Ω电阻；\nFJTAG_TMS 模式选择信号，推荐连接方式直连；\nFJTAG_TDO 数据输出信号，推荐连接方式直连；\nFJTAG_TDI 数据输入信号，推荐连接方式直连；\nFJTAG_NTRST TAP 控制器复位信号，可选，推荐连接方式直连。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8589,
+     "end_line": 8632
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-095",
+   "title": "2.23.1 调试功能",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [
+    "不支持在线烧录flash"
+   ],
+   "text": "支持复位功能，每个核在调试器控制下分别进行复位，每个核从第0 条指令开始执行，复位不会影响其他核，只复位当前核；\n支持多核调试，当一个Core 进入调试状态，其他Core 也同步进入调试状态；\n支持Bootloader 调试，从复位后第一条指令开始调试，能够执行程序运行控制、断点、变量查看等操作；\n支持操作系统调试；\n不支持在线烧录flash。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8633,
+     "end_line": 8648
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-096",
+   "title": "2.23.2 使用方法",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "芯片对外的调试接口可以通过上位机使用调试设备进行连接，支持DS-5 以及TRACE32 的调试请求；\n使用TRACE32 要求PC 机提供标准的USB 2.0 通信接口。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8649,
+     "end_line": 8656
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-097",
+   "title": "2.24.1 时钟电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "最小系统时钟": "50MHz 单端时钟"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 最小系统时钟输入为50MHz 单端时钟，电路设计参考如图2-76 所示，最小系统主时钟参数要求参考表4-2 主时钟要求。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8658,
+     "end_line": 8663
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-098",
+   "title": "2.24.2 复位和开机电路",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "在嵌入式应用领域，系统前级采用12V 或者24V 直流母线输入，只要前级直流母线电压在位，整个系统就会按照第3.4 节所示的上电时序自动走开机流程；\nCPU_POR_N 管脚用于复位CPU 各模块；待IO 电源上电后，由复位芯片延迟一段时间后解除复位状态。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8664,
+     "end_line": 8673
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-099",
+   "title": "2.24.3 CPU 启动配置说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "SE_CFG[2:0]": "000：RESERVED；001：QSPI；010：LBC；011：NAND Flash；100：SD0-SD CARD；101：SD1-SD CARD；110：SD0-eMMC；111：RESERVED"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 支持QSPI、EMMC、SD CARD、NAND Flash 和LocalBus 启动，具体配置方式参照下表；\nSE_CFG[2:0]启动介质：000：RESERVED；001：QSPI；010：LBC；011：NAND Flash；100：SD0-SD CARD；101：SD1-SD CARD；110：SD0-eMMC；111：RESERVED。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8674,
+     "end_line": 8692
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-100",
+   "title": "2.24.4 GPIO 特殊应用说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "GPIO0_14 连接M.2 连接器，PCIE1/SATA0 侦测信号，可用于连接NVME_SSD、SATA_SSD 设备并实现自适应功能。0：连接设备为SATA 设备；1：连接设备为PCIe 设备；\nGPIO1_0 连接主板CPLD，发送软关机重启信号PWR_CTR0；\nGPIO1_1 连接主板CPLD，发送软关机重启信号PWR_CTR1；\nGPIO1_2 连接主板CPLD，发送S3_OK 信号给CPU。系统由S4/S5→S0（开机）CPLD 拉低GPIO1_2；系统由S3→S0（唤醒），CPLD 拉高GPIO1_2；\nWAKEUP_N 连接主板CPLD/EC，USB 唤醒信号输出，在S3 状态下，指示有唤醒事件发生，低有效。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8693,
+     "end_line": 8731
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-101",
+   "title": "3.1 电源参数",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VDD标准版": "0.82/0.85/0.88 V",
+    "VDD工业级A": "0.77/0.8/0.83 V, 10.5A",
+    "VDD工业级B": "0.77/0.8/0.83 V, 12.5A",
+    "VDDQ DDR4": "1.14/1.2/1.26 V, 1000mA",
+    "VDDQ LPDDR4": "1.06/1.1/1.17 V"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "腾珑E2000 Q 标准版 VDD 最小值0.82V，典型值0.85V，最大值0.88V；\n腾珑E2000 Q 工业级A VDD 最小值0.77V，典型值0.8V，最大值0.83V，最大电流10.5A；\n腾珑E2000 Q 工业级B VDD 最小值0.77V，典型值0.8V，最大值0.83V，最大电流12.5A；\nDDR4 接口电源 VDDQ/VDDQ_CK 最小值1.14V，典型值1.2V，最大值1.26V，最大电流1000mA；\nLPDDR4 接口电源 VDDQ/VDDQ_CK 最小值1.06V，典型值1.1V，最大值1.17V。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8732,
+     "end_line": 8873
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-102",
+   "title": "3.2 电源状态",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 处理器的电源状态包括S0、S3、S4 和S5；\nS0 工作状态，电源状态列表中指示S0、S3 需在位；\nS3 Suspend to RAM，电源状态列表中指示S3 需在位；\nS4、S5 Suspend to Disk、shutdown，无；\n嵌入式场景指工业控制等嵌入式应用，所有电源皆S0，无S3 需求。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 8874,
+     "end_line": 9011
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-103",
+   "title": "3.3 电源方案",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "上电缓启典型时间": "500μs 及以上"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q DDR4 颗粒和DIMM 条场景电源方案见图3-1，E2000Q 涉及的电源域包括0.85V/0.8V/1.2V/1.8V 和3.3V，原则上电流需求大于1A 以上建议采用BUCK 供电；\n建议给E2000Q 供电的电源器件上电缓启的典型时间在500μs 及以上；\nE2000Q LPDDR4 颗粒场景电源方案如图3-2 所示，E2000Q 涉及的电源域包括0.85V/0.8V/1.1V/1.2V/1.8V 和3.3V，原则上电流需求大于1A 以上建议采用BUCK 供电。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9012,
+     "end_line": 9036
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-104",
+   "title": "3.4 电源时序控制",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "3.4 电源时序控制",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9037,
+     "end_line": 9037
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-105",
+   "title": "3.4.1 嵌入式场景时序控制",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "t2 建议值": "10ms",
+    "电压压差": "1.98V 以内"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 嵌入式场景推荐的上电时序见图3-3。建议使用电源芯片的PG 信号来控制电源时序，t1 只要大于前一个电源上电缓启时间即可；\nPOR_N 是CPU 解复位信号，t2 建议值为10ms，可以使用专门的复位芯片设置解复位时间；\nLPDDR4 场景VDDQ 为1.1V 时，AVDDH 推荐跟随1.8V 经LDO 使能输出；\nE2000Q 下电过程中需保证VDDIO_x(3.3V)和VDDIO18 的电压压差在1.98V 以内，其余电源域无下电时序要求。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9038,
+     "end_line": 9050
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-106",
+   "title": "3.4.2 S3 场景时序控制",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VDDQ": "CPU 和DDR 颗粒共用电源",
+    "VPP/VREFCA、VTT": "DDR 颗粒电源",
+    "CPU_REF_50M": "推荐跟随VDDIO_0 上下电输出和截止"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "当主机从S4 或S5 进入到S0 状态，即正常开机时，请参考图3-4，依次完成上电、复位等操作，即可进入S0 状态，时序控制请参考表3-5。\nPOR 拉高之前拉低S3_OK 信号。\n该时间非可控，拉高POR 之后需要持续监测PWR_CTR0/1。\n如果通过FTLM 走控制流程做电源管理，则不需要关注S3_OK、PWR_CTR0、PWR_CTR1 三个信号的处理。\n关机后短暂等待1-2S，再开机或重启。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9051,
+     "end_line": 9547
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-107",
+   "title": "3.5 IO 供电说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "BANK5 IO 电平": "1.8V",
+    "BANK0~BANK4 电平": "1.8V 或3.3V 可选",
+    "VDDIO_x(3.3V)和VDDIO18 电压压差": "≤1.98V"
+   },
+   "must": [
+    "VDDIO18 需要保持常供电状态",
+    "VDDIO_x 接3.3V 电源前，SMCORE 必须接地"
+   ],
+   "must_not": [],
+   "text": "E2000Q IO 共分为六组BANK，除BANK5 IO 电平固定1.8V，其余五组BANK BANK0~BANK4 均支持1.8V 或者3.3V 电平可选。\nBANK0~BANK4 有对应的电平控制信号SMCORE_x，其中1 表示SMCORE_x 接E2000Q 核心电压VDD，0 表示SMCORE_x 接地。\nVDDIO18 为各BANK IO 保持电源及BANK5 IO 电源，需要保持常供电状态。\nVDDIO_x 接3.3V 电源前，SMCORE 必须接地，上下电过程中须保证VDDIO_x(3.3V)和VDDIO18 的电压压差在1.98V 以内，否则有可靠性问题。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9548,
+     "end_line": 9564
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-108",
+   "title": "3.6 推荐电容配置",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [
+    "需要在芯片板级的背面放置一定数量的去耦电容"
+   ],
+   "must_not": [],
+   "text": "为了减少E2000Q 电源域的波动，满足芯片电源完整性要求，需要在芯片板级的背面放置一定数量的去耦电容，各电源域推荐的电容配置详见表3-14。\n考虑芯片工作的环境温度可能较高，建议根据实际应用选择电容的温度规格。\n22uF 电容放置位置详见参考板PCB 布局。\n4.7uF 和1uF 电容建议交错放置。\nE2000Q 的去耦电容位于芯片的背面，为了减少路径上的寄生电感，建议电容靠近引脚放置。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9565,
+     "end_line": 9647
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-109",
+   "title": "4 时钟管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "4 时钟管理\n时钟管理",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9648,
+     "end_line": 9649
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-110",
+   "title": "4.1 时钟频率配置",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "FTC663 内核时钟": "50MHz-2GHz",
+    "FTC310 内核时钟": "50MHz-1.5GHz",
+    "内部网络主时钟": "1.2GHz",
+    "DDR 控制器时钟": "600MHz",
+    "PCIe 主时钟": "300MHz",
+    "RGMII 接口时钟": "250MHz",
+    "USB2.0 主时钟": "100MHz",
+    "SATA 主时钟": "150MHz"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "clk_cluster0、clk_cluster1 和clk_noc 支持双PLL 切换的动态调频和基于CG 的动态调频（基于CG 的动态调频得到的时钟不是50%占空比）。\nFTC663 内核时钟频率范围50MHz-2GHz。\nFTC310 内核时钟频率范围50MHz-1.5GHz。\n内部网络主时钟1.2GHz，DDR 控制器时钟600MHz，PCIe 主时钟300MHz，RGMII 接口时钟250MHz，USB2.0 主时钟100MHz，SATA 主时钟150MHz。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9650,
+     "end_line": 9678
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-111",
+   "title": "4.2 LSD 时钟说明",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "UART 主时钟": "clk_cfg(100MHz)",
+    "CAN 主时钟": "clk_lmc(200MHz)",
+    "LocalBus 主时钟": "clk_lmc(200MHz)",
+    "SD/SDIO/eMMC 主时钟": "clk_lmc(200MHz)和clk_samp(1.2GHz)",
+    "GPIO/JTAG Master/KEYPAD/MIO/PWM/SPI Master/WDT 主时钟": "clk_sio(50MHz)"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "UART 控制器主时钟为clk_cfg(100MHz)。\nCAN 控制器主时钟为clk_lmc(200MHz)，具体传输速率配置寄存器为CAN_ARB_RATE_CTRL/CAN_DAT_RATE_CTRL。\nLocalBus 控制器的主时钟为clk_lmc(200MHz)，输出时钟由该时钟分频得到，分频配置寄存器为LBC_CCR。\nSD/SDIO/eMMC 控制器主时钟包括clk_lmc(200MHz)和clk_samp(1.2GHz)，clk_lmc(200MHz)是总线时钟，输出给设备的时钟信号由clk_samp(1.2GHz)分频得到。\nNANDFlash 控制器主时钟包括clk_nand(600MHz)和clk_samp(1.2GHz)，同步模式下对应的频率配置寄存器为Nf_timing7-8reg。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9679,
+     "end_line": 9715
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-112",
+   "title": "4.3 时钟需求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "clk_ref 频率": "50MHz",
+    "PCIE_REFCLK_P/N 频率": "100MHz",
+    "USXGMII_REFCLK_P/N 频率": "156.25MHz"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "clk_ref 主时钟要求：50MHz，占空比45%~55%，频差<=50ppm，RMS jitter<=1.8ps，电压1.8V/3.3V，上升/下降斜率0.6~4.0V/ns (10%~90%)。\nPCIE_REFCLK_P/N、SGMII_REFCLKP/N 参考时钟要求：100MHz，占空比40%~60%，频差±300ppm，RMS jitter≤1ps，差分输入高电压VIH≥150mV，差分输入低电压VIL≤-150mV，斜率0.6~4.0V/ns。\nUSXGMII_REFCLK_P/N 参考时钟要求：156.25MHz，占空比40%~60%，频差±100ppm，RMS jitter≤0.8ps，差分输入高电压VIH≥150mV，差分输入低电压VIL≤-150mV，斜率0.6~4.0V/ns（20%~80%）。\nSerDes 参考时钟类型为HCSL。\n在特殊应用场景，线速要求非常高时，可将输入时钟适当上偏，以达到大包传输线速，输入时钟适配的上偏参数为25ppm，但应注意该参数并不适配所有项目设计。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9716,
+     "end_line": 9807
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-113",
+   "title": "5 信号电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5 信号电气特性\n\n信号电气特性",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9808,
+     "end_line": 9810
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-114",
+   "title": "5.1 绝对最大额定值",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VDD": "-0.3-1.2V",
+    "VDDQ/VDDQ_CK": "-0.3-1.44V",
+    "AVDDH": "-0.3-1.44V",
+    "AVDDL": "-0.3-0.96V",
+    "AVDD_CLK": "-0.3-0.96V",
+    "VDDIO_x/VDDIO18(1.8V IO)": "-0.3-1.98V",
+    "VDDIO_x(3.3V IO)": "-0.3-3.63V",
+    "VDDA": "-0.3-2.16V"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "核心电源VDD 极限电压范围-0.3-1.2V。\nDDR4 接口电源VDDQ/VDDQ_CK 极限电压范围-0.3-1.44V。\nSerdes 模拟高压电源AVDDH 极限电压范围-0.3-1.44V。\n1.8V IO 电源VDDIO_x/VDDIO18 极限电压范围-0.3-1.98V。\n3.3V IO 电源VDDIO_x 极限电压范围-0.3-3.63V。\n表中所列范围以外的条件可能会导致器件永久性损坏。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9811,
+     "end_line": 9870
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-115",
+   "title": "5.2 ESD 特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VESD(HBM)": "最大值1000V"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "静电放电电压（人体模式）VESD(HBM)最大值1000V。\n静电放电电压（充电设备模式）VESD(CDM)。\n静态闩锁LU：Ta=25℃、85℃，Tjmax=85℃，符合JESD78E-2016 标准，A 类。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9871,
+     "end_line": 9895
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-116",
+   "title": "5.3 通用引脚DC 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "1.8V VDDIO": "1.71~1.89V",
+    "3.3V VDDIO": "3.135~3.465V",
+    "VDDIO18": "1.71~1.89V",
+    "IL/IOZ": "±10µA"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "1.8V通用pad引脚：I/O 电压VDDIO 范围1.71~1.89V，IO 保持电压及BANK5 供电电压VDDIO18 范围1.71~1.89V。\n1.8V通用pad引脚：高电平输入电压VIH最小0.65*VDDIO，低电平输入电压VIL最大0.35*VDDIO。\n1.8V通用pad引脚：输入漏电电流IL 和输出Z 态漏电流IOZ 为±10µA。\n3.3V通用pad引脚：I/O 电压VDDIO 范围3.135~3.465V，高电平输入电压VIH最小--，低电平输入电压VIL最大0.8V。\n3.3V通用pad引脚：输入漏电电流IL 和输出Z 态漏电流IOZ 为±10µA。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 9896,
+     "end_line": 10054
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-117",
+   "title": "5.4 通用引脚AC 特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "测试条件": "CL=22pF ；TC=25℃"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "通用Pad 交流参数(1.8 V)：PAD 输出输转换时间(上升/下降) Tr/Tf，测试条件 CL=22pF ；TC=25℃；Vdd=1.8。\n通用Pad 交流参数(3.3V)：PAD 输出输转换时间(上升/下降) Tr/Tf，测试条件 CL=22pF ；TC=25℃；Vdd=3.3。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10055,
+     "end_line": 10089
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-118",
+   "title": "5.5 SerDes 电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "5.5 SerDes 电气特性",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10090,
+     "end_line": 10090
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-119",
+   "title": "5.5.1 外部参考时钟电平规范",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "参考时钟差分阻抗ZREFCLK。\n输入信号电流IINEXT。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10091,
+     "end_line": 10105
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-120",
+   "title": "5.5.2 发送模块电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "VTX_out_normal_mode": "1.2V",
+    "VTX_out_low_power_mode": "0.4V"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "正常模式下的输出电压峰峰值VTX_out_normal_mode：典型1.2V。\n低功耗模式下的输出电压峰峰值VTX_out_low_power_mode：最小0.4V。\n正常模式时，校准后的差分驱动阻抗ZTX_cal。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10106,
+     "end_line": 10126
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-121",
+   "title": "5.5.3 接收模块电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "正常模式下，校准后的接收端差分阻抗ZRX_cal。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10127,
+     "end_line": 10138
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-122",
+   "title": "5.5.4 公共模块电气特性",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "FREFEXT_PCIe_SSC": "99.97~100.03MHz"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "扩频时钟模式下，PCIe 参考时钟频率FREFEXT_PCIe_SSC 范围99.97~100.03MHz。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10139,
+     "end_line": 10153
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-123",
+   "title": "6 温度管理",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "6 温度管理\n\n温度管理",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10154,
+     "end_line": 10156
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-124",
+   "title": "6.1 热参数",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 热设计要求详情请参见《飞腾腾珑E2000 系列热设计指南》。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10157,
+     "end_line": 10158
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-125",
+   "title": "6.2 温度传感器",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "温度传感器数量": "1",
+    "精度": "±5°C"
+   },
+   "must": [],
+   "must_not": [],
+   "text": "E2000Q 内部集成1 个温度传感器，可以设置超温阈值，检测到超温后，通过SCPI 命令通知操作系统进行相应的处理。\n处理器核在安全态下可以直接访问TS 控制器，配置TS 模式和参数，读取温度值，精度为±5°C。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10159,
+     "end_line": 10163
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-126",
+   "title": "7 通用PCB 设计指导",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {},
+   "must": [],
+   "must_not": [],
+   "text": "7 通用PCB 设计指导\n\n通用PCB 设计指导",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10164,
+     "end_line": 10166
+    }
+   ]
+  },
+  {
+   "id": "PF-E2000-127",
+   "title": "7.1 阻抗要求",
+   "stage": [
+    "PH-2",
+    "PH-3"
+   ],
+   "gate": "G3",
+   "params": {
+    "DDR 单端阻抗": "45Ω",
+    "DDR 差分阻抗": "75Ω"
+   },
+   "must": [
+    "高速信号布线必须严格满足阻抗要求"
+   ],
+   "must_not": [],
+   "text": "高速信号布线必须严格满足阻抗要求，以保证信号质量能满足设计要求。\nBGA 区域的扇出走线和外设芯片或连接器引脚的走线，可根据空间适当放宽要求。\nDDR 单端45Ω和差分75Ω信号的阻抗要求，以供参考。",
+   "refs": [
+    {
+     "src": "raw/raw_platmform/E2000/数据手册.md",
+     "line": 10167,
+     "end_line": 10170
+    }
+   ]
+  }
+ ]
+}

@@ -122,7 +122,8 @@ def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "r
     - platform_rules：platform_rules==true 且 platform 命中 index["platform"] → 读其 rules
       （rules 可为字符串或文件列表，兼容 E2000）的 entries。
     - pinout：**绝不**把引脚数据放入返回值；仅返回 pinout_path 供工具按需查。
-    - tokens_est 超 budget_tokens → 按 entry 顺序截断（truncated=True, dropped=[ids]），不抛错。
+    - tokens_est 超有效预算 cap → 按 entry 顺序截断（truncated=True, dropped=[完整ids]，
+      over_budget_by=tokens_full-cap），不抛错。cap = min(budget_tokens|config, input_hard_cap)。
       拼接顺序：**平台规则在前、通用规则在后**；因平台规则更具体且是 P4-B 注入核心，
       截断（从尾部丢弃）时必须优先保住平台规则（否则 `platform_rules=true` 形同虚设）。
     """
@@ -155,7 +156,10 @@ def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "r
             entries.extend(got)
             sources.append(str(base / rel))
 
-    cap = int(budget_tokens or Config().rule_bundle_tokens())
+    cfg = Config()
+    hard_cap = int(cfg.input_hard_cap() or 400000)   # 输入硬顶（< context_total，不可突破）
+    eff = int(budget_tokens or cfg.rule_bundle_tokens())
+    cap = min(eff, hard_cap)                          # 有效预算 = min(请求预算, 输入硬顶)
     full_tokens = _est_tokens(entries)
     truncated, dropped, kept = False, [], entries
     dropped_tokens = 0
@@ -169,8 +173,10 @@ def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "r
             else:
                 hi = mid - 1
         kept = entries[:lo]
-        dropped = [e.get("id") for e in entries[lo:]]
+        dropped = [e.get("id") for e in entries[lo:]]   # 完整被丢弃 ID 列表（禁静默截断）
         dropped_tokens = _est_tokens(entries[lo:])
+
+    over_budget_by = max(0, full_tokens - cap)
 
     return {"stage": stage, "platform": platform_used,
             "entries": _EntryList(kept, truncated=truncated, dropped=dropped,
@@ -180,7 +186,8 @@ def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "r
             "under_budget": full_tokens <= cap,
             "sources": sources, "pinout_path": pinout_path,
             "truncated": truncated, "dropped": dropped,
-            "dropped_tokens": dropped_tokens}
+            "dropped_tokens": dropped_tokens,
+            "over_budget_by": over_budget_by}
 
 
 def render_rules_text(entries: list[dict], max_chars: int = 30000,

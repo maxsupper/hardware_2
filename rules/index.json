@@ -90,10 +90,9 @@
   },
   "E2000": {
    "rules": [
-    "platform/E2000/rules_01.json",
-    "platform/E2000/rules_02.json",
-    "platform/E2000/rules_03.json",
-    "platform/E2000/rules_04.json"
+    "platform/E2000/rules.part1.json",
+    "platform/E2000/rules.part2.json",
+    "platform/E2000/rules.part3.json"
    ],
    "pinout": "platform/E2000/pinout.json",
    "pinout_index": "platform/E2000/pinout.index.json",

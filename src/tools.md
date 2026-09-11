@@ -241,3 +241,19 @@
 - 输出   : platform_check.json（platform/coverage/checks[pin_existence|function|domain]/inconsistencies）
 - 已验证 : RK3588 覆盖率 0.817；核对三类判据保守（缺引脚 WARNING、明确冲突才 FAIL、无电压证据 SKIPPED_NO_NET_VOLTAGE）
 - 备注   : **pinout 不进 LLM**——官方表优先 rules/platform/<芯片>/pinout.json，回退 raw/raw_platmform/<芯片>/pinout.json；脚名归一基于 CONV（DEV-010）
+
+## [T-TEST-PLATFORMS] test_platforms（全平台链路回归）
+- 模块   : scripts/selfcheck/test_platforms.py
+- 功能   : 对 RK3588/RK3576/RV1126B/E2000 逐一验证「识别→规则加载(不截断/不注入引脚数据)→platform_check→G3 门禁」
+- 输入   : 无（用真实 netlist_graph 造副本）
+- 输出   : stdout PASS/FAIL 汇总；失败退出码非 0
+- 已验证 : 4 平台 ALL PASS
+- 备注   : 通用性回归；防"只对 RK3588 有效"
+
+## [T-DATASHEET-TO-RULES] datasheet_to_rules（数据手册分章提炼硬件约束）
+- 模块   : scripts/prepare_rules/datasheet_to_rules.py
+- 功能   : 整本数据手册→按目录分章→分批 LLM 判定是否硬件约束→只保留硬件约束生成平台规则束（PF-006）
+- 输入   : raw/<平台>/数据手册.md；--force / --batch-chars；缓存 rules/platform/<芯片>/filter_verdicts.json
+- 输出   : rules/platform/<芯片>/rules.partN.json + filter_manifest.json（逐章 keep/drop+理由）+ 同步 rules/index.json
+- 已验证 : E2000 → 176章 keep 149/drop 27；字符 100,988→28,325；丢弃仅噪声白名单；同标题一致=0；二跑 0 次 LLM 且字节一致
+- 备注   : 标题硬护栏(title_guard)+丢弃理由白名单 双保险；PROMPT_VERSION 变更即缓存失效；不动其它平台资产

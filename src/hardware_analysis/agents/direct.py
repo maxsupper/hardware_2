@@ -4,7 +4,7 @@ Crew 包装在本网关长结构化 prompt 下开销大；批量短调用更稳�
 仍走 角色(精简) + 契约模型，输出归一化后过 Pydantic 校验。
 """
 from __future__ import annotations
-import json, sys, time
+import json, re, sys, time
 from pathlib import Path
 
 if __package__ in (None, ""):
@@ -34,7 +34,7 @@ def llm_json(agent: str, prompt: str, model_cls, cfg: Config | None = None,
     rules_text：本阶段规则束渲染文本（默认空 → 行为与旧版完全一致），置于 BRIEF_ROLE 之后、system_footer 之前。"""
     import os
     if os.environ.get("HARDWARE_MOCK") == "1":
-        return _mock(agent, model_cls), [], 0.0
+        return _mock(agent, model_cls, prompt), [], 0.0
     cfg = cfg or Config()
     # 直接 HTTP 调用 OpenAI 兼容接口（不经 crewai.LLM：它在长 system 提示下会返回空 content）
     max_tok = int(cfg.llm.get("max_tokens", 4096))
@@ -75,8 +75,11 @@ def _http_chat(cfg: Config, messages: list, max_tokens: int, timeout: int) -> st
     return content
 
 
-def _mock(agent: str, model_cls):
-    """快速 mock：按契约给最小模板（供确定性流程/Gate/端到端验证）。"""
+def _mock(agent: str, model_cls, prompt: str = ""):
+    """快速 mock：按契约给最小模板（供确定性流程/Gate/端到端验证）。
+
+    ``prompt`` 仅供 BatchVerdict 分支解析待判定章节标题/原文；其余分支忽略，行为不变。
+    """
     import json as _j
     kind = getattr(model_cls, "__name__", "")
     if kind == "G0Sources":
@@ -93,9 +96,111 @@ def _mock(agent: str, model_cls):
         d = {"action": "IGNORE", "compatible_model": "", "reason": "mock", "confidence": "UNCERTAIN"}
     elif kind == "IcTypeVerdict":
         d = {"model": "", "ic_type": "SINK", "channels": [], "reason": "mock"}
+    elif kind == "BatchVerdict":
+        d = _mock_batch_verdict(prompt)
     else:
         d = {}
     return model_cls.model_validate(_j.loads(_j.dumps(d)))
+
+
+# --------------------------------------------------------------------------- #
+# BatchVerdict mock：按标题关键词做确定性、保守的硬件约束判定
+# --------------------------------------------------------------------------- #
+# 丢弃优先：标题命中这些关键词 → is_hardware_constraint=False（并给 drop_reason）
+# drop_reason 仅取噪声白名单（与 datasheet_to_rules.DROP_REASONS 对齐，descriptive 已废弃）
+_MOCK_DROP_RULES = (
+    (("版本", "修订"), "revision_history"),
+    (("目录",), "toc"),
+    (("术语", "缩略"), "terminology"),
+    (("产品标识", "标识", "订购", "订货", "包装", "marking"), "ordering"),
+    (("法律", "声明", "版权"), "legal"),
+    (("框图", "结构图", "map"), "figure_caption"),
+)
+_MOCK_DROP_REASONS = ("revision_history", "toc", "toc_entry", "terminology", "ordering",
+                      "packaging", "legal", "figure_caption", "cover")
+# 标题硬护栏（与 datasheet_to_rules.MUST_KEEP_TITLE_RE 对齐）：命中即一律保留
+_MOCK_MUST_KEEP_RE = re.compile(
+    r"特性|电气|指标|参数|时序|复用|拓扑|布线|PCB|阻抗|等长|引脚|信号|电源|时钟|复位|"
+    r"ESD|EMC|温度|热|校准|绝对最大|推荐工作|限制|约束|处理方式|使用|建议|指导|准则|要求",
+    re.I,
+)
+# 保留关键词：标题命中任一 → 保守视为硬件约束
+_MOCK_KEEP_KW = (
+    "引脚", "信号", "电气", "电压", "电流", "电源", "供电", "电容", "时序", "复位",
+    "时钟", "布线", "阻抗", "拓扑", "交换", "接口", "复用", "不使用", "校准", "pcb",
+    "esd", "emc", "热", "温度", "启动", "配置", "微带", "带状", "残桩", "串扰",
+    "回流", "叠层", "封装", "扣合", "装焊", "尺寸", "serdes", "mio", "io", "lsd",
+    "额定", "最大", "特性",
+)
+_MOCK_CATEGORIES = (
+    (("不使用",), "unused_pin"),
+    (("启动", "配置"), "boot_config"),
+    (("引脚", "信号"), "pin_definition"),
+    (("电气", "电压", "电流", "额定", "最大", "dc", "ac"), "electrical"),
+    (("电源", "供电", "电容"), "power"),
+    (("时序", "复位", "时钟"), "timing"),
+    (("拓扑", "交换"), "topology"),
+    (("布线", "阻抗", "pcb", "叠层", "残桩", "串扰", "回流", "微带", "带状"), "pcb"),
+    (("热", "温度"), "thermal"),
+    (("esd", "emc"), "esd"),
+    (("接口", "serdes", "mio"), "peripheral"),
+)
+
+
+def _mock_excerpts(text: str, limit: int = 3, cap: int = 200) -> list:
+    """从章节原文按句子切出前 limit 条摘录（确定性、去噪）。"""
+    import re as _re
+    out = []
+    for seg in _re.split(r"(?<=[。；\n])", str(text or "")):
+        s = _re.sub(r"\s+", " ", seg).strip()
+        if len(s) < 6:
+            continue
+        out.append(s[:cap])
+        if len(out) >= limit:
+            break
+    return out
+
+
+def _mock_section_verdict(num: str, title: str, text: str) -> dict:
+    """单章标题关键词 → 保守判定（可复现）；无白名单噪声理由 → 一律保留。"""
+    tl = str(title or "").replace(" ", "").lower()
+    drop_reason = ""
+    for kws, reason in _MOCK_DROP_RULES:
+        if any(kw in tl for kw in kws):
+            drop_reason = reason
+            break
+    keep = not drop_reason
+    override = ""
+    if _MOCK_MUST_KEEP_RE.search(str(title or "")):
+        keep, drop_reason, override = True, "", "title_guard"
+    elif not keep and drop_reason not in _MOCK_DROP_REASONS:
+        keep, drop_reason, override = True, "", "reason_not_whitelisted"
+    cats = []
+    if keep:
+        for kws, cat in _MOCK_CATEGORIES:
+            if any(kw in tl for kw in kws) and cat not in cats:
+                cats.append(cat)
+    return {
+        "num": str(num),
+        "is_hardware_constraint": bool(keep),
+        "categories": cats if keep else [],
+        "constraints": _mock_excerpts(text) if keep else [],
+        "must": [], "must_not": [], "params": {},
+        "drop_reason": "" if keep else drop_reason,
+        "override": override,
+    }
+
+
+def _mock_batch_verdict(prompt: str) -> dict:
+    """解析 prompt 中的 <<<SECTION ...>>> 标记并逐章给出确定性判定。"""
+    import re as _re
+    secs = []
+    pat = _re.compile(
+        r"<<<SECTION num=(?P<num>[^\s>]+) title=(?P<title>.*?) line=(?P<line>\d+)>>>\n"
+        r"(?P<text>.*?)<<<END num=[^>]*>>>", _re.S)
+    for m in pat.finditer(str(prompt or "")):
+        secs.append(_mock_section_verdict(m.group("num"), m.group("title"), m.group("text")))
+    return {"sections": secs}
 
 def err_to_str(errs) -> str:
     return "；".join(errs)[:220]
