@@ -71,7 +71,7 @@ def start(product: str = Form(...), auto_pass: bool = Form(False)):
         cmd.append("--auto-pass")
     run_id = uuid.uuid4().hex[:8]
     # 后台子进程
-    logf = open(PRODUCTS_DIR / name / ".run" / "run.log.jsonl", "a", encoding="utf-8")
+    logf = open(PRODUCTS_DIR / name / ".run" / "stdout.log", "a", encoding="utf-8")  # 子进程 stdout 独立，勿污染 run.log.jsonl(JSONL)
     proc = subprocess.Popen(cmd, cwd=BASEDIR, env=env, stdout=logf, stderr=subprocess.STDOUT,
                             start_new_session=True)
     RUNS[run_id] = {"product": name, "pid": proc.pid}
@@ -94,8 +94,16 @@ def logs(product: str, after: int = 0, n: int = 200):
     if not p.exists():
         return {"events": [], "next": 0}
     lines = p.read_text(encoding="utf-8", errors="replace").splitlines()
-    ev = [json.loads(l) for l in lines[after:after + n] if l.strip()]
-    return {"events": ev, "next": after + len(ev), "total": len(lines)}
+    ev, i = [], after
+    while i < len(lines) and len(ev) < n:          # 容错：跳过非 JSON 行（不因脏行 500）
+        l = lines[i]; i += 1
+        if not l.strip():
+            continue
+        try:
+            ev.append(json.loads(l))
+        except Exception:
+            continue
+    return {"events": ev, "next": i, "total": len(lines)}
 
 
 @app.get("/api/gates/{product}")
