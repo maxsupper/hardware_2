@@ -132,17 +132,13 @@ def main() -> None:
     mapping = json.loads(Path(args.mapping).read_text(encoding="utf-8"))
     rj = build_rules_json(mapping)
     RULES_JSON.parent.mkdir(parents=True, exist_ok=True)
-    RULES_JSON.write_text(json.dumps(rj, ensure_ascii=False, indent=1), encoding="utf-8")
     CHECKLIST_MD.write_text(render_checklist(rj), encoding="utf-8")
-    # 平台 bundle 占位（来源引用，不复制大文件）
+    # 平台来源存在性直接并入 rules.json 的 platform 段（不再写 rules/platform/*/bundle.json 冗余文件）
     for chip, b in PLATFORM_BUNDLES.items():
-        d = Path(b["bundle"].replace("rules/", "", 1).replace(chip, "", 1))
-        srcs_exist = {s: (RAW_DIR / s).exists() for s in b["sources"]}
-        p = ROOT / b["bundle"]
-        p.mkdir(parents=True, exist_ok=True)
-        (p / "bundle.json").write_text(json.dumps(
-            {"chip": chip, "sources": b["sources"], "sources_exist": srcs_exist},
-            ensure_ascii=False, indent=1), encoding="utf-8")
+        rj["platform"].setdefault(chip, {}).setdefault("sources", b["sources"])
+        rj["platform"][chip]["sources_exist"] = {s: (RAW_DIR / s).exists() for s in b["sources"]}
+    RULES_JSON.write_text(json.dumps(rj, ensure_ascii=False, indent=1), encoding="utf-8")
+    print("注意：本脚本从 raw 重建 rules.json，会覆盖 apply_v2_rules 的 v2 修订；请随后重跑 apply_v2_rules。")
     print(f"已写: {RULES_JSON} | 规则条数 = {len(rj['rules'])}")
     print(f"已写: {CHECKLIST_MD}")
     print("平台 bundles:", ", ".join(PLATFORM_BUNDLES.keys()))

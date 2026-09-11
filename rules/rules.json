@@ -2070,7 +2070,11 @@
    "sources": [
     "raw_platmform/E2000/数据手册.md",
     "raw_platmform/E2000/pinout.json"
-   ]
+   ],
+   "sources_exist": {
+    "raw_platmform/E2000/数据手册.md": true,
+    "raw_platmform/E2000/pinout.json": true
+   }
   },
   "RK3576": {
    "bundle": "rules/platform/RK3576/",
@@ -2078,7 +2082,12 @@
     "raw_platmform/RK3576/hardware_check.md",
     "raw_platmform/RK3576/pinout.json",
     "raw_platmform/RK3576/pinout.md"
-   ]
+   ],
+   "sources_exist": {
+    "raw_platmform/RK3576/hardware_check.md": true,
+    "raw_platmform/RK3576/pinout.json": true,
+    "raw_platmform/RK3576/pinout.md": true
+   }
   },
   "RK3588": {
    "bundle": "rules/platform/RK3588/",
@@ -2086,7 +2095,12 @@
     "raw_platmform/RK3588/hardware_check.md",
     "raw_platmform/RK3588/pinout.json",
     "raw_platmform/RK3588/pinout.md"
-   ]
+   ],
+   "sources_exist": {
+    "raw_platmform/RK3588/hardware_check.md": true,
+    "raw_platmform/RK3588/pinout.json": true,
+    "raw_platmform/RK3588/pinout.md": true
+   }
   },
   "RV1126B": {
    "bundle": "rules/platform/RV1126B/",
@@ -2094,7 +2108,12 @@
     "raw_platmform/RV1126B/hardware_check.md",
     "raw_platmform/RV1126B/pinout.json",
     "raw_platmform/RV1126B/pinout.md"
-   ]
+   ],
+   "sources_exist": {
+    "raw_platmform/RV1126B/hardware_check.md": true,
+    "raw_platmform/RV1126B/pinout.json": true,
+    "raw_platmform/RV1126B/pinout.md": true
+   }
   }
  },
  "path_map": {
@@ -2108,6 +2127,7 @@
  "_audit": {
   "raw_sections": 218,
   "canonical": 218,
-  "v2_applied": "2026-09-11: process换位/gates重排/agents更新 + 新增 MI/NG/CL 10 条（既有218条内容未改）"
+  "v2_applied": "2026-09-11: process换位/gates重排/agents更新 + 新增 MI/NG/CL 10 条（既有218条内容未改）",
+  "platform_bundles_merged": "2026-09-11: 4×bundle.json 并入 platform 段（去冗余文件）"
  }
 }
