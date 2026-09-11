@@ -206,6 +206,15 @@ class Orchestrator:
 
     # ---------- PH-7 闭环交付 ----------
     def _act_ph7(self):
+        rp = self.ws.dir / "F_report" / "report.json"
+        final = self.ws.dir / "F_report" / "final_report.json"
+        if rp.exists() and not final.exists():
+            import shutil
+            shutil.copy(rp, final)                   # 定版产物（G7 校验依据）
+        sp = self.ws.dir / "F_report" / "delivery.json"
+        sp.write_text(json.dumps({
+            "kind": "delivery", "product": self.product, "status": "DELIVERED",
+            "final_report": str(final), "unresolved": []}, ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("ph7_done")
 
     # ---------- 基础设施 ----------
@@ -239,8 +248,12 @@ class Orchestrator:
     def run(self, auto_pass_gates=False):
         self.auto_pass = auto_pass_gates
         from hardware_analysis.tools import gate_validators as gv
+        from hardware_analysis.flows.rule_loader import load_dev_rules
+        dev = load_dev_rules()                       # 启动读取：代码生成硬性要求
         try:
             self.ws.create()
+            self._log("dev_rules_loaded", count=len(dev),
+                      rules=[d["id"] for d in dev])
             self._set("current", "PH-0"); self.state["phases"]["PH-0"] = "RUNNING"
             self._act_ph0()
             self.state["phases"]["PH-0"] = "DONE"
@@ -250,8 +263,8 @@ class Orchestrator:
                 ("PH-3", self._act_ph3, "G3", lambda: gv.validate_netlist(self._b())),
                 ("PH-4", self._act_ph4, "G4", lambda: gv.validate_evidence(self.ws.dir / "E_analyze")),
                 ("PH-5", self._act_ph5, "G5", lambda: gv.validate_report(self.ws.dir / "F_report")),
-                ("PH-6", self._act_ph6, None, None),
-                ("PH-7", self._act_ph7, None, None),
+                ("PH-6", self._act_ph6, "G6", lambda: gv.validate_audit(self.ws.dir)),
+                ("PH-7", self._act_ph7, "G7", lambda: gv.validate_delivery(self.ws.dir)),
             ]:
                 self._set("current", ph); self.state["phases"][ph] = "RUNNING"
                 act()

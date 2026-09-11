@@ -205,6 +205,65 @@ def validate_netlist(b_prep_dir: Path) -> GateResult:
     return _finalize("G3", "netlist_validate", checks)
 
 
+# ---------------- v2: G6 audit_validate（PH-6 审计） ----------------
+def validate_audit(ws_dir: Path) -> GateResult:
+    checks = []
+    ad = ws_dir / "F_audit" / "audit.json"
+    ok = ad.exists() and ad.stat().st_size > 0
+    _check(checks, "G6-000", GateStatus.PASS if ok else GateStatus.FAIL,
+           "audit.json 存在（PH-6 审计产出）", "ok" if ok else "缺失")
+    if ok:
+        try:
+            d = json.loads(ad.read_text(encoding="utf-8"))
+            st = d.get("status")
+            _check(checks, "G6-001", GateStatus.PASS if st == "PASS" else GateStatus.FAIL,
+                   "审计状态 PASS", f"status={st}")
+            fails = [c for c in d.get("checks", []) if c.get("status") == "FAIL"]
+            _check(checks, "G6-002", GateStatus.PASS if not fails else GateStatus.FAIL,
+                   "审计无 FAIL 检查（SA-1..8）", f"fail 检查 {len(fails)}")
+        except Exception as e:
+            _check(checks, "G6-001", GateStatus.FAIL, "audit.json 可解析", str(e)[:60])
+    # 证据链三方：evidence + summary + report
+    e = ws_dir / "E_analyze"
+    evs = sorted(set(e.glob("*.evidence.json")) | set(e.glob("*_evidence.json"))) if e.exists() else []
+    sues = sorted(e.glob("*_summary.json")) if e.exists() else []
+    _check(checks, "G6-003", GateStatus.PASS if evs else GateStatus.FAIL, "有 evidence", f"{len(evs)}")
+    _check(checks, "G6-004", GateStatus.PASS if sues else GateStatus.FAIL, "有 summary", f"{len(sues)}")
+    _check(checks, "G6-005", GateStatus.PASS if (ws_dir / "F_report" / "report.json").exists() else GateStatus.FAIL,
+           "report.json 存在（证据链完整性）", "ok" if (ws_dir / "F_report" / "report.json").exists() else "缺失")
+    return _finalize("G6", "audit_validate", checks)
+
+
+# ---------------- v2: G7 delivery_validate（PH-7 闭环交付） ----------------
+def validate_delivery(ws_dir: Path) -> GateResult:
+    checks = []
+    prior = [f"G{i}" for i in range(1, 7)]
+    gp = ws_dir / "gates"
+    missing = [g for g in prior if not (gp / f"{g}.json").exists()]
+    _check(checks, "G7-000", GateStatus.PASS if not missing else GateStatus.FAIL,
+           "前序门禁文件 G1..G6 齐全", f"缺 {missing}")
+    failed = [g for g in prior if (gp / f"{g}.json").exists()
+              and json.loads((gp / f"{g}.json").read_text(encoding="utf-8")).get("status") != "PASS"]
+    _check(checks, "G7-001", GateStatus.PASS if not failed else GateStatus.FAIL,
+           "前序门禁 G1..G6 全 PASS", f"FAIL={failed}")
+    rp = ws_dir / "F_report" / "report.json"
+    _check(checks, "G7-002", GateStatus.PASS if rp.exists() else GateStatus.FAIL,
+           "report.json 存在", "ok" if rp.exists() else "缺失")
+    _check(checks, "G7-003", GateStatus.PASS if (ws_dir / "F_report" / "final_report.json").exists() else GateStatus.FAIL,
+           "定版 final_report.json 存在（PH-7 产物）",
+           "ok" if (ws_dir / "F_report" / "final_report.json").exists() else "缺失")
+    crit = []
+    if rp.exists():
+        try:
+            r = json.loads(rp.read_text(encoding="utf-8"))
+            crit = [f for f in r.get("findings", []) if f.get("status") == "CRITICAL"]
+        except Exception:
+            crit = []
+    _check(checks, "G7-004", GateStatus.PASS if not crit else GateStatus.WARNING,
+           "无 CRITICAL 未决项", f"critical={len(crit)}")
+    return _finalize("G7", "delivery_validate", checks)
+
+
 def _finalize(gate, name, checks) -> GateResult:
     passed = sum(1 for c in checks if c.status == GateStatus.PASS)
     failed = sum(1 for c in checks if c.status == GateStatus.FAIL)
@@ -227,23 +286,25 @@ def main_gate_cli(ws_dir, gate):
 
 
 def _GATE_FNS() -> dict:
-    """v2 门禁映射：G1=手册 G2=预检 G3=网表 G4=分析 G5=报告。"""
+    """v2 门禁映射：G1=手册 G2=预检 G3=网表 G4=分析 G5=报告 G6=审计 G7=交付。"""
     return {"G1": ("B_prep", validate_manual_index),
             "G2": ("B_prep", validate_bom),
             "G3": ("B_prep", validate_netlist),
             "G4": ("E_analyze", validate_evidence),
-            "G5": ("F_report", validate_report)}
+            "G5": ("F_report", validate_report),
+            "G6": (".", validate_audit),
+            "G7": (".", validate_delivery)}
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("gate", choices=["G1", "G2", "G3", "G4", "G5"])
+    ap.add_argument("gate", choices=["G1", "G2", "G3", "G4", "G5", "G6", "G7"])
     ap.add_argument("workspace_dir", help="产品工作区（其下 B_prep/E_analyze/F_report）")
     ap.add_argument("--out", default=None, help="写 gates/G<n>.json")
     args = ap.parse_args()
     ws = Path(args.workspace_dir)
     subdir, fn = _GATE_FNS()[args.gate]
-    r = fn(ws / subdir)
+    r = fn((ws / subdir).resolve())
     out = Path(args.out) if args.out else ws / "gates" / f"{args.gate}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(r.model_dump_json(indent=1), encoding="utf-8")

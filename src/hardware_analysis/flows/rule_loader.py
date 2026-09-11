@@ -35,6 +35,12 @@ def load_stage_bundle(rules_path: str | Path, stage: str, budget_tokens: int | N
             "under_budget": under, "budget_check": "OK" if under else "OVER"}
 
 
+def load_dev_rules(rules_path: str | Path = "rules/rules.json") -> list[dict]:
+    """加载代码生成硬性要求（rules.json 的 dev_rules 段）。"""
+    rj = json.loads(Path(rules_path).read_text(encoding="utf-8"))
+    return rj.get("dev_rules", {}).get("rules", [])
+
+
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()

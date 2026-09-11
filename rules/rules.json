@@ -2128,6 +2128,44 @@
   "raw_sections": 218,
   "canonical": 218,
   "v2_applied": "2026-09-11: process换位/gates重排/agents更新 + 新增 MI/NG/CL 10 条（既有218条内容未改）",
-  "platform_bundles_merged": "2026-09-11: 4×bundle.json 并入 platform 段（去冗余文件）"
+  "platform_bundles_merged": "2026-09-11: 4×bundle.json 并入 platform 段（去冗余文件）",
+  "dev_rules_added": "2026-09-11: 新增 dev_rules 段（6条，代码生成硬性要求）"
+ },
+ "dev_rules": {
+  "schema_version": "1.0",
+  "kind": "dev_rules",
+  "note": "代码生成硬性要求（系统启动读取；人机同源）",
+  "rules": [
+   {
+    "id": "DEV-001",
+    "rule": "所有代码产出必须过 Pydantic 契约校验，非法 JSON/字段拒收。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-002",
+    "rule": "新增脚本必须登记 src/tools.md，未登记=不可合入。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-003",
+    "rule": "禁止修改 raw/、rules.json 既有规则内容、storge/refbook/。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-004",
+    "rule": "改动源文件前必须备份(.bak)；每步改动必须验证，禁止空头声称。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-005",
+    "rule": "提交前必须过自检(9/9)+mock 回归；接口/产物全 JSON。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-006",
+    "rule": "所有生成代码，必须与 LLM 对话检查 2 次，确认有效性/效率/通用性无误。",
+    "enforce": true
+   }
+  ]
  }
 }
