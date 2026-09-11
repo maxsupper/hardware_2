@@ -40,5 +40,21 @@
       "products": "storge/project",
       "problem": "storge/problem"
     }
+  },
+  "conventions": {
+    "_notes": "EDA 约定与阈值（可选；缺省用代码 common/conventions.py 的 DEFAULTS）。只需写想覆盖的键，启动时自动生效。",
+    "active_prefixes": ["U"],
+    "connector_prefixes": ["J", "CN", "P", "CON"],
+    "mech_prefixes": ["H", "MH"],
+    "testpoint_prefixes": ["TP"],
+    "passive_prefixes": ["R", "C", "L", "FB", "D", "Q", "Y", "X", "F", "BEAD", "LED", "SW"],
+    "transparent_prefixes": ["R", "L", "BEAD", "FB", "FERR", "TP", "JMP", "JUMP", "0R"],
+    "power_net_regex": "^(GND|AGND|DGND|VSS|VCC|VDD|VBAT|VIN|VBUS|\\+|-)\\d*",
+    "diff_pair_regex": "^(.*?)[_\\-]?([PN])$",
+    "board_regex": "-([A-Z])_V\\d",
+    "board_fallback_regex": "-([A-Z])_",
+    "connector_pair_min_signal": 3,
+    "fanout_min_neighbors": 3,
+    "trace_guard": 60
   }
 }

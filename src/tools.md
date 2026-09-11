@@ -133,7 +133,7 @@
 ## [T-COMMON] common（通用层：约定 + 可复用 LLM 检查器）
 - 模块   : src/hardware_analysis/common/conventions.py, llm_check.py
 - 功能   : ①Common conventions 单一来源（位号前缀/电源网/透明件/连接器/差分对/板号/脚名归一 + 阈值），可经 config conventions 覆盖；②LLMChecker 统一"角色+任务+契约+按key持久化缓存+宽松归一"
-- 输入   : Conventions(overrides)；LLMChecker(cache_path).run(agent,task,contract,payload)
+- 输入   : config.json 的 conventions 段(可选,自动生效)/Conventions(overrides)；LLMChecker(cache_path).run(agent,task,contract,payload)
 - 输出   : 归一化契约对象 + meta(errors/sec/cached/key)
 - 已验证 : 全工具改用 CONV（去重 _board_of×3/前缀常量×3）；ic_type 判定走 LLMChecker 缓存
 

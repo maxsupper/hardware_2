@@ -19,6 +19,7 @@ class Config:
         self.paths = self._data["paths"]
         self.budget = dict(self._data["budget"])
         self.budget["context_total"] = HARD_CONTEXT_LIMIT  # 钳制，永不可突破
+        self.conventions = dict(self._data.get("conventions", {}))  # EDA 约定/阈值覆盖
 
     @property
     def llm_api_key(self) -> str:

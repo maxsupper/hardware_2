@@ -77,9 +77,28 @@ class Conventions:
         return re.sub(r"_[AB]$", "", str(net or "")).upper()
 
 
-# 默认单例（可用 config conventions 覆盖后替换）
-CONV = Conventions()
+# 默认单例（自动叠加 config.json 的 conventions 段；只用标准库，避免与 config.py 循环依赖）
+def _load_config_overrides() -> dict:
+    try:
+        import json as _json
+        from pathlib import Path as _P
+        for cand in (_P("config.json"), _P(__file__).resolve().parents[3] / "config.json"):
+            if cand.exists():
+                return _json.loads(cand.read_text(encoding="utf-8")).get("conventions", {}) or {}
+    except Exception:
+        pass
+    return {}
+
+
+def apply_overrides(overrides: dict | None) -> "Conventions":
+    """运行时原地覆盖单例 CONV（供程序化调整/测试）。"""
+    merged = {**CONV.cfg, **(overrides or {})}
+    CONV.__init__(merged)
+    return CONV
+
+
+CONV = Conventions(_load_config_overrides())
 
 
 def with_overrides(overrides: dict | None) -> Conventions:
-    return Conventions(overrides)
+    return Conventions({**CONV.cfg, **(overrides or {})})
