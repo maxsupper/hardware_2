@@ -90,6 +90,33 @@ def apply_decisions(b_prep_dir: str | Path, decisions: dict, refbook_root: str =
             else:
                 e["status"], e["compatible_model"] = "UNVERIFIED", cm
                 e["note"] = f"人工：兼容型号 {cm} 未检索到→UNVERIFIED"
+        elif act == "NOTE":
+            # 人工补充说明 → 发 LLM 判定（IGNORE / COMPATIBLE）
+            note = dec.get("note") or ""
+            verdict, vreason, cm = "IGNORE", "", ""
+            try:
+                from hardware_analysis.agents.direct import llm_json
+                from hardware_analysis.models.contracts import ManualNoteVerdict
+                obj, _errs, _sec = llm_json(
+                    "hw_search",
+                    f"芯片 {e.get('model','')} 无数据手册。用户补充说明：「{note}」。"
+                    f"请判定处理方式，只输出 JSON：{{\"action\":\"IGNORE 或 COMPATIBLE\","
+                    f"\"compatible_model\":\"若按兼容型号则填型号\",\"reason\":\"短理由\"}}。",
+                    ManualNoteVerdict)
+                if obj:
+                    verdict = obj.action if obj.action in ("IGNORE", "COMPATIBLE") else "IGNORE"
+                    cm, vreason = obj.compatible_model or "", obj.reason or ""
+            except Exception as ex:
+                vreason = f"LLM失败:{str(ex)[:40]}"
+            e["note"] = f"人工说明：{note}｜LLM判定：{verdict} {vreason}".strip()
+            if verdict == "COMPATIBLE" and cm:
+                hit = refbook_search.search(cm, refbook_root, top=1)
+                if hit and hit[0]["score"] >= 40:
+                    e["manual_path"], e["status"], e["compatible_model"] = hit[0]["path"], "FOUND_COMPATIBLE", cm
+                else:
+                    e["status"], e["compatible_model"] = "UNVERIFIED", cm
+            else:
+                e["status"], e["manual_path"] = "UNVERIFIED", None
         elif act == "PROVIDE_FILE":
             src = dec.get("file") or ""
             sp = Path(src)

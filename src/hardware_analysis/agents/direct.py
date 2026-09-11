@@ -85,6 +85,10 @@ def _mock(agent: str, model_cls):
         d = {"kind": "report", "findings": [], "tables": [], "narrative": {"mock": "mock 报告"}}
     elif kind == "GateResult":
         d = {"gate": "G6", "status": "PASS", "checks": []}
+    elif kind == "ManualNoteVerdict":
+        d = {"action": "IGNORE", "compatible_model": "", "reason": "mock", "confidence": "UNCERTAIN"}
+    elif kind == "IcTypeVerdict":
+        d = {"model": "", "ic_type": "SINK", "channels": [], "reason": "mock"}
     else:
         d = {}
     return model_cls.model_validate(_j.loads(_j.dumps(d)))

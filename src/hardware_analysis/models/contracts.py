@@ -266,3 +266,11 @@ class IcTypeVerdict(BaseModel):
     channels: list[dict[str, Any]] = Field(default_factory=list)  # PASS_THRU: {in:[..],out:[..]}
     reason: str = ""
     confidence: Confidence = Confidence.UNCERTAIN
+
+
+class ManualNoteVerdict(BaseModel):
+    """人工补充说明 → LLM 判定手册处理方式。"""
+    action: str = "IGNORE"            # IGNORE(无可依据→UNVERIFIED) | COMPATIBLE(按兼容型号)
+    compatible_model: str = ""
+    reason: str = ""
+    confidence: Confidence = Confidence.UNCERTAIN

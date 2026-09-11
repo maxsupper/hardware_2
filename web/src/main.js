@@ -97,7 +97,7 @@
       (g.gaps||[]).forEach(it=>{ (byModel[it.model]=byModel[it.model]||[]).push(it.refdes); });
       const models=Object.keys(byModel);
       const hint=document.createElement('div'); hint.className='dim';
-      hint.textContent=`共 ${models.length} 个型号（${(g.gaps||[]).length} 个位号），按型号选择：上传(补充文件) / 缺省(→UNVERIFIED) / 替换(按兼容型号)`;
+      hint.textContent=`共 ${models.length} 个型号（${(g.gaps||[]).length} 个位号），按型号选择：上传(补充文件) / 缺省(→UNVERIFIED) / 替换(按兼容型号) / 说明(补充描述→发LLM判定)`;
       body.appendChild(hint);
       const rows=[];
       models.forEach(model=>{
@@ -105,20 +105,23 @@
         const row=document.createElement('div'); row.className='agent-card';
         const nm=document.createElement('span'); nm.innerHTML=`<b>${model}</b> <span class="dim">(${refs.join(', ')})</span> `;
         const sel=document.createElement('select');
-        [['IGNORE','缺省'],['PROVIDE_FILE','上传'],['COMPATIBLE','替换']].forEach(([v,t])=>{
+        [['IGNORE','缺省'],['PROVIDE_FILE','上传'],['COMPATIBLE','替换'],['NOTE','说明']].forEach(([v,t])=>{
           const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); });
         const finp=document.createElement('input'); finp.type='file'; finp.style.display='none';
         const tinp=document.createElement('input'); tinp.placeholder='兼容型号'; tinp.style.display='none';
+        const ninp=document.createElement('input'); ninp.placeholder='补充说明（提交时发 LLM 判定）'; ninp.style.display='none'; ninp.size=30;
         sel.onchange=()=>{ finp.style.display=sel.value==='PROVIDE_FILE'?'inline-block':'none';
-                           tinp.style.display=sel.value==='COMPATIBLE'?'inline-block':'none'; };
-        row.appendChild(nm); row.appendChild(sel); row.appendChild(finp); row.appendChild(tinp); body.appendChild(row);
-        rows.push({refs, sel, finp, tinp});
+                           tinp.style.display=sel.value==='COMPATIBLE'?'inline-block':'none';
+                           ninp.style.display=sel.value==='NOTE'?'inline-block':'none'; };
+        row.appendChild(nm); row.appendChild(sel); row.appendChild(finp); row.appendChild(tinp); row.appendChild(ninp); body.appendChild(row);
+        rows.push({refs, sel, finp, tinp, ninp});
       });
       const expand=(act)=>{ const d={}; rows.forEach(r=>r.refs.forEach(ref=>{ d[ref]=act(r); })); return d; };
       const submit=async()=>{
         const decisions={};
         for(const r of rows){
           if(r.sel.value==='COMPATIBLE'){ const v={action:'COMPATIBLE',compatible_model:r.tinp.value.trim()}; r.refs.forEach(ref=>decisions[ref]=v); }
+          else if(r.sel.value==='NOTE'){ const v={action:'NOTE',note:r.ninp.value.trim()}; r.refs.forEach(ref=>decisions[ref]=v); }
           else if(r.sel.value==='PROVIDE_FILE'){
             const f=r.finp.files[0];
             if(!f){ r.refs.forEach(ref=>decisions[ref]={action:'IGNORE'}); continue; }

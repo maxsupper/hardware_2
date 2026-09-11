@@ -108,7 +108,7 @@ class Orchestrator:
             by_model.setdefault(g["model"], []).append(g["refdes"])
         for model, refs in by_model.items():
             print(f"  - {model:24s} ({', '.join(refs)})")
-        print("  处理方式（按型号一次决定）：补文件(上传) / 缺省(→UNVERIFIED) / 替换(兼容型号)\n")
+        print("  处理方式（按型号一次决定）：上传(补文件) / 缺省(→UNVERIFIED) / 替换(兼容型号) / 说明(补充描述→发LLM判定)\n")
         dec_path = self.ws.dir / "gates" / "human_manual.json"
         decisions = {}
         if dec_path.exists():

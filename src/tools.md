@@ -148,3 +148,10 @@
 - 已验证 : 19 项待补；IGNORE→UNVERIFIED / COMPATIBLE→FOUND_COMPATIBLE / PROVIDE_FILE→FOUND
 - 人机   : web GET /api/manual_gaps/{产品} 列表 + POST /api/human/confirm{kind:manual,decisions} 写 gates/human_manual.json；CLI 非无人值守时打印清单并暂停
 - 报告   : PH-4 报告追加"待补手册清单"表
+
+### 手册缺失决策（四选一，web/CLI）
+- 缺省：IGNORE → UNVERIFIED
+- 上传：PROVIDE_FILE → 存 storge/datasheet，FOUND
+- 替换：COMPATIBLE → 兼容型号检索，FOUND_COMPATIBLE
+- **说明(NOTE)：填补充描述 → 提交时发 LLM(ManualNoteVerdict) 判定 IGNORE/COMPATIBLE 并落库(含理由)**
+- 契约：models.contracts.ManualNoteVerdict(action/compatible_model/reason/confidence)
