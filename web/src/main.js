@@ -67,10 +67,12 @@
     });
   }
   function renderAgents(st){
-    const box=$('agents'); box.querySelectorAll('.agent-card').forEach(n=>n.remove());
+    const box=$('agents');
+    box.innerHTML='';                       // 清空后重建，避免每次轮询重复追加标题（重复打印 bug）
     const cur=st.current||'';
-    box.appendChild((()=>{const d=document.createElement('div');d.className='rail-title';
-      d.textContent='③ 当前环节 '+cur+' · agent 活动';return d;})());
+    const t=document.createElement('div'); t.className='rail-title';
+    t.textContent='③ 当前环节 '+cur+' · agent 活动';
+    box.appendChild(t);
     for(const [a,v] of Object.entries(agentState)){
       const d=document.createElement('div'); d.className='agent-card '+(v.err?'fail':(v.done?'done':'running'));
       d.innerHTML=`<span class="dot"></span>${a} <span class="dim">d=${v.done||0} e=${v.err||0}</span>`;

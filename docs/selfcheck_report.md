@@ -1,6 +1,6 @@
 # 自检报告（FL-25-E-MR203）
 
-> 生成时间 1789088528s | 通过 9/9
+> 生成时间 1789102222s | 通过 9/9
 
 | 检查 | 状态 | 说明 | 证据 |
 |---|---|---|---|
@@ -12,4 +12,4 @@
 | L3-budget | PASS | 规则束40K估算=26666 | budget_validator |
 | L3-溯源-反向验证 | PASS | 遗留/重复/错位 全 0 | reverse_check.json |
 | L3-可复现-mock | PASS | report.json md5=3a95c4b3 | 确定性 MOCK 产物 |
-| L3-产出齐全 | PASS | 76 个产物文件 | B_prep; E_analyze; F_audit; F_report; gates; run_manifest.json; step_0a.json |
+| L3-产出齐全 | PASS | 80 个产物文件 | B_prep; E_analyze; F_audit; F_report; gates; run_manifest.json; step_0a.json |

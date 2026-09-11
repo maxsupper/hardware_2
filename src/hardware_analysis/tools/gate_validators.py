@@ -93,12 +93,12 @@ def validate_evidence(e_dir: Path) -> GateResult:
             d = json.loads(s.read_text(encoding="utf-8"))
             size = s.stat().st_size
             findings = d.get("findings", [])
-            bad_status = [f for f in findings if f.get("status") not in
+            bad_status = [f for f in findings if f.get("severity") not in
                           ("OK", "WARNING", "CRITICAL", "INFERRED", "UNVERIFIED")]
             ok = ("findings" in d) and (d.get("checks_count", 0) <= len(findings)) \
                  and not bad_status and size <= 5120
             _check(checks, f"G2X-{3:03d}", GateStatus.PASS if ok else GateStatus.FAIL,
-                   f"{s.name} 契约合规(finding/status/≤5KB)", f"{size}B findings={len(findings)} 非法={len(bad_status)}")
+                   f"{s.name} 契约合规(finding/severity/≤5KB)", f"{size}B findings={len(findings)} 非法={len(bad_status)}")
         except Exception as e:
             _check(checks, "G2X-003", GateStatus.FAIL, f"{s.name} 可读", str(e)[:60])
     return _finalize("G4", "g2x_validate", checks)
@@ -256,7 +256,7 @@ def validate_delivery(ws_dir: Path) -> GateResult:
     if rp.exists():
         try:
             r = json.loads(rp.read_text(encoding="utf-8"))
-            crit = [f for f in r.get("findings", []) if f.get("status") == "CRITICAL"]
+            crit = [f for f in r.get("findings", []) if f.get("severity") == "CRITICAL"]
         except Exception:
             crit = []
     _check(checks, "G7-004", GateStatus.PASS if not crit else GateStatus.WARNING,

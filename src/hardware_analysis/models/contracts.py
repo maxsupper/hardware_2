@@ -126,7 +126,7 @@ class EvidenceDoc(BaseDoc):
 # ---------- Evidence 摘要（§4.3, ≤5KB） ----------
 class SummaryFinding(BaseModel):
     check: str
-    status: Severity
+    severity: Severity
     detail: str = Field(default="", max_length=80)
 
 

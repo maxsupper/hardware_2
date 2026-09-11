@@ -11,7 +11,8 @@
       "flash": "deepseek-v4-flash-0731",
       "pro": "deepseek-v4-pro"
     },
-    "default_model": "flash"
+    "default_model": "flash",
+    "max_tokens": 4096
   },
   "budget": {
     "context_total": 524288,
@@ -23,8 +24,14 @@
   "web": {
     "search_provider": "tavily",
     "apiKey": "tvly-REPLACE_ME",
-    "search": {"max_results": 5, "timeout": 20},
-    "extract": {"depth": "basic", "timeout": 30},
+    "search": {
+      "max_results": 5,
+      "timeout": 20
+    },
+    "extract": {
+      "depth": "basic",
+      "timeout": 30
+    },
     "download_dir": "storge/datasheet"
   },
   "paths": {
@@ -43,12 +50,47 @@
   },
   "conventions": {
     "_notes": "EDA 约定与阈值（可选；缺省用代码 common/conventions.py 的 DEFAULTS）。只需写想覆盖的键，启动时自动生效。",
-    "active_prefixes": ["U"],
-    "connector_prefixes": ["J", "CN", "P", "CON"],
-    "mech_prefixes": ["H", "MH"],
-    "testpoint_prefixes": ["TP"],
-    "passive_prefixes": ["R", "C", "L", "FB", "D", "Q", "Y", "X", "F", "BEAD", "LED", "SW"],
-    "transparent_prefixes": ["R", "L", "BEAD", "FB", "FERR", "TP", "JMP", "JUMP", "0R"],
+    "active_prefixes": [
+      "U"
+    ],
+    "connector_prefixes": [
+      "J",
+      "CN",
+      "P",
+      "CON"
+    ],
+    "mech_prefixes": [
+      "H",
+      "MH"
+    ],
+    "testpoint_prefixes": [
+      "TP"
+    ],
+    "passive_prefixes": [
+      "R",
+      "C",
+      "L",
+      "FB",
+      "D",
+      "Q",
+      "Y",
+      "X",
+      "F",
+      "BEAD",
+      "LED",
+      "SW"
+    ],
+    "transparent_prefixes": [
+      "R",
+      "L",
+      "BEAD",
+      "FB",
+      "FERR",
+      "TP",
+      "JMP",
+      "JUMP",
+      "0R"
+    ],
     "power_net_regex": "^(GND|AGND|DGND|VSS|VCC|VDD|VBAT|VIN|VBUS|\\+|-)\\d*",
     "diff_pair_regex": "^(.*?)[_\\-]?([PN])$",
     "board_regex": "-([A-Z])_V\\d",

@@ -30,7 +30,8 @@ def _safe_name(name: str) -> str:
 
 @app.get("/", response_class=HTMLResponse)
 def index():
-    return (WEB / "html" / "index.html").read_text(encoding="utf-8")
+    return HTMLResponse((WEB / "html" / "index.html").read_text(encoding="utf-8"),
+                        headers={"Cache-Control": "no-store, no-cache, must-revalidate"})
 
 
 @app.get("/api/runs")

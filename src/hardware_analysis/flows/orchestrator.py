@@ -158,7 +158,7 @@ class Orchestrator:
                     coverage={"target": d["id"], "items_expected": n_pin,
                               "items_checked": min(len(obj.findings), n_pin),
                               "fill_rate": round(min(len(obj.findings), n_pin) / max(n_pin, 1), 3)},
-                    findings=[Finding(severity=f.status, object=d["id"], result=f.detail,
+                    findings=[Finding(severity=f.severity, object=d["id"], result=f.detail,
                                       source_refs=[f"netlist_graph::{d['id']}"])
                               for f in obj.findings])
                 (e / f"{d['refdes']}_evidence.json").write_text(
@@ -182,7 +182,7 @@ class Orchestrator:
         e = self.ws.dir / "E_analyze"
         sums = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in e.glob("*_summary.json")}
         obj, errs, sec = llm_json("hw_write",
-            "汇总 summary 为 report：findings[](check,status,detail)/tables[](title,columns,rows完整不截断)"
+            "汇总 summary 为 report：findings[](check,severity,detail)/tables[](title,columns,rows完整不截断)"
             "/narrative{}" + ("；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"),
             ReportDoc)
         f = self.ws.dir / "F_report"; f.mkdir(exist_ok=True)
