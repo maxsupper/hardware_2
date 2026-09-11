@@ -27,29 +27,78 @@ BRIEF_ROLE = {
 }
 
 
+_RETRY_HTTP = {429, 500, 502, 503, 504}
+_FATAL_HTTP = {400, 401, 403}
+
+
+def _is_retryable(err: str) -> bool:
+    """错误是否值得重试（PF-009）：读超时/空响应/契约校验失败/HTTP 429&5xx → True；
+    HTTP 400/401/403（及其它 HTTP 状态）→ False。"""
+    s = str(err or "")
+    m = re.search(r"HTTP\s+(\d{3})", s)
+    if m:
+        code = int(m.group(1))
+        return code not in _FATAL_HTTP and code in _RETRY_HTTP
+    low = s.lower()
+    if ("read operation timed out" in low or "timed out" in low
+            or "timeouterror" in low or "urlerror" in low
+            or "connection reset" in low or "remote end closed" in low
+            or "connection refused" in low):
+        return True
+    if s.startswith("空响应"):
+        return True
+    # Pydantic/契约校验失败（normalize_output 返回 obj=None）也算可重试
+    return True
+
+
 def llm_json(agent: str, prompt: str, model_cls, cfg: Config | None = None,
-             timeout: int = 60, system_footer: str = "", rules_text: str = "") -> tuple:
-    """直连 llm.call 一次，返回 (normalized_obj, errors, seconds)。
+             timeout: int | None = None, system_footer: str = "", rules_text: str = "",
+             retries: int = 0, retry_backoff: float = 2.0) -> tuple:
+    """直连 llm.call，返回 (normalized_obj, errors, seconds)。
+
+    - ``timeout=None`` → cfg.llm.request_timeout（默认 180）；显式传入以传入为准。
+    - ``retries`` = **额外**尝试次数（0=旧行为，仅一次）；可重试错误按指数退避重试。
+    - 可重试：socket 读超时/TimeoutError/URLError、空响应、Pydantic 校验失败、HTTP 429/500/502/503/504。
+    - 不可重试：HTTP 400/401/403。
+    - 每次尝试打印日志（attempt/错误/耗时）。
     启用环境变量 HARDWARE_MOCK=1 时走模板 mock（快速验证，不调网关）。
-    rules_text：本阶段规则束渲染文本（默认空 → 行为与旧版完全一致），置于 BRIEF_ROLE 之后、system_footer 之前。"""
+    rules_text：本阶段规则束渲染文本（默认空 → 行为与旧版完全一致），置于 BRIEF_ROLE 之后、system_footer 之前。
+    """
     import os
     if os.environ.get("HARDWARE_MOCK") == "1":
         return _mock(agent, model_cls, prompt), [], 0.0
     cfg = cfg or Config()
+    if timeout is None:
+        timeout = int(cfg.llm.get("request_timeout", 180))
     # 直接 HTTP 调用 OpenAI 兼容接口（不经 crewai.LLM：它在长 system 提示下会返回空 content）
     max_tok = int(cfg.llm.get("max_tokens", 4096))
     sys_msg = BRIEF_ROLE.get(agent, "输出 JSON 结果。") + " 只输出 JSON，不要任何解释或 Markdown 围栏。"
     if rules_text:
         sys_msg += "\n\n【本阶段规则束（必须遵守）】\n" + rules_text
     sys_msg += system_footer
-    t = time.time()
-    try:
-        raw = _http_chat(cfg, [{"role": "system", "content": sys_msg},
-                               {"role": "user", "content": prompt}], max_tok, timeout)
-        obj, errs = normalize_output(model_cls, str(raw))
-        return obj, errs, round(time.time() - t, 1)
-    except Exception as e:
-        return None, [str(e)[:150]], round(time.time() - t, 1)
+    attempts = max(1, int(retries) + 1)
+    t0 = time.time()
+    errors: list[str] = []
+    for n in range(1, attempts + 1):
+        t = time.time()
+        try:
+            raw = _http_chat(cfg, [{"role": "system", "content": sys_msg},
+                                   {"role": "user", "content": prompt}], max_tok, timeout)
+            obj, errs = normalize_output(model_cls, str(raw))
+        except Exception as e:
+            obj, errs = None, [str(e)[:150].strip() or type(e).__name__]
+        dt = round(time.time() - t, 1)
+        if obj is not None:
+            print(f"[llm_json] {agent} attempt {n}/{attempts} OK ({dt}s)", file=sys.stderr)
+            return obj, [], round(time.time() - t0, 1)
+        err = errs[0] if errs else "未知错误"
+        errors.append(f"attempt {n}/{attempts}: {err}")
+        print(f"[llm_json] {agent} attempt {n}/{attempts} failed ({dt}s): {str(err)[:140]}",
+              file=sys.stderr)
+        if n >= attempts or not _is_retryable(err):
+            break
+        time.sleep(min(retry_backoff ** n, 10))
+    return None, errors, round(time.time() - t0, 1)
 
 
 def _http_chat(cfg: Config, messages: list, max_tokens: int, timeout: int) -> str:
@@ -98,6 +147,8 @@ def _mock(agent: str, model_cls, prompt: str = ""):
         d = {"model": "", "ic_type": "SINK", "channels": [], "reason": "mock"}
     elif kind == "BatchVerdict":
         d = _mock_batch_verdict(prompt)
+    elif kind == "ChipFunctionVerdict":
+        d = _mock_chip_function(prompt)
     else:
         d = {}
     return model_cls.model_validate(_j.loads(_j.dumps(d)))
@@ -204,3 +255,45 @@ def _mock_batch_verdict(prompt: str) -> dict:
 
 def err_to_str(errs) -> str:
     return "；".join(errs)[:220]
+
+
+# --------------------------------------------------------------------------- #
+# ChipFunctionVerdict mock：按 edn_symbol|model 关键词做确定性、保守的功能判定
+# --------------------------------------------------------------------------- #
+# 顺序匹配，命中即止（保守）；未命中一律 role="other"（“功能未确认”），不得影响其它契约 mock
+_MOCK_CHIP_FUNCTION_RULES = (
+    (("MAX32",), "接口", "interface", "RS-232 电平转换收发器"),
+    (("MAX34", "SIT3490"), "接口", "interface", "RS-485 收发器"),
+    (("TPS7", "BL93"), "电源", "power", "LDO 线性稳压器"),
+    (("IS66", "SY8"), "电源", "power", "DC-DC 电源转换器"),
+    (("XC6S", "XC7", "FPGA", "CPLD"), "主控", "mcu_soc", "FPGA/CPLD 可编程逻辑"),
+    (("MS4553", "MS2574"), "接口", "interface", "电平转换器"),
+    (("LT8918",), "接口", "interface", "HDMI 桥接芯片"),
+    (("STC1",), "主控", "mcu_soc", "MCU 微控制器"),
+    (("DCDC",), "电源", "power", "DC-DC 电源转换器"),
+    (("PMIC",), "电源", "power", "PMIC 电源管理芯片"),
+    (("LPDDR", "DDR"), "存储", "memory", "LPDDR/DDR 内存"),
+    (("EMMC", "INAND"), "存储", "memory", "eMMC/NAND 存储"),
+    (("GD25", "W25Q", "FLASH"), "存储", "memory", "SPI NOR Flash 存储"),
+    (("SOC",), "主控", "soc", "主控 SoC"),
+    (("ETHERNET",), "接口", "interface", "以太网 PHY/MAC"),
+    (("PSM", "TVS", "ESD"), "保护", "protection", "TVS/ESD 静电保护阵列"),
+    (("PMOS", "NMOS", "MOSFET"), "开关", "switch", "MOSFET 开关管"),
+)
+
+
+def _mock_chip_function(prompt: str) -> dict:
+    """从 prompt 解析 model/edn_symbol，按关键词给确定性保守判定（可复现）。"""
+    import re as _re
+    txt = str(prompt or "")
+    m = _re.search(r"edn_symbol=(\S+)\s+model=(.*)", txt)
+    sym = m.group(1).strip() if m else ""
+    model = m.group(2).splitlines()[0].strip() if m else ""
+    key = f"{sym}|{model}".upper()
+    for kws, cat, role, desc in _MOCK_CHIP_FUNCTION_RULES:
+        if any(kw in key for kw in kws):
+            return {"category": cat, "role": role, "description": desc,
+                    "confidence": "LIKELY", "reason": "mock 关键词判定"}
+    name = model or sym or "未知芯片"
+    return {"category": "其他", "role": "other", "description": f"{name}（功能未确认）",
+            "confidence": "UNCERTAIN", "reason": "mock 未命中关键词"}

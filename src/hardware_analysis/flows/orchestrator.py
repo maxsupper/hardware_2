@@ -20,6 +20,21 @@ TEMP_PATTERNS = ("*.components.json", "*.nets.json")   # edn_parse 中间产物�
 HUMAN_POLL = int(os.environ.get("HARDWARE_HUMAN_POLL", "3"))          # 轮询间隔(秒)
 HUMAN_TIMEOUT = int(os.environ.get("HARDWARE_HUMAN_TIMEOUT", "3600"))  # 等待人工上限(秒)
 
+# PH-3 输出契约（PF-011）：显式写进提示词，防止模型用 evidence 字段名（id/object/result）导致契约失败
+PH3_CONTRACT = (
+    "【输出契约（严格遵守，字段名不得改）】只输出一个 JSON：\n"
+    '{"findings":[{"check":"<检查项名称>","severity":"CRITICAL|WARNING|OK|INFERRED|UNVERIFIED","detail":"<说明，≤80字>"}]}\n'
+    "禁止使用 id/object/result/confidence/source_refs（那是 evidence 格式）；detail 超 80 字会被拒收。"
+)
+
+
+def _dev_key(d: dict) -> str:
+    """PH-3 产物的唯一文件名键：跨板 refdes 可重复 → 用 ``板_位号``（无板号则位号）。"""
+    b = str(d.get("board") or "").strip()
+    r = str(d.get("refdes") or d.get("id") or "").strip()
+    r = r.replace("::", "_").replace("/", "_")
+    return f"{b}_{r}" if b else r
+
 
 class Orchestrator:
     def __init__(self, product: str, cfg: Config | None = None,
@@ -32,7 +47,8 @@ class Orchestrator:
         self.state = {"product": product, "current": "IDLE",
                       "phases": {f"PH-{i}": "PENDING" for i in range(8)},
                       "gates": {f"G{i}": "PENDING" for i in range(1, 7)},
-                      "errors": [], "paused": False, "pause_reason": ""}
+                      "errors": [], "paused": False, "pause_reason": "",
+                      "ph3_ok": [], "ph3_failed": []}
 
     # ---------- 日志 ----------
     def _log(self, type_, **kw):
@@ -169,40 +185,39 @@ class Orchestrator:
         self._r(f"tracer {self._p2()}")
         self._r(f"netlist_graph {self._p2()} --groups 0 --product {self.product} "
                 f"--manual-index {self._p1('manual_index.json')}")
+        # PH-2 芯片功能（NG-015/NG-016）：EDN 直解 + LLM 补充；失败不得中断 PH-2
+        try:
+            self._r(f"chip_function {self._p2()} --product {self.product} "
+                    f"--manual-index {self._p1('manual_index.json')}")
+            meta = json.loads(self._p2("netlist_graph.json").read_text(encoding="utf-8")).get("meta", {})
+            self._log("chip_function_done", **(meta.get("chip_function") or {}))
+        except Exception as ex:
+            self._log("chip_function_failed", err=str(ex)[:200])
         self._log("ph2_done", edns=[e.name for e in edns])
 
     # ---------- PH-3 深度分析（只读 netlist_graph.json + 复核 + 回环） ----------
     def _act_ph3(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import SummaryDoc, EvidenceDoc, Finding
+        from hardware_analysis.flows.rule_loader import (
+            load_rule_assets, render_rules_text_ex, topics_for_device, stage_topics)
         g = self._p2("netlist_graph.json")
         if not g.exists():
             raise RuntimeError("PH-3 需要 netlist_graph.json（PH-2 未产出）")
         doc = json.loads(g.read_text(encoding="utf-8"))
         ics = [d for d in doc["devices"] if d["kind"] == "IC" and d["source"].get("populated")]
         e = self._p3(); e.mkdir(parents=True, exist_ok=True)
+        # 重跑前清 stale 产物（避免跨板 refdes 冲突 + 旧命名残留影响 G3 覆盖率计数）
+        for pat in ("*_summary.json", "*_evidence.json"):
+            for old in e.glob(pat):
+                try:
+                    old.unlink()
+                except OSError:
+                    pass
         notes = self._p3("clarify_requests.jsonl")
-        # ---- 平台引脚核对（模块导入；产物写 PH-3；失败不中断）----
         platform = doc["meta"].get("platform", "") or ""
-        # ---- 规则束加载（循环外一次，循环内复用；失败降级不中断）----
-        rules_text = ""
-        try:
-            from hardware_analysis.flows.rule_loader import load_rule_assets, render_rules_text
-            assets = load_rule_assets("PH-3", platform=platform)
-            rules_text = render_rules_text(assets["entries"])
-            if assets.get("truncated"):
-                dropped = list(assets.get("dropped", []) or [])
-                self._log("rules_truncated", stage="PH-3", dropped=len(dropped),
-                          ids=dropped[:20], dropped_tokens=assets.get("dropped_tokens", 0))
-                warn = ("\n\n⚠️ 本次规则束因预算被截断，以下规则未注入: "
-                        + ", ".join(str(i) for i in dropped))
-                if "本次规则束因预算被截断" not in rules_text:
-                    rules_text += warn
-            self._log("rules_injected", stage="PH-3", ids=len(assets["rule_ids"]),
-                      tokens=assets["tokens_est"], truncated=assets.get("truncated", False))
-        except Exception as ex:
-            rules_text = ""
-            self._log("rules_load_failed", err=str(ex)[:120])
+        platform_device = doc["meta"].get("platform_device")
+        # ---- 平台引脚核对（模块导入；产物写 PH-3；失败不中断）----
         if platform:
             try:
                 from hardware_analysis.tools import platform_check as pc
@@ -214,7 +229,30 @@ class Orchestrator:
                           status=pc_report.get("status", ""), coverage=cov)
             except Exception as ex:
                 self._log("platform_check_failed", err=str(ex)[:120])
+        # ---- 可用主题（PH-3：common 键名 + platform:<芯片>）----
+        available = stage_topics("PH-3", platform=platform)
+        request_timeout = int(self.cfg.llm.get("request_timeout", 180))
+        auto_retry = int(self.cfg.budget.get("auto_retry", 3))
+        ok_list: list = []
+        failed: list = []
         for d in ics:
+            # ---- 逐 IC 主题裁剪（PF-007）：按 PH-2 的 function.role 选主题，每颗**重算** ----
+            sel = topics_for_device(d, doc, available)
+            is_main = bool(platform_device) and d["id"] == platform_device
+            try:
+                assets = load_rule_assets("PH-3", platform=platform, topics=sel["topics"],
+                                          include_platform=is_main)
+                rtext, dropped = render_rules_text_ex(assets["entries"])
+                if assets.get("truncated"):
+                    self._log("rules_truncated", stage="PH-3", dropped=len(assets.get("dropped") or []),
+                              ids=(assets.get("dropped") or [])[:20],
+                              dropped_tokens=assets.get("dropped_tokens", 0))
+            except Exception as ex:
+                rtext, dropped, assets = "", [], {"entries": []}
+                self._log("rules_load_failed", refdes=d.get("refdes"), err=str(ex)[:120])
+            self._log("rules_trimmed", refdes=d["refdes"], role=sel["role"],
+                      topics=sel["topics"], chars=len(rtext), dropped=len(dropped),
+                      fallback=sel.get("fallback", False))
             # slice：本 IC + 相关 nets/paths + 手册前置
             slice_ = {"task": "analyze_ic", "device": d,
                       "paths": [p for p in doc["paths"] if any(d["refdes"] in ep for ep in p["endpoint_pins"])][:20],
@@ -222,9 +260,11 @@ class Orchestrator:
             obj, errs, sec = llm_json("hw_analyze",
                 f"分析 IC {d['id']}({d['model']})：引脚/VCCIO/供电/外围；并**复核** tracer 判定 "
                 f"ic_type={d['ic'].get('ic_type')} 是否正确；输出 summary(§4.3)。输入切片:"
-                + json.dumps(slice_, ensure_ascii=False)[:2000], SummaryDoc, rules_text=rules_text)
+                + json.dumps(slice_, ensure_ascii=False)[:2000],
+                SummaryDoc, timeout=request_timeout, retries=auto_retry,
+                rules_text=rtext, system_footer=PH3_CONTRACT)
             if obj:
-                (e / f"{d['refdes']}_summary.json").write_text(
+                (e / f"{_dev_key(d)}_summary.json").write_text(
                     json.dumps(obj.model_dump(), ensure_ascii=False, indent=1), encoding="utf-8")
                 # evidence 契约（§4.2）：findings + coverage
                 n_pin = len(d.get("pins", {}))
@@ -237,10 +277,20 @@ class Orchestrator:
                     findings=[Finding(severity=f.severity, object=d["id"], result=f.detail,
                                       source_refs=[f"netlist_graph::{d['id']}"])
                               for f in obj.findings])
-                (e / f"{d['refdes']}_evidence.json").write_text(
+                (e / f"{_dev_key(d)}_evidence.json").write_text(
                     ev.model_dump_json(exclude_none=True, indent=1), encoding="utf-8")
-            self._log("icon_ok" if obj else "icon_err", refdes=d["refdes"], kind="analyze", sec=sec,
-                      err=("" if obj else "；".join(errs)[:100]))
+                ok_list.append(d["refdes"])
+                self._log("icon_ok", refdes=d["refdes"], kind="analyze", sec=sec)
+            else:
+                err = ("；".join(errs)[:200] if errs else "空响应/未知错误")
+                self.state["errors"].append(f"PH-3 分析失败 {d['id']}: {err}")
+                failed.append({"id": d["id"], "refdes": d["refdes"], "err": err})
+                self._log("icon_err", refdes=d["refdes"], kind="analyze", sec=sec, err=err[:100])
+            self.state["ph3_ok"] = list(ok_list)
+            self.state["ph3_failed"] = list(failed)
+            self.ws.write_state(self.state)
+        self._set("ph3_ok", list(ok_list))
+        self._set("ph3_failed", list(failed))
         # 回环：对 STUB/OPEN_END/ic_type 未定 → request → PH-3 定向重读源 EDN 复核（≤3 轮）
         try:
             from hardware_analysis.tools import clarify
@@ -250,6 +300,19 @@ class Orchestrator:
             self._log("clarify_done", requests=len(res))
         except Exception as ex:
             self._log("clarify_err", err=str(ex)[:120])
+
+    # ---------- PH-3 应分析 IC 数（G3 覆盖率门禁输入，PF-010） ----------
+    def _expected_ic_count(self) -> int | None:
+        """netlist_graph 中 kind==IC 且 source.populated 的器件数；缺失/异常 → None。"""
+        g = self._p2("netlist_graph.json")
+        if not g.exists():
+            return None
+        try:
+            doc = json.loads(g.read_text(encoding="utf-8"))
+        except Exception:
+            return None
+        return sum(1 for d in doc.get("devices", [])
+                   if d.get("kind") == "IC" and (d.get("source") or {}).get("populated"))
 
     # ---------- PH-4 报告合成 ----------
     def _act_ph4(self):
@@ -277,6 +340,17 @@ class Orchestrator:
                     "rows": sorted(rows)})
         except Exception as ex:
             self._log("manual_table_err", err=str(ex)[:100])
+        # PH-3 未完成分析的 IC（P1 可见性，PF-010）：有失败 → 追加明细表 + narrative 声明
+        failed = self.state.get("ph3_failed") or []
+        if failed:
+            rep.setdefault("tables", []).append({
+                "title": "PH-3 未完成分析的 IC",
+                "columns": ["位号", "器件ID", "失败原因"],
+                "rows": [[str(x.get("refdes", "")), str(x.get("id", "")),
+                          str(x.get("err", ""))[:200]] for x in failed]})
+            nar = rep.setdefault("narrative", {})
+            if isinstance(nar, dict):
+                nar["ph3_incomplete"] = f"本次有 {len(failed)} 颗 IC 未完成分析，结论不完整"
         (f / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("write_done", sec=sec, ok=obj is not None)
 
@@ -369,7 +443,7 @@ class Orchestrator:
             for ph, act, gate, gatefn in [
                 ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_bom(self._p1())),
                 ("PH-2", self._act_ph2, "G2", lambda: gv.validate_netlist(self._p2())),
-                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_evidence(self._p3())),
+                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_evidence(self._p3(), expected_ic_count=self._expected_ic_count())),
                 ("PH-4", self._act_ph4, "G4", lambda: gv.validate_report(self._p4())),
                 ("PH-5", self._act_ph5, "G5", lambda: gv.validate_audit(self.ws.dir)),
                 ("PH-6", self._act_ph6, "G6", lambda: gv.validate_delivery(self.ws.dir)),

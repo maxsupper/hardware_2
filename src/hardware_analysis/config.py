@@ -15,6 +15,7 @@ class Config:
         self._path = Path(path)
         self._data = json.loads(self._path.read_text(encoding="utf-8"))
         self.llm = self._data["llm"]
+        self.llm.setdefault("request_timeout", 180)   # PF-009：LLM 请求超时（秒），缺省 180
         self.web = self._data["web"]
         self.paths = self._data["paths"]
         self.budget = dict(self._data["budget"])
@@ -42,3 +43,7 @@ class Config:
     def input_hard_cap(self) -> int:
         """输入硬顶（不可突破）；缺省 400000。"""
         return int(self.budget.get("input_hard_cap", 400000))
+
+    def request_timeout(self) -> int:
+        """LLM 单次请求超时（秒）；缺省 180（可被 config.json llm.request_timeout 覆盖）。"""
+        return int(self.llm.get("request_timeout", 180))

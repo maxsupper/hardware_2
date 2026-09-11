@@ -257,3 +257,27 @@
 - 输出   : rules/platform/<芯片>/rules.partN.json + filter_manifest.json（逐章 keep/drop+理由）+ 同步 rules/index.json
 - 已验证 : E2000 → 176章 keep 149/drop 27；字符 100,988→28,325；丢弃仅噪声白名单；同标题一致=0；二跑 0 次 LLM 且字节一致
 - 备注   : 标题硬护栏(title_guard)+丢弃理由白名单 双保险；PROMPT_VERSION 变更即缓存失效；不动其它平台资产
+
+## [T-CHIP-FUNCTION] chip_function（PH-2 芯片功能解析）
+- 模块   : src/hardware_analysis/tools/chip_function.py
+- 功能   : PH-2 产出芯片功能：优先从 EDN 符号/型号直接解析；未命中调 LLM 给功能概述；写回 netlist_graph.devices[].function 与 refdes_function_map
+- 输入   : <PH-2_dir>(netlist_graph.json) + PH-1/manual_index.json；--product/--manual-index/--force/--retries/--timeout；缓存 chip_function_cache.json
+- 输出   : netlist_graph.json(devices[].function + meta.chip_function) + refdes_function_map.json(function 段)
+- 已验证 : FL-25-E-MR203 → 37 颗 IC 全部有功能；直解 37 颗(edn_symbol) + LLM 0 颗（本产品符号均被 conventions.chip_function_by_symbol 覆盖）；LLM 分支另以真实 LLM 单点验证通过；二跑 0 次 LLM 且字节一致
+- 备注   : role 供 PH-3 规则裁剪使用；缓存键 edn_symbol|model，含 prompt_version；LLM 失败降级 source=unknown 不中断 PH-2
+
+## [T-TOPIC-TRIM] flows.rule_loader（PH-3 规则主题裁剪）
+- 模块   : src/hardware_analysis/flows/rule_loader.py
+- 功能   : 按 PH-2 的 devices[].function.role 逐 IC 裁剪 PH-3 规则束（PF-007/008）：topics_for_device(role→基线+角色主题，未知/other→全部，主控→全部) + load_rule_assets(topics=/include_platform=) + render_rules_text_ex(默认不截断，显式截断返回并告警 dropped ID)；每条 entry 打 _topic，新增 stage_topics/available 主题
+- 输入   : rules/index.json（load_policy/平台）；netlist_graph devices[].function.role 与 meta.platform_device
+- 输出   : 每颗 IC 的裁剪规则束（内存）；日志 rules_trimmed(refdes/role/topics/chars/dropped)；load_rule_assets 新增 topics_loaded
+- 已验证 : FL-25-E-MR203 全量 1,673,103 → 逐颗裁剪 835,051 chars(-50%)，37 颗 0 截断（scripts/selfcheck/test_topic_trim.py）
+- 备注   : topics=None 与旧行为完全一致（向后兼容）；禁止在 PH-3 重新猜角色
+
+## [T-LLM-RETRY] agents.direct.llm_json（超时可配 + 可重试）
+- 模块   : src/hardware_analysis/agents/direct.py
+- 功能   : llm_json(..., timeout=None, retries=0, retry_backoff=2.0)（PF-009）：timeout 缺省取 llm.request_timeout(180)；读超时/空响应/Pydantic 校验失败/HTTP 429&5xx 自动重试(指数退避≤10s)，HTTP 400/401/403 不重试；每次尝试打印 attempt/错误/耗时
+- 输入   : cfg.llm.request_timeout / cfg.budget.auto_retry
+- 输出   : (obj|None, errors, seconds)；errors 含 attempt n/N 前缀；stderr [llm_json] 尝试日志
+- 已验证 : 非法模型 1 次即停（400）；1s 超时 retries=2 → 3 次尝试；HARDWARE_MOCK=1 行为不变（含 ChipFunctionVerdict 分支）
+- 备注   : 默认超时 60→180；返回值三元组签名不变

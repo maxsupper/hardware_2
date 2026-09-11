@@ -12,6 +12,7 @@
       "pro": "deepseek-v4-pro"
     },
     "default_model": "flash",
+    "request_timeout": 180,
     "max_tokens": 4096
   },
   "budget": {

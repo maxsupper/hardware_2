@@ -29,6 +29,40 @@ DEFAULTS: dict = {
     "series_passive_max_pins": 2,             # 串联件必须只有 2 脚
     "stop_at_active_net": True,               # 先本网有源落点→ 已抵达，不再跨无源件
     "diff_pair_equivalent": True,             # 差分对成员网视为同一逻辑信号（跨到搭档=原地打转）
+    # ---- PH-2 芯片功能（NG-015/016）：EDN 符号/型号 → 功能，顺序匹配，命中即止（可配置）----
+    "chip_function_by_symbol": [
+        {"pattern": "^DCDC",              "category": "电源",   "role": "power",      "description": "DC-DC 电源转换器"},
+        {"pattern": "^PMIC",              "category": "电源",   "role": "power",      "description": "PMIC 电源管理芯片"},
+        {"pattern": "^(LDO|REG)",         "category": "电源",   "role": "power",      "description": "LDO 线性稳压器"},
+        {"pattern": "^LPDDR",             "category": "存储",   "role": "memory",     "description": "LPDDR 内存"},
+        {"pattern": "^DDR",               "category": "存储",   "role": "memory",     "description": "DDR 内存"},
+        {"pattern": "(INAND|EMMC)",       "category": "存储",   "role": "memory",     "description": "eMMC/NAND 存储"},
+        {"pattern": "^(FLASH|GD25|W25Q|MT29)", "category": "存储", "role": "memory",  "description": "SPI NOR Flash 存储"},
+        {"pattern": "^SOC",               "category": "主控",   "role": "soc",        "description": "主控 SoC"},
+        {"pattern": "^(ETHERNET|ETH)",    "category": "接口",   "role": "interface",  "description": "以太网 PHY/MAC"},
+        {"pattern": "^USB",               "category": "接口",   "role": "interface",  "description": "USB 接口器件"},
+        {"pattern": "^(HDMI|MIPI|LVDS)",  "category": "接口",   "role": "interface",  "description": "高速显示/视频接口器件"},
+        {"pattern": "^(MCU|STC1)",        "category": "主控",   "role": "mcu_soc",    "description": "MCU 微控制器"},
+        {"pattern": "^(FPGA|CPLD|XC6S|XC7)", "category": "主控", "role": "mcu_soc",   "description": "FPGA/CPLD 可编程逻辑"},
+        {"pattern": "(PSM|TVS|ESD)",      "category": "保护",   "role": "protection", "description": "TVS/ESD 静电保护阵列"},
+        {"pattern": "(PMOS|NMOS|MOSFET)", "category": "开关",   "role": "switch",     "description": "MOSFET 开关管"},
+        {"pattern": "(MAX32|MAX34|SIT3490|MS4553|MS2574|SP33|ADM|LT8918|YT8|RTL8)", "category": "接口", "role": "interface", "description": "接口/电平转换/收发器"},
+        {"pattern": "(TPS7|BL93|IS66|SY8|MP2)", "category": "电源", "role": "power",  "description": "电源管理/稳压器件"},
+    ],
+    "chip_function_roles": ["soc", "power", "memory", "interface", "mcu_soc", "protection", "switch", "other"],
+    # ---- PH-3 规则主题裁剪（PF-007）：按 PH-2 devices[].function.role 选主题，禁止在 PH-3 重新猜角色 ----
+    "rule_topic_baseline": ["引脚核对"],           # 每颗 IC 必有的基线主题（顺序在前）
+    "rule_topic_all_on_unknown": True,               # role 缺失/未知 → 注入全部主题（禁止漏规则）
+    "rule_topic_by_role": {
+        "soc":        ["引脚核对", "引脚电平检查", "电源检查", "接口电路检查", "引脚复用关系"],
+        "mcu_soc":    ["引脚核对", "引脚电平检查", "电源检查", "接口电路检查", "引脚复用关系"],
+        "power":      ["引脚核对", "电源检查", "引脚电平检查"],
+        "memory":     ["引脚核对", "引脚电平检查"],
+        "interface":  ["引脚核对", "接口电路检查", "引脚电平检查"],
+        "protection": ["引脚核对", "接口电路检查"],
+        "switch":     ["引脚核对", "电源检查"],
+        "other":      ["引脚核对", "引脚电平检查", "电源检查", "接口电路检查", "引脚复用关系"],
+    },
 }
 
 

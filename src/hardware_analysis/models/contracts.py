@@ -177,17 +177,40 @@ class ManualIndex(BaseDoc):
 
 
 # ---------- PH-3 网表图 netlist_graph.json（v2.2） ----------
+# ---------- PH-2 芯片功能（NG-015/016） ----------
+class ChipFunction(BaseModel):
+    """芯片功能（写入 netlist_graph.devices[].function 与 refdes_function_map.components[].function）。"""
+    category: str = ""
+    role: str = "other"                  # soc|power|memory|interface|mcu_soc|protection|switch|other
+    description: str = ""
+    source: str = ""                      # edn_symbol | llm | unknown
+    confidence: str = "UNKNOWN"           # HIGH|LIKELY|UNCERTAIN|UNKNOWN
+    evidence: dict[str, Any] = Field(default_factory=dict)
+    nets: list[str] = Field(default_factory=list)
+    power_domains: list[str] = Field(default_factory=list)
+
+
+class ChipFunctionVerdict(BaseModel):
+    """LLM 返回契约：芯片功能判定。"""
+    category: str
+    role: str
+    description: str
+    confidence: str = "LIKELY"            # HIGH|LIKELY|UNCERTAIN
+    reason: str = ""
+
+
 class NetlistDevice(BaseModel):
     id: str                              # "A::U6"
     board: str = ""
     refdes: str = ""
     model: str = ""                      # BOM 为准
     kind: str = "IC"                     # IC|CONNECTOR|PASSIVE|POWER|MECH|TESTPOINT
-    source: dict[str, Any] = Field(default_factory=dict)   # {in_bom,in_edn,populated}
-    ic: dict[str, Any] = Field(default_factory=dict)       # {manual_path,ic_type,channels}
+    source: dict[str, Any] = Field(default_factory=dict)   # {in_bom,in_edn,populated,edn_symbol}
+    ic: dict[str, Any] = Field(default_factory=dict)       # {manual_path,ic_type,manual_status,channels}
     pins: dict[str, str] = Field(default_factory=dict)     # 脚 -> 网（全量）
     links: list[dict[str, Any]] = Field(default_factory=list)  # 每脚一条不可派生属性(net/pin/side/fanout/status/trace/cross_board)；NG-006:禁内嵌邻接，邻接由 pins+joins 派生
     depop: list[dict[str, Any]] = Field(default_factory=list)  # 不装占位
+    function: ChipFunction = Field(default_factory=ChipFunction)  # PH-2 芯片功能（NG-015/016）
 
 
 class NetlistNet(BaseModel):
@@ -209,6 +232,10 @@ class NetlistPath(BaseModel):
     end_type: str = ""                   # CHIP|POWER|TO_CONNECTOR|STUB|OPEN_END
     bidirectional: str = "N/A"
     status: str = "OK"
+    hops: int = 0                        # NG-011 实际跨器件层数
+    reason: str = ""                     # 异常原因分类（OSCILLATION/DEPTH_EXCEEDED/...）
+    depth_exceeded: bool = False
+    oscillation: bool = False
 
 
 class CrossBoardLink(BaseModel):
@@ -230,6 +257,8 @@ class ConnectorPair(BaseModel):
 class NetlistGraph(BaseDoc):
     kind: str = "netlist_graph"
     product: str = ""
+    # meta 必需键（NG-017）：boards,devices,nets,paths,platform,platform_device,platform_detect,
+    #   cross_board_links,connector_pairs,sub_agent_groups,trace_limits,end_types,validation,chip_function
     meta: dict[str, Any] = Field(default_factory=dict)
     devices: list[NetlistDevice] = Field(default_factory=list)
     nets: list[NetlistNet] = Field(default_factory=list)

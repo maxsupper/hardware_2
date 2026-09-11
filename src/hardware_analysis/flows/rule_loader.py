@@ -68,14 +68,87 @@ def load_index(index_path: str | Path = "rules/index.json") -> dict:
         return {}
 
 
-def _load_entries(path: Path) -> list[dict]:
-    """读单个规则资产文件的 entries[]（缺失/异常 → []）。"""
+def _load_entries(path: Path, topic: str | None = None) -> list[dict]:
+    """读单个规则资产文件的 entries[]（缺失/异常 → []）。
+
+    ``topic`` 非空时给每条 entry 打 ``"_topic"``（仅内存：用新 dict 包装，不回写文件）。
+    common 用 rules/index.json 的 ``common`` 键名；平台规则用 ``"platform:<芯片>"``。
+    """
     try:
         d = json.loads(Path(path).read_text(encoding="utf-8"))
     except Exception:
         return []
     es = d.get("entries") if isinstance(d, dict) else None
-    return [e for e in es if isinstance(e, dict)] if isinstance(es, list) else []
+    if not isinstance(es, list):
+        return []
+    out = []
+    for e in es:
+        if not isinstance(e, dict):
+            continue
+        out.append({**e, "_topic": topic} if topic is not None else e)
+    return out
+
+
+def stage_topics(stage: str, platform: str = "",
+                 index_path: str | Path = "rules/index.json") -> list[str]:
+    """某阶段可用的规则主题名（common 键名 + 可选 `platform:<芯片>`）。
+
+    顺序：load_policy[stage].common 原序 → platform 主题（若 policy.platform_rules 且芯片在 index）。
+    缺 index/键一律返回 []（优雅降级）。
+    """
+    idx = load_index(index_path)
+    pol = (idx.get("load_policy") or {}).get(stage) or {}
+    out = [str(t) for t in (pol.get("common") or [])]
+    plat = (idx.get("platform") or {}).get(platform) if platform else None
+    if platform and pol.get("platform_rules") and isinstance(plat, dict):
+        t = f"platform:{platform}"
+        if t not in out:
+            out.append(t)
+    return out
+
+
+def topics_for_device(device: dict, graph: dict, available_topics: list[str]) -> dict:
+    """【冻结接口】按 PH-2 产出的 function.role 选 PH-3 规则主题。
+
+    返回 ``{"topics":[...], "role":str, "reason":str, "fallback":bool}``：
+      ① device["function"]["role"]；缺失/为空 → "other"
+      ② topics = rule_topic_by_role[role]（role 不在表内 → other 行）；fallback=(role=="other")
+      ③ 并入 rule_topic_baseline（去重，baseline 在前，顺序稳定）
+      ④ 剔除非 available_topics 的名字
+      ⑤ 主控(device['id']==graph['meta']['platform_device']) → topics=全部 available（role 保留）
+    """
+    from hardware_analysis.common.conventions import CONV   # 延迟导入（避免 common→direct→crew→assembler→rule_loader 循环）
+    cfg = CONV.cfg
+    role_table = cfg.get("rule_topic_by_role") or {}
+    baseline = list(cfg.get("rule_topic_baseline") or [])
+    all_on_unknown = bool(cfg.get("rule_topic_all_on_unknown", True))
+    fn = (device.get("function") or {}) if isinstance(device, dict) else {}
+    role = str(fn.get("role") or "").strip() or "other"
+    fallback = False
+    if role in role_table:
+        role_topics = list(role_table.get(role) or [])
+        fallback = (role == "other")
+    else:                                    # 未知角色：按规范回退 other 行（受 all_on_unknown 控制）
+        role = "other"
+        role_topics = list(role_table.get("other") or []) if all_on_unknown else []
+        fallback = True
+    avail = [str(t) for t in (available_topics or [])]
+    avail_set = set(avail)
+    merged: list[str] = []
+    for t in baseline + role_topics:         # ③ baseline 在前 + 去重保持稳定顺序
+        if t not in merged:
+            merged.append(t)
+    merged = [t for t in merged if t in avail_set]   # ④ 剔除非可用主题
+
+    platform_device = (graph.get("meta") or {}).get("platform_device") \
+        if isinstance(graph, dict) else None
+    is_main = bool(platform_device) and device.get("id") == platform_device
+    if is_main:                             # ⑤ 主控：注入全部主题
+        return {"topics": list(avail), "role": role,
+                "reason": "主控器件：注入全部可用主题", "fallback": fallback}
+    reason = (f"role={role}：基线+角色主题（{len(merged)} 项）" if not fallback
+              else f"role={role}（未确认/未知）：注入全部可用主题（回落）")
+    return {"topics": merged, "role": role, "reason": reason, "fallback": fallback}
 
 
 def _est_tokens(entries: list[dict]) -> int:
@@ -115,13 +188,17 @@ def _as_refs(ref) -> list[str]:
 
 
 def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "rules/index.json",
-                     budget_tokens: int | None = None) -> dict:
+                     budget_tokens: int | None = None, topics: list[str] | None = None,
+                     include_platform: bool = True) -> dict:
     """按 load_policy 组装某阶段的规则束（通用主题 + 平台规则）。
 
     - common：读 index["common"][主题]["file"] 的 entries（rules/common/*.json）。
     - platform_rules：platform_rules==true 且 platform 命中 index["platform"] → 读其 rules
       （rules 可为字符串或文件列表，兼容 E2000）的 entries。
     - pinout：**绝不**把引脚数据放入返回值；仅返回 pinout_path 供工具按需查。
+    - ``topics=None`` → 与旧版完全一致（向后兼容）；给定列表 → 仅加载列表内主题
+      （common 键名 与/或 "platform:<芯片>"）；返回值新增 "topics_loaded"。
+    - ``include_platform=False`` → 不加载平台规则（仍返回 pinout_path）。
     - tokens_est 超有效预算 cap → 按 entry 顺序截断（truncated=True, dropped=[完整ids]，
       over_budget_by=tokens_full-cap），不抛错。cap = min(budget_tokens|config, input_hard_cap)。
       拼接顺序：**平台规则在前、通用规则在后**；因平台规则更具体且是 P4-B 注入核心，
@@ -131,30 +208,42 @@ def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "r
     base = _resolve(index_path).parent                # rules/
     policy = (idx.get("load_policy") or {}).get(stage) or {}
 
+    topics_filter = None if topics is None else [str(t) for t in topics]
     entries: list[dict] = []
     sources: list[str] = []
+    topics_loaded: list[str] = []
     platform_used, pinout_path = "", ""
     pentry = (idx.get("platform") or {}).get(platform) if platform else None
-    if platform and policy.get("platform_rules") and isinstance(pentry, dict):
+    plat_topic = f"platform:{platform}" if platform else ""
+    want_platform = bool(platform and policy.get("platform_rules") and isinstance(pentry, dict)
+                         and include_platform
+                         and (topics_filter is None or plat_topic in topics_filter))
+    if want_platform:
         for rel in _as_refs(pentry.get("rules")):
-            got = _load_entries(base / rel)
+            got = _load_entries(base / rel, topic=plat_topic)
             if got:
                 entries.extend(got)
                 sources.append(str(base / rel))
                 platform_used = platform
+        if platform_used and plat_topic not in topics_loaded:
+            topics_loaded.append(plat_topic)
+    if platform and isinstance(pentry, dict):        # pinout_path 与是否加载平台规则无关
         pout = pentry.get("pinout")
         if pout:
             pinout_path = str(base / pout)
 
     for key in (policy.get("common") or []):
+        if topics_filter is not None and key not in topics_filter:
+            continue
         spec = (idx.get("common") or {}).get(key) or {}
         rel = spec.get("file") if isinstance(spec, dict) else None
         if not rel:
             continue
-        got = _load_entries(base / rel)
+        got = _load_entries(base / rel, topic=key)
         if got:
             entries.extend(got)
             sources.append(str(base / rel))
+            topics_loaded.append(key)
 
     cfg = Config()
     hard_cap = int(cfg.input_hard_cap() or 400000)   # 输入硬顶（< context_total，不可突破）
@@ -185,28 +274,47 @@ def load_rule_assets(stage: str, platform: str = "", index_path: str | Path = "r
             "tokens_est": _est_tokens(kept), "cap": cap,
             "under_budget": full_tokens <= cap,
             "sources": sources, "pinout_path": pinout_path,
+            "topics_loaded": topics_loaded,
             "truncated": truncated, "dropped": dropped,
             "dropped_tokens": dropped_tokens,
             "over_budget_by": over_budget_by}
 
 
-def render_rules_text(entries: list[dict], max_chars: int = 30000,
-                      per_entry_chars: int = 800) -> str:
-    """把 entries 渲染为注入 LLM 的文本：`- [ID] title\n  text`（每条约 800 字，总长上限）。"""
-    parts, total = [], 0
-    for e in entries or []:
+def render_rules_text_ex(entries: list[dict], max_chars: int | None = None,
+                        per_entry_chars: int = 800) -> tuple[str, list[str]]:
+    """渲染规则束为文本，返回 ``(text, dropped_rule_ids)``。
+
+    ``max_chars=None``（新默认）= **不截断**（PF-008）；显式传入且超限时才截断（丢弃尾部完整 ID，
+    并在文本末尾追加显式告警）。``per_entry_chars`` 仅截单条正文（不丢弃规则）。
+    """
+    parts, total, dropped = [], 0, []
+    es = list(entries or [])
+    for i, e in enumerate(es):
         rid = e.get("id", "")
         title = str(e.get("title", "") or "").strip()
         text = str(e.get("text", "") or "").strip()
         if per_entry_chars and len(text) > per_entry_chars:
             text = text[:per_entry_chars].rstrip() + "…"
         block = f"- [{rid}] {title}\n  {text}" if text else f"- [{rid}] {title}"
-        if total + len(block) > max_chars:
+        if max_chars is not None and total + len(block) > max_chars:
+            dropped = [str(x.get("id")) for x in es[i:]]
             break
         parts.append(block)
         total += len(block) + 1
     text = "\n".join(parts)
-    return text + truncation_warning(entries)
+    text += truncation_warning(entries)        # 预算级截断（load_rule_assets 写入的元信息）
+    if dropped:
+        more = " …" if len(dropped) > 20 else ""
+        text += (f"\n\n⚠️ 规则束超 max_chars={max_chars} 被截断，丢弃 {len(dropped)} 条规则: "
+                 + ", ".join(dropped[:20]) + more)
+    return text, dropped
+
+
+def render_rules_text(entries: list[dict], max_chars: int | None = None,
+                      per_entry_chars: int = 800) -> str:
+    """兼容旧签名：默认**不截断**（旧默认 30000 已废弃，PF-008）。显式传 max_chars 时截断并告警。"""
+    text, _ = render_rules_text_ex(entries, max_chars=max_chars, per_entry_chars=per_entry_chars)
+    return text
 
 
 if __name__ == "__main__":

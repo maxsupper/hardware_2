@@ -344,7 +344,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
                               "oscillation": sum(1 for p in paths if p.get("oscillation"))},
             "end_types": {k: sum(1 for p in paths if p["end_type"] == k)
                           for k in {p["end_type"] for p in paths}}}
-    return {"schema_version": "3.0", "kind": "netlist_graph", "product": product, "status": "PASS",
+    return {"schema_version": "3.1", "kind": "netlist_graph", "product": product, "status": "PASS",
             "meta": meta, "devices": devices, "nets": nets, "paths": paths,
             "cross_board_links": xlinks, "connector_pairs": pairs, "diff_pairs": diff_pairs}
 

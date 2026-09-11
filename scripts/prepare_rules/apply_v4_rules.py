@@ -2,11 +2,11 @@
 
 目的：把「方向语义/追踪/差分对/双向验证/落点」「平台识别/加载/官方引脚核对/覆盖率」
 写成通用规则，确保下次解析任何项目都按此方案生成。三层落地（缺一不可）：
-  1) rules[]      : NG-010..NG-014 / PF-001..PF-005
+  1) rules[]      : NG-010..NG-017 / PF-001..PF-006
                     —— PH-2 规则束 NG-* 自动纳入；PF-* 通配符新增到 PH-2/PH-3 规则束
   2) dev_rules[]  : DEV-009(规范先行) / DEV-010(权威来源不重复定义) / DEV-011(md→json 校验护栏)
                     —— 启动即读, 跨项目防重犯
-  3) gates        : G2 强制 NG-010..014, G3 强制 PF-002/003/004（gate_enforced 审计登记）
+  3) gates        : G2 强制 NG-010..017, G3 强制 PF-002/003/004（gate_enforced 审计登记）
 同时渲染 rules/check_list.md。
 
 注意：generate_rules.py 会从 raw 重建 rules.json 并覆盖本脚本增补；
@@ -60,6 +60,38 @@ NEW_RULES = {
                "(特性/电气/指标/参数/时序/复用/拓扑/布线/PCB/阻抗/等长/引脚/信号/电源/时钟/复位/ESD/EMC/温度/热/校准/"
                "绝对最大/推荐工作/限制/约束/处理方式/使用/建议/指导/准则/要求)的章节不得丢弃；"
                "判定须缓存(prompt_version+章节 sha1)保证可重复；同标题章节判定必须一致", "PH-3", "G3", "PF"),
+    "PF-007": ("规则束按 IC 角色裁剪：PH-3 对每颗 IC 只注入【基线主题(引脚核对)+该 IC 角色相关主题+(仅主控)平台规则】；"
+                "角色取自 PH-2 产出的 devices[].function.role(见 NG-015)，禁止在 PH-3 重新猜测角色；"
+                "role 缺失或为 other 时必须注入全部主题(禁止漏规则)；每次裁剪须记录 refdes/role/topics/chars/dropped 以便审计",
+                "PH-3", "G3", "PF"),
+    "PF-008": ("规则束渲染禁止静默截断：render_rules_text 默认不截断；确需限制时必须返回并记录被丢弃规则 ID；"
+                "全量规则束须完整注入", "PH-3", "G3", "PF"),
+    "PF-009": ("LLM 请求超时与重试：超时须可配(llm.request_timeout，默认 180s)；超时/空响应/契约校验失败/"
+                "HTTP 429与5xx 须自动重试 budget.auto_retry 次(指数退避)；HTTP 400/401/403 不重试",
+                "PH-3", "G3", "PF"),
+    "PF-010": ("PH-3 结果完整性与可见性：G3 须校验 summary 数 >= netlist_graph 中应分析 IC 数，缺口须 FAIL 并列出缺失位号；"
+                "PH-3 每次失败须写入 state.errors 与 state.ph3_failed，并在报告中列出失败器件与原因(禁止静默漏检)",
+                "PH-3", "G3", "PF"),
+    "PF-011": ("输出契约须写入提示词：要求 LLM 产出结构化 JSON 的阶段，必须把目标契约的字段名/枚举/长度上限"
+                "显式写进提示词；禁止只写文档章节号(如 §4.3)让模型猜字段", "PH-3", "G3", "PF"),
+    "NG-015": ("芯片功能须在 PH-2 网表解析阶段产出：优先从 EDN 符号/型号直接解析(conventions.chip_function_by_symbol)，"
+                "未能解析者调 LLM 输出功能概述(契约 ChipFunctionVerdict，须缓存可重复)；结果写入 "
+                "netlist_graph.devices[].function 与 refdes_function_map.components[].function；"
+                "role ∈ {soc,power,memory,interface,mcu_soc,protection,switch,other}；"
+                "功能未知须显式标 source=unknown，不得留空", "PH-2", "G2", "NG"),
+    "NG-016": ("芯片功能覆盖率：PH-2 所有 kind=IC 且已贴装的器件必须含非空 function.description 与 function.role；"
+                "来源分布(edn_symbol/llm/unknown)须记入 netlist_graph.meta.chip_function；unknown 非零记 WARNING",
+                "PH-2", "G2", "NG"),
+    "NG-017": ("PH-2 输出规范(netlist_graph schema)：① 顶层必须含 schema_version,kind,product,status,meta,devices[],"
+                "nets[],paths[],cross_board_links[],connector_pairs[],diff_pairs[]；② meta 必须含 boards,devices,nets,paths,"
+                "platform,platform_device,platform_detect,cross_board_links,connector_pairs,sub_agent_groups,trace_limits,"
+                "end_types,validation,chip_function；③ devices[] 每项必须含 id,board,refdes,model,kind,source{in_bom,in_edn,"
+                "populated,edn_symbol},ic{manual_path,ic_type,manual_status,channels},pins{},links[],depop[],"
+                "function{category,role,description,source,confidence,evidence,nets,power_domains}；④ nets[] 含 board,net,"
+                "joins[],kind,alias_group；⑤ paths[] 含 id,board,connector,pin,start_net,path[],endpoint_pins[],end_type,"
+                "bidirectional,status,hops,reason,depth_exceeded,oscillation；⑥ links[] 禁止出现 upstream/downstream/via；"
+                "⑦ 任何字段新增/改名/删除必须升 schema_version 并同步更新本规则与 models/contracts.py 契约；"
+                "⑧ 当前 schema_version=3.1", "PH-2", "G2", "NG"),
 }
 
 # ---- 前缀通配符：新增到对应阶段规则束（幂等：存在即不重复追加）----
@@ -85,7 +117,7 @@ NEW_DEV_RULES = [
      "enforce": True},
 ]
 
-GATE_ENFORCED = ["G2:NG-010..014", "G3:PF-002/003/004"]
+GATE_ENFORCED = ["G2:NG-010..017", "G3:PF-002/003/004", "G3:PF-007..011"]
 
 
 def apply(rj: dict) -> dict:

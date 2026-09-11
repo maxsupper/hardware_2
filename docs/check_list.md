@@ -24,7 +24,7 @@
 - **G5**（审计门）@ PH-5：SA-1..8自审 + 证据链三方对照(确定性+审计输出)
 - **G6**（闭环交付门）@ PH-6：未决项清空/定版/final+渲染.md
 
-## 规则编目（按规范 ID，由 raw 清册迭代生成，共 242 条）
+## 规则编目（按规范 ID，由 raw 清册迭代生成，共 250 条）
 
 | ID | 标题 | 源位置 | 行 |
 |---|---|---|---|
@@ -194,6 +194,9 @@
 | NG-012 | 差分对语义：识别 _P/_N、P/N、H/L、+/- 命名（convention | v4_design::PH-2::G2 | 0 |
 | NG-013 | 双向验证：正向止于有源落点(芯片)、反向止于起点接插件(对称停止)；正反路径集合 | v4_design::PH-2::G2 | 0 |
 | NG-014 | 落点判定：CHIP=落点有源(U*)脚；TO_CONNECTOR=落点接插件(J | v4_design::PH-2::G2 | 0 |
+| NG-015 | 芯片功能须在 PH-2 网表解析阶段产出：优先从 EDN 符号/型号直接解析(c | v4_design::PH-2::G2 | 0 |
+| NG-016 | 芯片功能覆盖率：PH-2 所有 kind=IC 且已贴装的器件必须含非空 fun | v4_design::PH-2::G2 | 0 |
+| NG-017 | PH-2 输出规范(netlist_graph schema)：① 顶层必须含  | v4_design::PH-2::G2 | 0 |
 | PART-001 | §0 快速导航 (人类阅读) | raw_roles/hardware-reviewer.md::L3 | 3 |
 | PART-002 | §1 角色定义与架构 | raw_roles/hardware-reviewer.md::L14 | 14 |
 | PART-003 | §2 审核流程 | raw_roles/hardware-reviewer.md::L218 | 218 |
@@ -215,6 +218,11 @@
 | PF-004 | 核对覆盖率：G3 须报告引脚核对覆盖率=已核对脚数/应核对脚数；覆盖率低于阈值或 | v4_design::PH-3::G3 | 0 |
 | PF-005 | 规则束预算：PH-3 全量规则束(common+platform)必须在预算内完 | v4_design::PH-3::G3 | 0 |
 | PF-006 | 数据手册类平台规则提炼：以整本数据手册为规则来源的平台（如 E2000），必须先 | v4_design::PH-3::G3 | 0 |
+| PF-007 | 规则束按 IC 角色裁剪：PH-3 对每颗 IC 只注入【基线主题(引脚核对)+ | v4_design::PH-3::G3 | 0 |
+| PF-008 | 规则束渲染禁止静默截断：render_rules_text 默认不截断；确需限制 | v4_design::PH-3::G3 | 0 |
+| PF-009 | LLM 请求超时与重试：超时须可配(llm.request_timeout，默认 | v4_design::PH-3::G3 | 0 |
+| PF-010 | PH-3 结果完整性与可见性：G3 须校验 summary 数 >= netli | v4_design::PH-3::G3 | 0 |
+| PF-011 | 输出契约须写入提示词：要求 LLM 产出结构化 JSON 的阶段，必须把目标契约 | v4_design::PH-3::G3 | 0 |
 | PO-001 | 电源检查规则 | raw_rules/电源检查.md::L1 | 1 |
 | PO-002 | 一、上电时序检查 | raw_rules/电源检查.md::L9 | 9 |
 | PO-003 | 1.1 时序约束来源 | raw_rules/电源检查.md::L13 | 13 |

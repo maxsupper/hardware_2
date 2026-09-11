@@ -206,7 +206,32 @@ def validate_data(b_prep_dir: Path) -> GateResult:
 
 
 # ---------------- v2: G3 g2x_validate（PH-3 evidence 契约） ----------------
-def validate_evidence(e_dir: Path) -> GateResult:
+def _expected_ic_refdes(e_dir: Path) -> list[str]:
+    """从 PH-2 的 netlist_graph 取应分析 IC 的**产物键**集合（kind==IC 且 source.populated，PF-010）。
+
+    键与 PH-3 产物文件名一致：有板号 → ``<board>_<refdes>``，否则 ``<refdes>``（跨板 refdes 可重复，
+    必须按板唯一化，否则 summary 互相覆盖）。仅列表用于 "缺失位号"；路径：<ws>/PH-2_网表解析。
+    """
+    g = e_dir.parent / "PH-2_网表解析" / "netlist_graph.json"
+    if not g.exists():
+        return []
+    try:
+        d = json.loads(g.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    out = []
+    for dv in d.get("devices", []):
+        if dv.get("kind") == "IC" and (dv.get("source") or {}).get("populated"):
+            b = str(dv.get("board") or "").strip()
+            r = str(dv.get("refdes") or dv.get("id") or "").strip()
+            r = r.replace("::", "_").replace("/", "_")
+            key = f"{b}_{r}" if b else r
+            if key:
+                out.append(key)
+    return sorted(set(out))
+
+
+def validate_evidence(e_dir: Path, expected_ic_count: int | None = None) -> GateResult:
     checks = []
     evs = sorted(set(e_dir.glob("*.evidence.json")) | set(e_dir.glob("*_evidence.json"))) if e_dir.exists() else []
     sues = sorted(e_dir.glob("*_summary.json"))
@@ -227,6 +252,23 @@ def validate_evidence(e_dir: Path) -> GateResult:
                    f"{s.name} 契约合规(finding/severity/≤5KB)", f"{size}B findings={len(findings)} 非法={len(bad_status)}")
         except Exception as e:
             _check(checks, "G2X-003", GateStatus.FAIL, f"{s.name} 可读", str(e)[:60])
+    # ---- G3X-001 覆盖率门禁（PF-010）：summary 数 ≥ 应分析 IC 数 ----
+    produced = {s.name[:-len("_summary.json")] for s in sues if s.name.endswith("_summary.json")}
+    if expected_ic_count is None:
+        _check(checks, "G3X-001", GateStatus.WARNING, "summary 数 ≥ 应分析 IC 数",
+               f"实际 summary={len(sues)}；未提供 expected_ic_count（未知应分析数）")
+    else:
+        expected_refs = _expected_ic_refdes(e_dir)
+        missing = [r for r in expected_refs if r not in produced]
+        if len(sues) >= expected_ic_count:
+            _check(checks, "G3X-001", GateStatus.PASS,
+                   f"summary 数 ≥ 应分析 IC 数({expected_ic_count})",
+                   f"summary={len(sues)}/{expected_ic_count}")
+        else:
+            miss_txt = (" 缺失位号=" + ",".join(missing[:20])) if missing else ""
+            _check(checks, "G3X-001", GateStatus.FAIL,
+                   f"summary 数 ≥ 应分析 IC 数({expected_ic_count})",
+                   f"summary={len(sues)} < 期望={expected_ic_count}{miss_txt}")
     _append_platform_checks(checks, e_dir)   # P4-C: PF-001/003/004（+PF-005 官方表缺口）
     return _finalize("G3", "g2x_validate", checks)
 
@@ -389,6 +431,82 @@ def validate_netlist(b_prep_dir: Path) -> GateResult:
         mb = p.stat().st_size / 1048576
         _check(checks, "NG-007", GateStatus.PASS if mb <= 5 else GateStatus.FAIL,
                "netlist_graph.json ≤5MB（防 O(k²) 重复内嵌）", f"{mb:.3f}MB")
+        # NG-015：PH-2 必须产出芯片功能（kind=IC 且已贴装 → function.description/role 非空）
+        ics = [dv for dv in d.get("devices", [])
+               if dv.get("kind") == "IC" and (dv.get("source") or {}).get("populated")]
+        miss_fn = [dv.get("id") or dv.get("refdes") for dv in ics
+                   if not str((dv.get("function") or {}).get("description") or "").strip()
+                   or not str((dv.get("function") or {}).get("role") or "").strip()]
+        _check(checks, "NG-015", GateStatus.PASS if not miss_fn else GateStatus.FAIL,
+               "所有 kind=IC 且 populated 的器件 function.description/role 非空",
+               f"IC={len(ics)} 缺功能={len(miss_fn)}" + (f" 样例={miss_fn[:5]}" if miss_fn else ""))
+        # NG-016：芯片功能来源分布（unknown=0 → PASS；否则 WARNING）
+        cf = meta.get("chip_function")
+        if not isinstance(cf, dict):
+            _check(checks, "NG-016", GateStatus.WARNING,
+                   "芯片功能来源分布已记录(edn_symbol/llm/unknown)且 unknown=0", "meta.chip_function 缺失")
+        else:
+            by_src = cf.get("by_source") or {}
+            unknown = int(by_src.get("unknown", 0) or 0)
+            _check(checks, "NG-016", GateStatus.PASS if unknown == 0 else GateStatus.WARNING,
+                   "芯片功能来源分布已记录(edn_symbol/llm/unknown)且 unknown=0",
+                   f"by_source={by_src}")
+        # NG-017：PH-2 输出规范（netlist_graph schema）必需键齐全 + links 无内嵌邻接 + schema_version=3.1
+        miss17 = []
+        for k in ("schema_version", "kind", "product", "status", "meta", "devices", "nets",
+                  "paths", "cross_board_links", "connector_pairs", "diff_pairs"):
+            if k not in d:
+                miss17.append(f"top.{k}")
+        for k in ("boards", "devices", "nets", "paths", "platform", "platform_device",
+                  "platform_detect", "cross_board_links", "connector_pairs", "sub_agent_groups",
+                  "trace_limits", "end_types", "validation", "chip_function"):
+            if k not in meta:
+                miss17.append(f"meta.{k}")
+        for dv in d.get("devices", []):
+            did = dv.get("id") or dv.get("refdes") or "?"
+            req = ["id", "board", "refdes", "model", "kind", "source", "ic", "pins",
+                   "links", "depop"]
+            if dv.get("kind") == "IC" and (dv.get("source") or {}).get("populated"):
+                req.append("function")
+            for k in req:
+                if k not in dv:
+                    miss17.append(f"device[{did}].{k}")
+            for k in ("in_bom", "in_edn", "populated", "edn_symbol"):
+                if k not in (dv.get("source") or {}):
+                    miss17.append(f"device[{did}].source.{k}")
+            icv = dv.get("ic")
+            if not isinstance(icv, dict):
+                miss17.append(f"device[{did}].ic")
+            elif icv:                       # 非空才要求子键（非 IC 无手册信息，ic={}）
+                for k in ("manual_path", "ic_type", "manual_status", "channels"):
+                    if k not in icv:
+                        miss17.append(f"device[{did}].ic.{k}")
+            if "function" in dv:
+                for k in ("category", "role", "description", "source", "confidence",
+                          "evidence", "nets", "power_domains"):
+                    if k not in (dv.get("function") or {}):
+                        miss17.append(f"device[{did}].function.{k}")
+        for nt in d.get("nets", []):
+            for k in ("board", "net", "joins", "kind", "alias_group"):
+                if k not in nt:
+                    miss17.append(f"net[{nt.get('net', '?')}].{k}")
+        for pt in d.get("paths", []):
+            for k in ("id", "board", "connector", "pin", "start_net", "path", "endpoint_pins",
+                      "end_type", "bidirectional", "status", "hops", "reason",
+                      "depth_exceeded", "oscillation"):
+                if k not in pt:
+                    miss17.append(f"path[{pt.get('id', '?')}].{k}")
+        emb17 = sum(1 for dv in d.get("devices", []) for lk in dv.get("links", [])
+                    if lk.get("upstream") or lk.get("downstream") or "via" in lk)
+        if emb17:
+            miss17.append(f"links.embedded_adjacency={emb17}")
+        sv = str(d.get("schema_version", ""))
+        if sv != "3.1":
+            miss17.append(f"schema_version={sv}(期望3.1)")
+        _check(checks, "NG-017", GateStatus.PASS if not miss17 else GateStatus.FAIL,
+               "netlist_graph schema 合规(顶层+meta+devices+nets+paths 必需键齐全/links 无内嵌邻接/schema_version=3.1)",
+               (f"缺失或违规={len(miss17)} 样例={miss17[:8]}" if miss17
+                else "全部必需键齐全 links 无内嵌邻接 schema_version=3.1"))
         gc = b_prep_dir / "global_components.json"
         if gc.exists():
             n_gc = len(json.loads(gc.read_text(encoding="utf-8")))
