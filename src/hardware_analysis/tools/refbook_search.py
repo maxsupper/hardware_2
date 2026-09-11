@@ -11,6 +11,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 EXTS = (".md", ".pdf", ".txt", ".xlsx", ".docx", ".png", ".jpg")
+DEFAULT_ROOTS = ("storge/refbook", "storge/datasheet")   # 既定手册库优先，其次下载文件夹
 
 
 def norm(s: str) -> str:
@@ -51,28 +52,42 @@ def score_filename(model: str, path: Path) -> tuple:
     return best, -len(fn)
 
 
-def search(model: str, root: str | Path = "storge/refbook", top: int = 5,
+def _roots(root) -> list:
+    """多根：列表/元组，或逗号分隔字符串（顺序=优先级）。"""
+    if root in (None, ""):
+        return [Path(r) for r in DEFAULT_ROOTS]
+    if isinstance(root, (list, tuple)):
+        return [Path(r) for r in root]
+    s = str(root)
+    return [Path(x.strip()) for x in s.split(",") if x.strip()]
+
+
+def search(model: str, root=None, top: int = 5,
            max_files: int = 20000) -> list[dict]:
-    root = Path(root)
+    """多根检索（默认 refbook + datasheet）；**同分时按根顺序优先**（既定文件夹在前）。"""
+    roots = _roots(root)
     hits = []
     idx = 0
-    for p in root.rglob("*"):
-        if p.is_file() and p.suffix.lower() in EXTS:
-            idx += 1
-            if idx > max_files:
-                break
-            sc, pen = score_filename(model, p)
-            if sc >= 40:
-                hits.append({"score": round(sc, 1), "path": str(p), "name": p.name,
-                             "stem_match": sc >= 70})
-    hits.sort(key=lambda h: (-h["score"], len(h["path"])))
+    for rank, r in enumerate(roots):
+        if not r.exists():
+            continue
+        for p in r.rglob("*"):
+            if p.is_file() and p.suffix.lower() in EXTS:
+                idx += 1
+                if idx > max_files:
+                    break
+                sc, pen = score_filename(model, p)
+                if sc >= 40:
+                    hits.append({"score": round(sc, 1), "path": str(p), "name": p.name,
+                                 "root": str(r), "root_rank": rank, "stem_match": sc >= 70})
+    hits.sort(key=lambda h: (-h["score"], h.get("root_rank", 0), len(h["path"])))
     return hits[:top]
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("model")
-    ap.add_argument("--root", default="storge/refbook")
+    ap.add_argument("--root", default=None, help="手册根(可逗号分隔，默认 refbook+datasheet)")
     ap.add_argument("--top", type=int, default=5)
     args = ap.parse_args()
     r = search(args.model, root=args.root, top=args.top)

@@ -18,7 +18,7 @@ from hardware_analysis.tools import refbook_search
 from hardware_analysis.common.conventions import CONV
 
 
-def build(bom_entries_path: str | Path, refbook_root: str = "storge/refbook",
+def build(bom_entries_path: str | Path, refbook_root: str = "storge/refbook,storge/datasheet",
           product: str = "") -> dict:
     bom = json.loads(Path(bom_entries_path).read_text(encoding="utf-8")).get("entries", {})
     ics = {k: v for k, v in bom.items() if CONV.is_active(v.get("refdes", ""))}
@@ -64,7 +64,7 @@ def collect_gaps(b_prep_dir: str | Path) -> dict:
     return {"kind": "manual_gaps", "product": d.get("product", ""), "total": len(gaps), "gaps": gaps}
 
 
-def apply_decisions(b_prep_dir: str | Path, decisions: dict, refbook_root: str = "storge/refbook",
+def apply_decisions(b_prep_dir: str | Path, decisions: dict, refbook_root: str = "storge/refbook,storge/datasheet",
                     datasheet_dir: str = "storge/datasheet") -> dict:
     """应用人工决策：IGNORE(→UNVERIFIED) / COMPATIBLE(→同兼容型号) / PROVIDE_FILE(→指定文件)。
     decisions: { "板::位号": {"action":..., "compatible_model":..., "file":...} }
@@ -146,7 +146,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("bom_entries")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--refbook", default="storge/refbook")
+    ap.add_argument("--refbook", default="storge/refbook,storge/datasheet", help="手册检索根(可逗号分隔多个，前者优先)")
     ap.add_argument("--product", default="")
     args = ap.parse_args()
     r = build(args.bom_entries, args.refbook, args.product)

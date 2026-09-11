@@ -79,7 +79,7 @@ class Orchestrator:
             raise RuntimeError(f"project/{self.product} 下无 BOM 输入（xlsx/docx）")
         self._r(f"bom_parse {' '.join(map(str, boms))} --out {self._p1('bom_entries.json')}")
         self._r(f"manual_index {self._p1('bom_entries.json')} --out {self._p1('manual_index.json')} "
-                f"--refbook storge/refbook --product {self.product}")
+                f"--refbook storge/refbook,storge/datasheet --product {self.product}")
         # BOM 预检（原 PH-2 并入 PH-1）：产出 precheck.json，由 G1 一并校验
         boms_j = json.loads(self._p1("bom_entries.json").read_text(encoding="utf-8"))
         entries = boms_j.get("entries", {})
