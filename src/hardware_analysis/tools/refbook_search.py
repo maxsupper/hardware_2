@@ -19,12 +19,13 @@ def norm(s: str) -> str:
 
 
 def variants(model: str) -> list[str]:
-    """型号变体：全量 / 去尾缀(-2, -0001, _Vxx) / 去封装尾数。长→短。"""
+    """型号变体：全量 / 去尾缀(-2,_Vxx) / 去尾数 / 去尾字母（YT8531H→YT8531）。长→短。"""
     m = str(model or "").upper().strip()
     out = {norm(m)}
     m2 = re.split(r"[-_/\s]", m)[0]
     out.add(norm(m2))
     out.add(norm(re.sub(r"(\d+)$", "", m2)))
+    out.add(norm(re.sub(r"[A-Z]$", "", m2)))
     return sorted((v for v in out if len(v) >= 3), key=len, reverse=True)
 
 
@@ -33,20 +34,30 @@ def _tokens(s: str) -> set:
 
 
 def score_filename(model: str, path: Path) -> tuple:
-    """型号 vs 文件名：词元命中 > 子串 > 重叠。返回 (score, -len)。"""
+    """型号 vs 文件名：全量词元(90+) > 变体词元(82) > 前缀/近似(74~76) > 子串(偏弱)。"""
     fn = norm(path.name)
     toks = _tokens(path.name)
+    full = norm(str(model))
     best = 0.0
     for v in variants(model):
         if fn == v:
             best = max(best, 100)
         elif v in toks:
-            best = max(best, 90 + min(len(v) / max(len(fn), 1) * 8, 8))   # 词元命中
+            best = max(best, (90 + min(len(v) / max(len(fn), 1) * 8, 8)) if v == full else 82)
         elif v in fn:
-            best = max(best, 58 + min(len(v) / max(len(fn), 1) * 12, 12))   # 子串命中(偏弱)
+            best = max(best, (58 + min(len(v) / max(len(fn), 1) * 12, 12)) if v == full else 60)
         else:
             ov = len(set(v[:6]) & set(fn[:6])) / max(len(set(v[:6])), 1)
             best = max(best, ov * 30)                                       # 纯字符重叠 ≤30（不入阈）
+    # 前缀词元：型号与某文件名词元互为前缀（长度≥6）→ RY9430DP8↔RY9430 / SIT3490EEUA↔SIT3490E
+    if len(full) >= 8:
+        for t in toks:
+            if len(t) >= 5 and (full.startswith(t) or t.startswith(full)):
+                best = max(best, 76)
+        # 长型号近似：difflib → EG4X20BG256I8↔EG4X20BG2562B
+        for t in toks:
+            if len(t) >= 6 and difflib.SequenceMatcher(None, full, t).ratio() >= 0.82:
+                best = max(best, 74)
     if best >= 58 and any(k in fn for k in ("DATASHEET", "TRM", "MANUAL", "SPEC", "DS", "数据手册", "规格书")):
         best = min(best + 8, 100)                                           # 手册/TRM 优先
     return best, -len(fn)

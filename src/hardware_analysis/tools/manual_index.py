@@ -126,8 +126,20 @@ def apply_decisions(b_prep_dir: str | Path, decisions: dict, refbook_root: str =
                 import shutil as _sh
                 if sp.resolve() != dest.resolve():
                     _sh.copy(sp, dest)
-                e["manual_path"], e["status"] = str(dest), "FOUND"
-                e["note"] = "人工：补充文件"
+                # 若为 PDF：确保有对应 .md（未转则转），manual_path 优先指向 .md（后续环节可读文本）
+                use = dest
+                if dest.suffix.lower() == ".pdf":
+                    md = dest.with_suffix(".md")
+                    if not md.exists():
+                        try:
+                            from hardware_analysis.tools.pdf_to_md import convert as _pdf2md
+                            _pdf2md(dest)
+                        except Exception:
+                            pass
+                    if md.exists():
+                        use = md
+                e["manual_path"], e["status"] = str(use), "FOUND"
+                e["note"] = f"人工：补充文件（{'md' if use.suffix == '.md' else use.suffix}）"
             else:
                 e["note"] = f"人工：指定文件不存在({src})→保持 UNVERIFIED"
                 e["status"] = "UNVERIFIED"
