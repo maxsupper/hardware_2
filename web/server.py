@@ -146,12 +146,20 @@ def manual_gaps(product: str):
 
 @app.post("/api/manual/upload")
 async def manual_upload(file: UploadFile = File(...)):
-    """人工补充手册：上传文件 → 存档 storge/datasheet/，返回路径。"""
+    """人工补充手册：上传文件 → 存档 storge/datasheet/；若为 PDF 则自动转 .md。"""
     dest_dir = BASEDIR / "storge" / "datasheet"
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest = dest_dir / _safe_name(file.filename or "upload.bin")
     dest.write_bytes(await file.read())
-    return {"ok": True, "path": str(dest), "name": dest.name}
+    converted = None
+    if dest.suffix.lower() == ".pdf":                  # 上传后自动触发转换
+        try:
+            from hardware_analysis.tools.pdf_to_md import convert
+            r = convert(dest)
+            converted = r.get("out") if r.get("ok") else r.get("error")
+        except Exception as e:
+            converted = f"转换失败:{str(e)[:60]}"
+    return {"ok": True, "path": str(dest), "name": dest.name, "converted_md": converted}
 
 
 @app.get("/api/problem/{product}")

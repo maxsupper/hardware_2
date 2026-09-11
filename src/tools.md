@@ -155,3 +155,11 @@
 - 替换：COMPATIBLE → 兼容型号检索，FOUND_COMPATIBLE
 - **说明(NOTE)：填补充描述 → 提交时发 LLM(ManualNoteVerdict) 判定 IGNORE/COMPATIBLE 并落库(含理由)**
 - 契约：models.contracts.ManualNoteVerdict(action/compatible_model/reason/confidence)
+
+## [T-PDF-TO-MD] pdf_to_md
+- 模块   : src/hardware_analysis/tools/pdf_to_md.py
+- 功能   : PDF → Markdown 文本抽取（pdftotext 优先，退化 pdfplumber；无文字层提示需 OCR）；供手册检索/阅读统一为 .md
+- 输入   : convert(<pdf>[--out-dir D][--force]) / convert_many([pdf|dir]) / CLI: python -m ... <pdf|dir>...
+- 输出   : 同名 .md（含来源/方法头）；返回 {src,out,chars,ok,error,method}
+- 接入   : web /api/manual/upload 上传 PDF 后**自动触发**转换（converted_md 字段）
+- 已验证 : storge/datasheet/ETA3417S2F.pdf → 正文抽取成功
