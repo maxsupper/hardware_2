@@ -1,8 +1,8 @@
 /* 硬件审查台 — 前端主逻辑（原生 JS，无构建；轮询 run.log/run.state + 门禁/人工） */
 (() => {
   const PH = ["PH-0","PH-1","PH-2","PH-3","PH-4","PH-5","PH-6","PH-7"];
-  const PH_NAME = {"PH-0":"输入准备","PH-1":"网表解析","PH-2":"手册检索","PH-3":"数据预检",
-                   "PH-4":"深度分析","PH-5":"报告","PH-6":"审计","PH-7":"闭环"};
+  const PH_NAME = {"PH-0":"输入准备","PH-1":"手册检索","PH-2":"数据预检","PH-3":"网表解析",
+                   "PH-4":"深度分析","PH-5":"报告合成","PH-6":"审计复核","PH-7":"闭环交付"};
   let product = (localStorage.getItem('hw.product')||'');
   let cursor = 0, follow = true;
   const agentState = {};   // agent -> {started, done, err, tasks}

@@ -83,8 +83,8 @@ config.json    （不入 git；有 config.example.json）
 | **PH-1 手册检索** | BOM(**Word/Excel**)→唯一IC型号→refbook+Tavily→**manual_index.json**(位号→手册路径)+**LLM判 ic_type** | hw_search | **G1** | BOM | manual_index.json |
 | **PH-2 数据预检** | Wave0 确定性 | flow | **G2** | BOM | 预检报告 |
 | **PH-3 网表解析** | EDN解析→合并→位号映射(**冲突以BOM为准**)→**tracer(按接插件数委派子agent)→合并 netlist_graph.json** | hw_prep(+子agent) | **G3** | EDN+manual_index | **netlist_graph.json** |
-| PH-4 深度分析 | LLM 芯片级并行≤5，**只读 netlist_graph.json**+复核 tracer 判定+回环 | hw_analyze | G4 | netlist_graph | E_analyze/*.json |
-| PH-5 报告合成 | report.json + .md | hw_write | G5 | E_analyze | report |
+| PH-4 深度分析 | LLM 芯片级并行≤5，**只读 netlist_graph.json**+复核 tracer 判定+回环 | hw_analyze | G4 | netlist_graph | PH-4_analyze/*.json |
+| PH-5 报告合成 | report.json + .md | hw_write | G5 | PH-4_analyze | report |
 | PH-6 审计复核 | SA-1..8+证据链 | hw_auditor | G6 | — | audit.json |
 | PH-7 闭环交付 | 定版 | flow | G7 | — | final |
 

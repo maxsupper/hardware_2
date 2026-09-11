@@ -1,11 +1,11 @@
 """位号↔BOM↔功能映射 — 阶段3a 产物 D（v2：按板配对 + DNP 标注）.
 
-输入: B_prep/global_components.json(板级: "板::位号") + bom_entries.json(含 board)
+输入: PH-3_netlist/global_components.json(板级: "板::位号") + bom_entries.json(含 board)
 规则(用户确认):
   - 身份 = (板, 位号)；A_EDN ↔ A_BOM、B_EDN ↔ B_BOM
   - EDN 有、该板 BOM 无 → 不装(DNP)，populated=False，不算缺项
   - EDN 符号名(cellRef) 与 BOM 料号是不同标识，不判冲突
-用法: python -m hardware_analysis.tools.refdes_map <B_prep_dir>
+用法: python -m hardware_analysis.tools.refdes_map <PH-3_netlist_dir>
 """
 from __future__ import annotations
 import argparse, json, sys
@@ -18,10 +18,12 @@ if __package__ in (None, ""):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("b_prep_dir")
+    ap.add_argument("--bom", default=None, help="bom_entries.json 路径（默认取 b_prep_dir/bom_entries.json）")
     args = ap.parse_args()
     d = Path(args.b_prep_dir)
     gcomp = json.loads((d / "global_components.json").read_text(encoding="utf-8"))
-    bom = json.loads((d / "bom_entries.json").read_text(encoding="utf-8")).get("entries", {})
+    bom_path = Path(args.bom) if args.bom else (d / "bom_entries.json")
+    bom = json.loads(bom_path.read_text(encoding="utf-8")).get("entries", {})
 
     # 按板拆 BOM
     bom_by_board: dict[str, dict] = {}

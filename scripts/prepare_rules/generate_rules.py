@@ -70,10 +70,10 @@ PLATFORM_BUNDLES = {
 PATH_MAP = {  # B-01 路径域映射（raw 约定 → 本项目）
     ".sisyphus/runs/{项目}-{时间戳}/": "storge/project/<产品>/",
     ".sisyphus/temp/": "<产品>/.run/temp/",
-    ".sisyphus/evidence/": "storge/project/<产品>/E_analyze/evidence/",
+    ".sisyphus/evidence/": "storge/project/<产品>/PH-4_analyze/evidence/",
     "{REFBOOK_DIR}": "storge/refbook",
     "{DOWNLOAD_DIR}": "storge/datasheet",
-    "报告输出(项目根)": "storge/project/<产品>/F_report/",
+    "报告输出(项目根)": "storge/project/<产品>/PH-5_report/",
 }
 
 

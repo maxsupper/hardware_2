@@ -4,8 +4,8 @@ PH-4 只读 netlist_graph.json；遇 STUB/OPEN_END/双向不符/ic_type 冲突 �
 PH-3 收到 request → **只重读源 EDN 该局部** 定向复查 → 写 resolution(CONFIRMED/CORRECTED + delta)。
 3 轮未决 → link 标 UNVERIFIED 进"待核清单"，不阻塞。
 用法:
-  python -m hardware_analysis.tools.clarify emit   <B_prep> <out_requests.jsonl>
-  python -m hardware_analysis.tools.clarify resolve <product> <B_prep> <requests.jsonl> <out_resolutions.jsonl>
+  python -m hardware_analysis.tools.clarify emit   <PH-3_netlist> <out_requests.jsonl>
+  python -m hardware_analysis.tools.clarify resolve <product> <PH-3_netlist> <requests.jsonl> <out_resolutions.jsonl>
 """
 from __future__ import annotations
 import argparse, json, re, sys

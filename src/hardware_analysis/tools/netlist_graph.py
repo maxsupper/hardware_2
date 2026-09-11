@@ -1,6 +1,6 @@
 """netlist_graph builder — PH-3 产物（网表 json 化，v2.2）.
 
-将 B_prep 各确定性产物组织为单一 netlist_graph.json：devices[]/nets[]/paths[]/cross_board_links[]。
+将 PH-3_netlist 各确定性产物组织为单一 netlist_graph.json：devices[]/nets[]/paths[]/cross_board_links[]。
 要点（用户确认 A 方案）：
   - devices 每 (板,位号) 一条：model(BOM为准)/kind/source/ic(manual_index)/pins(全量)/links(上级-下级)/depop
   - nets 全量 joins（真值）+ kind(signal|power|gnd) + alias_group(0Ω 短接)
@@ -8,7 +8,7 @@
   - links：按脚拆条，扇出→多邻居(FANOUT)，电源→pwr，纯芯片间→bi，跨板→cross_board.peer
   - cross_board_links：连接器配对(D1，按 脚→网 定义一致性匹配 A↔B)
   - 子 agent 分发：--groups N 按接插件分组追踪后合并（同 schema）
-用法: python -m hardware_analysis.tools.netlist_graph <B_prep_dir> [--groups N] [--product X]
+用法: python -m hardware_analysis.tools.netlist_graph <PH-3_netlist_dir> [--groups N] [--product X]
 """
 from __future__ import annotations
 import argparse, json, re, sys
@@ -89,7 +89,7 @@ def connector_pairs(dev_pins: dict, kinds: dict) -> tuple[list, list]:
     return pairs, links
 
 
-def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
+def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | None = None) -> dict:
     gcomp = json.loads((b_prep / "global_components.json").read_text(encoding="utf-8"))
     gnets = json.loads((b_prep / "global_nets.json").read_text(encoding="utf-8"))
     rmap = {}
@@ -98,7 +98,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1) -> dict:
         for c in json.loads(rp.read_text(encoding="utf-8")).get("components", []):
             rmap[c["id"]] = c
     mi = {}
-    mp = b_prep / "manual_index.json"
+    mp = Path(manual_index) if manual_index else (b_prep / "manual_index.json")
     if mp.exists():
         mi = json.loads(mp.read_text(encoding="utf-8")).get("entries", {})
 
@@ -280,9 +280,10 @@ def main() -> None:
     ap.add_argument("b_prep_dir")
     ap.add_argument("--groups", type=int, default=0, help="子 agent 分组数；<=0 表示按接插件数自适应(上限5)")
     ap.add_argument("--product", default="")
+    ap.add_argument("--manual-index", default=None, help="manual_index.json 路径（默认取 b_prep/manual_index.json）")
     args = ap.parse_args()
     d = Path(args.b_prep_dir)
-    doc = build(d, args.product, args.groups)
+    doc = build(d, args.product, args.groups, manual_index=args.manual_index)
     v = validate(doc)
     doc["meta"]["validation"] = v            # 校验并入产物 meta（不另留中间文件）
     (d / "netlist_graph.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -31,23 +31,23 @@ def main(product: str = "FL-25-E-MR203"):
 
     import json
     # L1 工具单元
-    nets = json.loads((P / "B_prep" / "global_nets.json").read_text(encoding="utf-8"))
-    comps = json.loads((P / "B_prep" / "global_components.json").read_text(encoding="utf-8"))
+    nets = json.loads((P / "PH-3_netlist" / "global_nets.json").read_text(encoding="utf-8"))
+    comps = json.loads((P / "PH-3_netlist" / "global_components.json").read_text(encoding="utf-8"))
     add("L1-edn_parse(真实)", f"全局元件={len(comps)} 网络={len(nets)}",
         len(comps) > 500, "global_components.json/global_nets.json")
-    add("L1-gate(G1)", "G1 状态", gv.validate_prep(P / "B_prep").status.value == "PASS",
+    add("L1-gate(G1)", "G1 状态", gv.validate_manual_index(P / "PH-1_manual").status.value == "PASS",
         f"gates/G1.json -> {gv.main_gate_cli(P, 'G1')}")
-    add("L1-gate(G3)", "G3 状态", gv.validate_data(P / "B_prep").status.value == "PASS",
+    add("L1-gate(G3)", "G3 状态", gv.validate_netlist(P / "PH-3_netlist").status.value == "PASS",
         f"gates/G3.json -> {gv.main_gate_cli(P, 'G3')}")
     # 负向: 缺文件 → G5 FAIL
-    fdir = P / "F_report"
+    fdir = P / "PH-5_report"
     rep = fdir / "report.json"
     backup = None
     if rep.exists():
         backup = rep.read_bytes()
         rep.unlink()
     add("L2-负向-fault注入(G5缺报告)", "report.json 缺失 → G5 应 FAIL",
-        gv.validate_report(fdir).status.value == "FAIL", "F_report/report.json")
+        gv.validate_report(fdir).status.value == "FAIL", "PH-5_report/report.json")
     if backup is not None:
         rep.write_bytes(backup)
         add("L2-负向-恢复", "删除后恢复 report.json", rep.exists(), "report.json 存在")
@@ -70,8 +70,8 @@ def main(product: str = "FL-25-E-MR203"):
     # 产物清单
     files = [str(p.relative_to(P)) for p in sorted(P.rglob("*")) if p.is_file()
              and ".run" not in str(p)]
-    add("L3-产出齐全", f"{len(files)} 个产物文件", any("B_prep" in f for f in files)
-        and any("F_report" in f for f in files) and any("gates" in f for f in files),
+    add("L3-产出齐全", f"{len(files)} 个产物文件", any("PH-3_netlist" in f for f in files)
+        and any("PH-5_report" in f for f in files) and any("gates" in f for f in files),
         "; ".join(sorted(set(f.split('/')[0] for f in files))))
 
     passed = sum(1 for r in rows if r["status"] == "PASS")

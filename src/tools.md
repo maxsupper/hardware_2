@@ -14,7 +14,7 @@
 ## [T-TRACER] tracer
 - 模块   : src/hardware_analysis/tools/tracer.py
 - 功能   : 端到端信号追踪（透明器件跨过/终端终止/OPEN_END检测）+ 终止清单 trace_inventory.json
-- 输入   : B_prep 目录(global_nets.json)；--limit 起始网上限
+- 输入   : PH-3_netlist 目录(global_nets.json)；--limit 起始网上限
 - 输出   : trace_inventory.json（traces+inventory 终点分布）
 - 已验证 : 真实数据 400 条 → 395 TERMINAL / 2 OPEN_END / 3 ACROSS
 - 备注   : 桥接异常(GND→VCC)列为自检金标校准项
@@ -94,7 +94,7 @@
 ## [T-REFDES-MAP] refdes_map
 - 模块   : src/hardware_analysis/tools/refdes_map.py
 - 功能   : 位号↔BOM↔功能映射（EDN×BOM 按 refdes 合并；function/manual 留待 E 阶段渐进填充）
-- 输入   : B_prep 目录（global_components.json + bom_entries.json）
+- 输入   : PH-3_netlist + PH-1_manual/bom_entries.json
 - 输出   : refdes_function_map.json（identity/provenance/index/stats/conflicts）
 - 已验证 : 776 位号 / 双源一致 305 / 型号冲突 0
 
@@ -111,7 +111,7 @@
 ## [T-NETLIST-GRAPH] netlist_graph
 - 模块   : src/hardware_analysis/tools/netlist_graph.py
 - 功能   : PH-3 产物——网表 json 化（v2.2）：devices/nets/paths/cross_board_links；子 agent 按接插件分组追踪后合并；连接器配对(D1)
-- 输入   : B_prep 目录（global_components/global_nets/trace_inventory/refdes_function_map/manual_index）；--groups N；--product
+- 输入   : PH-3_netlist (global_* / trace_inventory / refdes_function_map) + PH-1_manual/manual_index.json；--groups N；--product
 - 输出   : netlist_graph.json + netlist_graph.validate.json（dangling/uncovered 完整性）
 - 已验证 : FL-25-E-MR203 → 952 器件/802 网/472 路径/跨板144(信号109)/配对 J19↔J8=144脚；校验 dangling=0 uncovered=0
 - 备注   : links 按脚拆条（side/upstream/downstream/via/cross_board）；0Ω→alias_group；差分对→diff_pairs
@@ -126,7 +126,7 @@
 ## [T-CLARIFY] clarify（PH-4↔PH-3 回环协议）
 - 模块   : src/hardware_analysis/tools/clarify.py
 - 功能   : PH-4 提 request（自含 scope+假设）→ PH-3 只重读源 EDN 该局部定向复查 → resolution(CONFIRMED/CORRECTED+delta)；有界≤3轮
-- 输入   : emit <B_prep> <out.jsonl>；resolve <product> <B_prep> <req.jsonl> <out.jsonl>
+- 输入   : emit <PH-3_netlist> <out.jsonl>；resolve <product> <PH-3_netlist> <req.jsonl> <out.jsonl>
 - 输出   : clarify_requests.jsonl / clarify_resolutions.jsonl
 - 已验证 : FL-25-E-MR203 → 94 request / 94 CONFIRMED（回查源 EDN joins）
 

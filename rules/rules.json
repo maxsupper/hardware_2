@@ -2119,17 +2119,18 @@
  "path_map": {
   ".sisyphus/runs/{项目}-{时间戳}/": "storge/project/<产品>/",
   ".sisyphus/temp/": "<产品>/.run/temp/",
-  ".sisyphus/evidence/": "storge/project/<产品>/E_analyze/evidence/",
+  ".sisyphus/evidence/": "storge/project/<产品>/PH4_analyze/evidence/",
   "{REFBOOK_DIR}": "storge/refbook",
   "{DOWNLOAD_DIR}": "storge/datasheet",
-  "报告输出(项目根)": "storge/project/<产品>/F_report/"
+  "报告输出(项目根)": "storge/project/<产品>/PH5_report/"
  },
  "_audit": {
   "raw_sections": 218,
   "canonical": 218,
   "v2_applied": "2026-09-11: process换位/gates重排/agents更新 + 新增 MI/NG/CL 10 条（既有218条内容未改）",
   "platform_bundles_merged": "2026-09-11: 4×bundle.json 并入 platform 段（去冗余文件）",
-  "dev_rules_added": "2026-09-11: 新增 dev_rules 段（6条，代码生成硬性要求）"
+  "dev_rules_added": "2026-09-11: 新增 dev_rules 段（6条，代码生成硬性要求）",
+  "stage_dirs_renamed": "2026-09-11: 阶段目录改为 PHx_<用途>（PH1_manual/PH3_netlist/PH4_analyze/PH5_report/PH6_audit），删空壳 C_search/D_validate"
  },
  "dev_rules": {
   "schema_version": "1.0",

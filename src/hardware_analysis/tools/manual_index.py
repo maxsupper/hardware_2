@@ -5,7 +5,7 @@
       → 命中记 manual_path、未命中记 TRULY_MISSING（后续 Tavily 兜底由 hw_search agent 补）
 输出: manual_index.json（entries 键 = "板::位号"；字段 model/ic_type/manual_path/status/attempted_sources）
 说明: ic_type（SINK/PASS_THRU/POWER_SRC）由 PH-1 的 LLM 判定回填；本工具先置 UNKNOWN。
-用法: python -m hardware_analysis.tools.manual_index <bom_entries.json> --out <B_prep>/manual_index.json [--refbook storge/refbook]
+用法: python -m hardware_analysis.tools.manual_index <bom_entries.json> --out <PH-1_manual>/manual_index.json [--refbook storge/refbook]
 """
 from __future__ import annotations
 import argparse, json, sys

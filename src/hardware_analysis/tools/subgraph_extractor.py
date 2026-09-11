@@ -3,7 +3,7 @@
 以目标器件为中心，按"引脚↔网络↔相邻器件引脚"外扩到深度2：
   D0=器件所有引脚；D1=引脚所挂网络；D2=网络上的相邻器件引脚。
 产出结构化 JSON 数据包（含 boundary 声明），供 LLM 判功能/定位。
-用法: python -m hardware_analysis.tools.subgraph_extractor <B_prep_dir> <refdes> [--out d2.json]
+用法: python -m hardware_analysis.tools.subgraph_extractor <PH-3_netlist_dir> <refdes> [--out d2.json]
 """
 from __future__ import annotations
 import argparse, json, sys

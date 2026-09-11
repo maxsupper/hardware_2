@@ -67,6 +67,6 @@ if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser(); ap.add_argument("agent"); ap.add_argument("--stage", default="PH-4")
     a = ap.parse_args()
-    r = assembler(a.agent, a.stage, inputs=["storge/project/<P>/B_prep/refdes_function_map.json"])
+    r = assembler(a.agent, a.stage, inputs=["storge/project/<P>/PH-3_netlist/refdes_function_map.json"])
     print(r["budget"])
     print(r["prompt"][:600])

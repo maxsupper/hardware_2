@@ -48,12 +48,18 @@ class Orchestrator:
         self.state["gates"][gate] = status
         self.ws.write_state(self.state)
 
-    def _b(self, *parts) -> Path:
-        return self.ws.dir / "B_prep" / Path(*parts)
+    def _p0(self, *p) -> Path: return self.ws.dir / "PH-0_input" / Path(*p)
+    def _p1(self, *p) -> Path: return self.ws.dir / "PH-1_manual" / Path(*p)
+    def _p2(self, *p) -> Path: return self.ws.dir / "PH-2_check" / Path(*p)
+    def _p3(self, *p) -> Path: return self.ws.dir / "PH-3_netlist" / Path(*p)
+    def _p4(self, *p) -> Path: return self.ws.dir / "PH-4_analyze" / Path(*p)
+    def _p5(self, *p) -> Path: return self.ws.dir / "PH-5_report" / Path(*p)
+    def _p6(self, *p) -> Path: return self.ws.dir / "PH-6_audit" / Path(*p)
+    def _p7(self, *p) -> Path: return self.ws.dir / "PH-7_delivery" / Path(*p)
 
     # ---------- PH-0 输入准备 ----------
     def _act_ph0(self):
-        step = self.ws.dir / "step_0a.json"
+        step = self._p0("step_0a.json")
         if step.exists():
             return
         status = "PASS" if self.auto_pass else "BLOCKED"
@@ -72,8 +78,8 @@ class Orchestrator:
                 + sorted(self.input_dir.glob("*.xls")) + sorted(self.input_dir.glob("*.doc")))
         if not boms:
             raise RuntimeError(f"project/{self.product} 下无 BOM 输入（xlsx/docx）")
-        self._r(f"bom_parse {' '.join(map(str, boms))} --out {self._b('bom_entries.json')}")
-        self._r(f"manual_index {self._b('bom_entries.json')} --out {self._b('manual_index.json')} "
+        self._r(f"bom_parse {' '.join(map(str, boms))} --out {self._p1('bom_entries.json')}")
+        self._r(f"manual_index {self._p1('bom_entries.json')} --out {self._p1('manual_index.json')} "
                 f"--refbook storge/refbook --product {self.product}")
         self._log("ph1_done", boms=[b.name for b in boms])
         self._ic_type_llm()      # LLM 判定 ic_type 并回写 manual_index.json（mock 走 SINK）
@@ -83,7 +89,7 @@ class Orchestrator:
         走可复用 LLMChecker（含持久化缓存）；契约 = IcTypeVerdict。"""
         from hardware_analysis.common.llm_check import LLMChecker
         from hardware_analysis.models.contracts import IcTypeVerdict
-        p = self._b("manual_index.json")
+        p = self._p1("manual_index.json")
         if not p.exists():
             return
         mi = json.loads(p.read_text(encoding="utf-8"))
@@ -108,7 +114,14 @@ class Orchestrator:
 
     # ---------- PH-2 数据预检（Wave0，确定性；门禁 G2 在 run 中校验） ----------
     def _act_ph2(self):
-        self._log("ph2_done", note="Wave0 确定性预检，见 gates/G2.json")
+        """PH-2 数据预检（Wave0，确定性）：产出预检报告。"""
+        boms = json.loads(self._p1("bom_entries.json").read_text(encoding="utf-8")) if self._p1("bom_entries.json").exists() else {"entries": {}}
+        entries = boms.get("entries", {})
+        boards = sorted({v.get("board", "?") for v in entries.values()})
+        pre = {"kind": "precheck", "stage": "PH-2", "status": "PASS",
+               "bom_refdes": len(entries), "boards": boards, "bom_errors": boms.get("errors", [])}
+        (self._p2("precheck.json")).write_text(json.dumps(pre, ensure_ascii=False, indent=1), encoding="utf-8")
+        self._log("ph2_done", **{k: pre[k] for k in ("bom_refdes", "boards")})
 
     # ---------- PH-3 网表解析（netlist_graph + 子 agent 分发） ----------
     def _act_ph3(self):
@@ -120,24 +133,25 @@ class Orchestrator:
         for e in edns:
             self._r(f"edn_parse {e} --out {temp}")
             self._log("edn_parsed", file=e.name)
-        self._r(f"edn_global_merge {temp} {self.ws.dir / 'B_prep'}")
+        self._r(f"edn_global_merge {temp} {self._p3()}")
         self.cleanup_temp()                       # 即用即清：合并后删中间文件
-        self._r(f"refdes_map {self.ws.dir / 'B_prep'}")
-        self._r(f"tracer {self.ws.dir / 'B_prep'}")
-        self._r(f"netlist_graph {self.ws.dir / 'B_prep'} --groups 0 --product {self.product}")
+        self._r(f"refdes_map {self._p3()} --bom {self._p1('bom_entries.json')}")
+        self._r(f"tracer {self._p3()}")
+        self._r(f"netlist_graph {self._p3()} --groups 0 --product {self.product} "
+                f"--manual-index {self._p1('manual_index.json')}")
         self._log("ph3_done", edns=[e.name for e in edns])
 
     # ---------- PH-4 深度分析（只读 netlist_graph.json + 复核 + 回环） ----------
     def _act_ph4(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import SummaryDoc, EvidenceDoc, Finding
-        g = self._b("netlist_graph.json")
+        g = self._p3("netlist_graph.json")
         if not g.exists():
             raise RuntimeError("PH-4 需要 netlist_graph.json（PH-3 未产出）")
         doc = json.loads(g.read_text(encoding="utf-8"))
         ics = [d for d in doc["devices"] if d["kind"] == "IC" and d["source"].get("populated")]
-        e = self.ws.dir / "E_analyze"; e.mkdir(exist_ok=True)
-        notes = self.ws.dir / "E_analyze" / "clarify_requests.jsonl"
+        e = self._p4(); e.mkdir(parents=True, exist_ok=True)
+        notes = self._p4("clarify_requests.jsonl")
         for d in ics:
             # slice：本 IC + 相关 nets/paths + 手册前置
             slice_ = {"task": "analyze_ic", "device": d,
@@ -169,8 +183,8 @@ class Orchestrator:
         try:
             from hardware_analysis.tools import clarify
             req = e / "clarify_requests.jsonl"
-            clarify.emit_requests(self._b(), req)
-            res = clarify.resolve(self.product, self._b(), req, e / "clarify_resolutions.jsonl")
+            clarify.emit_requests(self._p3(), req)
+            res = clarify.resolve(self.product, self._p3(), req, e / "clarify_resolutions.jsonl")
             self._log("clarify_done", requests=len(res))
         except Exception as ex:
             self._log("clarify_err", err=str(ex)[:120])
@@ -179,13 +193,13 @@ class Orchestrator:
     def _act_ph5(self):
         from hardware_analysis.agents.direct import llm_json
         from hardware_analysis.models.contracts import ReportDoc
-        e = self.ws.dir / "E_analyze"
+        e = self._p4()
         sums = {p.stem: json.loads(p.read_text(encoding="utf-8")) for p in e.glob("*_summary.json")}
         obj, errs, sec = llm_json("hw_write",
             "汇总 summary 为 report：findings[](check,severity,detail)/tables[](title,columns,rows完整不截断)"
             "/narrative{}" + ("；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"),
             ReportDoc)
-        f = self.ws.dir / "F_report"; f.mkdir(exist_ok=True)
+        f = self._p5(); f.mkdir(parents=True, exist_ok=True)
         (f / "report.json").write_text(json.dumps(
             obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
             ensure_ascii=False, indent=1), encoding="utf-8")
@@ -198,7 +212,7 @@ class Orchestrator:
         obj, errs, sec = llm_json("hw_auditor",
             "对 evidence/report 执行 SA-1..8 自审+证据链核对，只审不改。输出 GateResult(gate=G6,status,checks[])",
             GateResult)
-        f = self.ws.dir / "F_audit"; f.mkdir(exist_ok=True)
+        f = self._p6(); f.mkdir(parents=True, exist_ok=True)
         (f / "audit.json").write_text(json.dumps(
             obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
             ensure_ascii=False, indent=1), encoding="utf-8")
@@ -206,12 +220,13 @@ class Orchestrator:
 
     # ---------- PH-7 闭环交付 ----------
     def _act_ph7(self):
-        rp = self.ws.dir / "F_report" / "report.json"
-        final = self.ws.dir / "F_report" / "final_report.json"
-        if rp.exists() and not final.exists():
+        rp = self._p5("report.json")
+        (self._p7()).mkdir(parents=True, exist_ok=True)
+        final = self._p7("final_report.json")
+        if rp.exists():
             import shutil
             shutil.copy(rp, final)                   # 定版产物（G7 校验依据）
-        sp = self.ws.dir / "F_report" / "delivery.json"
+        sp = self._p7("delivery.json")
         sp.write_text(json.dumps({
             "kind": "delivery", "product": self.product, "status": "DELIVERED",
             "final_report": str(final), "unresolved": []}, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -258,11 +273,11 @@ class Orchestrator:
             self._act_ph0()
             self.state["phases"]["PH-0"] = "DONE"
             for ph, act, gate, gatefn in [
-                ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_index(self._b())),
-                ("PH-2", self._act_ph2, "G2", lambda: gv.validate_bom(self._b())),
-                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_netlist(self._b())),
-                ("PH-4", self._act_ph4, "G4", lambda: gv.validate_evidence(self.ws.dir / "E_analyze")),
-                ("PH-5", self._act_ph5, "G5", lambda: gv.validate_report(self.ws.dir / "F_report")),
+                ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_index(self._p1())),
+                ("PH-2", self._act_ph2, "G2", lambda: gv.validate_bom(self._p1())),
+                ("PH-3", self._act_ph3, "G3", lambda: gv.validate_netlist(self._p3())),
+                ("PH-4", self._act_ph4, "G4", lambda: gv.validate_evidence(self._p4())),
+                ("PH-5", self._act_ph5, "G5", lambda: gv.validate_report(self._p5())),
                 ("PH-6", self._act_ph6, "G6", lambda: gv.validate_audit(self.ws.dir)),
                 ("PH-7", self._act_ph7, "G7", lambda: gv.validate_delivery(self.ws.dir)),
             ]:
