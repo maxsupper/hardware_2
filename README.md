@@ -16,15 +16,15 @@ export PYTHONPATH=src                 # 关键：让模块可导入
 
 ### ① 快速验证（MOCK，不调真 LLM，约 1–2 分钟）
 ```bash
-HARDWARE_MOCK=1 .venv/bin/python -m hardware_analysis.cli run --product FL-25-E-MR203 --auto-pass
+HARDWARE_MOCK=1 .venv/bin/python -m hardware_analysis.cli run --product FL-25-E-MR203
 ```
 - `HARDWARE_MOCK=1` ＝ 用假 LLM，只验 **流程/门禁/产物** 是否通；
-- `--auto-pass` ＝ 批次边界自动继续；
+- 默认**自动跑完**；仅在真需人工处暂停等待（网页处理），处理完**自动继续**；
 - 期望输出：`current: DONE`、`gates` 全 `PASS`（G1–G6）。
 
 ### ② 真实模式（调真 LLM，慢——单次约 44s，全量很久）
 ```bash
-.venv/bin/python -m hardware_analysis.cli run --product FL-25-E-MR203 --auto-pass
+.venv/bin/python -m hardware_analysis.cli run --product FL-25-E-MR203
 ```
 > ⚠️ 建议先用 MOCK 验流程；真跑留到出会话/缩小范围（见下文"分步跑"）。
 
@@ -39,7 +39,7 @@ HARDWARE_MOCK=1 .venv/bin/python -m hardware_analysis.cli run --product FL-25-E-
 ## 二、分步跑（可指定阶段，不必全量）
 
 ```bash
-.venv/bin/python -m hardware_analysis.cli run   --product FL-25-E-MR203 --auto-pass   # 全流程
+.venv/bin/python -m hardware_analysis.cli run   --product FL-25-E-MR203   # 全流程
 .venv/bin/python -m hardware_analysis.cli prep|validate|search|analyze|write|audit|finalize --product FL-25-E-MR203
 ```
 - `prep/validate` 目前等于"PH-1+门禁 G1"（按需扩展）；其余为 agent 阶段（阶段 5 已接线）。

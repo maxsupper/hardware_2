@@ -149,7 +149,7 @@
       body.appendChild(d);
       const b1=document.createElement('button'); b1.className='btn primary'; b1.textContent='确认并开始审查';
       b1.onclick=async()=>{ await POST('/api/human/confirm',{product,kind:'step0a',answer:'continue'});
-        const fd=new FormData(); fd.append('product',product); fd.append('auto_pass','false');
+        const fd=new FormData(); fd.append('product',product);
         await fetch('/api/start',{method:'POST',body:fd});
         box.classList.add('hidden'); lastModalReason=''; };
       const b2=document.createElement('button'); b2.className='btn'; b2.textContent='稍后';
@@ -181,7 +181,7 @@
     alert('已上传: '+r.saved.join(', ')); product=name; $('btn-start').disabled=false;
   };
   $('btn-start').onclick=()=>{
-    const fd=new FormData(); fd.append('product',product); fd.append('auto_pass',$('autopass').checked?'true':'false');
+    const fd=new FormData(); fd.append('product',product);
     fetch('/api/start',{method:'POST',body:fd}).then(r=>r.json()).then(r=>{ $('conn').textContent='RUN '+r.run_id; cursor=0; });
   };
   $('btn-follow').onclick=()=>{ follow=!follow; $('btn-follow').textContent=follow?'跟随':'暂停'; };

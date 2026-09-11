@@ -61,14 +61,12 @@ async def upload(product: str = Form(...), files: list[UploadFile] = File(...)):
 
 
 @app.post("/api/start")
-def start(product: str = Form(...), auto_pass: bool = Form(False)):
+def start(product: str = Form(...)):
     name = _safe_name(product)
     src = "src"
     env = os.environ.copy()
     env["PYTHONPATH"] = src
     cmd = [sys.executable, "-m", "hardware_analysis.cli", "run", "--product", name]
-    if auto_pass:
-        cmd.append("--auto-pass")
     run_id = uuid.uuid4().hex[:8]
     # 后台子进程
     logf = open(PRODUCTS_DIR / name / ".run" / "stdout.log", "a", encoding="utf-8")  # 子进程 stdout 独立，勿污染 run.log.jsonl(JSONL)

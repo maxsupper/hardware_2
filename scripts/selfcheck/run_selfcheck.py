@@ -16,7 +16,8 @@ REPORT = ROOT / "docs" / "selfcheck_report.md"
 
 
 def sh(cmd, timeout=200):
-    env = {"PYTHONPATH": "src", "PATH": "/usr/bin:/bin:/usr/local/bin", "HARDWARE_MOCK": "1"}
+    env = {"PYTHONPATH": "src", "PATH": "/usr/bin:/bin:/usr/local/bin", "HARDWARE_MOCK": "1",
+           "HARDWARE_AUTO_HUMAN": "1"}
     return subprocess.run(f"{sys.executable} -m {cmd}", shell=True, capture_output=True,
                           text=True, env=env, cwd=str(ROOT), timeout=timeout)
 

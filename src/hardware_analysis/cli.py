@@ -1,7 +1,7 @@
 """CLI — 硬件审查工具入口。
 
 用法:
-  python -m hardware_analysis.cli run --product <名称> [--auto-pass]
+  python -m hardware_analysis.cli run --product <名称>   (默认自动跑；仅人工环节暂停等待，处理完自动继续)
   python -m hardware_analysis.cli prep|validate|search|analyze|write|audit|finalize --product <名称>
   python -m hardware_analysis.cli web            (启动 web 调试面板)
 """
@@ -26,7 +26,7 @@ def main() -> None:
     ap = argparse.ArgumentParser("硬件原理图自动审查 + 故障分析")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
-    r = sub.add_parser("run"); add_product(r); r.add_argument("--auto-pass", action="store_true")
+    r = sub.add_parser("run"); add_product(r)
     for name, fn in [("prep", "PH-1"), ("validate", "G3"), ("search", "PH-2"),
                      ("analyze", "PH-3"), ("write", "PH-4"), ("audit", "PH-5"), ("finalize", "PH-6")]:
         s = sub.add_parser(name)
@@ -34,7 +34,7 @@ def main() -> None:
 
     args = ap.parse_args()
     if args.cmd == "run":
-        st = Orchestrator(args.product, projects_dir=args.ws).run(auto_pass_gates=args.auto_pass)
+        st = Orchestrator(args.product, projects_dir=args.ws).run()
         print(json.dumps({"current": st["current"], "errors": st["errors"],
                           "gates": st["gates"]}, ensure_ascii=False, indent=1))
     elif args.cmd in ("prep", "validate"):
