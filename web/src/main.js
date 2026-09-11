@@ -138,6 +138,23 @@
       box.classList.remove('hidden');
       return;
     }
+    // PH-0 输入准备确认（step_0a）：“确认并开始审查”会真正重启流程
+    if((st.pause_reason||'').includes('step_0a')){
+      $('m-title').textContent='【待你处理】输入准备确认（PH-0）';
+      const d=document.createElement('div'); d.className='dim';
+      d.textContent='确认使用默认手册库 storge/refbook 开始审查（手册缺失将在 PH-1 弹窗处理）？';
+      body.appendChild(d);
+      const b1=document.createElement('button'); b1.className='btn primary'; b1.textContent='确认并开始审查';
+      b1.onclick=async()=>{ await POST('/api/human/confirm',{product,kind:'step0a',answer:'continue'});
+        const fd=new FormData(); fd.append('product',product); fd.append('auto_pass','false');
+        await fetch('/api/start',{method:'POST',body:fd});
+        box.classList.add('hidden'); lastModalReason=''; };
+      const b2=document.createElement('button'); b2.className='btn'; b2.textContent='稍后';
+      b2.onclick=()=>box.classList.add('hidden');
+      act.appendChild(b1); act.appendChild(b2);
+      box.classList.remove('hidden');
+      return;
+    }
     // 默认：批次边界确认
     $('m-title').textContent='【待你处理】 '+(st.pause_reason||'批次边界');
     body.textContent='当前环节：'+(st.current||'')+'。请选择';
