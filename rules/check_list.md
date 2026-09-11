@@ -24,7 +24,7 @@
 - **G5**（审计门）@ PH-5：SA-1..8自审 + 证据链三方对照(确定性+审计输出)
 - **G6**（闭环交付门）@ PH-6：未决项清空/定版/final+渲染.md
 
-## 规则编目（按规范 ID，由 raw 清册迭代生成，共 228 条）
+## 规则编目（按规范 ID，由 raw 清册迭代生成，共 231 条）
 
 | ID | 标题 | 源位置 | 行 |
 |---|---|---|---|
@@ -186,6 +186,9 @@
 | NG-003 | 跨板仅经 cross_board_links（连接器按脚号一一配对，禁 GND  | v2_design::PH-2::G2 | 0 |
 | NG-004 | 0Ω 两端归 alias_group；差分对 _P/_N 归 diff_pair | v2_design::PH-2::G2 | 0 |
 | NG-005 | dangling_joins=0（每个 join 的位号存在于 devices） | v2_design::PH-2::G2 | 0 |
+| NG-006 | 单一真源：器件间连接仅由 devices[].pins 与 nets[].joi | v3_design::PH-2::G2 | 0 |
+| NG-007 | 规模守门：netlist_graph.json ≤5MB（防重复内嵌导致平方膨胀 | v3_design::PH-2::G2 | 0 |
+| NG-008 | 等值可证：图结构变更须提供等值证据（verify_adjacency：派生邻接  | v3_design::PH-2::G2 | 0 |
 | PART-001 | §0 快速导航 (人类阅读) | raw_roles/hardware-reviewer.md::L3 | 3 |
 | PART-002 | §1 角色定义与架构 | raw_roles/hardware-reviewer.md::L14 | 14 |
 | PART-003 | §2 审核流程 | raw_roles/hardware-reviewer.md::L218 | 218 |

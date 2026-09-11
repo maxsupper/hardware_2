@@ -40,6 +40,19 @@ def main(product: str = "FL-25-E-MR203"):
         f"gates/G1.json -> {gv.main_gate_cli(P, 'G1')}")
     add("L1-gate(G2)", "G2 状态", gv.validate_netlist(P / "PH-2_网表解析").status.value == "PASS",
         f"gates/G2.json -> {gv.main_gate_cli(P, 'G2')}")
+    # NG-006 等值证据：派生邻接 == 旧 upstream/downstream（需基准文件）
+    base = ROOT / "docs" / "evidence" / f"adjacency_baseline_{product}.json"
+    gfile = P / "PH-2_网表解析" / "netlist_graph.json"
+    if base.exists() and gfile.exists():
+        try:
+            from hardware_analysis.tools.verify_adjacency import verify
+            ev = verify(gfile, base)
+            add("L1-NG-006 邻接等值",
+                f"派生邻接 vs 基准：{ev['status']}（比对 {ev['checked']} 引脚）",
+                ev["status"] == "EQUIVALENT",
+                f"docs/evidence/adjacency_baseline_{product}.json 不等={ev['mismatch']} 缺失={ev['missing']}")
+        except Exception as e:
+            add("L1-NG-006 邻接等值", f"校验异常: {e}", False, "verify_adjacency")
     # 负向: 缺文件 → G4 FAIL
     fdir = P / "PH-4_报告合成"
     rep = fdir / "report.json"

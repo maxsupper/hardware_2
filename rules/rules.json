@@ -2046,6 +2046,30 @@
    "end_line": 0,
    "chars": 51,
    "kind": "CL"
+  },
+  "NG-006": {
+   "title": "单一真源：器件间连接仅由 devices[].pins 与 nets[].joins 承载；links[] 禁止内嵌邻接（无 upstream/downstream/via）；邻接按 side+joins 派生（GraphIndex），禁 GND/电源网 O(k²) 展开",
+   "source": "v3_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 136,
+   "kind": "NG"
+  },
+  "NG-007": {
+   "title": "规模守门：netlist_graph.json ≤5MB（防重复内嵌导致平方膨胀）；超限须改派生/紧凑索引",
+   "source": "v3_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 53,
+   "kind": "NG"
+  },
+  "NG-008": {
+   "title": "等值可证：图结构变更须提供等值证据（verify_adjacency：派生邻接 vs 基准逐条一致，含 model/kind）",
+   "source": "v3_design::PH-2::G2",
+   "line": 0,
+   "end_line": 0,
+   "chars": 63,
+   "kind": "NG"
   }
  },
  "platform": {
@@ -2115,7 +2139,22 @@
   "platform_bundles_merged": "2026-09-11: 4×bundle.json 并入 platform 段（去冗余文件）",
   "dev_rules_added": "2026-09-11: 新增 dev_rules 段（6条，代码生成硬性要求）",
   "stage_dirs_renamed": "2026-09-11: 阶段目录改为 PHx_<用途>（PH1_manual/PH3_netlist/PH4_analyze/PH5_report/PH6_audit），删空壳 C_search/D_validate",
-  "ph2_merged": "2026-09-11: PH-2(预检)并入 PH-1；阶段 8→7，门禁 7→6 重编号"
+  "ph2_merged": "2026-09-11: PH-2(预检)并入 PH-1；阶段 8→7，门禁 7→6 重编号",
+  "v3_applied": {
+   "rules": [
+    "NG-006",
+    "NG-007",
+    "NG-008"
+   ],
+   "dev_rules": [
+    "DEV-007",
+    "DEV-008"
+   ],
+   "gate_enforced": [
+    "G2:NG-006",
+    "G2:NG-007"
+   ]
+  }
  },
  "dev_rules": {
   "schema_version": "1.0",
@@ -2150,6 +2189,16 @@
    {
     "id": "DEV-006",
     "rule": "所有生成代码，必须与 LLM 对话检查 2 次，确认有效性/效率/通用性无误。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-007",
+    "rule": "真源唯一化：任何产物 JSON，凡可由既有表派生的关联（邻接/成员表/索引）不得重复内嵌；新增字段前须评估复杂度与体积，禁止平方级(O(k²))展开；外部视图用访问器派生。",
+    "enforce": true
+   },
+   {
+    "id": "DEV-008",
+    "rule": "大图按需访问：图产物>10MB 必须提供索引化/按需访问（GraphIndex），禁止『一次全量解析』为唯一消费方式。",
     "enforce": true
    }
   ]

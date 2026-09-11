@@ -110,11 +110,19 @@
 
 ## [T-NETLIST-GRAPH] netlist_graph
 - 模块   : src/hardware_analysis/tools/netlist_graph.py
-- 功能   : PH-3 产物——网表 json 化（v2.2）：devices/nets/paths/cross_board_links；子 agent 按接插件分组追踪后合并；连接器配对(D1)
-- 输入   : PH-2_网表解析 (global_* / trace_inventory / refdes_function_map) + PH-1_手册检索/manual_index.json；--groups N；--product
-- 输出   : netlist_graph.json + netlist_graph.validate.json（dangling/uncovered 完整性）
-- 已验证 : FL-25-E-MR203 → 952 器件/802 网/472 路径/跨板144(信号109)/配对 J19↔J8=144脚；校验 dangling=0 uncovered=0
-- 备注   : links 按脚拆条（side/upstream/downstream/via/cross_board）；0Ω→alias_group；差分对→diff_pairs
+- 功能   : PH-2 产物——网表 json 化（v3.0）：devices/nets/paths/cross_board_links；**NG-006 单一真源**（不内嵌邻接，邻接由 pins+joins 经 GraphIndex 派生）；连接器配对
+- 输入   : PH-2_网表解析 (global_* / trace_inventory / refdes_function_map) + PH-1_手册检索/manual_index.json；--groups N；--product；--pretty
+- 输出   : netlist_graph.json（v3.0，默认紧凑 1.04MB）；meta.validation 含 dangling/uncovered/embedded_adjacency
+- 已验证 : FL-25-E-MR203 → 952 器件/802 网/472 路径/跨板144/配对 J19↔J8=144脚；dangling=0 uncovered=0 embedded=0；165MB→1.04MB(↓158×)
+- 备注   : links 按脚拆条，仅留不可派生：net/pin/side/fanout/trace/status/cross_board；删 upstream/downstream/via；邻接用 GraphIndex.neighbors()
+
+## [T-VERIFY-ADJ] verify_adjacency
+- 模块   : src/hardware_analysis/tools/verify_adjacency.py
+- 功能   : NG-006 **等值证据**——证明「派生邻接」与旧 links[].upstream/downstream 逐条等价（含 model/kind 全字段）
+- 输入   : --make-baseline <旧graph.json> -o <基线.json> ；校验：--graph <新> --baseline <基线>
+- 输出   : 基线 JSON（引脚→side/fanout/邻居集合哈希）；stdout 判定 EQUIVALENT/DIFFERENT；退出码 0/1
+- 已验证 : FL-25-E-MR203 → 4131 引脚 / 1,232,943 邻接条目，**EQUIVALENT（不等=0 缺失=0）**
+- 备注   : 作为 PH-2 自检项；基准存 docs/evidence/adjacency_baseline_<产品>.json
 
 ## v2 变更说明（2026-09-11 阶段换位/板级隔离）
 - edn_global_merge：**板级隔离**（身份="板::位号"，网="板::网"）；不再输出 cross_board_nets.json；新增 merge_report(board_stats)
@@ -163,3 +171,11 @@
 - 输出   : 同名 .md（含来源/方法头）；返回 {src,out,chars,ok,error,method}
 - 接入   : web /api/manual/upload 上传 PDF 后**自动触发**转换（converted_md 字段）
 - 已验证 : storge/datasheet/ETA3417S2F.pdf → 正文抽取成功
+
+## [T-PREPARE-RULES-V3] apply_v3_rules（规则固化）
+- 模块   : scripts/prepare_rules/apply_v3_rules.py
+- 功能   : v3 规则固化（幂等）——把「单一真源/禁内嵌邻接/规模守门/等值可证」写成**通用规则**
+- 写入   : rules[] += NG-006(单一真源) / NG-007(规模守门) / NG-008(等值可证)；dev_rules += DEV-007(真源唯一化,通用) / DEV-008(大图按需访问)
+- 强制   : 规则文本(人/LLM) + dev_rules(启动即读) + **G2 门禁代码强制**(gate_validators NG-006/NG-007)
+- 输出   : rules/rules.json（含 _audit.v3_applied）+ rules/check_list.md 重渲染
+- 备注   : PH-2 规则束模式为 NG-*，新规自动纳入；须在 generate_rules.py 之后重跑（防被 raw 重生成覆盖）

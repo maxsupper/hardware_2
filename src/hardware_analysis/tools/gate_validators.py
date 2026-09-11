@@ -230,6 +230,17 @@ def validate_netlist(b_prep_dir: Path) -> GateResult:
                "dangling_joins=0（join 位号均在 devices）", f"dangling={v.get('dangling_joins')}")
         _check(checks, "NG-002", GateStatus.PASS if v.get("uncovered_pins", 1) == 0 else GateStatus.FAIL,
                "uncovered_pins=0（links 覆盖每脚）", f"uncovered={v.get('uncovered_pins')}")
+        # NG-006：单一真源——links 不得内嵌邻接表（邻接由 pins+joins 派生）
+        emb = v.get("embedded_adjacency")
+        if emb is None:                       # 兼容：未写入 meta 时直接从 devices 判定
+            emb = sum(1 for dv in d.get("devices", []) for lk in dv.get("links", [])
+                      if lk.get("upstream") or lk.get("downstream") or "via" in lk)
+        _check(checks, "NG-006", GateStatus.PASS if emb == 0 else GateStatus.FAIL,
+               "单一真源：links 不内嵌邻接（无 upstream/downstream/via）", f"embedded={emb}")
+        # NG-007：规模守门——防 O(k²) 重复内嵌（体积不随网格平方膨胀）
+        mb = p.stat().st_size / 1048576
+        _check(checks, "NG-007", GateStatus.PASS if mb <= 5 else GateStatus.FAIL,
+               "netlist_graph.json ≤5MB（防 O(k²) 重复内嵌）", f"{mb:.3f}MB")
         gc = b_prep_dir / "global_components.json"
         if gc.exists():
             n_gc = len(json.loads(gc.read_text(encoding="utf-8")))

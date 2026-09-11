@@ -186,7 +186,7 @@ class NetlistDevice(BaseModel):
     source: dict[str, Any] = Field(default_factory=dict)   # {in_bom,in_edn,populated}
     ic: dict[str, Any] = Field(default_factory=dict)       # {manual_path,ic_type,channels}
     pins: dict[str, str] = Field(default_factory=dict)     # 脚 -> 网（全量）
-    links: list[dict[str, Any]] = Field(default_factory=list)  # 上级/下级邻接
+    links: list[dict[str, Any]] = Field(default_factory=list)  # 每脚一条不可派生属性(net/pin/side/fanout/status/trace/cross_board)；NG-006:禁内嵌邻接，邻接由 pins+joins 派生
     depop: list[dict[str, Any]] = Field(default_factory=list)  # 不装占位
 
 

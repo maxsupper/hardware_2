@@ -1,14 +1,16 @@
-"""netlist_graph builder — PH-3 产物（网表 json 化，v2.2）.
+"""netlist_graph builder — PH-2 产物（网表 json 化，v3.0）.
 
 将 PH-2_网表解析 各确定性产物组织为单一 netlist_graph.json：devices[]/nets[]/paths[]/cross_board_links[]。
-要点（用户确认 A 方案）：
-  - devices 每 (板,位号) 一条：model(BOM为准)/kind/source/ic(manual_index)/pins(全量)/links(上级-下级)/depop
+要点：
+  - devices 每 (板,位号) 一条：model(BOM为准)/kind/source/ic(manual_index)/pins(全量)/links/depop
+  - **NG-006 单一真源**：器件间连接只由 devices[].pins 与 nets[].joins 承载；
+    links[] **不内嵌邻接表**（无 upstream/downstream/via）；邻接由 `GraphIndex` 按 side+joins **派生**
+    （与旧字段逐条等价，证据见 tools/verify_adjacency.py）。links 仅留不可派生属性：net/pin/side/fanout/status/trace/cross_board。
   - nets 全量 joins（真值）+ kind(signal|power|gnd) + alias_group(0Ω 短接)
   - paths = tracer 结果（接口信号）
-  - links：按脚拆条，扇出→多邻居(FANOUT)，电源→pwr，纯芯片间→bi，跨板→cross_board.peer
-  - cross_board_links：连接器配对(D1，按 脚→网 定义一致性匹配 A↔B)
+  - cross_board_links：连接器配对(按 脚→网 定义一致性匹配 A↔B)
   - 子 agent 分发：--groups N 按接插件分组追踪后合并（同 schema）
-用法: python -m hardware_analysis.tools.netlist_graph <PH-2_网表解析_dir> [--groups N] [--product X]
+用法: python -m hardware_analysis.tools.netlist_graph <PH-2_网表解析_dir> [--groups N] [--product X] [--pretty]
 """
 from __future__ import annotations
 import argparse, json, re, sys
@@ -184,10 +186,7 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
         for pin, net in pins.items():
             if not net:
                 continue
-            nb = [{"board": b, "refdes": r2, "pin": p2,
-                   "model": (rmap.get(f"{b}::{r2}", {}).get("identity", {}).get("model", "")),
-                   "kind": kinds.get((b, r2), "OTHER")}
-                  for (r2, p2) in net_pins.get((b, net), []) if (r2, p2) != (rd, pin)]
+            nbr = sum(1 for (r2, p2) in net_pins.get((b, net), []) if (r2, p2) != (rd, pin))
             if _power(net):
                 side = "pwr"
             elif (b, rd, pin) in start_pins:
@@ -202,16 +201,15 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
                     tr = {"id": t["id"], "end_type": t["end_type"], "bidirectional": t["bidirectional"]}
                     break
             status = "OK"
-            if not nb:
+            if not nbr:
                 status = "OPEN_END"
-            elif len(nb) >= CONV.cfg["fanout_min_neighbors"]:
+            elif nbr >= CONV.cfg["fanout_min_neighbors"]:
                 status = "FANOUT"
             if tr and tr["end_type"] in ("STUB", "OPEN_END") and side == "down":
                 status = tr["end_type"]
+            # NG-006：不内嵌邻接表；fanout=同网邻居数（0 表示悬空/开终点）。邻接用 GraphIndex 派生。
             link = {"net": net, "pin": pin, "side": side,
-                    "upstream": nb if side in ("down", "bi", "pwr") else [],
-                    "downstream": nb if side in ("up", "thru") else [],
-                    "via": [], "trace": tr, "status": status}
+                    "fanout": nbr, "trace": tr, "status": status}
             if f"{b}::{rd}.{pin}" in peer_of:
                 link["cross_board"] = {"peer": peer_of[f"{b}::{rd}.{pin}"], "status": "PAIRED"}
             dev["links"].append(link)
@@ -247,9 +245,63 @@ def build(b_prep: Path, product: str = "", groups: int = 1, manual_index: str | 
             "sub_agent_groups": groups,
             "end_types": {k: sum(1 for p in paths if p["end_type"] == k)
                           for k in {p["end_type"] for p in paths}}}
-    return {"schema_version": "2.2", "kind": "netlist_graph", "product": product, "status": "PASS",
+    return {"schema_version": "3.0", "kind": "netlist_graph", "product": product, "status": "PASS",
             "meta": meta, "devices": devices, "nets": nets, "paths": paths,
             "cross_board_links": xlinks, "connector_pairs": pairs, "diff_pairs": diff_pairs}
+
+
+class GraphIndex:
+    """邻接访问器（NG-006）：从单一真源 devices[].pins + nets[].joins **派生**邻接，
+    与旧 links[].upstream/downstream 逐条等价（证据：tools/verify_adjacency.py）。
+    内存构造 O(N)；单点查询 O(k)。**不落盘**，避免 GND 网格 O(k²) 膨胀。"""
+
+    def __init__(self, doc: dict):
+        self.doc = doc
+        self._members = defaultdict(list)          # (board, net) -> [(refdes, pin)]
+        self._netof = {}                           # (board, refdes, pin) -> net
+        for nd in doc.get("nets", []):
+            b, net = nd.get("board", ""), nd.get("net", "")
+            for j in nd.get("joins", []):
+                rd, pn = j.get("refdes", ""), j.get("pin", "")
+                if rd:
+                    self._members[(b, net)].append((rd, pn))
+                    self._netof[(b, rd, pn)] = net
+        for d in doc.get("devices", []):
+            b, rd = d.get("board", ""), d.get("refdes", "")
+            for pn, net in (d.get("pins") or {}).items():
+                self._netof.setdefault((b, rd, pn), net)
+
+    def members(self, board: str, net: str) -> list[tuple[str, str]]:
+        return list(self._members.get((board, net), []))
+
+    def net_of(self, board: str, refdes: str, pin: str) -> str:
+        return self._netof.get((board, refdes, pin), "")
+
+    def neighbors(self, board: str, refdes: str, pin: str, net: str | None = None) -> list[dict]:
+        """同网其他脚（排除自身），字段与原 upstream/downstream 一致。"""
+        net = net if net is not None else self.net_of(board, refdes, pin)
+        return [{"board": board, "refdes": r2, "pin": p2}
+                for (r2, p2) in self._members.get((board, net), [])
+                if (r2, p2) != (refdes, pin)]
+
+    def adjacency(self, board: str, refdes: str, pin: str, side: str, net: str | None = None) -> list[dict]:
+        """按 side 还原旧 upstream/downstream（side∈down|bi|pwr → upstream；up|thru → downstream）。"""
+        return self.neighbors(board, refdes, pin, net) if side in ("down", "bi", "pwr", "up", "thru") else []
+
+
+def adjacency_view(doc: dict, board: str, refdes: str, pin: str) -> dict:
+    """向后兼容视图：返回 {"upstream":[...], "downstream":[...]}，语义同旧字段。"""
+    gi = GraphIndex(doc)
+    side, net = "bi", None
+    for d in doc.get("devices", []):
+        if d.get("board") == board and d.get("refdes") == refdes:
+            for lk in d.get("links", []):
+                if lk.get("pin") == pin:
+                    side, net = lk.get("side", "bi"), lk.get("net")
+    nb = gi.neighbors(board, refdes, pin, net)
+    return {"upstream": nb if side in ("down", "bi", "pwr") else [],
+            "downstream": nb if side in ("up", "thru") else [],
+            "net": net, "side": side}
 
 
 def validate(doc: dict) -> dict:
@@ -268,11 +320,15 @@ def validate(doc: dict) -> dict:
                 issues["dangling_joins"].append(f'{i}.{j["pin"]}')
             elif j["refdes"] and j["pin"] not in link_cov.get(i, set()):
                 issues["uncovered_pins"].append(f'{i}.{j["pin"]}')
+    # NG-006：结构单一真源——links 不得内嵌邻接表
+    embedded = sum(1 for d in doc["devices"] for lk in d["links"]
+                   if lk.get("upstream") or lk.get("downstream") or "via" in lk)
     return {"dangling_joins": len(issues["dangling_joins"]),
             "uncovered_pins": len(issues["uncovered_pins"]),
+            "embedded_adjacency": embedded,
             "sample_dangling": issues["dangling_joins"][:5],
             "sample_uncovered": issues["uncovered_pins"][:5],
-            "status": "PASS" if not issues["dangling_joins"] else "FAIL"}
+            "status": "PASS" if not issues["dangling_joins"] and not embedded else "FAIL"}
 
 
 def main() -> None:
@@ -281,12 +337,19 @@ def main() -> None:
     ap.add_argument("--groups", type=int, default=0, help="子 agent 分组数；<=0 表示按接插件数自适应(上限5)")
     ap.add_argument("--product", default="")
     ap.add_argument("--manual-index", default=None, help="manual_index.json 路径（默认取 b_prep/manual_index.json）")
+    ap.add_argument("--pretty", action="store_true", help="人类可读缩进写盘（默认紧凑，体积小）")
     args = ap.parse_args()
     d = Path(args.b_prep_dir)
     doc = build(d, args.product, args.groups, manual_index=args.manual_index)
     v = validate(doc)
     doc["meta"]["validation"] = v            # 校验并入产物 meta（不另留中间文件）
-    (d / "netlist_graph.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    out = d / "netlist_graph.json"
+    if args.pretty:
+        out.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    else:
+        out.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    doc["meta"]["size_bytes"] = out.stat().st_size
+    print(f"  netlist_graph.json = {out.stat().st_size/1048576:.3f} MB (紧凑)")
     m = doc["meta"]
     print(f"netlist_graph: 板={m['boards']} 器件={m['devices']} 网={m['nets']} 路径={m['paths']} "
           f"跨板={m['cross_board_links']} 配对={m['connector_pairs']} 分组={m['sub_agent_groups']}")
