@@ -311,6 +311,9 @@ class Orchestrator:
             self._set("current", "PH-0"); self.state["phases"]["PH-0"] = "RUNNING"
             self._act_ph0()
             self.state["phases"]["PH-0"] = "DONE"
+            if self.state.get("paused") and not self.auto_pass:
+                self._log("stop_at_step0a", reason=self.state.get("pause_reason"))
+                return self.state                      # 真停：等人工确认 step_0a 后再重跑
             for ph, act, gate, gatefn in [
                 ("PH-1", self._act_ph1, "G1", lambda: gv.validate_manual_bom(self._p1())),
                 ("PH-2", self._act_ph2, "G2", lambda: gv.validate_netlist(self._p2())),

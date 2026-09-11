@@ -80,9 +80,14 @@
     }
   }
 
+  let lastModalReason='';
   async function maybeModal(st){
     const box=$('modal'), body=$('m-body'), act=$('m-actions');
-    if(box.classList.contains('hidden')===false) return;
+    if(!st.paused){ if(lastModalReason){ lastModalReason=''; box.classList.add('hidden'); } return; }
+    const reason=st.pause_reason||'';
+    if(!box.classList.contains('hidden') && reason===lastModalReason) return;  // 同一原因不重绘
+    lastModalReason=reason;
+    box.classList.add('hidden');        // 先隐藏，允许按新原因重绘
     act.innerHTML=''; body.innerHTML='';
     // 手册缺失确认（PH-1）：逐项 上传 / 缺省 / 替换
     if((st.pause_reason||'').includes('手册缺失')){
