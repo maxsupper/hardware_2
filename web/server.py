@@ -113,15 +113,27 @@ def gates(product: str):
 
 @app.post("/api/human/confirm")
 def human_confirm(payload: dict):
-    """人工回执：写 g2_confirm.json / 批次继续信号，供 Flow checkpoint 恢复。"""
+    """人工回执：写 human_{kind}.json（step0a|batch|g6|manual）；manual 可带 decisions。"""
     product = _safe_name(payload.get("product", ""))
-    kind = payload.get("kind", "batch")   # step0a | g2 | batch | g6
+    kind = payload.get("kind", "batch")   # step0a | batch | g6 | manual
     answer = payload.get("answer", "continue")
     d = PRODUCTS_DIR / product / "gates"
     d.mkdir(exist_ok=True)
-    (d / "human_{}.json".format(kind)).write_text(
-        json.dumps({"kind": kind, "answer": answer, "ts": time.time()}, ensure_ascii=False), encoding="utf-8")
-    return {"ok": True, "written": f"human_{kind}.json"}
+    obj = {"kind": kind, "answer": answer, "ts": time.time()}
+    if kind == "manual" and isinstance(payload.get("decisions"), dict):
+        obj["decisions"] = payload["decisions"]
+    (d / "human_{}.json".format(kind)).write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
+    return {"ok": True, "written": f"human_{kind}.json", "n_decisions": len(obj.get("decisions", {}))}
+
+
+@app.get("/api/manual_gaps/{product}")
+def manual_gaps(product: str):
+    """手册缺失确认清单（PH-1 产出）。"""
+    name = _safe_name(product)
+    p = PRODUCTS_DIR / name / "PH-1_手册检索" / "manual_gaps.json"
+    if not p.exists():
+        return {"total": 0, "gaps": []}
+    return json.loads(p.read_text(encoding="utf-8"))
 
 
 @app.get("/api/problem/{product}")

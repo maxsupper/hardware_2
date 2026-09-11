@@ -90,6 +90,36 @@ class Orchestrator:
         (self._p1("precheck.json")).write_text(json.dumps(pre, ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("ph1_done", boms=[b.name for b in boms], bom_refdes=pre["bom_refdes"])
         self._ic_type_llm()      # LLM 判定 ic_type 并回写 manual_index.json（mock 走 SINK）
+        self._manual_gap_checkpoint()   # 手册缺失确认（补文件/忽视/兼容型号）
+
+    def _manual_gap_checkpoint(self):
+        """手册缺失确认：产出 manual_gaps.json；非无人值守→暂停等人工（web弹窗/CLI打印）；
+        无人值守或已给决策→按 IGNORE(UNVERIFIED)/COMPATIBLE/PROVIDE_FILE 应用。"""
+        from hardware_analysis.tools import manual_index as mi_tool
+        gaps = mi_tool.collect_gaps(self._p1())
+        (self._p1("manual_gaps.json")).write_text(json.dumps(gaps, ensure_ascii=False, indent=1), encoding="utf-8")
+        if not gaps["gaps"]:
+            return
+        self._log("manual_gaps", count=gaps["total"],
+                  items=[f"{g['refdes']}({g['model']})" for g in gaps["gaps"]][:50])
+        print(f"\n【手册缺失确认】{gaps['total']} 项待补手册：")
+        for g in gaps["gaps"][:30]:
+            print(f"  - {g['refdes']}  {g['model']}")
+        print("  处理方式：补文件(上传/add) / 忽视(→UNVERIFIED) / 指定兼容型号\n")
+        dec_path = self.ws.dir / "gates" / "human_manual.json"
+        decisions = {}
+        if dec_path.exists():
+            try:
+                decisions = json.loads(dec_path.read_text(encoding="utf-8")).get("decisions", {})
+            except Exception:
+                decisions = {}
+        if not decisions and not self.auto_pass:
+            self._pause(f"手册缺失确认：{gaps['total']} 项待处理（补文件/忽视/兼容型号）")
+            return
+        if not decisions:                 # 无人值守：默认全部忽视(UNVERIFIED)
+            decisions = {g["refdes"]: {"action": "IGNORE"} for g in gaps["gaps"]}
+        st = mi_tool.apply_decisions(self._p1(), decisions)
+        self._log("manual_decided", stats=st)
 
     def _ic_type_llm(self):
         """对 manual_index 中每颗唯一 IC 判定 ic_type（SINK/PASS_THRU/POWER_SRC）。
@@ -196,9 +226,22 @@ class Orchestrator:
             "/narrative{}" + ("；输入: " + json.dumps(sums, ensure_ascii=False)[:2200] if sums else "(无输入)"),
             ReportDoc)
         f = self._p4(); f.mkdir(parents=True, exist_ok=True)
-        (f / "report.json").write_text(json.dumps(
-            obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]},
-            ensure_ascii=False, indent=1), encoding="utf-8")
+        rep = obj.model_dump(exclude_none=True) if obj else {"_err": "；".join(errs)[:200]}
+        # 追加"待补手册清单"表（含人工处理结果），供 web/报告展示
+        try:
+            mi = json.loads(self._p1("manual_index.json").read_text(encoding="utf-8"))
+            rows = [[e.get("refdes", k.split("::")[-1]), e.get("model", ""), e.get("status", ""),
+                     e.get("action", ""), e.get("manual_path") or "", e.get("note", "")]
+                    for k, e in mi.get("entries", {}).items()
+                    if not e.get("manual_path") or e.get("status") in ("TRULY_MISSING", "UNVERIFIED", "FOUND_COMPATIBLE")]
+            if rows:
+                rep.setdefault("tables", []).append({
+                    "title": "待补手册清单",
+                    "columns": ["位号", "型号", "状态", "人工处理", "手册路径", "备注"],
+                    "rows": sorted(rows)})
+        except Exception as ex:
+            self._log("manual_table_err", err=str(ex)[:100])
+        (f / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1), encoding="utf-8")
         self._log("write_done", sec=sec, ok=obj is not None)
 
     # ---------- PH-5 审计 ----------

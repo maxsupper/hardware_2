@@ -52,6 +52,69 @@ def build(bom_entries_path: str | Path, refbook_root: str = "storge/refbook",
                       "refbook_root": refbook_root}}
 
 
+def collect_gaps(b_prep_dir: str | Path) -> dict:
+    """从 manual_index.json 收集无手册（待补）清单。"""
+    p = Path(b_prep_dir) / "manual_index.json"
+    d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"entries": {}}
+    gaps = []
+    for k, e in d.get("entries", {}).items():
+        if not e.get("manual_path"):
+            gaps.append({"refdes": k, "model": e.get("model", ""), "status": e.get("status", "TRULY_MISSING"),
+                         "action": "PENDING", "compatible_model": None, "manual_path": None, "note": ""})
+    return {"kind": "manual_gaps", "product": d.get("product", ""), "total": len(gaps), "gaps": gaps}
+
+
+def apply_decisions(b_prep_dir: str | Path, decisions: dict, refbook_root: str = "storge/refbook",
+                    datasheet_dir: str = "storge/datasheet") -> dict:
+    """应用人工决策：IGNORE(→UNVERIFIED) / COMPATIBLE(→同兼容型号) / PROVIDE_FILE(→指定文件)。
+    decisions: { "板::位号": {"action":..., "compatible_model":..., "file":...} }
+    """
+    p = Path(b_prep_dir) / "manual_index.json"
+    mi = json.loads(p.read_text(encoding="utf-8"))
+    ents = mi.get("entries", {})
+    for key, dec in (decisions or {}).items():
+        e = ents.get(key)
+        if not e:
+            continue
+        act = str(dec.get("action", "IGNORE")).upper()
+        if act == "IGNORE":
+            e["status"], e["manual_path"] = "UNVERIFIED", None
+            e["note"] = "人工：忽视（无手册，结论标 UNVERIFIED）"
+        elif act == "COMPATIBLE":
+            cm = dec.get("compatible_model") or ""
+            hit = refbook_search.search(cm, refbook_root, top=1) if cm else []
+            if hit and hit[0]["score"] >= 40:
+                e["manual_path"], e["status"] = hit[0]["path"], "FOUND_COMPATIBLE"
+                e["compatible_model"] = cm
+                e["note"] = f"人工：按兼容型号 {cm} 处理"
+            else:
+                e["status"], e["compatible_model"] = "UNVERIFIED", cm
+                e["note"] = f"人工：兼容型号 {cm} 未检索到→UNVERIFIED"
+        elif act == "PROVIDE_FILE":
+            src = dec.get("file") or ""
+            sp = Path(src)
+            if sp.exists():
+                dest = Path(datasheet_dir) / sp.name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                import shutil as _sh
+                if sp.resolve() != dest.resolve():
+                    _sh.copy(sp, dest)
+                e["manual_path"], e["status"] = str(dest), "FOUND"
+                e["note"] = "人工：补充文件"
+            else:
+                e["note"] = f"人工：指定文件不存在({src})→保持 UNVERIFIED"
+                e["status"] = "UNVERIFIED"
+        e["action"] = act
+    # 重算 stats
+    st = mi.setdefault("stats", {})
+    from collections import Counter
+    c = Counter(e.get("status") for e in ents.values())
+    for k2 in ("FOUND", "FOUND_PARTIAL", "FOUND_COMPATIBLE", "TRULY_MISSING", "UNVERIFIED"):
+        st[k2] = c.get(k2, 0)
+    p.write_text(json.dumps(mi, ensure_ascii=False, indent=1), encoding="utf-8")
+    return st
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("bom_entries")

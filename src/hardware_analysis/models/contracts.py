@@ -39,6 +39,7 @@ class ManualStatus(str, Enum):
     FOUND_PARTIAL = "FOUND_PARTIAL"  # raw §2.4 词表
     MISSING = "MISSING"
     TRULY_MISSING = "TRULY_MISSING"  # raw §2.4 词表
+    FOUND_COMPATIBLE = "FOUND_COMPATIBLE"  # 人工指定兼容型号
     UNVERIFIED = "UNVERIFIED"
 
 

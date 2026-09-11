@@ -139,3 +139,12 @@
 
 ## v2 命名统一
 - 位号种类前缀、透明件、连接器、电源网正则、差分对正则、板号正则、追踪 guard、扇出阈值、连接器配对阈值 → 全部集中在 `common/conventions.py::DEFAULTS`
+
+## [T-MANUAL-GAPS] manual_gaps / apply_decisions（手册缺失确认，人机）
+- 模块   : src/hardware_analysis/tools/manual_index.py::collect_gaps / apply_decisions
+- 功能   : 收集无手册清单(manual_gaps.json)；应用人工决策 IGNORE(→UNVERIFIED)/COMPATIBLE(按兼容型号)/PROVIDE_FILE(补充文件)
+- 输入   : collect_gaps(<PH-1_手册检索>)；apply_decisions(<PH-1_手册检索>, {位号:{action,...}})
+- 输出   : PH-1_手册检索/manual_gaps.json；回写 manual_index.json(状态/路径/备注) + 重算 stats
+- 已验证 : 19 项待补；IGNORE→UNVERIFIED / COMPATIBLE→FOUND_COMPATIBLE / PROVIDE_FILE→FOUND
+- 人机   : web GET /api/manual_gaps/{产品} 列表 + POST /api/human/confirm{kind:manual,decisions} 写 gates/human_manual.json；CLI 非无人值守时打印清单并暂停
+- 报告   : PH-4 报告追加"待补手册清单"表

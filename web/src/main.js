@@ -80,12 +80,44 @@
     }
   }
 
-  function maybeModal(st){
+  async function maybeModal(st){
     const box=$('modal'), body=$('m-body'), act=$('m-actions');
     if(box.classList.contains('hidden')===false) return;
+    act.innerHTML=''; body.innerHTML='';
+    // 手册缺失确认（PH-1）：逐项 忽视 / 兼容型号 / 补充文件
+    if((st.pause_reason||'').includes('手册缺失')){
+      $('m-title').textContent='【待你处理】手册缺失确认';
+      const g=await fetch('/api/manual_gaps/'+encodeURIComponent(product)).then(r=>r.json()).catch(()=>({gaps:[]}));
+      const hint=document.createElement('div'); hint.className='dim';
+      hint.textContent='以下 IC 未找到手册，请逐项选择：忽视(→UNVERIFIED) / 指定兼容型号 / 补充文件路径'; body.appendChild(hint);
+      const decisions={};
+      (g.gaps||[]).forEach(it=>{
+        const row=document.createElement('div'); row.className='agent-card';
+        const nm=document.createElement('span'); nm.innerHTML=`<b>${it.refdes}</b> <span class="dim">${it.model}</span> `;
+        const sel=document.createElement('select');
+        [['IGNORE','忽视(UNVERIFIED)'],['COMPATIBLE','兼容型号'],['PROVIDE_FILE','补充文件']].forEach(([v,t])=>{
+          const o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); });
+        const inp=document.createElement('input'); inp.placeholder='兼容型号 或 文件路径'; inp.style.display='none';
+        decisions[it.refdes]={action:'IGNORE'};
+        const sync=()=>{ inp.style.display=sel.value==='IGNORE'?'none':'inline-block';
+          if(sel.value==='COMPATIBLE') decisions[it.refdes]={action:'COMPATIBLE',compatible_model:inp.value};
+          else if(sel.value==='PROVIDE_FILE') decisions[it.refdes]={action:'PROVIDE_FILE',file:inp.value};
+          else decisions[it.refdes]={action:'IGNORE'}; };
+        sel.onchange=sync; inp.oninput=sync;
+        row.appendChild(nm); row.appendChild(sel); row.appendChild(inp); body.appendChild(row);
+      });
+      const b1=document.createElement('button'); b1.className='btn primary'; b1.textContent='提交并继续';
+      b1.onclick=()=>{ POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions}); box.classList.add('hidden'); };
+      const b2=document.createElement('button'); b2.className='btn'; b2.textContent='全部忽视';
+      b2.onclick=()=>{ const d={}; (g.gaps||[]).forEach(it=>d[it.refdes]={action:'IGNORE'});
+        POST('/api/human/confirm',{product,kind:'manual',answer:'continue',decisions:d}); box.classList.add('hidden'); };
+      act.appendChild(b1); act.appendChild(b2);
+      box.classList.remove('hidden');
+      return;
+    }
+    // 默认：批次边界确认
     $('m-title').textContent='【待你处理】 '+(st.pause_reason||'批次边界');
     body.textContent='当前环节：'+(st.current||'')+'。请选择';
-    act.innerHTML='';
     [['继续审查','continue'],['停止','stop']].forEach(([txt,ans])=>{
       const b=document.createElement('button'); b.className='btn primary'; b.textContent=txt;
       b.onclick=()=>{ POST('/api/human/confirm',{product,kind:'batch',answer:ans}); box.classList.add('hidden'); };
